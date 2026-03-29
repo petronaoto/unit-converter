@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O&G Unit Converter</title>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Ensure options in standard select dropdowns are legible in dark mode */
+        select option { background-color: #0f172a; color: #f8fafc; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-blue-900/10 blur-[120px]"></div>
+        <div class="absolute top-[40%] -right-[20%] w-[60vw] h-[60vw] rounded-full bg-amber-600/5 blur-[150px]"></div>
+    </div>
+
+    <header class="relative z-10 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 shadow-lg">
+        <div class="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-3">
+                    <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                    O&G Engineering Converter
+                </h1>
+                <p class="text-slate-400 text-sm mt-1 ml-11">Precision control room conversion metrics</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-grow max-w-5xl mx-auto px-6 py-10 w-full">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="card-grid">
+
+            <div class="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
+                <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        Gas Volume
+                    </h2>
+                </div>
+                
+                <div class="p-6 space-y-6">
+                    <div>
+                        <label for="nm3-input" class="block text-sm font-medium text-slate-400 mb-2">
+                            Normal Cubic Meters
+                            <span class="text-xs text-slate-500 font-normal ml-1">@ 0°C, 1 atm</span>
+                        </label>
+                        <div class="relative rounded-lg shadow-inner">
+                            <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" 
+                                class="w-full pl-4 pr-[110px] py-3 bg-slate-950/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none">
+                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                <label for="nm3-select" class="sr-only">Unit</label>
+                                <select id="nm3-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                                    <option value="1">Nm³</option>
+                                    <option value="1000">kNm³</option>
+                                    <option value="1000000">mNm³</option>
+                                    <option value="1000000000">bNm³</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div class="bg-slate-800 p-2 rounded-full border border-slate-700">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="scf-input" class="block text-sm font-medium text-slate-400 mb-2">
+                            Standard Cubic Feet
+                            <span class="text-xs text-slate-500 font-normal ml-1">@ 60°F, 1 atm</span>
+                        </label>
+                        <div class="relative rounded-lg shadow-inner">
+                            <input type="text" inputmode="decimal" id="scf-input" placeholder="0" 
+                                class="w-full pl-4 pr-[110px] py-3 bg-slate-950/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none">
+                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                <label for="scf-select" class="sr-only">Unit</label>
+                                <select id="scf-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                                    <option value="1">scf</option>
+                                    <option value="1000000">mscf</option>
+                                    <option value="1000000000">bscf</option>
+                                    <option value="1000000000000">tscf</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add-module-btn" onclick="openModal()" class="bg-slate-900/30 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-700 flex flex-col items-center justify-center p-6 text-slate-500 min-h-[300px] cursor-pointer hover:bg-slate-800/50 hover:border-amber-500 hover:text-amber-500 transition-all duration-300 group">
+                <div class="p-4 rounded-full bg-slate-800/50 group-hover:bg-amber-500/10 mb-3 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                </div>
+                <span class="font-semibold tracking-wide text-sm">INITIALIZE NEW MODULE</span>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="relative z-10 bg-slate-950 border-t border-slate-800/50 mt-auto">
+        <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+            <div class="flex items-center gap-2 mb-2 md:mb-0">
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                System Online &bull; Vercel Environment
+            </div>
+            <div>&copy; 2026 O&G Engineering Tools by Naoto Yamabe</div>
+        </div>
+    </footer>
+
+    <div id="module-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md mx-4 overflow-hidden transform scale-95 transition-transform duration-200" id="modal-content">
+            <div class="bg-slate-800/80 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold tracking-wide text-slate-200 text-sm">CONFIGURE MODULE</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-amber-500 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="custom-module-form" class="p-6 space-y-5">
+                
+                <div class="pb-5 border-b border-slate-800">
+                    <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">QUICK LOAD TEMPLATE</label>
+                    <select id="preset-select" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none">
+                        <option value="custom">-- Custom Conversion --</option>
+                        <option value="pressure">Pressure: bar ↔ psi</option>
+                        <option value="mass-vol">Crude Oil: Metric Tons ↔ Barrels</option>
+                        <option value="energy">Energy: MMBtu ↔ GJ</option>
+                        <option value="liquid">Liquid Vol: m³ ↔ Barrels</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MODULE IDENTIFIER</label>
+                    <input type="text" id="mod-title" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none placeholder-slate-700" placeholder="e.g., Flow Rate">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 1</label>
+                        <input type="text" id="mod-unit1" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 2</label>
+                        <input type="text" id="mod-unit2" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MULTIPLIER FACTOR</label>
+                    <input type="number" step="any" id="mod-factor" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none placeholder-slate-700" placeholder="Unit 1 × Factor = Unit 2">
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 text-slate-400 font-medium hover:text-slate-200 transition-colors">Abort</button>
+                    <button type="submit" class="px-5 py-2.5 bg-amber-600 text-slate-950 font-bold rounded-lg hover:bg-amber-500 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.4)]">Initialize</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Shared Formatting Logic ---
+        function parseValue(val) {
+            if (!val) return NaN;
+            return parseFloat(val.toString().replace(/,/g, ''));
+        }
+
+        function formatValue(num) {
+            return num.toLocaleString('en-US', { maximumFractionDigits: 6 });
+        }
+
+        function formatOnBlur(e) {
+            const val = parseValue(e.target.value);
+            if (!isNaN(val)) {
+                e.target.value = formatValue(val);
+            }
+        }
+
+        // --- Static Gas Volume Logic ---
+        const CONVERSION_FACTOR = 37.3258;
+        const nm3Input = document.getElementById('nm3-input');
+        const scfInput = document.getElementById('scf-input');
+        const nm3Select = document.getElementById('nm3-select');
+        const scfSelect = document.getElementById('scf-select');
+
+        function updateScf() {
+            const nm3Val = parseValue(nm3Input.value);
+            if (isNaN(nm3Val)) { scfInput.value = ''; return; }
+            const nm3Mult = parseFloat(nm3Select.value);
+            const scfMult = parseFloat(scfSelect.value);
+            const baseScf = (nm3Val * nm3Mult) * CONVERSION_FACTOR;
+            scfInput.value = formatValue(baseScf / scfMult);
+        }
+
+        function updateNm3() {
+            const scfVal = parseValue(scfInput.value);
+            if (isNaN(scfVal)) { nm3Input.value = ''; return; }
+            const nm3Mult = parseFloat(nm3Select.value);
+            const scfMult = parseFloat(scfSelect.value);
+            const baseNm3 = (scfVal * scfMult) / CONVERSION_FACTOR;
+            nm3Input.value = formatValue(baseNm3 / nm3Mult);
+        }
+
+        nm3Input.addEventListener('input', updateScf);
+        scfInput.addEventListener('input', updateNm3);
+        nm3Input.addEventListener('blur', formatOnBlur);
+        scfInput.addEventListener('blur', formatOnBlur);
+        nm3Select.addEventListener('change', () => { if (nm3Input.value) updateScf(); });
+        scfSelect.addEventListener('change', () => { if (scfInput.value) updateNm3(); });
+
+        // --- Modal Preset Data & Logic ---
+        const presets = {
+            'pressure': { title: 'Pressure', u1: 'bar', u2: 'psi', factor: 14.5038 },
+            'mass-vol': { title: 'Crude Oil (Approx)', u1: 'Metric Tons', u2: 'Barrels (bbl)', factor: 7.33 },
+            'energy': { title: 'Energy', u1: 'MMBtu', u2: 'GJ', factor: 1.055056 },
+            'liquid': { title: 'Liquid Volume', u1: 'm³', u2: 'Barrels (bbl)', factor: 6.2898 }
+        };
+
+        const presetSelect = document.getElementById('preset-select');
+        const titleInput = document.getElementById('mod-title');
+        const unit1Input = document.getElementById('mod-unit1');
+        const unit2Input = document.getElementById('mod-unit2');
+        const factorInput = document.getElementById('mod-factor');
+
+        presetSelect.addEventListener('change', (e) => {
+            const selection = e.target.value;
+            if (presets[selection]) {
+                titleInput.value = presets[selection].title;
+                unit1Input.value = presets[selection].u1;
+                unit2Input.value = presets[selection].u2;
+                factorInput.value = presets[selection].factor;
+            } else {
+                titleInput.value = '';
+                unit1Input.value = '';
+                unit2Input.value = '';
+                factorInput.value = '';
+            }
+        });
+
+        // --- Dynamic Custom Module Logic ---
+        let moduleCounter = 1;
+        const modal = document.getElementById('module-modal');
+        const modalContent = document.getElementById('modal-content');
+        const form = document.getElementById('custom-module-form');
+
+        function openModal() { 
+            modal.classList.remove('hidden'); 
+            setTimeout(() => { modalContent.classList.remove('scale-95'); modalContent.classList.add('scale-100'); }, 10);
+        }
+        
+        function closeModal() { 
+            modalContent.classList.remove('scale-100'); 
+            modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); form.reset(); }, 200);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = titleInput.value;
+            const unit1 = unit1Input.value;
+            const unit2 = unit2Input.value;
+            const factor = parseFloat(factorInput.value);
+            createCustomCard(title, unit1, unit2, factor);
+            closeModal();
+        });
+
+        function createCustomCard(title, unit1, unit2, factor) {
+            moduleCounter++;
+            const cardId = `custom-module-${moduleCounter}`;
+            
+            const cardHTML = `
+                <div class="bg-slate-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300" id="${cardId}">
+                    <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+                        <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            ${title}
+                        </h2>
+                        <button onclick="document.getElementById('${cardId}').remove()" class="text-slate-500 hover:text-red-500 text-xs font-bold tracking-wider transition-colors">TERMINATE</button>
+                    </div>
+                    
+                    <div class="p-6 space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-2">${unit1}</label>
+                            <div class="relative rounded-lg shadow-inner">
+                                <input type="text" inputmode="decimal" class="unit1-input w-full pl-4 pr-20 py-3 bg-slate-950/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                    <span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit1}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <div class="bg-slate-800 p-2 rounded-full border border-slate-700">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-2">${unit2}</label>
+                            <div class="relative rounded-lg shadow-inner">
+                                <input type="text" inputmode="decimal" class="unit2-input w-full pl-4 pr-20 py-3 bg-slate-950/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                    <span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit2}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const addBtn = document.getElementById('add-module-btn');
+            addBtn.insertAdjacentHTML('beforebegin', cardHTML);
+
+            const newCard = document.getElementById(cardId);
+            const input1 = newCard.querySelector('.unit1-input');
+            const input2 = newCard.querySelector('.unit2-input');
+
+            input1.addEventListener('input', (e) => {
+                const val = parseValue(e.target.value);
+                input2.value = !isNaN(val) ? formatValue(val * factor) : '';
+            });
+
+            input2.addEventListener('input', (e) => {
+                const val = parseValue(e.target.value);
+                input1.value = !isNaN(val) ? formatValue(val / factor) : '';
+            });
+
+            input1.addEventListener('blur', formatOnBlur);
+            input2.addEventListener('blur', formatOnBlur);
+        }
+    </script>
+</body>
+</html>
