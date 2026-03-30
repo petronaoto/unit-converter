@@ -253,7 +253,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.2</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.3</div>
     </div>
   </footer>
 
@@ -277,6 +277,9 @@
             <option value="mass-vol">Crude Oil: Metric Tons ↔ Barrels</option>
             <option value="energy">Energy: MMBtu ↔ GJ</option>
             <option value="liquid">Liquid Vol: m³ ↔ Barrels</option>
+            <option value="flow-rate">Flow Rate: m³/h ↔ bpd</option>
+            <option value="density">Density: kg/m³ ↔ lb/ft³</option>
+            <option value="viscosity">Dynamic Viscosity: Pa·s ↔ cP</option>
           </select>
         </div>
 
@@ -464,11 +467,14 @@
     hvIn1.addEventListener('blur', formatOnBlur);
     hvIn2.addEventListener('blur', formatOnBlur);
 
-    // --- Modal Preset Data & Logic ---
+    // --- Modal Preset Data & Logic (UPDATED FOR V1.3) ---
     const presets = {
       'mass-vol': { title: 'Crude Oil (Approx)', u1: 'Metric Tons', u2: 'Barrels (bbl)', factor: 7.33 },
       'energy': { title: 'Energy', u1: 'MMBtu', u2: 'GJ', factor: 1.055056 },
-      'liquid': { title: 'Liquid Volume', u1: 'm³', u2: 'Barrels (bbl)', factor: 6.2898 }
+      'liquid': { title: 'Liquid Volume', u1: 'm³', u2: 'Barrels (bbl)', factor: 6.2898 },
+      'flow-rate': { title: 'Liquid Flow Rate', u1: 'm³/h', u2: 'bpd', factor: 150.955 },
+      'density': { title: 'Density', u1: 'kg/m³', u2: 'lb/ft³', factor: 0.062428 },
+      'viscosity': { title: 'Dynamic Viscosity', u1: 'Pa·s', u2: 'cP', factor: 1000 }
     };
 
     const presetSelect = document.getElementById('preset-select');
