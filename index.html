@@ -328,21 +328,94 @@
 
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-12 text-slate-300 max-w-4xl mx-auto">
+        
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Operations Manual (Version 1.6)</h2>
           <div class="space-y-4 text-sm leading-relaxed">
             <h3 class="text-lg font-semibold text-amber-500">1. Quick Introduction</h3>
             <p>The O&G Engineering Converter is designed for speed and accuracy in high-stakes environments. The system operates on two levels:</p>
             <ul class="list-disc pl-5 space-y-2 text-slate-400">
-              <li><strong class="text-slate-200">Standard Operations:</strong> Pre-configured modules are always available on the General tab.</li>
-              <li><strong class="text-slate-200">Configure Module:</strong> An advanced generator for customized conversion cards. **New in 1.6: These modules are automatically saved to your browser memory!**</li>
+              <li><strong class="text-slate-200">Standard Operations:</strong> Pre-configured modules (Gas Volume, Pressure, etc.) are always available on the General tab for immediate use.</li>
+              <li><strong class="text-slate-200">Configure Module:</strong> An advanced generator that allows you to instantly spin up customized conversion cards. <span class="text-green-400 font-semibold">New in V1.6: Custom modules are now automatically saved to your browser's local memory!</span></li>
             </ul>
           </div>
         </div>
+
         <div>
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">2. One-Click Copy Feature</h3>
-          <p class="text-sm mb-6 text-slate-400">Next to every input and output, you will now see a clipboard icon. Clicking this instantly copies the precise numeric value to your clipboard for quick pasting into reports or spreadsheets.</p>
+          <h3 class="text-lg font-semibold text-amber-500 mb-4">2. Using Standard Operations & Copying Values</h3>
+          <p class="text-sm mb-6 text-slate-400">Values entered in either the top or bottom input fields will automatically calculate the corresponding equivalent. You can swap magnitude scales on the fly using the right-side dropdowns. <span class="text-green-400 font-semibold">New in V1.6: Click the clipboard icon to instantly copy any value!</span></p>
+          
+          <div class="bg-slate-950/50 border border-slate-700 rounded-xl p-6 max-w-xl relative overflow-hidden shadow-inner">
+            <div class="absolute top-0 left-0 w-full h-1 bg-amber-500/50"></div>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span class="font-bold text-slate-300 text-sm">Example: Volume</span>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center border border-slate-600 rounded-lg bg-slate-900 p-2">
+                <div class="flex-grow text-slate-400 pl-2">Type "1,000" here...</div>
+                <svg class="w-4 h-4 text-slate-500 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <div class="border-l border-slate-600 pl-4 pr-2 text-amber-500 text-sm font-bold">Nm³ ▼</div>
+              </div>
+              <div class="flex justify-center text-slate-500 text-xs font-mono">↓ Auto-Calculates ↑</div>
+              <div class="flex items-center border border-slate-600 rounded-lg bg-slate-900 p-2 ring-1 ring-amber-500/30">
+                <div class="flex-grow text-white pl-2">Outputs "37,325.80"</div>
+                <div class="bg-amber-500/20 px-2 py-1 rounded text-[10px] text-amber-500 font-bold border border-amber-500/30 mr-2 flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                  CLICK TO COPY
+                </div>
+                <div class="border-l border-slate-600 pl-4 pr-2 text-amber-500 text-sm font-bold">scf ▼</div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-amber-500 mb-4">3. Initializing a Custom Module</h3>
+          <p class="text-sm mb-6 text-slate-400">When you need a specific conversion not listed in the default cards (such as converting Liquid Volume to Mass), locate the <strong class="text-slate-200">"INITIALIZE NEW MODULE"</strong> button at the bottom of the General tab.</p>
+          
+          <div class="bg-slate-900/30 border-2 border-dashed border-slate-600 rounded-xl p-8 max-w-xl text-center flex flex-col items-center justify-center shadow-inner">
+            <div class="p-3 rounded-full bg-slate-800 mb-2">
+              <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            </div>
+            <span class="text-slate-500 font-bold text-sm tracking-wider">CLICK TO INITIALIZE</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-amber-500 mb-4">4. Configuring the Parameters</h3>
+          <p class="text-sm mb-6 text-slate-400">Clicking the initialize button opens the Configuration Modal. You have two choices here:</p>
+          <ul class="list-decimal pl-5 space-y-2 text-sm text-slate-400 mb-6">
+            <li><strong class="text-slate-200">Quick Load Template:</strong> Select a pre-configured option from the top dropdown (e.g., "Dynamic Viscosity"). This auto-fills the rest of the form.</li>
+            <li><strong class="text-slate-200">Custom Conversion:</strong> Leave the template dropdown blank, name your module, define Unit 1 and Unit 2, and provide the exact mathematical multiplier.</li>
+          </ul>
+
+          <div class="bg-slate-900 border border-slate-600 shadow-2xl rounded-xl max-w-xl overflow-hidden">
+            <div class="bg-slate-800 px-4 py-2 text-xs font-bold tracking-wider text-slate-400 border-b border-slate-700">CONFIGURE MODULE (MOCKUP)</div>
+            <div class="p-6 space-y-4">
+              <div>
+                <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">QUICK LOAD TEMPLATE</div>
+                <div class="bg-slate-950 border border-amber-500/50 rounded px-3 py-2 text-sm text-amber-500">Flow Rate: m³/h ↔ bpd ▼</div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                   <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">UNIT 1</div>
+                   <div class="bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-slate-300">m³/h</div>
+                </div>
+                <div>
+                   <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">UNIT 2</div>
+                   <div class="bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-slate-300">bpd</div>
+                </div>
+              </div>
+              <div class="pt-2 flex justify-end">
+                <div class="bg-amber-600 text-slate-950 text-xs font-bold px-4 py-2 rounded">INITIALIZE</div>
+              </div>
+            </div>
+          </div>
+          
+          <p class="text-sm mt-6 text-slate-400">Once initialized, your new dynamic card will appear on the General tab. You can remove it at any time by clicking "TERMINATE" in the top right corner of the generated card.</p>
+        </div>
+
       </div>
     </div>
 
