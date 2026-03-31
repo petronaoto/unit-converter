@@ -12,6 +12,9 @@
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
     select option { background-color: #0f172a; color: #f8fafc; }
+    /* Utility class to hide scrollbar but keep functionality */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 
@@ -39,9 +42,11 @@
       
       <nav class="flex space-x-6 md:space-x-8 text-sm font-semibold tracking-wide text-slate-400 overflow-x-auto pb-2 scrollbar-hide">
         <button id="btn-general" onclick="switchTab('general')" class="pb-3 whitespace-nowrap border-b-2 border-amber-500 text-amber-500 hover:text-amber-400 transition-colors uppercase">General</button>
+        <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Advanced</button>
         <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">How To Use</button>
         <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Terms of Use</button>
         <button id="btn-privacy" onclick="switchTab('privacy')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Privacy Policy</button>
+        <button id="btn-report" onclick="switchTab('report')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Report</button>
       </nav>
     </div>
   </header>
@@ -60,10 +65,13 @@
           <div class="p-6 space-y-6">
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Normal Cubic Meters <span class="text-xs text-slate-500 font-normal ml-1">@ 0°C, 1 atm</span></label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" class="w-full pl-4 pr-[110px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="nm3-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 focus-within:border-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('nm3-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors" title="Copy value">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="nm3-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
                     <option value="1">Nm³</option>
                     <option value="1000">kNm³</option>
                     <option value="1000000">mNm³</option>
@@ -79,10 +87,13 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Standard Cubic Feet <span class="text-xs text-slate-500 font-normal ml-1">@ 60°F, 1 atm</span></label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="scf-input" placeholder="0" class="w-full pl-4 pr-[110px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="scf-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 focus-within:border-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="scf-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('scf-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors" title="Copy value">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="scf-select" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
                     <option value="1">scf</option>
                     <option value="1000000">mscf</option>
                     <option value="1000000000">bscf</option>
@@ -104,16 +115,14 @@
           <div class="p-6 space-y-6">
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Pressure Unit A</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="press-input1" placeholder="0" class="w-full pl-4 pr-[90px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="press-select1" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
-                    <option value="100000" selected>bar</option>
-                    <option value="6894.75729">psi</option>
-                    <option value="1">Pa</option>
-                    <option value="1000">kPa</option>
-                    <option value="1000000">MPa</option>
-                    <option value="101325">atm</option>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="press-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('press-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="press-select1" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                    <option value="100000" selected>bar</option><option value="6894.75729">psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option>
                   </select>
                 </div>
               </div>
@@ -125,16 +134,14 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Pressure Unit B</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="press-input2" placeholder="0" class="w-full pl-4 pr-[90px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="press-select2" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
-                    <option value="100000">bar</option>
-                    <option value="6894.75729" selected>psi</option>
-                    <option value="1">Pa</option>
-                    <option value="1000">kPa</option>
-                    <option value="1000000">MPa</option>
-                    <option value="101325">atm</option>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="press-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('press-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="press-select2" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                    <option value="100000">bar</option><option value="6894.75729" selected>psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option>
                   </select>
                 </div>
               </div>
@@ -152,13 +159,14 @@
           <div class="p-6 space-y-6">
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Temperature Unit A</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="temp-input1" placeholder="0" class="w-full pl-4 pr-[80px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="temp-select1" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
-                    <option value="C" selected>°C</option>
-                    <option value="F">°F</option>
-                    <option value="K">K</option>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="temp-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('temp-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="temp-select1" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                    <option value="C" selected>°C</option><option value="F">°F</option><option value="K">K</option>
                   </select>
                 </div>
               </div>
@@ -170,13 +178,14 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Temperature Unit B</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="temp-input2" placeholder="0" class="w-full pl-4 pr-[80px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 flex items-center">
-                  <select id="temp-select2" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold border-l border-slate-700 focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
-                    <option value="C">°C</option>
-                    <option value="F" selected>°F</option>
-                    <option value="K">K</option>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="temp-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('temp-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center">
+                  <select id="temp-select2" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none">
+                    <option value="C">°C</option><option value="F" selected>°F</option><option value="K">K</option>
                   </select>
                 </div>
               </div>
@@ -194,9 +203,12 @@
           <div class="p-6 space-y-6">
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Megajoules per Normal Cubic Meter</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="hv-input1" placeholder="0" class="w-full pl-4 pr-[100px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="hv-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('hv-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3">
                   <span class="text-amber-500 font-semibold">MJ/Nm³</span>
                 </div>
               </div>
@@ -208,9 +220,12 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">Btu per Standard Cubic Foot</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" id="hv-input2" placeholder="0" class="w-full pl-4 pr-[110px] py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" id="hv-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
+                <button onclick="copyToClipboard('hv-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors">
+                  <svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3">
                   <span class="text-amber-500 font-semibold">Btu/scf</span>
                 </div>
               </div>
@@ -220,100 +235,114 @@
 
         <div id="add-module-btn" onclick="openModal()" class="bg-slate-900/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-700 flex flex-col items-center justify-center p-6 text-slate-500 min-h-[300px] cursor-pointer hover:bg-slate-800/70 hover:border-amber-500 hover:text-amber-500 transition-all duration-300 group">
           <div class="p-4 rounded-full bg-slate-800/50 group-hover:bg-amber-500/10 mb-3 transition-colors">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
           </div>
           <span class="font-semibold tracking-wide text-sm">INITIALIZE NEW MODULE</span>
         </div>
       </div>
     </div>
 
+    <div id="tab-advanced" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              Pipe Volume Calculator
+            </h2>
+          </div>
+          <div class="p-6 space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">INNER DIAMETER (in)</label>
+                <input type="number" step="any" id="pipe-id" placeholder="e.g. 10.75" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">LENGTH (meters)</label>
+                <input type="number" step="any" id="pipe-length" placeholder="e.g. 1000" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+              </div>
+            </div>
+            <button onclick="calcPipeVolume()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-amber-500 font-bold tracking-widest rounded-lg border border-slate-600 transition-colors">CALCULATE CAPACITY</button>
+            <div class="space-y-4 pt-2 border-t border-slate-800">
+              <div class="flex justify-between items-center bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                <span class="text-sm text-slate-400">Volume (Cubic Meters)</span>
+                <div class="flex items-center gap-2">
+                  <span id="pipe-vol-m3" class="text-lg font-mono text-slate-100">0.00</span>
+                  <button onclick="copyText(document.getElementById('pipe-vol-m3').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                <span class="text-sm text-slate-400">Volume (Barrels)</span>
+                <div class="flex items-center gap-2">
+                  <span id="pipe-vol-bbl" class="text-lg font-mono text-slate-100">0.00</span>
+                  <button onclick="copyText(document.getElementById('pipe-vol-bbl').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+              Z-Factor Estimator (Papay)
+            </h2>
+          </div>
+          <div class="p-6 space-y-4">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">SPECIFIC GRAVITY (Air = 1.0)</label>
+              <input type="number" step="any" id="z-sg" placeholder="e.g. 0.65" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">PRESSURE (psia)</label>
+                <input type="number" step="any" id="z-p" placeholder="e.g. 2000" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">TEMP (°F)</label>
+                <input type="number" step="any" id="z-t" placeholder="e.g. 150" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+              </div>
+            </div>
+            <button onclick="calcZFactor()" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-700 text-amber-500 font-bold tracking-widest rounded-lg border border-slate-600 transition-colors">ESTIMATE Z-FACTOR</button>
+            <div class="pt-4 border-t border-slate-800">
+              <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-amber-500/20">
+                <span class="text-sm font-semibold text-amber-500">Estimated Z-Factor</span>
+                <div class="flex items-center gap-3">
+                  <span id="z-result" class="text-2xl font-bold font-mono text-white">0.0000</span>
+                  <button onclick="copyText(document.getElementById('z-result').innerText, this)" class="text-slate-400 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-span-1 md:col-span-2 bg-slate-900/30 border-2 border-dashed border-slate-700 rounded-2xl p-6 text-center text-slate-500">
+          <p class="font-semibold tracking-widest text-xs mb-1">MODULES IN DEVELOPMENT</p>
+          <p class="text-sm">Hydraulics (Fanning Eq) &amp; Gas Heating Value (Compositional) scheduling for future deployment.</p>
+        </div>
+
+      </div>
+    </div>
+
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-12 text-slate-300 max-w-4xl mx-auto">
-        
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Operations Manual (Version 1.5)</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Operations Manual (Version 1.6)</h2>
           <div class="space-y-4 text-sm leading-relaxed">
             <h3 class="text-lg font-semibold text-amber-500">1. Quick Introduction</h3>
             <p>The O&G Engineering Converter is designed for speed and accuracy in high-stakes environments. The system operates on two levels:</p>
             <ul class="list-disc pl-5 space-y-2 text-slate-400">
-              <li><strong class="text-slate-200">Standard Operations:</strong> Four permanent, pre-configured modules (Gas Volume, Pressure, Temperature, Heating Value) are always available on the General tab for immediate use.</li>
-              <li><strong class="text-slate-200">Configure Module:</strong> An advanced generator that allows you to instantly spin up customized conversion cards using either pre-loaded industry templates (e.g., Density, Flow Rate) or entirely custom multipliers defined by you.</li>
+              <li><strong class="text-slate-200">Standard Operations:</strong> Pre-configured modules are always available on the General tab.</li>
+              <li><strong class="text-slate-200">Configure Module:</strong> An advanced generator for customized conversion cards. **New in 1.6: These modules are automatically saved to your browser memory!**</li>
             </ul>
           </div>
         </div>
-
         <div>
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">2. Using Standard Operations</h3>
-          <p class="text-sm mb-6 text-slate-400">Values entered in either the top or bottom input fields will automatically calculate the corresponding equivalent. You can swap magnitude scales (like kNm³ to mNm³) on the fly using the right-side dropdowns.</p>
-          
-          <div class="bg-slate-950/50 border border-slate-700 rounded-xl p-6 max-w-xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-amber-500/50"></div>
-            <div class="flex items-center gap-2 mb-4">
-              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <span class="font-bold text-slate-300 text-sm">Example: Volume</span>
-            </div>
-            <div class="space-y-4">
-              <div class="flex border border-slate-600 rounded-lg bg-slate-900 p-2">
-                <div class="flex-grow text-slate-400 pl-2">Type "1,000" here...</div>
-                <div class="border-l border-slate-600 pl-4 pr-2 text-amber-500 text-sm font-bold">Nm³ ▼</div>
-              </div>
-              <div class="flex justify-center text-slate-500 text-xs font-mono">↓ Auto-Calculates ↑</div>
-              <div class="flex border border-slate-600 rounded-lg bg-slate-900 p-2 ring-1 ring-amber-500/30">
-                <div class="flex-grow text-white pl-2">Outputs "37,325.80"</div>
-                <div class="border-l border-slate-600 pl-4 pr-2 text-amber-500 text-sm font-bold">scf ▼</div>
-              </div>
-            </div>
-          </div>
+          <h3 class="text-lg font-semibold text-amber-500 mb-4">2. One-Click Copy Feature</h3>
+          <p class="text-sm mb-6 text-slate-400">Next to every input and output, you will now see a clipboard icon. Clicking this instantly copies the precise numeric value to your clipboard for quick pasting into reports or spreadsheets.</p>
         </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">3. Initializing a Custom Module</h3>
-          <p class="text-sm mb-6 text-slate-400">When you need a specific conversion not listed in the default cards (such as converting Liquid Volume to Mass), locate the <strong class="text-slate-200">"INITIALIZE NEW MODULE"</strong> button at the bottom of the General tab.</p>
-          
-          <div class="bg-slate-900/30 border-2 border-dashed border-slate-600 rounded-xl p-8 max-w-xl text-center flex flex-col items-center justify-center">
-            <div class="p-3 rounded-full bg-slate-800 mb-2">
-              <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-            </div>
-            <span class="text-slate-500 font-bold text-sm tracking-wider">CLICK TO INITIALIZE</span>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">4. Configuring the Parameters</h3>
-          <p class="text-sm mb-6 text-slate-400">Clicking the initialize button opens the Configuration Modal. You have two choices here:</p>
-          <ul class="list-decimal pl-5 space-y-2 text-sm text-slate-400 mb-6">
-            <li><strong class="text-slate-200">Quick Load Template:</strong> Select a pre-configured option from the top dropdown (e.g., "Dynamic Viscosity"). This auto-fills the rest of the form.</li>
-            <li><strong class="text-slate-200">Custom Conversion:</strong> Leave the template dropdown blank, name your module, define Unit 1 and Unit 2, and provide the exact mathematical multiplier.</li>
-          </ul>
-
-          <div class="bg-slate-900 border border-slate-600 shadow-2xl rounded-xl max-w-xl overflow-hidden">
-            <div class="bg-slate-800 px-4 py-2 text-xs font-bold tracking-wider text-slate-400 border-b border-slate-700">CONFIGURE MODULE (MOCKUP)</div>
-            <div class="p-6 space-y-4">
-              <div>
-                <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">QUICK LOAD TEMPLATE</div>
-                <div class="bg-slate-950 border border-amber-500/50 rounded px-3 py-2 text-sm text-amber-500">Flow Rate: m³/h ↔ bpd ▼</div>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                   <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">UNIT 1</div>
-                   <div class="bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-slate-300">m³/h</div>
-                </div>
-                <div>
-                   <div class="text-[10px] text-slate-500 font-bold tracking-widest mb-1">UNIT 2</div>
-                   <div class="bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-slate-300">bpd</div>
-                </div>
-              </div>
-              <div class="pt-2 flex justify-end">
-                <div class="bg-amber-600 text-slate-950 text-xs font-bold px-4 py-2 rounded">INITIALIZE</div>
-              </div>
-            </div>
-          </div>
-          
-          <p class="text-sm mt-6 text-slate-400">Once initialized, your new dynamic card will appear on the General tab. You can remove it at any time by clicking "TERMINATE" in the top right corner of the generated card.</p>
-        </div>
-
       </div>
     </div>
 
@@ -341,11 +370,40 @@
           <h3 class="text-lg font-semibold text-amber-500">1. Basic Policy</h3>
           <p>We are committed to protecting the privacy of our users. The O&G Engineering Converter is designed as a client-side utility application. This means that all primary functionalities occur entirely within your local web browser.</p>
           <h3 class="text-lg font-semibold text-amber-500 mt-6">2. Handling of Information</h3>
-          <p><strong>Personal Information:</strong> This Application does not require user registration, and we do not actively collect, store, or transmit any personally identifiable information (PII).</p>
-          <p><strong>Calculation Data:</strong> Any numerical values or custom module configurations you input are processed locally. We do not harvest or store your operational data.</p>
+          <p><strong>Personal Information & Local Storage:</strong> Custom modules created in the application are stored exclusively in your browser's Local Storage. We do not transmit or store this data externally.</p>
           <h3 class="text-lg font-semibold text-amber-500 mt-6">3. Activities and Third-Party Services</h3>
-          <p>While the Application itself does not collect data, it is hosted on a third-party platform (Vercel), which may log basic internet telemetry data (such as IP addresses) as part of standard web server operations.</p>
+          <p>The Application is hosted on Vercel, which may log basic internet telemetry data (such as IP addresses) as part of standard web server operations.</p>
         </div>
+      </div>
+    </div>
+
+    <div id="tab-report" class="hidden">
+      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 max-w-2xl mx-auto">
+        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6 flex items-center gap-2">
+          <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          System Report & Request Form
+        </h2>
+        <p class="text-sm text-slate-400 mb-6">Found a calculation bug or have an idea for a new module? Fill out the form below. This will automatically draft an email to the developer (Naoto Yamabe).</p>
+        
+        <form id="report-form" class="space-y-5">
+          <div>
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">REPORT TYPE</label>
+            <select id="report-type" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none">
+              <option value="Bug Report">Bug / Calculation Error</option>
+              <option value="Feature Request">Feature Request</option>
+              <option value="General Inquiry">General Inquiry</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">YOUR NAME / CALLSIGN (Optional)</label>
+            <input type="text" id="report-name" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="John Doe" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DESCRIPTION</label>
+            <textarea id="report-desc" rows="5" required class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="Please describe the issue or the requested feature in detail..."></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 mt-2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all">GENERATE EMAIL TO DEVELOPER</button>
+        </form>
       </div>
     </div>
 
@@ -357,7 +415,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.5</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.6</div>
     </div>
   </footer>
 
@@ -365,15 +423,12 @@
     <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md mx-4 overflow-hidden transform scale-95 transition-transform duration-200" id="modal-content">
       <div class="bg-slate-800/80 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
         <h3 class="font-bold tracking-wide text-slate-200 text-sm">CONFIGURE MODULE</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-amber-500 transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-amber-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
       </div>
-
       <form id="custom-module-form" class="p-6 space-y-5">
         <div class="pb-5 border-b border-slate-800">
           <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">QUICK LOAD TEMPLATE</label>
-          <select id="preset-select" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none">
+          <select id="preset-select" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none">
             <option value="custom">-- Custom Conversion --</option>
             <option value="mass-vol">Crude Oil: Metric Tons ↔ Barrels</option>
             <option value="energy">Energy: MMBtu ↔ GJ</option>
@@ -383,28 +438,24 @@
             <option value="viscosity">Dynamic Viscosity: Pa·s ↔ cP</option>
           </select>
         </div>
-
         <div>
           <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MODULE IDENTIFIER</label>
-          <input type="text" id="mod-title" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none placeholder-slate-700" placeholder="e.g., Flow Rate" />
+          <input type="text" id="mod-title" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" placeholder="e.g., Flow Rate" />
         </div>
-
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 1</label>
-            <input type="text" id="mod-unit1" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none" />
+            <input type="text" id="mod-unit1" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" />
           </div>
           <div>
             <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 2</label>
-            <input type="text" id="mod-unit2" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none" />
+            <input type="text" id="mod-unit2" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" />
           </div>
         </div>
-
         <div>
           <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MULTIPLIER FACTOR</label>
-          <input type="number" step="any" id="mod-factor" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 outline-none placeholder-slate-700" placeholder="Unit 1 × Factor = Unit 2" />
+          <input type="number" step="any" id="mod-factor" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" placeholder="Unit 1 × Factor = Unit 2" />
         </div>
-
         <div class="pt-4 flex justify-end gap-3">
           <button type="button" onclick="closeModal()" class="px-5 py-2.5 text-slate-400 font-medium hover:text-slate-200 transition-colors">Abort</button>
           <button type="submit" class="px-5 py-2.5 bg-amber-600 text-slate-950 font-bold rounded-lg hover:bg-amber-500 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.4)]">Initialize</button>
@@ -414,30 +465,93 @@
   </div>
 
   <script>
+    // --- Copy To Clipboard Logic ---
+    function copyText(text, btnElement) {
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = btnElement.innerHTML;
+        // Show checkmark
+        btnElement.innerHTML = `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+        setTimeout(() => { btnElement.innerHTML = originalHTML; }, 1500);
+      });
+    }
+
+    function copyToClipboard(inputId, btnElement) {
+      const inputEl = document.getElementById(inputId);
+      const val = inputEl.value;
+      copyText(val, btnElement);
+    }
+
     // --- Tab Switching Logic ---
     function switchTab(tabId) {
-      // Hide all tabs
-      document.getElementById('tab-general').classList.add('hidden');
-      document.getElementById('tab-howto').classList.add('hidden');
-      document.getElementById('tab-terms').classList.add('hidden');
-      document.getElementById('tab-privacy').classList.add('hidden');
-      
-      // Reset button styles
-      const btns = ['btn-general', 'btn-howto', 'btn-terms', 'btn-privacy'];
-      btns.forEach(btn => {
-        const el = document.getElementById(btn);
+      const tabs = ['general', 'advanced', 'howto', 'terms', 'privacy', 'report'];
+      tabs.forEach(t => document.getElementById('tab-' + t).classList.add('hidden'));
+      tabs.forEach(t => {
+        const el = document.getElementById('btn-' + t);
         el.classList.remove('border-amber-500', 'text-amber-500');
         el.classList.add('border-transparent');
       });
 
-      // Show active tab and set active button style
       document.getElementById('tab-' + tabId).classList.remove('hidden');
       const activeBtn = document.getElementById('btn-' + tabId);
       activeBtn.classList.remove('border-transparent');
       activeBtn.classList.add('border-amber-500', 'text-amber-500');
-      
-      // Scroll to top smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Report Form Logic (Mailto) ---
+    document.getElementById('report-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const type = document.getElementById('report-type').value;
+      const name = document.getElementById('report-name').value || "Anonymous User";
+      const desc = document.getElementById('report-desc').value;
+      
+      const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V1.6`);
+      
+      window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
+    });
+
+    // --- Advanced Calculators Logic ---
+    function calcPipeVolume() {
+      const d = parseFloat(document.getElementById('pipe-id').value); // inches
+      const l = parseFloat(document.getElementById('pipe-length').value); // meters
+      
+      if(isNaN(d) || isNaN(l)) return;
+      
+      // Convert ID to meters (1 inch = 0.0254m)
+      const d_meters = d * 0.0254;
+      const radius = d_meters / 2;
+      
+      // Vol = pi * r^2 * L
+      const vol_m3 = Math.PI * Math.pow(radius, 2) * l;
+      const vol_bbl = vol_m3 * 6.28981; // 1 m3 = ~6.2898 bbl
+      
+      document.getElementById('pipe-vol-m3').innerText = vol_m3.toLocaleString('en-US', {maximumFractionDigits: 3});
+      document.getElementById('pipe-vol-bbl').innerText = vol_bbl.toLocaleString('en-US', {maximumFractionDigits: 3});
+    }
+
+    function calcZFactor() {
+      const sg = parseFloat(document.getElementById('z-sg').value);
+      const p = parseFloat(document.getElementById('z-p').value);
+      const t = parseFloat(document.getElementById('z-t').value); // Fahrenheit
+      
+      if(isNaN(sg) || isNaN(p) || isNaN(t)) return;
+      
+      // Sutton's pseudo-critical properties correlation
+      const ppc = 756.8 - (131.0 * sg) - (3.6 * Math.pow(sg, 2));
+      const tpc = 169.2 + (349.5 * sg) - (74.0 * Math.pow(sg, 2));
+      
+      // Reduced properties
+      const p_pr = p / ppc;
+      const t_pr = (t + 459.67) / tpc; // Convert to Rankine
+      
+      // Papay explicit Z-factor correlation
+      const term1 = (3.52 * p_pr) / Math.pow(10, (0.9813 * t_pr));
+      const term2 = (0.274 * Math.pow(p_pr, 2)) / Math.pow(10, (0.8157 * t_pr));
+      const z = 1 - term1 + term2;
+      
+      document.getElementById('z-result').innerText = z.toFixed(4);
     }
 
     // --- Shared Formatting Logic ---
@@ -452,16 +566,14 @@
       if (!isFinite(num)) return '';
       const a = Math.abs(num);
       let maxFrac;
-
-      if (a >= 1000000) { maxFrac = 0; }
-      else if (a >= 100000) { maxFrac = 0; }
-      else if (a >= 10000) { maxFrac = 1; }
-      else if (a >= 1000) { maxFrac = 2; }
-      else if (a >= 100) { maxFrac = 3; }
-      else if (a >= 10) { maxFrac = 4; }
-      else if (a >= 1) { maxFrac = 5; }
-      else { maxFrac = 6; }
-
+      if (a >= 1000000) maxFrac = 0;
+      else if (a >= 100000) maxFrac = 0;
+      else if (a >= 10000) maxFrac = 1;
+      else if (a >= 1000) maxFrac = 2;
+      else if (a >= 100) maxFrac = 3;
+      else if (a >= 10) maxFrac = 4;
+      else if (a >= 1) maxFrac = 5;
+      else maxFrac = 6;
       return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: maxFrac });
     }
 
@@ -470,125 +582,39 @@
       if (!isNaN(val)) { e.target.value = formatValue(val); }
     }
 
-    // --- Static Gas Volume Logic ---
+    // --- Static Logic Bindings ---
     const CONVERSION_FACTOR = 37.3258;
-    const nm3Input = document.getElementById('nm3-input');
-    const scfInput = document.getElementById('scf-input');
-    const nm3Select = document.getElementById('nm3-select');
-    const scfSelect = document.getElementById('scf-select');
+    const nm3Input = document.getElementById('nm3-input'); const scfInput = document.getElementById('scf-input');
+    const nm3Select = document.getElementById('nm3-select'); const scfSelect = document.getElementById('scf-select');
+    function updateScf() { const nm3Val = parseValue(nm3Input.value); if(isNaN(nm3Val)) { scfInput.value=''; return; } const baseScf = (nm3Val * parseFloat(nm3Select.value)) * CONVERSION_FACTOR; scfInput.value = formatValue(baseScf / parseFloat(scfSelect.value)); }
+    function updateNm3() { const scfVal = parseValue(scfInput.value); if(isNaN(scfVal)) { nm3Input.value=''; return; } const baseNm3 = (scfVal * parseFloat(scfSelect.value)) / CONVERSION_FACTOR; nm3Input.value = formatValue(baseNm3 / parseFloat(nm3Select.value)); }
+    nm3Input.addEventListener('input', updateScf); scfInput.addEventListener('input', updateNm3);
+    nm3Input.addEventListener('blur', formatOnBlur); scfInput.addEventListener('blur', formatOnBlur);
+    nm3Select.addEventListener('change', () => { if(nm3Input.value) updateScf(); }); scfSelect.addEventListener('change', () => { if(scfInput.value) updateNm3(); });
 
-    function updateScf() {
-      const nm3Val = parseValue(nm3Input.value);
-      if (isNaN(nm3Val)) { scfInput.value = ''; return; }
-      const nm3Mult = parseFloat(nm3Select.value);
-      const scfMult = parseFloat(scfSelect.value);
-      const baseScf = (nm3Val * nm3Mult) * CONVERSION_FACTOR;
-      scfInput.value = formatValue(baseScf / scfMult);
-    }
+    const pIn1 = document.getElementById('press-input1'); const pIn2 = document.getElementById('press-input2');
+    const pSel1 = document.getElementById('press-select1'); const pSel2 = document.getElementById('press-select2');
+    function updatePress2() { const val = parseValue(pIn1.value); if(isNaN(val)) { pIn2.value=''; return; } pIn2.value = formatValue((val * parseFloat(pSel1.value)) / parseFloat(pSel2.value)); }
+    function updatePress1() { const val = parseValue(pIn2.value); if(isNaN(val)) { pIn1.value=''; return; } pIn1.value = formatValue((val * parseFloat(pSel2.value)) / parseFloat(pSel1.value)); }
+    pIn1.addEventListener('input', updatePress2); pIn2.addEventListener('input', updatePress1);
+    pIn1.addEventListener('blur', formatOnBlur); pIn2.addEventListener('blur', formatOnBlur);
+    pSel1.addEventListener('change', () => { if(pIn1.value) updatePress2(); }); pSel2.addEventListener('change', () => { if(pIn2.value) updatePress1(); });
 
-    function updateNm3() {
-      const scfVal = parseValue(scfInput.value);
-      if (isNaN(scfVal)) { nm3Input.value = ''; return; }
-      const nm3Mult = parseFloat(nm3Select.value);
-      const scfMult = parseFloat(scfSelect.value);
-      const baseNm3 = (scfVal * scfMult) / CONVERSION_FACTOR;
-      nm3Input.value = formatValue(baseNm3 / nm3Mult);
-    }
+    const tIn1 = document.getElementById('temp-input1'); const tIn2 = document.getElementById('temp-input2');
+    const tSel1 = document.getElementById('temp-select1'); const tSel2 = document.getElementById('temp-select2');
+    function convertTemp(v, f, t) { if(f===t) return v; let k = (f==='C') ? v+273.15 : (f==='F') ? (v-32)*(5/9)+273.15 : v; return (t==='C') ? k-273.15 : (t==='F') ? (k-273.15)*(9/5)+32 : k; }
+    function updateTemp2() { const val = parseValue(tIn1.value); if(isNaN(val)) { tIn2.value=''; return; } tIn2.value = formatValue(convertTemp(val, tSel1.value, tSel2.value)); }
+    function updateTemp1() { const val = parseValue(tIn2.value); if(isNaN(val)) { tIn1.value=''; return; } tIn1.value = formatValue(convertTemp(val, tSel2.value, tSel1.value)); }
+    tIn1.addEventListener('input', updateTemp2); tIn2.addEventListener('input', updateTemp1);
+    tIn1.addEventListener('blur', formatOnBlur); tIn2.addEventListener('blur', formatOnBlur);
+    tSel1.addEventListener('change', () => { if(tIn1.value) updateTemp2(); }); tSel2.addEventListener('change', () => { if(tIn2.value) updateTemp1(); });
 
-    nm3Input.addEventListener('input', updateScf);
-    scfInput.addEventListener('input', updateNm3);
-    nm3Input.addEventListener('blur', formatOnBlur);
-    scfInput.addEventListener('blur', formatOnBlur);
-    nm3Select.addEventListener('change', () => { if (nm3Input.value) updateScf(); });
-    scfSelect.addEventListener('change', () => { if (scfInput.value) updateNm3(); });
+    const hvIn1 = document.getElementById('hv-input1'); const hvIn2 = document.getElementById('hv-input2'); const HV_FACTOR = 0.001055056 * 37.3258;
+    hvIn1.addEventListener('input', () => { const val = parseValue(hvIn1.value); hvIn2.value = isNaN(val) ? '' : formatValue(val / HV_FACTOR); });
+    hvIn2.addEventListener('input', () => { const val = parseValue(hvIn2.value); hvIn1.value = isNaN(val) ? '' : formatValue(val * HV_FACTOR); });
+    hvIn1.addEventListener('blur', formatOnBlur); hvIn2.addEventListener('blur', formatOnBlur);
 
-    // --- 2. Pressure Logic ---
-    const pIn1 = document.getElementById('press-input1');
-    const pIn2 = document.getElementById('press-input2');
-    const pSel1 = document.getElementById('press-select1');
-    const pSel2 = document.getElementById('press-select2');
-
-    function updatePress2() {
-      const val1 = parseValue(pIn1.value);
-      if (isNaN(val1)) { pIn2.value = ''; return; }
-      const basePa = val1 * parseFloat(pSel1.value);
-      pIn2.value = formatValue(basePa / parseFloat(pSel2.value));
-    }
-
-    function updatePress1() {
-      const val2 = parseValue(pIn2.value);
-      if (isNaN(val2)) { pIn1.value = ''; return; }
-      const basePa = val2 * parseFloat(pSel2.value);
-      pIn1.value = formatValue(basePa / parseFloat(pSel1.value));
-    }
-
-    pIn1.addEventListener('input', updatePress2);
-    pIn2.addEventListener('input', updatePress1);
-    pIn1.addEventListener('blur', formatOnBlur);
-    pIn2.addEventListener('blur', formatOnBlur);
-    pSel1.addEventListener('change', () => { if (pIn1.value) updatePress2(); });
-    pSel2.addEventListener('change', () => { if (pIn2.value) updatePress1(); });
-
-    // --- 3. Temperature Logic ---
-    const tIn1 = document.getElementById('temp-input1');
-    const tIn2 = document.getElementById('temp-input2');
-    const tSel1 = document.getElementById('temp-select1');
-    const tSel2 = document.getElementById('temp-select2');
-
-    function convertTemp(value, fromUnit, toUnit) {
-      if (fromUnit === toUnit) return value;
-      let k; 
-      if (fromUnit === 'C') k = value + 273.15;
-      else if (fromUnit === 'F') k = (value - 32) * (5/9) + 273.15;
-      else k = value;
-      
-      if (toUnit === 'C') return k - 273.15;
-      if (toUnit === 'F') return (k - 273.15) * (9/5) + 32;
-      return k;
-    }
-
-    function updateTemp2() {
-      const val1 = parseValue(tIn1.value);
-      if (isNaN(val1)) { tIn2.value = ''; return; }
-      tIn2.value = formatValue(convertTemp(val1, tSel1.value, tSel2.value));
-    }
-
-    function updateTemp1() {
-      const val2 = parseValue(tIn2.value);
-      if (isNaN(val2)) { tIn1.value = ''; return; }
-      tIn1.value = formatValue(convertTemp(val2, tSel2.value, tSel1.value));
-    }
-
-    tIn1.addEventListener('input', updateTemp2);
-    tIn2.addEventListener('input', updateTemp1);
-    tIn1.addEventListener('blur', formatOnBlur);
-    tIn2.addEventListener('blur', formatOnBlur);
-    tSel1.addEventListener('change', () => { if (tIn1.value) updateTemp2(); });
-    tSel2.addEventListener('change', () => { if (tIn2.value) updateTemp1(); });
-
-    // --- 4. Heating Value Logic ---
-    const hvIn1 = document.getElementById('hv-input1');
-    const hvIn2 = document.getElementById('hv-input2');
-    const HV_FACTOR = 0.001055056 * 37.3258; 
-
-    function updateHv2() {
-      const val1 = parseValue(hvIn1.value);
-      if (isNaN(val1)) { hvIn2.value = ''; return; }
-      hvIn2.value = formatValue(val1 / HV_FACTOR);
-    }
-
-    function updateHv1() {
-      const val2 = parseValue(hvIn2.value);
-      if (isNaN(val2)) { hvIn1.value = ''; return; }
-      hvIn1.value = formatValue(val2 * HV_FACTOR);
-    }
-
-    hvIn1.addEventListener('input', updateHv2);
-    hvIn2.addEventListener('input', updateHv1);
-    hvIn1.addEventListener('blur', formatOnBlur);
-    hvIn2.addEventListener('blur', formatOnBlur);
-
-    // --- Modal Preset Data & Logic ---
+    // --- Modal Preset Data & Custom Module Logic with LOCAL STORAGE ---
     const presets = {
       'mass-vol': { title: 'Crude Oil (Approx)', u1: 'Metric Tons', u2: 'Barrels (bbl)', factor: 7.33 },
       'energy': { title: 'Energy', u1: 'MMBtu', u2: 'GJ', factor: 1.055056 },
@@ -598,94 +624,73 @@
       'viscosity': { title: 'Dynamic Viscosity', u1: 'Pa·s', u2: 'cP', factor: 1000 }
     };
 
-    const presetSelect = document.getElementById('preset-select');
-    const titleInput = document.getElementById('mod-title');
-    const unit1Input = document.getElementById('mod-unit1');
-    const unit2Input = document.getElementById('mod-unit2');
-    const factorInput = document.getElementById('mod-factor');
-
-    presetSelect.addEventListener('change', (e) => {
-      const selection = e.target.value;
-      if (presets[selection]) {
-        titleInput.value = presets[selection].title;
-        unit1Input.value = presets[selection].u1;
-        unit2Input.value = presets[selection].u2;
-        factorInput.value = presets[selection].factor;
-      } else {
-        titleInput.value = '';
-        unit1Input.value = '';
-        unit2Input.value = '';
-        factorInput.value = '';
-      }
+    document.getElementById('preset-select').addEventListener('change', (e) => {
+      const p = presets[e.target.value];
+      document.getElementById('mod-title').value = p ? p.title : '';
+      document.getElementById('mod-unit1').value = p ? p.u1 : '';
+      document.getElementById('mod-unit2').value = p ? p.u2 : '';
+      document.getElementById('mod-factor').value = p ? p.factor : '';
     });
 
-    // --- Dynamic Custom Module Logic ---
     let moduleCounter = 1;
-    const modal = document.getElementById('module-modal');
-    const modalContent = document.getElementById('modal-content');
-    const form = document.getElementById('custom-module-form');
+    let savedModules = JSON.parse(localStorage.getItem('og_custom_modules')) || [];
+
+    function saveModules() {
+      localStorage.setItem('og_custom_modules', JSON.stringify(savedModules));
+    }
 
     function openModal() {
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        modalContent.classList.remove('scale-95');
-        modalContent.classList.add('scale-100');
-      }, 10);
+      document.getElementById('module-modal').classList.remove('hidden');
+      setTimeout(() => { document.getElementById('modal-content').classList.replace('scale-95', 'scale-100'); }, 10);
     }
 
     function closeModal() {
-      modalContent.classList.remove('scale-100');
-      modalContent.classList.add('scale-95');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        form.reset();
-      }, 200);
+      document.getElementById('modal-content').classList.replace('scale-100', 'scale-95');
+      setTimeout(() => { document.getElementById('module-modal').classList.add('hidden'); document.getElementById('custom-module-form').reset(); }, 200);
     }
 
-    form.addEventListener('submit', function (e) {
+    document.getElementById('custom-module-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      const title = titleInput.value;
-      const unit1 = unit1Input.value;
-      const unit2 = unit2Input.value;
-      const factor = parseFloat(factorInput.value);
-      createCustomCard(title, unit1, unit2, factor);
+      const title = document.getElementById('mod-title').value;
+      const unit1 = document.getElementById('mod-unit1').value;
+      const unit2 = document.getElementById('mod-unit2').value;
+      const factor = parseFloat(document.getElementById('mod-factor').value);
+      
+      moduleCounter++;
+      const cardId = `custom-module-${Date.now()}`;
+      
+      savedModules.push({ id: cardId, title, unit1, unit2, factor });
+      saveModules();
+      
+      createCustomCard(cardId, title, unit1, unit2, factor);
       closeModal();
     });
 
-    function createCustomCard(title, unit1, unit2, factor) {
-      moduleCounter++;
-      const cardId = `custom-module-${moduleCounter}`;
+    function createCustomCard(cardId, title, unit1, unit2, factor) {
       const cardHTML = `
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300" id="${cardId}">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-              ${title}
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>${title}
             </h2>
-            <button onclick="document.getElementById('${cardId}').remove()" class="text-slate-500 hover:text-red-500 text-xs font-bold tracking-wider transition-colors">TERMINATE</button>
+            <button class="delete-btn text-slate-500 hover:text-red-500 text-xs font-bold tracking-wider transition-colors">TERMINATE</button>
           </div>
           <div class="p-6 space-y-6">
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">${unit1}</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" class="unit1-input w-full pl-4 pr-20 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                  <span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit1}</span>
-                </div>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" class="unit1-input w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
+                <button onclick="copyToClipboard('${cardId}-in1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                <div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit1}</span></div>
               </div>
             </div>
-            <div class="flex justify-center">
-              <div class="bg-slate-800 p-2 rounded-full border border-slate-700">
-                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
-              </div>
-            </div>
+            <div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div>
             <div>
               <label class="block text-sm font-medium text-slate-400 mb-2">${unit2}</label>
-              <div class="relative rounded-lg shadow-inner">
-                <input type="text" inputmode="decimal" class="unit2-input w-full pl-4 pr-20 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                  <span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit2}</span>
-                </div>
+              <div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                <input type="text" inputmode="decimal" class="unit2-input w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0">
+                <button onclick="copyToClipboard('${cardId}-in2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                <div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${unit2}</span></div>
               </div>
             </div>
           </div>
@@ -696,21 +701,24 @@
       addBtn.insertAdjacentHTML('beforebegin', cardHTML);
 
       const newCard = document.getElementById(cardId);
-      const input1 = newCard.querySelector('.unit1-input');
-      const input2 = newCard.querySelector('.unit2-input');
+      const input1 = newCard.querySelector('.unit1-input'); input1.id = `${cardId}-in1`;
+      const input2 = newCard.querySelector('.unit2-input'); input2.id = `${cardId}-in2`;
 
-      input1.addEventListener('input', (e) => {
-        const val = parseValue(e.target.value);
-        input2.value = !isNaN(val) ? formatValue(val * factor) : '';
+      input1.addEventListener('input', (e) => { const val = parseValue(e.target.value); input2.value = !isNaN(val) ? formatValue(val * factor) : ''; });
+      input2.addEventListener('input', (e) => { const val = parseValue(e.target.value); input1.value = !isNaN(val) ? formatValue(val / factor) : ''; });
+      input1.addEventListener('blur', formatOnBlur); input2.addEventListener('blur', formatOnBlur);
+      
+      newCard.querySelector('.delete-btn').addEventListener('click', () => {
+        newCard.remove();
+        savedModules = savedModules.filter(m => m.id !== cardId);
+        saveModules();
       });
-      input2.addEventListener('input', (e) => {
-        const val = parseValue(e.target.value);
-        input1.value = !isNaN(val) ? formatValue(val / factor) : '';
-      });
-
-      input1.addEventListener('blur', formatOnBlur);
-      input2.addEventListener('blur', formatOnBlur);
     }
+
+    // Load saved modules on page start
+    window.addEventListener('DOMContentLoaded', () => {
+      savedModules.forEach(m => createCustomCard(m.id, m.title, m.unit1, m.unit2, m.factor));
+    });
   </script>
 </body>
 </html>
