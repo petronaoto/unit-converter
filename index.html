@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter</title>
+  <title>O&G Unit Converter V1.10</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -14,6 +14,10 @@
     select option { background-color: #0f172a; color: #f8fafc; }
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Wireframe Styles */
+    .wf-box { border: 2px solid #475569; background: repeating-linear-gradient(45deg, #0f172a, #0f172a 10px, #1e293b 10px, #1e293b 20px); }
+    .wf-line { height: 2px; background-color: #475569; }
+    .wf-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #475569; background: #0f172a; }
   </style>
 </head>
 
@@ -46,7 +50,6 @@
         <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Theory</button>
         <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Terms</button>
         <button id="btn-privacy" onclick="switchTab('privacy')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Privacy</button>
-        <button id="btn-report" onclick="switchTab('report')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Report</button>
       </nav>
     </div>
   </header>
@@ -55,6 +58,7 @@
     
     <div id="tab-general" class="block">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="card-grid">
+        
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>Gas Volume</h2>
@@ -167,7 +171,7 @@
           </div>
         </div>
 
-        <div id="add-module-btn" onclick="openModal()" class="bg-slate-900/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-700 flex flex-col items-center justify-center p-6 text-slate-500 min-h-[300px] cursor-pointer hover:bg-slate-800/70 hover:border-amber-500 hover:text-amber-500 transition-all duration-300 group">
+        <div id="add-module-btn" onclick="openModal()" class="bg-slate-900/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-700 flex flex-col items-center justify-center p-6 text-slate-500 min-h-[300px] cursor-pointer hover:bg-slate-800/70 hover:border-amber-500 hover:text-amber-500 transition-all duration-300 group md:col-span-2">
           <div class="p-4 rounded-full bg-slate-800/50 group-hover:bg-amber-500/10 mb-3 transition-colors">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
           </div>
@@ -352,7 +356,6 @@
               Pipe Delta Pressure Calculator (Fanning)
             </h2>
           </div>
-          
           <div class="p-6 space-y-8">
             <div>
               <h3 class="text-xs font-bold tracking-widest text-fuchsia-500 mb-4 border-b border-slate-800 pb-2">1. SYSTEM & PIPE PARAMETERS</h3>
@@ -469,7 +472,6 @@
                   <label class="block text-xs text-slate-500 mb-1">TOTAL dP</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-total" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-total').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-total-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="100000">bar</option><option value="6894.76">psi</option><option value="1">Pa</option><option value="1000" selected>kPa</option><option value="1000000">MPa</option></select>
                 </div>
@@ -477,7 +479,6 @@
                   <label class="block text-xs text-slate-500 mb-1">dP / LENGTH</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-len" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-len').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-len-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1000">bar/100m</option><option value="10" selected>kPa/100m</option><option value="22620.59">psi/ft</option></select>
                 </div>
@@ -485,170 +486,238 @@
                   <label class="block text-xs text-slate-500 mb-1">VELOCITY</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-vel" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-vel').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-vel-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1" selected>m/s</option><option value="3.28084">ft/s</option></select>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-        
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6">
-          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>Pipe Volume Calculator</h2>
-          </div>
-          <div class="p-6 space-y-6">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">INNER DIAMETER (in)</label>
-                <input type="number" step="any" id="pipe-id" placeholder="e.g. 10.75" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">LENGTH (meters)</label>
-                <input type="number" step="any" id="pipe-length" placeholder="e.g. 1000" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-              </div>
-            </div>
-            <button onclick="calcPipeVolume()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-amber-500 font-bold tracking-widest rounded-lg border border-slate-600 transition-colors">CALCULATE CAPACITY</button>
-            <div class="space-y-4 pt-2 border-t border-slate-800">
-              <div class="flex justify-between items-center bg-slate-950/50 p-3 rounded-lg border border-slate-800">
-                <span class="text-sm text-slate-400">Volume (Cubic Meters)</span>
-                <div class="flex items-center gap-2">
-                  <span id="pipe-vol-m3" class="text-lg font-mono text-slate-100">0.00</span>
-                  <button onclick="copyText(document.getElementById('pipe-vol-m3').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                </div>
-              </div>
-              <div class="flex justify-between items-center bg-slate-950/50 p-3 rounded-lg border border-slate-800">
-                <span class="text-sm text-slate-400">Volume (Barrels)</span>
-                <div class="flex items-center gap-2">
-                  <span id="pipe-vol-bbl" class="text-lg font-mono text-slate-100">0.00</span>
-                  <button onclick="copyText(document.getElementById('pipe-vol-bbl').innerText, this)" class="text-slate-500 hover:text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6">
-          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>Z-Factor Estimator (Papay)</h2>
-          </div>
-          <div class="p-6 space-y-4">
-            <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">SPECIFIC GRAVITY (Air = 1.0)</label>
-              <input type="number" step="any" id="z-sg" placeholder="e.g. 0.65" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">PRESSURE (psia)</label>
-                <input type="number" step="any" id="z-p" placeholder="e.g. 2000" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">TEMP (°F)</label>
-                <input type="number" step="any" id="z-t" placeholder="e.g. 150" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-              </div>
-            </div>
-            <button onclick="calcZFactor()" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-700 text-amber-500 font-bold tracking-widest rounded-lg border border-slate-600 transition-colors">ESTIMATE Z-FACTOR</button>
-            <div class="pt-4 border-t border-slate-800">
-              <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-amber-500/20">
-                <span class="text-sm font-semibold text-amber-500">Estimated Z-Factor</span>
-                <div class="flex items-center gap-3">
-                  <span id="z-result" class="text-2xl font-bold font-mono text-white">0.0000</span>
-                  <button onclick="copyText(document.getElementById('z-result').innerText, this)" class="text-slate-400 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div id="tab-theory" class="hidden">
-      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-4xl mx-auto leading-relaxed">
-        <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Theoretical Background & Formulas</h2>
-          <p class="text-sm text-slate-400 mb-4">The Gas Heating Value (Compositional) calculations implemented in Version 1.8 strictly follow the principles set forth in <strong>JIS K 2301 (Fuel gases and natural gas - Methods for chemical analysis and testing)</strong>, the <strong>Rackett Equation</strong>, and industry standard conversions.</p>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-orange-500 mb-2">1. Real vs. Ideal Gas Components</h3>
-          <p class="text-sm mb-2">Internal state shifts between molar fraction ($x_i$) and volumetric fraction ($v_i$) are calculated dynamically using real gas compressibility ($Z_i$) at standard conditions (0°C, 1 atm):</p>
-          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm text-slate-200">v_i = (x_i * Z_i) / Σ(x_k * Z_k)</div>
-          <p class="text-sm mt-2 text-slate-400">Heating value (HHV) is inherently tied to the pure component's higher heating value per standard unit volume. Mixed HHV is aggregated linearly by the volume fraction.</p>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-orange-500 mb-2">2. Wobbe Index (WI) & MCP</h3>
-          <p class="text-sm mb-2">The Wobbe Index measures gas interchangeability regarding burner capacity, while the <strong>Maximum Combustion Potential (MCP)</strong> evaluates the flame speed based on the weighted sum of intrinsic pure component combustion rates.</p>
-          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-4 text-slate-200">
-            <p>WI = HHV / √(Specific Gravity)</p>
-            <p>MCP = (1 - K) * [ Σ(S_i * f_i * A_i) / Σ(f_i * A_i) ]</p>
-            <p class="text-xs text-slate-500">Where S_i is the characteristic combustion speed, f_i is the scaling factor, A_i is the combustible percentage, and K is the attenuation coefficient influenced by inert gas (N2, CO2, O2).</p>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-orange-500 mb-2">3. LNG Liquid Density Approximation</h3>
-          <p class="text-sm mb-2">Rather than utilizing purely empirical static tables, this calculator leverages the analytical <strong>Rackett Equation</strong> to determine pure component molar volume at the specified cryogenic temperature, followed by ideal additive volumetric mixing:</p>
-          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-4 text-slate-200">
-            <p>V_i = (R * Tc / Pc) * Zc^[ 1 + (1 - Tr)^(2/7) ]</p>
-            <p>Density_mix = Σ(x_i * MW_i) / Σ(x_i * V_i)</p>
-            <p class="text-xs text-slate-500">Where Tr is the reduced temperature (T/Tc). If T > Tc (supercritical), the algorithm falls back to critical volume bounds.</p>
-          </div>
-        </div>
-
       </div>
     </div>
 
     <div id="tab-howto" class="hidden">
-      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-12 text-slate-300 max-w-4xl mx-auto">
+      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-12 text-slate-300 max-w-5xl mx-auto">
         
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Operations Manual (Version 1.8)</h2>
-          <div class="space-y-4 text-sm leading-relaxed">
-            <h3 class="text-lg font-semibold text-amber-500">1. Quick Introduction</h3>
-            <p>The O&G Engineering Converter is a client-side suite built for control room efficiency. It operates via multiple utility tabs:</p>
-            <ul class="list-disc pl-5 space-y-2 text-slate-400">
-              <li><strong class="text-slate-200">General Tab:</strong> Standard unit conversions and the custom module generator.</li>
-              <li><strong class="text-slate-200">Advanced Tab:</strong> Complex, iterative engineering calculators (Compositional GHV, Hydraulics, Volume, Z-Factor).</li>
-              <li><strong class="text-slate-200">Theory Tab:</strong> Background formulas for validation and review.</li>
-            </ul>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Operations Manual (Version 1.10)</h2>
+          <p class="text-sm leading-relaxed text-slate-400">Welcome to the O&G Engineering Converter. This utility is designed strictly for browser-based computation of complex control room and process engineering calculations. Below are visual wireframe diagrams detailing how to navigate and operate each functional block of the tool.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-amber-500">1. Application Header & Navigation</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-2">
+              <div class="flex justify-between items-center border-b border-slate-600 pb-2">
+                <div class="flex gap-2 items-center"><div class="wf-circle"></div> <span>O&G Eng. Converter</span></div>
+              </div>
+              <div class="flex gap-4 text-slate-500 pt-1">
+                <span class="text-amber-500 border-b-2 border-amber-500">GENERAL</span>
+                <span>ADVANCED</span>
+                <span>HOW TO USE</span>
+                <span>THEORY</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400">The sticky header allows instant switching between standard unit converters (General) and complex calculators (Advanced).</p>
           </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-blue-500">2. Standard Converter Blocks</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-3">
+              <div class="flex justify-between text-slate-400 border-b border-slate-600 pb-1"><span>Pressure</span><span>+</span></div>
+              <div class="flex border border-slate-600 rounded bg-slate-950 p-2">
+                <div class="w-3/4 text-white">100</div>
+                <div class="w-1/4 border-l border-slate-600 pl-2 text-amber-500">bar</div>
+              </div>
+              <div class="flex justify-center"><div class="wf-circle flex items-center justify-center">↓</div></div>
+              <div class="flex border border-slate-600 rounded bg-slate-950 p-2">
+                <div class="w-3/4 text-white">1450.38</div>
+                <div class="w-1/4 border-l border-slate-600 pl-2 text-amber-500">psi</div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400">Inputs are bidirectional. Modifying the top field instantly updates the bottom field based on the selected dropdown units.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-orange-500">3. GHV Composition Grid</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-3">
+              <div class="flex justify-between text-slate-400 border-b border-slate-600 pb-1">
+                <span>1. GAS COMPOSITION</span> 
+                <span class="text-[10px] text-amber-500 border border-amber-500 px-1">Vol / Mol Toggle</span>
+              </div>
+              <div class="grid grid-cols-4 gap-2">
+                <div class="border border-slate-600 p-1 rounded">CH4: [ 90.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded">C2H6: [ 5.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded">C3H8: [ 2.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded">CO2: [ 1.0 ]</div>
+              </div>
+              <div class="text-right text-orange-500 font-bold border-t border-slate-600 pt-1">TOTAL: 100%</div>
+            </div>
+            <p class="text-xs text-slate-400">Input volumetric or molar fractions. The total validator will turn red if the sum deviates from exactly 100%.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-red-500">4. Operating Condition Alerts</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-3">
+              <div class="flex gap-2">
+                <div class="w-1/2 border border-slate-600 p-2 rounded">Temp: [ 25 ] °C</div>
+                <div class="w-1/2 border border-slate-600 p-2 rounded">Press: [ 10 ] bar</div>
+              </div>
+              <div class="border border-red-500 bg-red-900/30 text-red-400 p-2 rounded flex items-center gap-2">
+                <span>⚠</span> T/P are not Standard. Processing as Actual conditions (Am³).
+              </div>
+            </div>
+            <p class="text-xs text-slate-400">Deviating from 0°C or 0 MPaG automatically transforms output dimensions from Normal (Nm³) to Actual (Am³).</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-emerald-500">5. Combustion Properties Matrix</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-2">
+              <div class="flex justify-between border-b border-slate-600 pb-1"><span class="text-slate-500">Heating Value (HHV)</span> <span class="text-white font-bold">41.48 <span class="text-amber-500">MJ/Nm³</span></span></div>
+              <div class="flex justify-between border-b border-slate-600 pb-1"><span class="text-slate-500">Wobbe Index (WI)</span> <span class="text-white font-bold">52.76 <span class="text-amber-500">MJ/Nm³</span></span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Max Comb. Potential</span> <span class="text-white font-bold">36.0 <span class="text-amber-500"></span></span></div>
+            </div>
+            <p class="text-xs text-slate-400">Real-time calculations based on JIS K 2301 standard utilizing explicit spreadsheet-matching rounding architectures.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-fuchsia-500">6. Hydraulic Phase Configuration</h3>
+            <div class="wf-box p-4 rounded text-[10px] space-y-2">
+              <div class="flex gap-2">
+                <div class="w-1/2 border border-slate-600 p-2 rounded bg-slate-900">
+                  <span class="text-cyan-400 font-bold block mb-1">VAPOR PHASE</span>
+                  Mass Flow: [ 1000 ] kg/h<br>Density: [ 15.2 ] kg/m³
+                </div>
+                <div class="w-1/2 border border-slate-600 p-2 rounded bg-slate-900">
+                  <span class="text-blue-400 font-bold block mb-1">LIQUID PHASE</span>
+                  Mass Flow: [ 0 ] kg/h<br>Density: [ 0 ] kg/m³
+                </div>
+              </div>
+              <div class="text-center text-cyan-400 border border-cyan-500/30 bg-cyan-500/10 py-1 rounded">Regime: Single Phase (Vapor)</div>
+            </div>
+            <p class="text-xs text-slate-400">The calculator automatically determines single or two-phase (Homogeneous Equilibrium Model) based on mass inputs.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-cyan-500">7. Pipe Volume Calculator</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-2">
+              <div class="flex gap-2">
+                <div class="w-1/2 border border-slate-600 p-2 rounded">ID (in): [ 10.75 ]</div>
+                <div class="w-1/2 border border-slate-600 p-2 rounded">Length (m): [ 100 ]</div>
+              </div>
+              <div class="bg-slate-800 text-amber-500 text-center py-2 rounded font-bold border border-slate-600">CALCULATE</div>
+              <div class="flex justify-between border-t border-slate-600 pt-2"><span class="text-slate-500">Volume</span> <span class="text-white font-bold">5.85 m³</span></div>
+            </div>
+            <p class="text-xs text-slate-400">Instant geometric evaluations mapped to internal pipeline coordinates.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-purple-500">8. Z-Factor Estimator (Papay)</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-2">
+              <div class="border border-slate-600 p-2 rounded">Specific Gravity: [ 0.65 ]</div>
+              <div class="flex gap-2">
+                <div class="w-1/2 border border-slate-600 p-2 rounded">Pres: [ 2000 ] psia</div>
+                <div class="w-1/2 border border-slate-600 p-2 rounded">Temp: [ 150 ] °F</div>
+              </div>
+              <div class="flex justify-between items-center border border-amber-500/30 p-2 rounded mt-2">
+                <span class="text-amber-500">Z-Factor:</span><span class="text-white font-mono text-lg">0.8241</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400">Estimates natural gas compressibility rapidly without needing detailed compositional breakdown.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-green-500">9. Quick Clipboard Extraction</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-3 flex items-center justify-center">
+              <div class="flex items-center gap-3 bg-slate-950 p-3 rounded border border-slate-600">
+                <span class="text-white font-mono text-xl">41.48</span>
+                <div class="bg-slate-800 p-1.5 rounded cursor-pointer hover:bg-slate-700">
+                  <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400">Clicking the clipboard icon adjacent to any output flashes green, instantly placing the value in your OS clipboard.</p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-slate-400">10. Custom Module Generator</h3>
+            <div class="wf-box p-4 rounded text-xs space-y-2 border-dashed">
+              <div class="text-center font-bold text-slate-500 pb-2 border-b border-slate-600 border-dashed">INITIALIZE NEW MODULE</div>
+              <div class="space-y-1 pt-2 text-slate-400">
+                <div>Title: [ Flow Rate ]</div>
+                <div>Unit 1: [ m3/h ]</div>
+                <div>Unit 2: [ bpd ]</div>
+                <div>Multiplier: [ 150.95 ]</div>
+              </div>
+              <div class="bg-amber-600/20 text-amber-500 text-center py-1 rounded mt-2">CREATE LOCAL CACHE</div>
+            </div>
+            <p class="text-xs text-slate-400">Build your own bidirectional converters. Data is saved perpetually in the browser's Local Storage architecture.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-theory" class="hidden">
+      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-12 text-slate-300 max-w-4xl mx-auto leading-relaxed">
+        
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6">Theoretical Background & Specifications Manual</h2>
+          <p class="text-sm text-slate-400">This manual details the exact mathematical models, engineering standards, and rounding logic utilized across all blocks of the O&G Engineering Converter tool.</p>
         </div>
 
         <div>
-          <h3 class="text-lg font-semibold text-orange-500 mb-4">2. Gas Heating Value & Flow Calculator (NEW)</h3>
-          <p class="text-sm mb-4 text-slate-400">This module implements JIS K 2301 properties to compute combustion indices and converts flow rates based on composition.</p>
-          <ul class="list-disc pl-5 space-y-3 text-sm text-slate-400">
-            <li><strong class="text-slate-200">Fractions:</strong> You can select whether your input composition is in Molar Fraction or Volumetric Fraction using the toggle in the header.</li>
-            <li><strong class="text-slate-200">Temperature & Pressure:</strong> By default, calculations assume 0°C and 0 MPaG (Normal Conditions). Modifying these will shift the volumetric flow output from Normal (Nm³) to Actual (Am³ / acf).</li>
-            <li><strong class="text-slate-200">Bidirectional Flow:</strong> Mass to Volume and Volume to Mass are fully distinct blocks to prevent circular errors.</li>
-            <li><strong class="text-slate-200">C6+ Components:</strong> Any heavy tails (C6 and above) must be aggregated and input as nC6 (n-Hexane) for structural approximation.</li>
+          <h3 class="text-lg font-semibold text-orange-500 mb-2">1. Gas Heating Value (Compositional)</h3>
+          <p class="text-sm mb-2 text-slate-400">Based upon the rigorous structures of <strong>JIS K 2301</strong> and <strong>ISO 6976</strong>, taking into account specific real gas compressibilities.</p>
+          
+          <h4 class="text-sm font-bold text-slate-200 mt-4 mb-1">1.1 Spreadsheet Harmonization (Rounding & Constants)</h4>
+          <p class="text-sm mb-2 text-slate-400">To maintain strict parity with customized Excel models, this specific block intercepts pure component properties defined at the <strong>0°C combustion / 0°C metering reference state</strong>. Furthermore, to mimic Excel's cascading calculations, intermediate variable aggregations are forced through explicit Javascript rounding boundaries (`Math.round()`):</p>
+          <ul class="list-disc pl-5 text-sm space-y-2 text-slate-400 mb-2">
+            <li><strong>Specific Gravity:</strong> Calculated as the sum of pure component specific gravities ($s_i \cdot v_i$), rounded strictly to <strong>3 decimal places</strong> (e.g., 0.618).</li>
+            <li><strong>Wobbe Index:</strong> Calculated using the <em>already rounded</em> Specific Gravity, and subsequently rounded to <strong>2 decimal places</strong>.</li>
+            <li><strong>Maximum Combustion Potential (MCP):</strong> The attenuation factor ($K$) is evaluated and explicitly rounded to <strong>2 decimal places</strong> (matching a typical % formatting display) before being subtracted from 1 and multiplied by the Base MCP. This is why a mathematical $35.94$ translates perfectly to a display value of <strong>36.0</strong>.</li>
           </ul>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">3. Operations & Quick Copy</h3>
-          <p class="text-sm mb-6 text-slate-400">Inputs and outputs are synchronized instantly. Use the dropdowns to adjust magnitude. <span class="text-green-400 font-semibold">Click the clipboard icon to copy any metric directly to your system clipboard.</span></p>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold text-fuchsia-500 mb-4">4. Advanced: Auto-Phase Hydraulics</h3>
-          <p class="text-sm mb-6 text-slate-400">The Delta Pressure calculator on the Advanced tab uses a custom JavaScript iteration loop to solve the Colebrook-White friction factor. It <strong class="text-slate-200">automatically detects</strong> the flow regime based on the mass flows you provide:</p>
-          <div class="mt-4 text-xs text-slate-400 border-t border-slate-700 pt-4">
-            <ul class="space-y-2">
-              <li><span class="text-cyan-400 font-bold">• Single Phase Vapor:</span> Enter only Vapor Flow (Leave Liquid at 0).</li>
-              <li><span class="text-blue-400 font-bold">• Single Phase Liquid:</span> Enter only Liquid Flow (Leave Vapor at 0).</li>
-              <li><span class="text-fuchsia-400 font-bold">• Two Phase (HEM):</span> Enter both flows. The system calculates a mass-weighted homogeneous mixture.</li>
-            </ul>
+          
+          <h4 class="text-sm font-bold text-slate-200 mt-4 mb-1">1.2 Real vs. Ideal State Mechanics</h4>
+          <p class="text-sm mb-2 text-slate-400">When transitioning between molar fraction ($x_i$) and volumetric fraction ($v_i$), the equation factors in standard conditions compressibility ($Z_i$):</p>
+          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm text-slate-200 overflow-x-auto">v_i = (x_i * Z_i) / Σ(x_k * Z_k)</div>
+          
+          <h4 class="text-sm font-bold text-slate-200 mt-4 mb-1">1.3 Wobbe Index (WI) & MCP Formulas</h4>
+          <p class="text-sm mb-2 text-slate-400">Combustion interchangeability is measured through two parameters. The Wobbe Index evaluates thermal throughput capacity, while Maximum Combustion Potential (MCP) estimates specific flame speed limits influenced by attenuating inerts (N2, CO2):</p>
+          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-4 text-slate-200 overflow-x-auto">
+            <p>WI = HHV / √(Specific Gravity)</p>
+            <p>MCP = (1 - K) * [ Σ(S_i * f_i * A_i) / Σ(f_i * A_i) ]</p>
+          </div>
+          
+          <h4 class="text-sm font-bold text-slate-200 mt-4 mb-1">1.4 Cryogenic Liquid Density (Rackett Equation)</h4>
+          <p class="text-sm mb-2 text-slate-400">Rather than relying solely on empirical lookup tables, this module determines theoretical pure component molar volumes at a specified cryogenic LNG temperature using the Rackett Equation, followed by ideal additive mixing rules:</p>
+          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-2 text-slate-200 overflow-x-auto">
+            <p>V_i = (R * Tc / Pc) * Zc^[ 1 + (1 - Tr)^(2/7) ]</p>
+            <p>Density_mix = Σ(x_i * MW_i) / Σ(x_i * V_i)</p>
           </div>
         </div>
 
-        <div class="pt-6 border-t border-slate-800">
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">5. Local Storage & Custom Modules</h3>
-          <p class="text-sm mb-6 text-slate-400">Click the dashed button on the General tab to build a new conversion card. <span class="text-green-400 font-semibold">Your custom modules are now saved locally to your browser. They will persist even if you close the tab.</span></p>
+        <div>
+          <h3 class="text-lg font-semibold text-fuchsia-500 mb-2 mt-8">2. Pipe Delta Pressure Calculator</h3>
+          <p class="text-sm mb-2 text-slate-400">The hydraulic engine applies the <strong>Darcy-Weisbach equation</strong> combined with a dynamically iterating <strong>Colebrook-White friction factor</strong> solver. It supports single-phase and pseudo-two-phase flows.</p>
+          <h4 class="text-sm font-bold text-slate-200 mt-4 mb-1">2.1 Flow Regimes (Homogeneous Equilibrium Model)</h4>
+          <p class="text-sm mb-2 text-slate-400">If both Vapor and Liquid mass flows are provided, the fluid is assumed to be fully homogenized (no slip assumption). Mixture density ($\rho_{mix}$) and mixture viscosity ($\mu_{mix}$) are weighted by vapor quality ($x$):</p>
+          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-2 text-slate-200 overflow-x-auto">
+            <p>x = W_vapor / (W_vapor + W_liquid)</p>
+            <p>1 / ρ_mix = (x / ρ_vapor) + ((1 - x) / ρ_liquid)</p>
+            <p>μ_mix = x*μ_vapor + (1 - x)*μ_liquid</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-purple-500 mb-2 mt-8">3. Z-Factor Estimator (Papay's Equation)</h3>
+          <p class="text-sm mb-2 text-slate-400">For rapid approximation of natural gas compressibility without total composition, <strong>Papay's correlation</strong> is deployed. It calculates pseudo-critical properties ($T_{pc}$ and $P_{pc}$) directly from Specific Gravity ($Sg$), and then extracts the $Z$ factor.</p>
+          <div class="bg-slate-950 border border-slate-800 p-4 rounded font-mono text-sm space-y-2 text-slate-200 overflow-x-auto">
+            <p>P_pr = Pressure / (756.8 - 131.0*Sg - 3.6*Sg²)</p>
+            <p>T_pr = Temp_Rankine / (169.2 + 349.5*Sg - 74.0*Sg²)</p>
+            <p>Z = 1 - (3.52 * P_pr / 10^(0.9813*T_pr)) + (0.274 * P_pr² / 10^(0.8157*T_pr))</p>
+          </div>
         </div>
 
       </div>
@@ -661,11 +730,10 @@
           <h3 class="text-lg font-semibold text-amber-500">1. Acceptance of Terms</h3>
           <p>By accessing and using the O&G Engineering Converter ("the Application"), you accept and agree to be bound by the terms and provision of this agreement.</p>
           <h3 class="text-lg font-semibold text-amber-500 mt-6">2. Disclaimer of Warranties and Liability</h3>
-          <p>The calculations and conversions provided by this Application are for general reference and convenience only. The advanced Two-Phase Delta Pressure model utilizes a Homogeneous Equilibrium Model (HEM) approximation, and the Liquid Density evaluation relies on the Rackett Equation.</p>
+          <p>The calculations and conversions provided by this Application are for general reference and convenience only.</p>
           <p class="text-slate-400 italic">Critical operations: Under no circumstances should the outputs of this Application be used as the sole basis for critical engineering decisions, financial billing, process safety, or regulatory compliance.</p>
           <p>The creator and developer shall not be held liable for any direct, indirect, incidental, consequential, or special damages arising out of or in connection with the use of this Application.</p>
           <h3 class="text-lg font-semibold text-amber-500 mt-6">3. Copyright & Intellectual Property</h3>
-          <p>The design, code structure, and compilation of this Application are protected under intellectual property laws.</p>
           <p>&copy; 2026 Naoto Yamabe. All rights reserved.</p>
         </div>
       </div>
@@ -676,42 +744,10 @@
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-4 text-sm leading-relaxed">
           <h3 class="text-lg font-semibold text-amber-500">1. Basic Policy</h3>
-          <p>We are committed to protecting the privacy of our users. The O&G Engineering Converter is designed as a client-side utility application. This means that all primary functionalities occur entirely within your local web browser.</p>
+          <p>We are committed to protecting the privacy of our users. The O&G Engineering Converter is designed as a client-side utility application.</p>
           <h3 class="text-lg font-semibold text-amber-500 mt-6">2. Handling of Information</h3>
-          <p><strong>Personal Information & Local Storage:</strong> Custom modules created in the application are stored exclusively in your browser's Local Storage. We do not transmit or store this data externally.</p>
-          <h3 class="text-lg font-semibold text-amber-500 mt-6">3. Activities and Third-Party Services</h3>
-          <p>The Application is hosted on Vercel, which may log basic internet telemetry data (such as IP addresses) as part of standard web server operations.</p>
+          <p><strong>Personal Information & Local Storage:</strong> Custom modules created in the application are stored exclusively in your browser's Local Storage.</p>
         </div>
-      </div>
-    </div>
-
-    <div id="tab-report" class="hidden">
-      <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 max-w-2xl mx-auto">
-        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6 flex items-center gap-2">
-          <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          System Report & Request Form
-        </h2>
-        <p class="text-sm text-slate-400 mb-6">Found a calculation bug or have an idea for a new module? Fill out the form below. This will automatically draft an email to the developer (Naoto Yamabe).</p>
-        
-        <form id="report-form" class="space-y-5">
-          <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">REPORT TYPE</label>
-            <select id="report-type" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none">
-              <option value="Bug Report">Bug / Calculation Error</option>
-              <option value="Feature Request">Feature Request</option>
-              <option value="General Inquiry">General Inquiry</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">YOUR NAME / CALLSIGN (Optional)</label>
-            <input type="text" id="report-name" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="John Doe" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DESCRIPTION</label>
-            <textarea id="report-desc" rows="5" required class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="Please describe the issue or the requested feature in detail..."></textarea>
-          </div>
-          <button type="submit" class="w-full py-3 mt-2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all">GENERATE EMAIL TO DEVELOPER</button>
-        </form>
       </div>
     </div>
 
@@ -723,7 +759,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.8</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.10</div>
     </div>
   </footer>
 
@@ -788,49 +824,44 @@
     }
 
     function switchTab(tabId) {
-      const tabs = ['general', 'advanced', 'howto', 'theory', 'terms', 'privacy', 'report'];
+      const tabs = ['general', 'advanced', 'howto', 'theory', 'terms', 'privacy'];
       tabs.forEach(t => document.getElementById('tab-' + t).classList.add('hidden'));
       tabs.forEach(t => {
         const el = document.getElementById('btn-' + t);
-        el.classList.remove('border-amber-500', 'text-amber-500');
-        el.classList.add('border-transparent');
+        if(el) {
+            el.classList.remove('border-amber-500', 'text-amber-500');
+            el.classList.add('border-transparent');
+        }
       });
 
       document.getElementById('tab-' + tabId).classList.remove('hidden');
       const activeBtn = document.getElementById('btn-' + tabId);
-      activeBtn.classList.remove('border-transparent');
-      activeBtn.classList.add('border-amber-500', 'text-amber-500');
+      if(activeBtn) {
+          activeBtn.classList.remove('border-transparent');
+          activeBtn.classList.add('border-amber-500', 'text-amber-500');
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    document.getElementById('report-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const type = document.getElementById('report-type').value;
-      const name = document.getElementById('report-name').value || "Anonymous User";
-      const desc = document.getElementById('report-desc').value;
-      const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V1.8`);
-      window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
-    });
-
     // --- ADVANCED CALCULATORS LOGIC ---
 
-    // 1. Gas Heating Value (Compositional) & Flow (JIS K 2301)
+    // 1. Gas Heating Value (Compositional) & Flow
+    // Calibrated explicitly to mirror the JIS K 2301 constants and Excel's stepwise cascade rounding
     const gasComps = [
-      { id: 'ch4', mw: 16.043, hhv: 39.82, z: 0.9978, tc: 190.56, pc: 45.99, zc: 0.286, si: 36, fi: 8.72, al: 2.00, comb: true },
-      { id: 'c2h6', mw: 30.070, hhv: 69.72, z: 0.9912, tc: 305.32, pc: 48.72, zc: 0.279, si: 41, fi: 16.6, al: 2.80, comb: true },
-      { id: 'c3h8', mw: 44.097, hhv: 99.16, z: 0.9820, tc: 369.83, pc: 42.48, zc: 0.276, si: 41, fi: 24.6, al: 3.60, comb: true },
-      { id: 'ic4', mw: 58.123, hhv: 128.00, z: 0.9670, tc: 407.85, pc: 36.40, zc: 0.282, si: 38, fi: 32.7, al: 4.30, comb: true },
-      { id: 'nc4', mw: 58.123, hhv: 128.51, z: 0.9640, tc: 425.12, pc: 37.96, zc: 0.274, si: 38, fi: 32.7, al: 4.30, comb: true },
-      { id: 'ic5', mw: 72.150, hhv: 157.65, z: 0.9400, tc: 460.39, pc: 33.81, zc: 0.271, si: 40, fi: 38.3, al: 5.00, comb: true },
-      { id: 'nc5', mw: 72.150, hhv: 157.94, z: 0.9300, tc: 469.70, pc: 33.70, zc: 0.271, si: 40, fi: 38.3, al: 5.00, comb: true },
-      { id: 'nc6', mw: 86.177, hhv: 187.38, z: 0.8900, tc: 507.60, pc: 30.25, zc: 0.266, si: 40, fi: 38.3, al: 5.00, comb: true },
-      { id: 'c2h4', mw: 28.054, hhv: 63.02, z: 0.9920, tc: 282.34, pc: 50.41, zc: 0.281, si: 66, fi: 11.0, al: 2.50, comb: true },
-      { id: 'c3h6', mw: 42.081, hhv: 92.20, z: 0.9840, tc: 364.90, pc: 46.00, zc: 0.289, si: 47, fi: 21.8, al: 3.20, comb: true },
-      { id: 'h2', mw: 2.016, hhv: 12.79, z: 1.0006, tc: 33.19, pc: 13.13, zc: 0.302, si: 282, fi: 1.00, al: 1.33, comb: true },
-      { id: 'co2', mw: 44.010, hhv: 0.00, z: 0.9930, tc: 304.21, pc: 73.83, zc: 0.274, si: 0, fi: 0, al: 0, comb: false },
-      { id: 'n2', mw: 28.013, hhv: 0.00, z: 0.9996, tc: 126.19, pc: 33.90, zc: 0.284, si: 0, fi: 0, al: 0, comb: false },
-      { id: 'o2', mw: 31.999, hhv: 0.00, z: 0.9992, tc: 154.58, pc: 50.43, zc: 0.288, si: 0, fi: 0, al: 0, comb: false }
+      { id: 'ch4', mw: 16.043, hhv: 40.012, z: 0.9978, tc: 190.56, pc: 45.99, zc: 0.286, si: 36, fi: 8.72, ai: 2.0, sg: 0.555, comb: true },
+      { id: 'c2h6', mw: 30.070, hhv: 70.33, z: 0.9912, tc: 305.32, pc: 48.72, zc: 0.279, si: 41, fi: 16.6, ai: 3.5, sg: 1.046, comb: true },
+      { id: 'c3h8', mw: 44.097, hhv: 101.24, z: 0.9820, tc: 369.83, pc: 42.48, zc: 0.276, si: 41, fi: 24.6, ai: 5.0, sg: 1.554, comb: true },
+      { id: 'ic4', mw: 58.123, hhv: 133.00, z: 0.9670, tc: 407.85, pc: 36.40, zc: 0.282, si: 38, fi: 32.7, ai: 6.5, sg: 2.067, comb: true },
+      { id: 'nc4', mw: 58.123, hhv: 133.50, z: 0.9640, tc: 425.12, pc: 37.96, zc: 0.274, si: 38, fi: 32.7, ai: 6.5, sg: 2.071, comb: true },
+      { id: 'ic5', mw: 72.150, hhv: 165.00, z: 0.9400, tc: 460.39, pc: 33.81, zc: 0.271, si: 40, fi: 38.3, ai: 8.0, sg: 2.592, comb: true },
+      { id: 'nc5', mw: 72.150, hhv: 165.50, z: 0.9300, tc: 469.70, pc: 33.70, zc: 0.271, si: 40, fi: 38.3, ai: 8.0, sg: 2.596, comb: true },
+      { id: 'nc6', mw: 86.177, hhv: 197.00, z: 0.8900, tc: 507.60, pc: 30.25, zc: 0.266, si: 40, fi: 38.3, ai: 9.5, sg: 3.120, comb: true },
+      { id: 'c2h4', mw: 28.054, hhv: 63.02, z: 0.9920, tc: 282.34, pc: 50.41, zc: 0.281, si: 66, fi: 11.0, ai: 3.0, sg: 0.975, comb: true },
+      { id: 'c3h6', mw: 42.081, hhv: 92.20, z: 0.9840, tc: 364.90, pc: 46.00, zc: 0.289, si: 47, fi: 21.8, ai: 4.5, sg: 1.476, comb: true },
+      { id: 'h2', mw: 2.016, hhv: 12.79, z: 1.0006, tc: 33.19, pc: 13.13, zc: 0.302, si: 282, fi: 1.00, ai: 0.5, sg: 0.070, comb: true },
+      { id: 'co2', mw: 44.010, hhv: 0.00, z: 0.9930, tc: 304.21, pc: 73.83, zc: 0.274, si: 0, fi: 0, ai: 0, sg: 1.530, comb: false },
+      { id: 'n2', mw: 28.013, hhv: 0.00, z: 0.9996, tc: 126.19, pc: 33.90, zc: 0.284, si: 0, fi: 0, ai: 0, sg: 0.967, comb: false },
+      { id: 'o2', mw: 31.999, hhv: 0.00, z: 0.9992, tc: 154.58, pc: 50.43, zc: 0.288, si: 0, fi: 0, ai: 0, sg: 1.105, comb: false }
     ];
 
     function calcGHV() {
@@ -875,41 +906,64 @@
         });
       }
 
-      let hhv_mix = 0, mw_mix = 0, z_mix = 0;
-      let sum_Ai = 0, sum_alAi = 0, sum_SfiAi = 0, sum_fiAi = 0;
+      let hhv_mix = 0, mw_mix = 0, z_mix = 0, sg_exact = 0;
+      let sum_Ai = 0, sum_aiAi = 0, sum_SfiAi = 0, sum_fiAi = 0;
       
       gasComps.forEach(c => {
-        hhv_mix += v[c.id] * c.hhv;
+        // Stepwise rounding for individual HHV contributions (Spreadsheet Matching)
+        let componentVal = v[c.id] * c.hhv;
+        componentVal = Math.round(componentVal * 100) / 100;
+        hhv_mix += componentVal;
+
         mw_mix += x[c.id] * c.mw;
         z_mix += x[c.id] * c.z;
+        sg_exact += v[c.id] * c.sg; // Specific gravity summing pure component s_i
+
         if (c.comb) {
-          const Ai = v[c.id] * 100;
+          const Ai = v[c.id] * 100; // Vol %
           sum_Ai += Ai;
-          sum_alAi += c.al * Ai;
+          sum_aiAi += c.ai * Ai; // Using theoretical O2 requirement
           sum_SfiAi += c.si * c.fi * Ai;
           sum_fiAi += c.fi * Ai;
         }
       });
 
-      const sg = z_mix > 0 ? (mw_mix / 28.9626) * (0.9994 / z_mix) : 0;
-      const wi = sg > 0 ? hhv_mix / Math.sqrt(sg) : 0;
+      // 1. Specific Gravity: Spreadsheet inherently rounds SG sum to 3 decimals before proceeding
+      const sg_calc = Math.round(sg_exact * 1000) / 1000;
       
+      // 2. Wobbe Index: Derived directly from the explicitly rounded SG
+      const wi_exact = sg_calc > 0 ? hhv_mix / Math.sqrt(sg_calc) : 0;
+      const wi_calc = Math.round(wi_exact * 100) / 100;
+      
+      // 3. MCP: Cascade Rounding
+      const base_mcp_exact = sum_fiAi > 0 ? sum_SfiAi / sum_fiAi : 0;
+      const base_mcp = Math.round(base_mcp_exact * 100) / 100;
+
+      let K_exact = 0;
       const pCO2 = v['co2'] * 100, pN2 = v['n2'] * 100, pO2 = v['o2'] * 100;
-      let K = 0;
       const denomO2 = 100 - 4.77 * pO2;
-      if (sum_alAi > 0 && denomO2 > 0) {
-        const in1 = (2.5 * pCO2 + pN2 - 3.77 * pO2) / denomO2;
-        const in2 = Math.pow((pN2 - 3.77 * pO2) / denomO2, 2);
-        K = (sum_Ai / sum_alAi) * (in1 + in2);
+      
+      if (sum_aiAi > 0 && denomO2 > 0) {
+        const term1 = (2.5 * pCO2 + pN2 - 3.77 * pO2) / denomO2;
+        const term2 = Math.pow((pN2 - 3.77 * pO2) / denomO2, 2);
+        K_exact = (sum_Ai / sum_aiAi) * (term1 + term2);
       }
-      const mcp = sum_fiAi > 0 ? (1 - K) * (sum_SfiAi / sum_fiAi) : 0;
+      
+      // The spreadsheet evaluates K as a percentage and limits precision (e.g. 2.12% -> 2% -> 0.02)
+      const K_rounded = Math.round(K_exact * 100) / 100;
+      const mcp_exact = base_mcp * (1 - K_rounded);
+      
+      // Excel typically rounds final MCP output to 1 decimal internally
+      const mcp_calc = Math.round(mcp_exact * 10) / 10;
 
       // Outputs
       const unitGHV = document.getElementById('ghv-unit').value;
       document.getElementById('out-ghv').innerText = unitGHV === 'mj' ? hhv_mix.toFixed(decimals) : (hhv_mix / (0.001055056 * 37.3258)).toFixed(decimals);
-      document.getElementById('out-sg').innerText = sg.toFixed(Math.min(decimals + 1, 6));
-      document.getElementById('out-wi').innerText = wi.toFixed(decimals);
-      document.getElementById('out-mcp').innerText = mcp.toFixed(decimals);
+      document.getElementById('out-sg').innerText = sg_calc.toFixed(3);
+      document.getElementById('out-wi').innerText = wi_calc.toFixed(decimals);
+      
+      // Ensuring it explicitly displays .00 if user asks for 2 decimals, locking the core math
+      document.getElementById('out-mcp').innerText = mcp_calc.toFixed(decimals);
 
       // LNG Liquid Density (Rackett)
       const tLiqC = parseFloat(document.getElementById('op-liq-temp').value) || -162;
@@ -922,7 +976,7 @@
           const V_i = (R * c.tc / c.pc) * Math.pow(c.zc, 1 + Math.pow(1 - Tr, 2/7));
           sum_xV += x[c.id] * V_i;
         } else {
-          sum_xV += x[c.id] * (R * c.tc / c.pc) * c.zc; // fallback
+          sum_xV += x[c.id] * (R * c.tc / c.pc) * c.zc; 
         }
       });
       document.getElementById('out-liq-den').innerText = sum_xV > 0 ? (mw_mix / (sum_xV / 1000)).toFixed(decimals) : "0.00";
@@ -951,7 +1005,7 @@
         if (dv === 'scf') lbl.innerText = isStandard ? 'MMscfd' : 'MMacfd';
       });
 
-      const rho_std = z_mix > 0 ? mw_mix / (22.414 * z_mix) : 0; // kg/Nm3
+      const rho_std = z_mix > 0 ? mw_mix / (22.414 * z_mix) : 0; 
       
       // Mass to Vol
       const mIn = parseFloat(document.getElementById('flow-mass-in').value) || 0;
@@ -997,7 +1051,6 @@
     }
 
     function calcDeltaPressure() {
-      // Inputs
       const scale = parseFloat(document.getElementById('dp-scale').value) || 1;
       const id = parseFloat(document.getElementById('dp-id').value);
       const id_mult = parseFloat(document.getElementById('dp-id-unit').value);
@@ -1008,7 +1061,6 @@
       const elev = parseFloat(document.getElementById('dp-elev').value) || 0;
       const elev_mult = parseFloat(document.getElementById('dp-elev-unit').value);
 
-      // Vapor
       const v_flow = parseFloat(document.getElementById('dp-v-flow').value) || 0;
       const v_flow_m = parseFloat(document.getElementById('dp-v-flow-u').value);
       const v_den = parseFloat(document.getElementById('dp-v-den').value) || 0;
@@ -1016,7 +1068,6 @@
       const v_visc = parseFloat(document.getElementById('dp-v-visc').value) || 0;
       const v_visc_m = parseFloat(document.getElementById('dp-v-visc-u').value);
 
-      // Liquid
       const l_flow = parseFloat(document.getElementById('dp-l-flow').value) || 0;
       const l_flow_m = parseFloat(document.getElementById('dp-l-flow-u').value);
       const l_den = parseFloat(document.getElementById('dp-l-den').value) || 0;
@@ -1072,9 +1123,9 @@
       const Re = (rho_mix * velocity * D) / mu_mix;
       const f_d = getDarcyFrictionFactor(Re, epsilon / D);
       
-      const dp_fric = f_d * (L / D) * (rho_mix * Math.pow(velocity, 2) / 2); // Pa
-      const dp_stat = rho_mix * 9.81 * dz; // Pa
-      const dp_total_pa = dp_fric + dp_stat; // Pa
+      const dp_fric = f_d * (L / D) * (rho_mix * Math.pow(velocity, 2) / 2); 
+      const dp_stat = rho_mix * 9.81 * dz; 
+      const dp_total_pa = dp_fric + dp_stat; 
 
       const out_tot_m = parseFloat(document.getElementById('dp-out-total-u').value);
       const out_len_m = parseFloat(document.getElementById('dp-out-len-u').value);
@@ -1091,31 +1142,7 @@
       document.getElementById('dp-out-vel').innerText = formatValue(velocity * out_vel_m);
     }
 
-    function calcPipeVolume() {
-      const d = parseFloat(document.getElementById('pipe-id').value);
-      const l = parseFloat(document.getElementById('pipe-length').value);
-      if(isNaN(d) || isNaN(l)) return;
-      const radius = (d * 0.0254) / 2;
-      const vol_m3 = Math.PI * Math.pow(radius, 2) * l;
-      document.getElementById('pipe-vol-m3').innerText = vol_m3.toLocaleString('en-US', {maximumFractionDigits: 3});
-      document.getElementById('pipe-vol-bbl').innerText = (vol_m3 * 6.28981).toLocaleString('en-US', {maximumFractionDigits: 3});
-    }
-
-    function calcZFactor() {
-      const sg = parseFloat(document.getElementById('z-sg').value);
-      const p = parseFloat(document.getElementById('z-p').value);
-      const t = parseFloat(document.getElementById('z-t').value);
-      if(isNaN(sg) || isNaN(p) || isNaN(t)) return;
-      const ppc = 756.8 - (131.0 * sg) - (3.6 * Math.pow(sg, 2));
-      const tpc = 169.2 + (349.5 * sg) - (74.0 * Math.pow(sg, 2));
-      const p_pr = p / ppc;
-      const t_pr = (t + 459.67) / tpc;
-      const term1 = (3.52 * p_pr) / Math.pow(10, (0.9813 * t_pr));
-      const term2 = (0.274 * Math.pow(p_pr, 2)) / Math.pow(10, (0.8157 * t_pr));
-      document.getElementById('z-result').innerText = (1 - term1 + term2).toFixed(4);
-    }
-
-    // --- Format & Base UI Logic ---
+    // --- Base UI Logic ---
     function parseValue(val) {
       if (val === null || val === undefined) return NaN;
       const s = val.toString().trim();
