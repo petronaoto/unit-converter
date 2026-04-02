@@ -196,18 +196,12 @@
               <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
               Gas Heating Value (Compositional) & Flow
             </h2>
-            <div class="flex flex-wrap items-center gap-3">
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold tracking-widest">INPUT MODE:</span>
-                <select id="ghv-mode" onchange="calcGHV()" class="bg-slate-950 border border-slate-700 text-orange-500 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
-                  <option value="vol">Volumetric Fraction (%)</option>
-                  <option value="mol">Mole Fraction (%)</option>
-                </select>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold tracking-widest">DECIMALS (Flow/HHV):</span>
-                <input type="number" id="ghv-decimals" value="2" min="0" max="6" oninput="calcGHV()" class="w-12 bg-slate-950 border border-slate-700 text-orange-500 text-xs font-semibold rounded px-2 py-1 outline-none text-center" />
-              </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-slate-400 font-bold tracking-widest">INPUT MODE:</span>
+              <select id="ghv-mode" onchange="calcGHV()" class="bg-slate-950 border border-slate-700 text-orange-500 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
+                <option value="vol">Volumetric Fraction (%)</option>
+                <option value="mol">Mole Fraction (%)</option>
+              </select>
             </div>
           </div>
           
@@ -219,19 +213,19 @@
               </div>
               
               <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">CH₄</label><input type="number" step="any" id="comp-ch4" value="90" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₂H₆</label><input type="number" step="any" id="comp-c2h6" value="5" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₃H₈</label><input type="number" step="any" id="comp-c3h8" value="2" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">iC₄</label><input type="number" step="any" id="comp-ic4" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">nC₄</label><input type="number" step="any" id="comp-nc4" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">CH₄</label><input type="number" step="any" id="comp-ch4" value="89" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₂H₆</label><input type="number" step="any" id="comp-c2h6" value="7" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₃H₈</label><input type="number" step="any" id="comp-c3h8" value="2.5" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">iC₄</label><input type="number" step="any" id="comp-ic4" value="0.7" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">nC₄</label><input type="number" step="any" id="comp-nc4" value="0.5" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">iC₅</label><input type="number" step="any" id="comp-ic5" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">nC₅</label><input type="number" step="any" id="comp-nc5" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">nC₆+</label><input type="number" step="any" id="comp-nc6" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₂H₄</label><input type="number" step="any" id="comp-c2h4" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₃H₆</label><input type="number" step="any" id="comp-c3h6" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">H₂</label><input type="number" step="any" id="comp-h2" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">CO₂</label><input type="number" step="any" id="comp-co2" value="1" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
-                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">N₂</label><input type="number" step="any" id="comp-n2" value="2" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">CO₂</label><input type="number" step="any" id="comp-co2" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
+                <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">N₂</label><input type="number" step="any" id="comp-n2" value="0.3" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">O₂</label><input type="number" step="any" id="comp-o2" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
               </div>
               <div class="mt-3 flex items-center justify-between bg-slate-950/50 p-2 rounded border border-slate-800">
@@ -299,7 +293,6 @@
                   <span class="text-xs font-semibold text-slate-400">Wobbe Index (WI)</span>
                   <div class="flex items-center gap-2">
                     <span id="out-wi" class="font-mono font-bold text-lg text-white">0.00</span>
-                    <span class="text-slate-600 text-[10px] font-mono">(MJ/m³)</span>
                   </div>
                 </div>
 
@@ -596,7 +589,7 @@
             <h3 class="text-sm font-bold text-amber-500">1. Application Header & Navigation</h3>
             <div class="wf-box space-y-2">
               <div class="flex justify-between items-center border-b border-slate-600 pb-2">
-                <div class="flex gap-2 items-center"><div class="wf-circle"></div> <span class="text-xs">O&G Eng. Converter</span></div>
+                <div class="flex gap-2 items-center"><div class="wf-circle"></div> <span class="text-xs font-bold text-white">O&G Eng. Converter</span></div>
               </div>
               <div class="flex gap-4 text-slate-500 pt-1 text-[10px] overflow-x-hidden">
                 <span class="text-amber-500 border-b border-amber-500 pb-1">GENERAL</span>
@@ -616,13 +609,13 @@
                 <div class="w-3/4 text-white">100</div>
                 <div class="w-1/4 border-l border-slate-600 pl-2 text-amber-500">bar ▼</div>
               </div>
-              <div class="flex justify-center"><div class="wf-circle text-amber-500">↓</div></div>
+              <div class="flex justify-center"><div class="wf-circle text-amber-500 text-xs">↓↑</div></div>
               <div class="flex border border-slate-600 rounded bg-slate-950 p-2 text-xs">
                 <div class="w-3/4 text-white">1450.38</div>
                 <div class="w-1/4 border-l border-slate-600 pl-2 text-amber-500">psi ▼</div>
               </div>
             </div>
-            <p class="text-xs text-slate-400">Inputs are bidirectional. Modifying the top field instantly updates the bottom field based on the selected dropdown units.</p>
+            <p class="text-xs text-slate-400">Inputs are bidirectional. Modifying the top field instantly updates the bottom field based on the selected dropdown units, and vice-versa.</p>
           </div>
 
           <div class="space-y-3">
@@ -630,17 +623,17 @@
             <div class="wf-box space-y-3 text-[10px]">
               <div class="flex justify-between text-slate-400 border-b border-slate-600 pb-1">
                 <span>1. GAS COMPOSITION</span> 
-                <span class="text-amber-500 border border-amber-500 px-1 rounded cursor-pointer">Vol / Mol Toggle</span>
+                <span class="text-amber-500 border border-amber-500 px-1 rounded cursor-pointer">Vol / Mol Mode</span>
               </div>
               <div class="grid grid-cols-4 gap-2">
-                <div class="border border-slate-600 p-1 rounded text-center">CH4: [ 90.0 ]</div>
-                <div class="border border-slate-600 p-1 rounded text-center">C2H6: [ 5.0 ]</div>
-                <div class="border border-slate-600 p-1 rounded text-center">C3H8: [ 2.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded text-center">CH4: [ 89.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded text-center">C2H6: [ 7.0 ]</div>
+                <div class="border border-slate-600 p-1 rounded text-center">C3H8: [ 2.5 ]</div>
                 <div class="border border-slate-600 p-1 rounded text-center bg-slate-800">...</div>
               </div>
-              <div class="text-right text-orange-500 font-bold border-t border-slate-600 pt-1">TOTAL INPUT: 100%</div>
+              <div class="text-right text-orange-500 font-bold border-t border-slate-600 pt-1">TOTAL INPUT: 100.00%</div>
             </div>
-            <p class="text-xs text-slate-400">Input volumetric or molar fractions. The calculator processes the opposite state dynamically in a display grid below.</p>
+            <p class="text-xs text-slate-400">Input volumetric or molar fractions. The calculator validates the total, and dynamically evaluates the opposing state in the matrix below it.</p>
           </div>
 
           <div class="space-y-3">
@@ -651,7 +644,7 @@
                 <div class="w-1/2 border border-slate-600 p-2 rounded">Press: [ 10 ] bar</div>
               </div>
               <div class="border border-red-500 bg-red-900/30 text-red-400 p-2 rounded flex items-center gap-2">
-                <span class="text-lg">⚠</span> T/P are not Standard. Processing as Actual conditions.
+                <span class="text-lg">⚠</span> T/P are not Standard. Flow rates will output Actual conditions.
               </div>
             </div>
             <p class="text-xs text-slate-400">Deviating from 0°C or 0 MPaG automatically transforms output flow dimensions from Normal (Nm³) to Actual (Am³ / acf).</p>
@@ -663,16 +656,16 @@
               <div class="flex gap-2">
                 <div class="w-1/2 border border-slate-600 p-2 rounded bg-slate-900">
                   <span class="text-cyan-400 font-bold block mb-1">VAPOR PHASE</span>
-                  Mass Flow: [ 1000 ] kg/h
+                  Mass Flow: [ 1000 ]
                 </div>
                 <div class="w-1/2 border border-slate-600 p-2 rounded bg-slate-900">
                   <span class="text-blue-400 font-bold block mb-1">LIQUID PHASE</span>
-                  Mass Flow: [ 50 ] kg/h
+                  Mass Flow: [ 50 ]
                 </div>
               </div>
               <div class="text-center text-fuchsia-400 border border-fuchsia-500/30 bg-fuchsia-500/10 py-1 rounded font-bold">Regime: Two-Phase (HEM)</div>
             </div>
-            <p class="text-xs text-slate-400">The calculator automatically determines single or two-phase (Homogeneous Equilibrium Model) based strictly on mass inputs provided.</p>
+            <p class="text-xs text-slate-400">The calculator automatically determines single or two-phase (Homogeneous Equilibrium Model) based strictly on the respective mass inputs.</p>
           </div>
 
           <div class="space-y-3">
@@ -694,13 +687,13 @@
             <h3 class="text-sm font-bold text-green-500">7. Quick Clipboard Extraction</h3>
             <div class="wf-box space-y-3 flex items-center justify-center">
               <div class="flex items-center gap-3 bg-slate-950 p-3 rounded border border-slate-600">
-                <span class="text-white font-mono text-xl tracking-widest">41.48</span>
+                <span class="text-white font-mono text-xl tracking-widest">44.59</span>
                 <div class="bg-slate-800 p-1.5 rounded border border-slate-700">
                   <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                 </div>
               </div>
             </div>
-            <p class="text-xs text-slate-400">Clicking the clipboard icon adjacent to any output flashes green, instantly placing the value in your OS clipboard.</p>
+            <p class="text-xs text-slate-400">Clicking the clipboard icon adjacent to any output flashes green, instantly placing the exact unformatted value in your OS clipboard.</p>
           </div>
 
           <div class="space-y-3">
@@ -720,9 +713,9 @@
 
         </div>
         
-        <div class="mt-8 border-t border-slate-800 pt-6">
-          <h3 class="text-lg font-semibold text-amber-500 mb-4">Original Quick Introduction (V1.7 Legacy)</h3>
-          <p class="text-sm text-slate-400">The O&G Engineering Converter is a client-side suite built for control room efficiency. It operates via multiple utility tabs: <strong class="text-slate-200">General Tab:</strong> Standard unit conversions and the custom module generator. <strong class="text-slate-200">Advanced Tab:</strong> Complex, iterative engineering calculators (Hydraulics, Volume, Z-Factor).</p>
+        <div class="mt-8 border-t border-slate-800 pt-6 text-sm text-slate-400 leading-relaxed">
+          <h3 class="text-lg font-semibold text-amber-500 mb-2">Original Quick Introduction (V1.7 Legacy)</h3>
+          The O&G Engineering Converter is a client-side suite built for control room efficiency. It operates via multiple utility tabs: <strong class="text-slate-200">General Tab:</strong> Standard unit conversions and the custom module generator. <strong class="text-slate-200">Advanced Tab:</strong> Complex, iterative engineering calculators (Hydraulics, Volume, Z-Factor). Click the dashed button on the General tab to build a new conversion card. Your custom modules are saved locally to your browser.
         </div>
       </div>
     </div>
@@ -748,24 +741,35 @@
                   <span class="text-lg text-slate-500">Σ</span>(<span class="wf-var">x<sub>k</sub></span> <span class="wf-op">×</span> <span class="wf-const">Z<sub>k</sub></span>)
                 </div>
               </div>
-              <p class="text-xs text-slate-400">Volumetric ($v$) to Molar ($x$) state transfer requires specific ideal gas compressibility factors ($Z$) at standard $0^\circ C, 1 atm$.</p>
+              <p class="text-xs text-slate-400">Volumetric ($v$) to Molar ($x$) state transfer evaluates specific real gas compressibility factors ($Z$) calibrated specifically to yield standardized cascade outputs.</p>
             </div>
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 2: Heating Value (HHV)</div>
+                <div class="wf-title">Eq 2: Ideal Gas Standard</div>
+                <div class="wf-eq">
+                  <span class="wf-var">PV</span> <span class="wf-op">=</span> <span class="wf-var">Z</span><span class="wf-const">nR</span><span class="wf-var">T</span>
+                  <br><span class="text-xs text-slate-500">where 0°C = 273.15K, P = 101.325 kPa</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Normal Conditions (Nm³) are strictly constrained to 0°C and 1 atm across the entire software suite.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 3: Heating Value (HHV)</div>
                 <div class="wf-eq">
                   <span class="wf-var">HHV<sub>mix</sub></span> <span class="wf-op">=</span> 
                   <span class="text-lg text-slate-500">Σ</span> 
                   [ <span class="text-xs text-slate-500">round_2</span>(<span class="wf-var">v<sub>i</sub></span> <span class="wf-op">×</span> <span class="wf-const">HHV<sub>i</sub></span>) ]
                 </div>
               </div>
-              <p class="text-xs text-slate-400">Explicit cascade rounding is applied at the intermediate component level to match legacy JIS K 2301 Excel macro outputs.</p>
+              <p class="text-xs text-slate-400">Explicit cascade rounding is applied at the intermediate component level to strictly reproduce legacy JIS K 2301 spreadsheet outputs.</p>
             </div>
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 3: Specific Gravity (SG)</div>
+                <div class="wf-title">Eq 4: Specific Gravity (SG)</div>
                 <div class="wf-eq">
                   <span class="wf-var">SG<sub>mix</sub></span> <span class="wf-op">=</span> 
                   <span class="text-xs text-slate-500">round_3</span>[ <span class="text-lg text-slate-500">Σ</span>(<span class="wf-var">v<sub>i</sub></span> <span class="wf-op">×</span> <span class="wf-const">s<sub>i</sub></span>) ]
@@ -776,24 +780,22 @@
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 4: Wobbe Index (WI)</div>
+                <div class="wf-title">Eq 5: Wobbe Index (WI)</div>
                 <div class="wf-eq">
                   <span class="wf-var">WI</span> <span class="wf-op">=</span> 
-                  <span class="text-xs text-slate-500">round_2</span>[ <span class="wf-var">HHV<sub>mix</sub></span> <span class="wf-op">/</span> √<span class="wf-var">SG<sub>mix</sub></span> ]
+                  <span class="wf-var">HHV<sub>mix</sub></span> <span class="wf-op">/</span> √<span class="wf-var">SG<sub>mix</sub></span>
                 </div>
               </div>
-              <p class="text-xs text-slate-400">The index determines burner interchange capacity. It strictly utilizes the 3-decimal rounded $SG$ from Eq 3 to prevent floating point drift.</p>
+              <p class="text-xs text-slate-400">The index determines burner interchange capacity. It strictly utilizes the 3-decimal rounded $SG$ from Eq 4 to prevent floating point drift.</p>
             </div>
 
             <div class="col-span-1 md:col-span-2">
               <div class="wf-box text-center">
-                <div class="wf-title">Diagram 5: Attenuation Factor (K) Logic</div>
+                <div class="wf-title">Diagram 6: Attenuation Factor (K) Logic Flow</div>
                 <div class="flex justify-center items-center gap-4 text-xs font-mono">
                   <div class="wf-solid">Inerts (CO2, N2)</div>
                   <span class="wf-op">➜</span>
                   <div class="wf-solid border-red-500 text-red-400">K Evaluated & Rounded (2 dec)</div>
-                  <span class="wf-op">➜</span>
-                  <div class="wf-solid">(1 - K)</div>
                   <span class="wf-op">➜</span>
                   <div class="wf-solid border-amber-500 text-amber-500">Applied to Base MCP</div>
                 </div>
@@ -802,7 +804,18 @@
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 6: Base Combustion Potential</div>
+                <div class="wf-title">Eq 7: Attenuation Denominator</div>
+                <div class="wf-eq text-sm">
+                  <span class="wf-var">O2_denom</span> <span class="wf-op">=</span> 
+                  100 <span class="wf-op">-</span> 4.77(<span class="wf-var">O2_%</span>)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Corrects the K-factor logic in the presence of existing uncombusted Oxygen in the stream.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 8: Base MCP</div>
                 <div class="wf-eq text-sm">
                   <span class="wf-var">Base MCP</span> <span class="wf-op">=</span> 
                   Σ(<span class="wf-var">S<sub>i</sub></span><span class="wf-op">·</span><span class="wf-const">f<sub>i</sub></span><span class="wf-op">·</span><span class="wf-var">A<sub>i</sub></span>) <span class="wf-op">/</span> 
@@ -814,7 +827,7 @@
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 7: Final MCP Output</div>
+                <div class="wf-title">Eq 9: Final MCP Output</div>
                 <div class="wf-eq">
                   <span class="wf-var">MCP</span> <span class="wf-op">=</span> 
                   <span class="text-xs text-slate-500">round_1</span>[ <span class="wf-var">Base MCP</span> <span class="wf-op">×</span> (<span class="wf-const">1</span> <span class="wf-op">-</span> <span class="wf-var">K</span>) ]
@@ -825,140 +838,30 @@
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 8: Rackett Equation (Volume)</div>
+                <div class="wf-title">Eq 10: Liquid Volume Evaluation</div>
                 <div class="wf-eq text-xs overflow-x-hidden">
-                  <span class="wf-var">V<sub>i</sub></span> <span class="wf-op">=</span> 
-                  (<span class="wf-const">R</span><span class="wf-op">·</span><span class="wf-var">Tc</span><span class="wf-op">/</span><span class="wf-var">Pc</span>) <span class="wf-op">×</span> <span class="wf-const">Zc</span><sup>[1 + (1 - Tr)^(2/7)]</sup>
+                  <span class="wf-var">V<sub>mix</sub></span> <span class="wf-op">=</span> 
+                  <span class="text-lg text-slate-500">Σ</span> (<span class="wf-var">x<sub>i</sub></span> <span class="wf-op">×</span> <span class="wf-const">V<sub>liq, i</sub></span>)
                 </div>
               </div>
-              <p class="text-xs text-slate-400">Calculates theoretical pure component saturated liquid molar volume at specific cryogenic conditions.</p>
+              <p class="text-xs text-slate-400">Calculates theoretical pure component saturated liquid molar volume using pre-calibrated empirical constants.</p>
             </div>
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 9: LNG Liquid Density</div>
+                <div class="wf-title">Eq 11: LNG Liquid Density</div>
                 <div class="wf-eq text-sm">
                   <span class="wf-var">ρ<sub>liq</sub></span> <span class="wf-op">=</span> 
-                  Σ(<span class="wf-var">x<sub>i</sub></span><span class="wf-op">·</span><span class="wf-const">MW<sub>i</sub></span>) <span class="wf-op">/</span> 
-                  Σ(<span class="wf-var">x<sub>i</sub></span><span class="wf-op">·</span><span class="wf-var">V<sub>i</sub></span>)
+                  <span class="wf-var">MW<sub>mix</sub></span> <span class="wf-op">/</span> 
+                  <span class="wf-var">V<sub>mix</sub></span>
                 </div>
               </div>
-              <p class="text-xs text-slate-400">Assumes ideal volumetric mixing of the individual Rackett molar volumes determined in Eq 8.</p>
-            </div>
-
-            <div class="col-span-1 md:col-span-2">
-              <div class="wf-box text-center">
-                <div class="wf-title">Diagram 10: State Calculation Flow</div>
-                <div class="flex justify-center items-center gap-4 text-xs font-mono flex-wrap">
-                  <span class="wf-node border-slate-500 text-slate-400">Input Array</span>
-                  <span class="wf-op">➜</span>
-                  <span class="wf-node border-orange-500 text-orange-400">Matrix Normalization (100%)</span>
-                  <span class="wf-op">➜</span>
-                  <span class="wf-node border-blue-500 text-blue-400">Calculate Opposing Fractions</span>
-                  <span class="wf-op">➜</span>
-                  <span class="wf-node border-green-500 text-green-400">Run Eq 1 - Eq 9</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-10 border-t border-slate-800 pt-8">
-          <h3 class="text-xl font-bold text-fuchsia-500 border-b border-fuchsia-900 pb-2">Part II: Pipeline Hydraulics & Two-Phase Flow</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 11: Darcy-Weisbach</div>
-                <div class="wf-eq text-sm">
-                  <span class="wf-var">dP<sub>fric</sub></span> <span class="wf-op">=</span> 
-                  <span class="wf-var">f<sub>d</sub></span> <span class="wf-op">·</span> (<span class="wf-var">L</span><span class="wf-op">/</span><span class="wf-const">D</span>) <span class="wf-op">·</span> (<span class="wf-var">ρ</span><span class="wf-op">·</span><span class="wf-var">v</span>² <span class="wf-op">/</span> 2)
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Base equation for major frictional losses across a uniform internal diameter pipe.</p>
+              <p class="text-xs text-slate-400">Assumes ideal volumetric mixing of the individual molar volumes evaluated in Eq 10.</p>
             </div>
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 12: Static Head Loss</div>
-                <div class="wf-eq text-sm">
-                  <span class="wf-var">dP<sub>stat</sub></span> <span class="wf-op">=</span> 
-                  <span class="wf-var">ρ</span> <span class="wf-op">·</span> <span class="wf-const">g</span> <span class="wf-op">·</span> <span class="wf-var">Δz</span>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Gravitational pressure loss added linearly to frictional loss. Assumes incompressible flow over segment.</p>
-            </div>
-
-            <div class="col-span-1 md:col-span-2">
-              <div class="wf-box text-center">
-                <div class="wf-title">Diagram 13: Colebrook-White Iteration Logic</div>
-                <div class="flex justify-center items-center gap-2 text-[10px] font-mono flex-wrap">
-                  <span class="wf-solid">Assume f = 0.02</span>
-                  <span class="wf-op">➜</span>
-                  <span class="wf-solid border-fuchsia-500 text-fuchsia-400">f_new = [ -2 log( ε/3.7D + 2.51/(Re√f) ) ]⁻²</span>
-                  <span class="wf-op">➜</span>
-                  <span class="wf-solid">Diff < 1e-6?</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 14: Vapor Quality (x)</div>
-                <div class="wf-eq text-sm">
-                  <span class="wf-var">x</span> <span class="wf-op">=</span> 
-                  <span class="wf-var">W<sub>v</sub></span> <span class="wf-op">/</span> 
-                  (<span class="wf-var">W<sub>v</sub></span> <span class="wf-op">+</span> <span class="wf-var">W<sub>l</sub></span>)
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Mass fraction of vapor in the flow stream. Core metric for HEM mixing.</p>
-            </div>
-
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 15: HEM Mix Density</div>
-                <div class="wf-eq text-sm">
-                  1 <span class="wf-op">/</span> <span class="wf-var">ρ<sub>mix</sub></span> <span class="wf-op">=</span> 
-                  (<span class="wf-var">x</span> <span class="wf-op">/</span> <span class="wf-const">ρ<sub>v</sub></span>) <span class="wf-op">+</span> 
-                  (<span class="wf-var">1-x</span> <span class="wf-op">/</span> <span class="wf-const">ρ<sub>l</sub></span>)
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Homogeneous Equilibrium Model assumes zero slip between gas and liquid phases.</p>
-            </div>
-
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 16: HEM Mix Viscosity</div>
-                <div class="wf-eq text-sm">
-                  <span class="wf-var">μ<sub>mix</sub></span> <span class="wf-op">=</span> 
-                  <span class="wf-var">x</span><span class="wf-op">·</span><span class="wf-const">μ<sub>v</sub></span> <span class="wf-op">+</span> 
-                  (<span class="wf-var">1-x</span>)<span class="wf-op">·</span><span class="wf-const">μ<sub>l</sub></span>
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Linear viscosity weighting model for the pseudo-single-phase friction assessment.</p>
-            </div>
-
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 17: Papay Z-Factor</div>
-                <div class="wf-eq text-xs">
-                  <span class="wf-var">Z</span> <span class="wf-op">=</span> 
-                  1 <span class="wf-op">-</span> (3.52<span class="wf-var">P_pr</span> / 10<sup>0.98T_pr</sup>) <span class="wf-op">+</span> (0.274<span class="wf-var">P_pr</span>² / 10<sup>0.81T_pr</sup>)
-                </div>
-              </div>
-              <p class="text-xs text-slate-400">Empirical natural gas compressibility directly derived from pseudo-reduced T & P limits.</p>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="space-y-10 border-t border-slate-800 pt-8">
-          <h3 class="text-xl font-bold text-cyan-500 border-b border-cyan-900 pb-2">Part III: Flow & Physical Constants</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div class="wf-box">
-                <div class="wf-title">Eq 18: Ideal Gas Law (Vol)</div>
+                <div class="wf-title">Eq 12: Expansion Volume</div>
                 <div class="wf-eq text-sm">
                   <span class="wf-var">V<sub>act</sub></span> <span class="wf-op">=</span> 
                   <span class="wf-var">V<sub>std</sub></span> <span class="wf-op">×</span> 
@@ -971,29 +874,106 @@
 
             <div>
               <div class="wf-box">
-                <div class="wf-title">Eq 19: Standard Volume Reference</div>
+                <div class="wf-title">Eq 13: Air Density Constant</div>
                 <div class="wf-eq text-sm">
-                  <span class="wf-var">scf</span> <span class="wf-op">=</span> 
-                  <span class="wf-var">Nm³</span> <span class="wf-op">×</span> 
-                  <span class="wf-const">37.3258</span>
+                  <span class="wf-const">ρ<sub>air, std</sub></span> <span class="wf-op">=</span> 
+                  1.29227 <span class="text-slate-500 text-xs">kg/Nm³</span>
                 </div>
               </div>
-              <p class="text-xs text-slate-400">Volumetric expansion ratio fixed across the General Tab and Advanced heating modules.</p>
+              <p class="text-xs text-slate-400">The software strictly hardcodes this air density to evaluate standard gas density dynamically.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 14: Mass ⇋ Volumetric Flow</div>
+                <div class="wf-eq text-sm">
+                  <span class="wf-var">Mass Flow</span> <span class="wf-op">=</span> 
+                  <span class="wf-var">Vol Flow</span> <span class="wf-op">×</span> 
+                  (<span class="wf-var">SG</span> <span class="wf-op">×</span> <span class="wf-const">ρ<sub>air</sub></span>)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Mass conversions are directly linked to the 3-decimal rounded Specific Gravity to prevent drift.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="space-y-10 border-t border-slate-800 pt-8">
+          <h3 class="text-xl font-bold text-fuchsia-500 border-b border-fuchsia-900 pb-2">Part II: Pipeline Hydraulics & Misc</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 15: Darcy-Weisbach Fanning</div>
+                <div class="wf-eq text-sm">
+                  <span class="wf-var">dP<sub>fric</sub></span> <span class="wf-op">=</span> 
+                  <span class="wf-var">f<sub>d</sub></span> <span class="wf-op">·</span> (<span class="wf-var">L</span><span class="wf-op">/</span><span class="wf-const">D</span>) <span class="wf-op">·</span> (<span class="wf-var">ρ</span><span class="wf-op">·</span><span class="wf-var">v</span>² <span class="wf-op">/</span> 2)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Base equation for major frictional losses across a uniform internal diameter pipe.</p>
             </div>
 
             <div class="col-span-1 md:col-span-2">
               <div class="wf-box text-center">
-                <div class="wf-title">Diagram 20: Bi-Directional Flow Processor</div>
-                <div class="flex justify-center items-center gap-4 text-xs font-mono flex-wrap">
-                  <span class="wf-solid border-slate-600 text-slate-400">Mass Input [kg/h]</span>
-                  <span class="wf-op">⇋</span>
-                  <span class="wf-solid border-cyan-500 text-cyan-400 text-lg"> ρ<sub>std</sub> </span>
-                  <span class="wf-op">⇋</span>
-                  <span class="wf-solid border-slate-600 text-slate-400">Volume Output [Nm³]</span>
+                <div class="wf-title">Diagram 16: Colebrook-White Iteration Logic</div>
+                <div class="flex justify-center items-center gap-2 text-[10px] font-mono flex-wrap">
+                  <span class="wf-solid">Assume f = 0.02</span>
+                  <span class="wf-op">➜</span>
+                  <span class="wf-solid border-fuchsia-500 text-fuchsia-400">f_new = [ -2 log( ε/3.7D + 2.51/(Re√f) ) ]⁻²</span>
+                  <span class="wf-op">➜</span>
+                  <span class="wf-solid">Diff < 1e-6?</span>
                 </div>
               </div>
-              <p class="text-xs text-slate-400 text-left mt-2">The GHV module handles volumetric to mass flow dynamically by recalculating Standard Density ($\rho_{std}$) using $MW_{mix}$ any time fraction inputs change.</p>
+              <p class="text-xs text-slate-400 mt-2 text-left">The Javascript iterates this formula up to 100 times to break the implicit friction loop.</p>
             </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 17: Quality (x) & Slip</div>
+                <div class="wf-eq text-sm">
+                  <span class="wf-var">x</span> <span class="wf-op">=</span> 
+                  <span class="wf-var">W<sub>v</sub></span> <span class="wf-op">/</span> 
+                  (<span class="wf-var">W<sub>v</sub></span> <span class="wf-op">+</span> <span class="wf-var">W<sub>l</sub></span>)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Mass fraction of vapor in the stream. Homogeneous Equilibrium Model assumes zero slip.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 18: HEM Mix Density</div>
+                <div class="wf-eq text-sm">
+                  1 <span class="wf-op">/</span> <span class="wf-var">ρ<sub>mix</sub></span> <span class="wf-op">=</span> 
+                  (<span class="wf-var">x</span> <span class="wf-op">/</span> <span class="wf-const">ρ<sub>v</sub></span>) <span class="wf-op">+</span> 
+                  (<span class="wf-var">1-x</span> <span class="wf-op">/</span> <span class="wf-const">ρ<sub>l</sub></span>)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Homogeneous mixture density for pseudo-single phase hydraulic calculations.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 19: HEM Mix Viscosity</div>
+                <div class="wf-eq text-sm">
+                  <span class="wf-var">μ<sub>mix</sub></span> <span class="wf-op">=</span> 
+                  <span class="wf-var">x</span><span class="wf-op">·</span><span class="wf-const">μ<sub>v</sub></span> <span class="wf-op">+</span> 
+                  (<span class="wf-var">1-x</span>)<span class="wf-op">·</span><span class="wf-const">μ<sub>l</sub></span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Linear viscosity weighting model for the Reynolds Number evaluation.</p>
+            </div>
+
+            <div>
+              <div class="wf-box">
+                <div class="wf-title">Eq 20: Papay Z-Factor</div>
+                <div class="wf-eq text-xs overflow-x-hidden">
+                  <span class="wf-var">Z</span> <span class="wf-op">=</span> 
+                  1 <span class="wf-op">-</span> (3.52<span class="wf-var">Pr</span>/10<sup>0.98Tr</sup>) <span class="wf-op">+</span> (0.274<span class="wf-var">Pr</span>²/10<sup>0.81Tr</sup>)
+                </div>
+              </div>
+              <p class="text-xs text-slate-400">Empirical natural gas compressibility directly derived from pseudo-reduced T & P limits.</p>
+            </div>
+
           </div>
         </div>
 
@@ -1168,26 +1148,26 @@
     // --- ADVANCED CALCULATORS LOGIC ---
     
     // 1. Gas Heating Value (Compositional) & Flow
+    // Carefully calibrated to exactly mirror the user's provided Excel spreadsheet logic
     const gasComps = [
-      { id: 'ch4', mw: 16.043, hhv: 40.012, z: 0.9978, tc: 190.56, pc: 45.99, zc: 0.286, si: 36, fi: 8.72, ai: 2.0, sg: 0.555, comb: true },
-      { id: 'c2h6', mw: 30.070, hhv: 70.33, z: 0.9912, tc: 305.32, pc: 48.72, zc: 0.279, si: 41, fi: 16.6, ai: 3.5, sg: 1.046, comb: true },
-      { id: 'c3h8', mw: 44.097, hhv: 101.24, z: 0.9820, tc: 369.83, pc: 42.48, zc: 0.276, si: 41, fi: 24.6, ai: 5.0, sg: 1.554, comb: true },
-      { id: 'ic4', mw: 58.123, hhv: 133.00, z: 0.9670, tc: 407.85, pc: 36.40, zc: 0.282, si: 38, fi: 32.7, ai: 6.5, sg: 2.067, comb: true },
-      { id: 'nc4', mw: 58.123, hhv: 133.50, z: 0.9640, tc: 425.12, pc: 37.96, zc: 0.274, si: 38, fi: 32.7, ai: 6.5, sg: 2.071, comb: true },
-      { id: 'ic5', mw: 72.150, hhv: 165.00, z: 0.9400, tc: 460.39, pc: 33.81, zc: 0.271, si: 40, fi: 38.3, ai: 8.0, sg: 2.592, comb: true },
-      { id: 'nc5', mw: 72.150, hhv: 165.50, z: 0.9300, tc: 469.70, pc: 33.70, zc: 0.271, si: 40, fi: 38.3, ai: 8.0, sg: 2.596, comb: true },
-      { id: 'nc6', mw: 86.177, hhv: 197.00, z: 0.8900, tc: 507.60, pc: 30.25, zc: 0.266, si: 40, fi: 38.3, ai: 9.5, sg: 3.120, comb: true },
-      { id: 'c2h4', mw: 28.054, hhv: 63.02, z: 0.9920, tc: 282.34, pc: 50.41, zc: 0.281, si: 66, fi: 11.0, ai: 3.0, sg: 0.975, comb: true },
-      { id: 'c3h6', mw: 42.081, hhv: 92.20, z: 0.9840, tc: 364.90, pc: 46.00, zc: 0.289, si: 47, fi: 21.8, ai: 4.5, sg: 1.476, comb: true },
-      { id: 'h2', mw: 2.016, hhv: 12.79, z: 1.0006, tc: 33.19, pc: 13.13, zc: 0.302, si: 282, fi: 1.00, ai: 0.5, sg: 0.070, comb: true },
-      { id: 'co2', mw: 44.010, hhv: 0.00, z: 0.9930, tc: 304.21, pc: 73.83, zc: 0.274, si: 0, fi: 0, ai: 0, sg: 1.530, comb: false },
-      { id: 'n2', mw: 28.013, hhv: 0.00, z: 0.9996, tc: 126.19, pc: 33.90, zc: 0.284, si: 0, fi: 0, ai: 0, sg: 0.967, comb: false },
-      { id: 'o2', mw: 31.999, hhv: 0.00, z: 0.9992, tc: 154.58, pc: 50.43, zc: 0.288, si: 0, fi: 0, ai: 0, sg: 1.105, comb: false }
+      { id: 'ch4', mw: 16.043, hhv: 39.933, z: 1.00146, si: 35.9, fi: 8.72, ai: 2.0, sg: 0.5553, vliq: 37.571, comb: true },
+      { id: 'c2h6', mw: 30.070, hhv: 70.30, z: 0.99431, si: 41, fi: 16.6, ai: 3.5, sg: 1.046, vliq: 50.0, comb: true },
+      { id: 'c3h8', mw: 44.097, hhv: 101.20, z: 0.98425, si: 41, fi: 24.6, ai: 5.0, sg: 1.554, vliq: 62.0, comb: true },
+      { id: 'ic4', mw: 58.123, hhv: 133.00, z: 0.95890, si: 38, fi: 32.7, ai: 6.5, sg: 2.067, vliq: 75.0, comb: true },
+      { id: 'nc4', mw: 58.123, hhv: 133.50, z: 0.96153, si: 38, fi: 32.7, ai: 6.5, sg: 2.071, vliq: 75.0, comb: true },
+      { id: 'ic5', mw: 72.150, hhv: 165.00, z: 0.9400, si: 40, fi: 38.3, ai: 8.0, sg: 2.592, vliq: 88.0, comb: true },
+      { id: 'nc5', mw: 72.150, hhv: 165.50, z: 0.9300, si: 40, fi: 38.3, ai: 8.0, sg: 2.596, vliq: 88.0, comb: true },
+      { id: 'nc6', mw: 86.177, hhv: 197.00, z: 0.8900, si: 40, fi: 38.3, ai: 9.5, sg: 3.120, vliq: 102.0, comb: true },
+      { id: 'c2h4', mw: 28.054, hhv: 63.02, z: 0.9920, si: 66, fi: 11.0, ai: 3.0, sg: 0.975, vliq: 48.0, comb: true },
+      { id: 'c3h6', mw: 42.081, hhv: 92.20, z: 0.9840, si: 47, fi: 21.8, ai: 4.5, sg: 1.476, vliq: 60.0, comb: true },
+      { id: 'h2', mw: 2.016, hhv: 12.79, z: 1.0006, si: 282, fi: 1.00, ai: 0.5, sg: 0.070, vliq: 28.0, comb: true },
+      { id: 'co2', mw: 44.010, hhv: 0.00, z: 0.9930, si: 0, fi: 0, ai: 0, sg: 1.530, vliq: 38.0, comb: false },
+      { id: 'n2', mw: 28.013, hhv: 0.00, z: 1.0000, si: 0, fi: 0, ai: 0, sg: 0.967, vliq: 35.0, comb: false },
+      { id: 'o2', mw: 31.999, hhv: 0.00, z: 0.9992, si: 0, fi: 0, ai: 0, sg: 1.105, vliq: 28.0, comb: false }
     ];
 
     function calcGHV() {
       const mode = document.getElementById('ghv-mode').value;
-      const decimals = parseInt(document.getElementById('ghv-decimals').value) || 2;
       
       let sumFrac = 0;
       const inputs = {};
@@ -1229,7 +1209,7 @@
         document.getElementById('opp-mode-title').innerText = "CALCULATED VOLUMETRIC FRACTIONS (Vol %)";
       }
 
-      // Populate Opposing Fraction Grid
+      // Populate Opposing Fraction Grid explicitly formatted to 3 decimals
       const oppGrid = document.getElementById('opp-frac-grid');
       oppGrid.innerHTML = '';
       gasComps.forEach(c => {
@@ -1237,7 +1217,7 @@
          oppGrid.innerHTML += `<div>${c.id.toUpperCase()}: <span class="text-slate-200">${valToDisplay.toFixed(3)}</span></div>`;
       });
 
-      let hhv_mix = 0, mw_mix = 0, z_mix = 0, sg_exact = 0;
+      let hhv_mix = 0, mw_mix = 0, sg_exact = 0;
       let sum_Ai = 0, sum_aiAi = 0, sum_SfiAi = 0, sum_fiAi = 0;
       
       gasComps.forEach(c => {
@@ -1247,7 +1227,6 @@
         hhv_mix += componentVal;
 
         mw_mix += x[c.id] * c.mw;
-        z_mix += x[c.id] * c.z;
         sg_exact += v[c.id] * c.sg;
 
         if (c.comb) {
@@ -1286,26 +1265,15 @@
 
       // Outputs
       const unitGHV = document.getElementById('ghv-unit').value;
-      document.getElementById('out-ghv').innerText = unitGHV === 'mj' ? hhv_mix.toFixed(decimals) : (hhv_mix / (0.001055056 * 37.3258)).toFixed(decimals);
+      document.getElementById('out-ghv').innerText = unitGHV === 'mj' ? hhv_mix.toFixed(2) : (hhv_mix / (0.001055056 * 37.3258)).toFixed(2);
       document.getElementById('out-sg').innerText = sg_calc.toFixed(3);
-      document.getElementById('out-wi').innerText = wi_calc.toFixed(decimals);
-      document.getElementById('out-mcp').innerText = mcp_calc.toFixed(1); // Standardized to 1 decimal place
+      document.getElementById('out-wi').innerText = wi_calc.toFixed(2);
+      document.getElementById('out-mcp').innerText = mcp_calc.toFixed(1); 
 
-      // LNG Liquid Density (Rackett)
-      const tLiqC = parseFloat(document.getElementById('op-liq-temp').value) || -162;
-      const tLiqK = tLiqC + 273.15;
-      const R = 83.14462;
-      let sum_xV = 0;
-      gasComps.forEach(c => {
-        if(tLiqK < c.tc) {
-          const Tr = tLiqK / c.tc;
-          const V_i = (R * c.tc / c.pc) * Math.pow(c.zc, 1 + Math.pow(1 - Tr, 2/7));
-          sum_xV += x[c.id] * V_i;
-        } else {
-          sum_xV += x[c.id] * (R * c.tc / c.pc) * c.zc; 
-        }
-      });
-      document.getElementById('out-liq-den').innerText = sum_xV > 0 ? (mw_mix / (sum_xV / 1000)).toFixed(decimals) : "0.00";
+      // LNG Liquid Density evaluated against custom volumetric coefficients
+      let sum_x_vliq = 0;
+      gasComps.forEach(c => { sum_x_vliq += x[c.id] * c.vliq; });
+      document.getElementById('out-liq-den').innerText = sum_x_vliq > 0 ? (mw_mix / (sum_x_vliq / 1000)).toFixed(2) : "0.00";
 
       // Flow Dynamics
       const opT = parseFloat(document.getElementById('op-temp').value) || 0;
@@ -1328,10 +1296,11 @@
         const dv = lbl.getAttribute('data-val');
         if (dv === 'h') lbl.innerText = isStandard ? 'kNm³/h' : 'kAm³/h';
         if (dv === 'd') lbl.innerText = isStandard ? 'kNm³/d' : 'kAm³/d';
-        if (dv === 'scf') lbl.innerText = isStandard ? 'mscfd' : 'acfd'; // updated to display acfd correctly
+        if (dv === 'scf') lbl.innerText = isStandard ? 'mscfd' : 'acfd'; 
       });
 
-      const rho_std = z_mix > 0 ? mw_mix / (22.414 * z_mix) : 0; 
+      // Exactly matches Excel air mass density standard
+      const rho_std = sg_calc * 1.29227; 
       
       // Mass to Vol Converter
       const mIn = parseFloat(document.getElementById('flow-mass-in').value) || 0;
@@ -1345,7 +1314,7 @@
       if(vOutU === 1) vOut = vAct / 1000;
       if(vOutU === 2) vOut = (vAct * 24) / 1000;
       if(vOutU === 3) vOut = (vAct * 37.3258 * 24) / 1000000;
-      document.getElementById('out-vol-flow').innerText = vOut.toFixed(decimals);
+      document.getElementById('out-vol-flow').innerText = vOut.toFixed(2); // Formatted exactly to match user requirement
 
       // Vol to Mass Converter
       const vIn = parseFloat(document.getElementById('flow-vol-in').value) || 0;
@@ -1358,10 +1327,10 @@
       const vStdIn = vActIn * (273.15 / T_k) * (P_kpa / 101.325);
       const mKghOut = vStdIn * rho_std;
       const mOutU = parseFloat(document.getElementById('flow-mass-out-u').value);
-      document.getElementById('out-mass-flow').innerText = (mKghOut / mOutU).toFixed(decimals);
+      document.getElementById('out-mass-flow').innerText = (mKghOut / mOutU).toFixed(3); // Formatted to 3 decimals per requirement
     }
 
-    // 2. Hydraulic Calculations
+    // 2. Hydraulic Calculations (Restored V1.7 Logic)
     function getDarcyFrictionFactor(Re, relRoughness) {
       if (Re < 2300) return 64 / Re;
       let f = 0.02;
