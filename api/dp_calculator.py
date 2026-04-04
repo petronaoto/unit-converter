@@ -26,21 +26,21 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
-            try:
-                content_length = int(self.headers.get('Content-Length', 0))
-                post_data = self.rfile.read(content_length)
-                data = json.loads(post_data)
-            except (ValueError, KeyError, json.JSONDecodeError):
-                self.send_response(400)
-                self.send_header('Content-type', 'application/json')
-                self.send_header('Access-Control-Allow-Origin', '*')
-                self.end_headers()
-                self.wfile.write(json.dumps({
-                    "error": True,
-                    "badge": "Bad Request",
-                    "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
-                }).encode())
-                return
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data)
+        except (ValueError, KeyError, json.JSONDecodeError):
+            self.send_response(400)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "error": True,
+                "badge": "Bad Request",
+                "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
+            }).encode())
+            return
 
         # Extract frontend payload
         scale = float(data.get('scale', 1))
@@ -88,7 +88,7 @@ class handler(BaseHTTPRequestHandler):
         vel = Wt / (rho * area)
         Re = rho * vel * D / mu
         f_d = get_darcy_friction_factor(Re, eps / D)
-        
+
         dpPa = (f_d * (L / D) * rho * math.pow(vel, 2) / 2.0) + (rho * 9.81 * dz)
 
         response = {
