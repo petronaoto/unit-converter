@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V1.10.2</title>
+  <title>O&G Unit Converter V1.10.3</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -604,7 +604,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v1.10.2</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v1.10.3</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -718,7 +718,7 @@
 
         <!-- 4. ADVANCED TAB - COMPOSITION -->
         <section>
-          <h3 class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">4. Advanced Tab — Gas Composition Input</h3>
+          <h3 class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">4. Advanced Tab (Section 1) — Gas Composition Input</h3>
           <p class="text-sm text-slate-400 mb-4">Enter the percentage of each component. The total must sum to 100%. Choose between Volumetric Fraction (%) or Mole Fraction (%) input mode.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
             <div class="flex items-center justify-between">
@@ -756,7 +756,7 @@
 
         <!-- 5. ADVANCED - OPERATING CONDITIONS -->
         <section>
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">5. Advanced Tab — Operating Conditions</h3>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">5. Advanced Tab (Section 2) — Operating Conditions</h3>
           <p class="text-sm text-slate-400 mb-4">Override standard conditions (0°C, 0 MPaG) to compute actual volumetric flows at operating pressure and temperature. LNG liquid temp is only used for liquid density calculation.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
             <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2">2. CONDITIONS &amp; OPERATING STATE</div>
@@ -783,7 +783,7 @@
 
         <!-- 6. ADVANCED - OUTPUTS SECTION 3 -->
         <section>
-          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">6. Section 3 — Physical &amp; Combustion Properties</h3>
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">6. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
           <p class="text-sm text-slate-400 mb-4">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Results update automatically whenever any input changes.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs">
             <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2 mb-3">3. PHYSICAL &amp; COMBUSTION PROPERTIES</div>
@@ -823,7 +823,7 @@
 
         <!-- 7. ADVANCED - FLOW CONVERSIONS -->
         <section>
-          <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Section 4 — Mass &amp; Volumetric Flow Conversions</h3>
+          <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
           <p class="text-sm text-slate-400 mb-4">Two independent sub-panels: (A) Mass → Volume and (B) Volume → Mass. Both use the same gas composition and conditions from the panels above.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -871,7 +871,7 @@
 
 		<!-- 8. BASIC ENG -->
         <section>
-          <h3 class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Basic Eng Tab — Hydraulics Calculators</h3>
+          <h3 class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Basic Eng Tab — Various Calculators</h3>
           <p class="text-sm text-slate-400 mb-4">Two engineering calculators for pipe geometry and gas compressibility. Each is independent and requires its own inputs.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
@@ -909,7 +909,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10.3. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -955,22 +955,22 @@
                 <div class="flex items-start gap-3">
                   <span class="bg-orange-600/30 text-orange-300 rounded px-2 py-0.5 text-[10px] font-bold mt-0.5 whitespace-nowrap">Step 1</span>
                   <div>
-                    <div class="text-slate-200 mb-1">ColH<sub>i</sub> = Cvᵢ / Zᵢ &nbsp; (un-normalized mol proportional)</div>
+                    <div class="text-slate-200 mb-1">Cm<sub>i</sub> = Cvᵢ / Zᵢ &nbsp; (un-normalized mol proportional)</div>
                     <div class="text-slate-500 text-[10px]">Cvᵢ = volumetric fraction of component i; Zᵢ = pure-component compressibility at standard conditions</div>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
                   <span class="bg-orange-600/30 text-orange-300 rounded px-2 py-0.5 text-[10px] font-bold mt-0.5 whitespace-nowrap">Step 2</span>
                   <div>
-                    <div class="text-slate-200 mb-1">Cmᵢ = ROUND( ColHᵢ / Σ ColH , 4 ) &nbsp; <span class="text-amber-400">[ColI — rounded to 4 d.p.]</span></div>
+                    <div class="text-slate-200 mb-1">Cmᵢ = ROUND( Cm<sub>i</sub> / Σ Cm , 4 ) &nbsp; <span class="text-amber-400">[Cm<sub>i</sub> % — rounded to 4 d.p.]</span></div>
                     <div class="text-slate-500 text-[10px]">Cmᵢ = normalized mole fraction. Rounding to 4 d.p. is mandated by the Excel reference (JIS K 2301 calculation worksheet)</div>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
                   <span class="bg-orange-600/30 text-orange-300 rounded px-2 py-0.5 text-[10px] font-bold mt-0.5 whitespace-nowrap">Reverse</span>
                   <div>
-                    <div class="text-slate-200 mb-1">Cvᵢ (recovered) = ( Cmᵢ × Zᵢ ) / Σ(Cmₖ × Zₖ) &nbsp; <span class="text-amber-400">[ColR]</span></div>
-                    <div class="text-slate-500 text-[10px]">Mol% input mode: user enters Cmᵢ → displayed vol fracs follow ColR formula</div>
+                    <div class="text-slate-200 mb-1">Cvᵢ (recovered) = ( Cmᵢ × Zᵢ ) / Σ(Cm × Zₖ) &nbsp; <span class="text-amber-400">[Cm]</span></div>
+                    <div class="text-slate-500 text-[10px]">Mol% input mode: user enters Cmᵢ → displayed vol fracs follow the Cvᵢ (recovered) formula</div>
                   </div>
                 </div>
               </div>
@@ -981,24 +981,24 @@
           <div class="mb-8">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.3 Sample Gas Compressibility Factor (Z)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
-              <div class="text-slate-200">ColJ<sub>i</sub> = ROUND( Cmᵢ × √bᵢ , 5 ) &nbsp; <span class="text-amber-400">[rounded per-component to 5 d.p.]</span></div>
-              <div class="text-2xl text-center text-green-300 py-2">Z = 1 − (Σ ColJᵢ)²</div>
+              <div class="text-slate-200">Cmᵢ × √bᵢ = ROUND( Cmᵢ × √bᵢ , 5 ) &nbsp; <span class="text-amber-400">[rounded per-component to 5 d.p.]</span></div>
+              <div class="text-2xl text-center text-green-300 py-2">Z = 1 − (Σ Cmᵢ × √bᵢ)²</div>
               <div class="text-slate-200">Z_rounded = ROUND(Z, 4) &nbsp; <span class="text-amber-400">[used for FLOW density calculation]</span></div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700">
                 <div class="text-[10px] text-slate-500 mb-2">Example (CH₄=89%, C₂=7%, C₃=2.5%, iC₄=0.7%, nC₄=0.5%, N₂=0.3%):</div>
-                <div class="text-slate-300">Σ ColJ = 0.8887×0.049 + 0.0704×0.1 + 0.0254×0.1453 + ... = 0.05693</div>
+                <div class="text-slate-300">Σ Cm√b = 0.8887×0.049 + 0.0704×0.1 + 0.0254×0.1453 + ... = 0.05693</div>
                 <div class="text-green-300">Z = 1 − 0.05693² = 0.9968 (4 d.p.)</div>
               </div>
-              <div class="text-[10px] text-yellow-300 bg-yellow-500/10 rounded p-2">⚡ CRITICAL: Z_exact (before rounding) is used for HHV/SG calculations; Z_rounded (4 d.p.) is used for standard gas density ρ_std. This matches the Excel Calc.bench sheet exactly.</div>
+              <div class="text-[10px] text-yellow-300 bg-yellow-500/10 rounded p-2">⚡ CRITICAL: Z_exact (before rounding) is used for HHV/SG calculations; Z_rounded (4 d.p.) is used for standard gas density ρ_std. This matches the Excel-based Calc. sheet exactly.</div>
             </div>
           </div>
 
           <!-- 1.4 HHV -->
           <div class="mb-8">
-            <h4 class="text-sm font-bold text-orange-300 mb-3">1.4 Gross Calorific Value / HHV (R26)</h4>
+            <h4 class="text-sm font-bold text-orange-300 mb-3">1.4 Gross Calorific Value / HHV</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">H = ROUND( Σ(Cmᵢ × Hᵢ) / Z_exact , 2 ) [MJ/Nm³]</div>
-              <div class="text-slate-400 text-[10px]">No per-component rounding of Cmᵢ×Hᵢ before summing. Z_exact = 1−(ΣColJ)². Final result rounded to 2 d.p. → R26.</div>
+              <div class="text-slate-400 text-[10px]">No per-component rounding of Cmᵢ×Hᵢ before summing. Z_exact = 1−(ΣColJ)². Final result rounded to 2 d.p. → 1.4 Gross Calorific Value / HHV.</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700">
                 <div class="text-slate-400 text-[10px] mb-1">Reference example:</div>
                 <div class="text-slate-300">Σ(Cmᵢ×Hᵢ) = 0.8887×39.84 + 0.0704×69.79 + ... = 44.444</div>
@@ -1009,11 +1009,11 @@
 
           <!-- 1.5 SG and WI -->
           <div class="mb-8">
-            <h4 class="text-sm font-bold text-orange-300 mb-3">1.5 Specific Gravity (R27) &amp; Wobbe Index (R28)</h4>
+            <h4 class="text-sm font-bold text-orange-300 mb-3">1.5 Specific Gravity &amp; Wobbe Index</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-blue-300 py-1">S = ROUND( Σ(Cmᵢ × Sᵢ) / Z_exact , 3 ) [Air=1]</div>
               <div class="text-2xl text-center text-purple-300 py-1">WI = ROUND( H₂ dp / √(S₃ dp) , 2 ) [MJ/Nm³]</div>
-              <div class="text-slate-400 text-[10px]">Sᵢ = specific gravity of pure component i relative to air. <strong class="text-yellow-300">WI uses the already-rounded H (2 d.p.) and S (3 d.p.)</strong> — not the exact intermediate values. This is critical for matching R28 = 56.00.</div>
+              <div class="text-slate-400 text-[10px]">Sᵢ = specific gravity of pure component i relative to air. <strong class="text-yellow-300">WI uses the already-rounded H (2 d.p.) and S (3 d.p.)</strong> — not the exact intermediate values. This is critical for matching Wobbe Index = 56.00.</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700">
                 <div class="text-slate-300">S = 0.6321 / 0.9968 = 0.634 (3 d.p.)</div>
                 <div class="text-slate-300">WI = 44.59 / √0.634 = 55.997... → <span class="text-purple-300 font-bold">56.00</span></div>
@@ -1048,7 +1048,7 @@
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] space-y-1 text-slate-300">
                 <div>P = 101325 Pa (1 atm, standard)</div>
                 <div>MW = Σ(Cmᵢ × MWᵢ) [g/mol], where <span class="text-amber-300">Cmᵢ is rounded to 4 d.p.</span></div>
-                <div>Z_rounded = ROUND(1 − (ΣColJ)², 4) &nbsp;← <span class="text-yellow-300">ROUNDED Z used here for exact Excel match</span></div>
+                <div>Z_rounded = ROUND(1 − (ΣCm√b)², 4) &nbsp;← <span class="text-yellow-300">ROUNDED Z used here for exact Excel match</span></div>
                 <div>R = 8.31446262 J/(mol·K); T_std = 273.15 K (0°C)</div>
               </div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700">
@@ -1389,7 +1389,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.10.2</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.10.3</div>
     </div>
   </footer>
 
