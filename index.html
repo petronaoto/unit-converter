@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V1.9</title>
+  <title>O&G Unit Converter V1.10</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -604,7 +604,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v1.9</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v1.10</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -615,7 +615,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v1.9 • Client-Side</span>
+              <span class="text-slate-500 text-[10px]">v1.10 • Client-Side</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -914,7 +914,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.9. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1222,7 +1222,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.9</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.10</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1290,7 +1290,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.9</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.10</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1393,7 +1393,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.9</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.10</div>
     </div>
   </footer>
 
@@ -1488,7 +1488,7 @@
       const name = document.getElementById('report-name').value || "Anonymous User";
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V1.9`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V1.10`);
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -1732,37 +1732,75 @@
       document.getElementById('z-result').innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*tr) + 0.274*pr*pr/Math.pow(10, 0.8157*tr)).toFixed(4); 
     }
 
-    function getDarcyFrictionFactor(Re, relRoughness) {
-      if (Re < 2300) return 64 / Re;
-      let f = 0.02; let diff = 1; let iter = 0;
-      while (diff > 1e-6 && iter < 100) { let f_new = 1 / Math.pow(-2 * Math.log10(relRoughness / 3.7 + 2.51 / (Re * Math.sqrt(f))), 2); diff = Math.abs(f_new - f); f = f_new; iter++; }
-      return f;
-    }
-    function calcDeltaPressure() {
-      const scale = parseFloat(document.getElementById('dp-scale').value) || 1;
-      const D = (parseFloat(document.getElementById('dp-id').value) || 0) * parseFloat(document.getElementById('dp-id-unit').value);
-      const L = (parseFloat(document.getElementById('dp-len').value) || 0) * parseFloat(document.getElementById('dp-len-unit').value);
-      const eps = (parseFloat(document.getElementById('dp-rough').value) || 0) * parseFloat(document.getElementById('dp-rough-unit').value);
-      const dz = (parseFloat(document.getElementById('dp-elev').value) || 0) * parseFloat(document.getElementById('dp-elev-unit').value);
-      const Wv = (parseFloat(document.getElementById('dp-v-flow').value) || 0) * parseFloat(document.getElementById('dp-v-flow-u').value) * scale;
-      const rhov = (parseFloat(document.getElementById('dp-v-den').value) || 1) / parseFloat(document.getElementById('dp-v-den-u').value);
-      const muv = (parseFloat(document.getElementById('dp-v-visc').value) || 0.01) * parseFloat(document.getElementById('dp-v-visc-u').value);
-      const Wl = (parseFloat(document.getElementById('dp-l-flow').value) || 0) * parseFloat(document.getElementById('dp-l-flow-u').value) * scale;
-      const rhol = (parseFloat(document.getElementById('dp-l-den').value) || 1) / parseFloat(document.getElementById('dp-l-den-u').value);
-      const mul = (parseFloat(document.getElementById('dp-l-visc').value) || 1) * parseFloat(document.getElementById('dp-l-visc-u').value);
-      const badge = document.getElementById('dp-regime-badge'); const Wt = Wv + Wl;
-      if (Wt <= 0 || D <= 0) { badge.innerText = "No Flow"; return; }
-      let rho, mu;
-      if (Wv > 0 && Wl === 0) { badge.innerText = "Single Phase (Vapor)"; rho = rhov; mu = muv; }
-      else if (Wl > 0 && Wv === 0) { badge.innerText = "Single Phase (Liquid)"; rho = rhol; mu = mul; }
-      else { badge.innerText = "Two-Phase (HEM)"; const x = Wv/Wt; rho = 1/((x/rhov)+((1-x)/rhol)); mu = x*muv + (1-x)*mul; }
-      const vel = Wt / (rho * Math.PI * D*D / 4); const Re = rho * vel * D / mu; const f = getDarcyFrictionFactor(Re, eps/D);
-      const dpPa = (f * (L/D) * rho * vel*vel / 2) + (rho * 9.81 * dz);
-      document.getElementById('dp-out-total').innerText = formatValue(dpPa / parseFloat(document.getElementById('dp-out-total-u').value));
-      document.getElementById('dp-out-vel').innerText = formatValue(vel * parseFloat(document.getElementById('dp-out-vel-u').value));
-      let dpl; const u = parseFloat(document.getElementById('dp-out-len-u').value);
-      if(u === 1000) dpl = (dpPa/100000)/(L/100); else if(u === 10) dpl = (dpPa/1000)/(L/100); else dpl = (dpPa/6894.76)/(L/0.3048);
-      document.getElementById('dp-out-len').innerText = formatValue(dpl);
+	// --- SERVER-SIDE HYDRAULICS (Python API Call) ---
+    async function calcDeltaPressure() {
+      const badge = document.getElementById('dp-regime-badge');
+      badge.innerText = "Calculating Server-Side...";
+      badge.className = "px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse";
+
+      const payload = {
+        scale: parseFloat(document.getElementById('dp-scale').value) || 1,
+        id: parseFloat(document.getElementById('dp-id').value) || 0,
+        id_mult: parseFloat(document.getElementById('dp-id-unit').value) || 1,
+        len: parseFloat(document.getElementById('dp-len').value) || 0,
+        len_mult: parseFloat(document.getElementById('dp-len-unit').value) || 1,
+        rough: parseFloat(document.getElementById('dp-rough').value) || 0,
+        rough_mult: parseFloat(document.getElementById('dp-rough-unit').value) || 1,
+        elev: parseFloat(document.getElementById('dp-elev').value) || 0,
+        elev_mult: parseFloat(document.getElementById('dp-elev-unit').value) || 1,
+        v_flow: parseFloat(document.getElementById('dp-v-flow').value) || 0,
+        v_flow_m: parseFloat(document.getElementById('dp-v-flow-u').value) || 1,
+        v_den: parseFloat(document.getElementById('dp-v-den').value) || 1,
+        v_den_m: parseFloat(document.getElementById('dp-v-den-u').value) || 1,
+        v_visc: parseFloat(document.getElementById('dp-v-visc').value) || 0.01,
+        v_visc_m: parseFloat(document.getElementById('dp-v-visc-u').value) || 1,
+        l_flow: parseFloat(document.getElementById('dp-l-flow').value) || 0,
+        l_flow_m: parseFloat(document.getElementById('dp-l-flow-u').value) || 1,
+        l_den: parseFloat(document.getElementById('dp-l-den').value) || 1,
+        l_den_m: parseFloat(document.getElementById('dp-l-den-u').value) || 1,
+        l_visc: parseFloat(document.getElementById('dp-l-visc').value) || 1,
+        l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1
+      };
+
+      try {
+        const res = await fetch('/api/dp_calculator', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        // Handle Zero Flow or Errors
+        if (data.error) {
+          badge.innerText = data.badge;
+          badge.className = data.badgeClass;
+          return;
+        }
+
+        // Apply Server Response to UI
+        badge.innerText = data.badge;
+        badge.className = data.badgeClass;
+
+        const out_tot_m = parseFloat(document.getElementById('dp-out-total-u').value);
+        const out_len_m = parseFloat(document.getElementById('dp-out-len-u').value);
+        const out_vel_m = parseFloat(document.getElementById('dp-out-vel-u').value);
+
+        document.getElementById('dp-out-total').innerText = formatValue(data.dpPa / out_tot_m);
+        document.getElementById('dp-out-vel').innerText = formatValue(data.vel * out_vel_m);
+
+        let dpl;
+        if(out_len_m === 1000) dpl = (data.dpPa / 100000) / (data.L / 100); 
+        else if(out_len_m === 10) dpl = (data.dpPa / 1000) / (data.L / 100); 
+        else dpl = (data.dpPa / 6894.76) / (data.L / 0.3048); 
+        
+        document.getElementById('dp-out-len').innerText = formatValue(dpl);
+
+      } catch (err) {
+        badge.innerText = "API Connection Failed";
+        badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
+        console.error("Vercel Python API Error: ", err);
+      }
     }
 
     // --- BASE FORMATTING & LOCAL STORAGE---
