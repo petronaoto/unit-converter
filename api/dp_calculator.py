@@ -18,10 +18,29 @@ def get_darcy_friction_factor(Re, rel_roughness):
     return f
 
 class handler(BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        data = json.loads(post_data)
+            try:
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
+                data = json.loads(post_data)
+            except (ValueError, KeyError, json.JSONDecodeError):
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "error": True,
+                    "badge": "Bad Request",
+                    "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
+                }).encode())
+                return
 
         # Extract frontend payload
         scale = float(data.get('scale', 1))
@@ -43,6 +62,7 @@ class handler(BaseHTTPRequestHandler):
         if Wt <= 0 or D <= 0:
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({"error": True, "badge": "No Flow", "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"}).encode())
             return
@@ -82,5 +102,6 @@ class handler(BaseHTTPRequestHandler):
 
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(json.dumps(response).encode('utf-8'))

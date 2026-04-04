@@ -869,7 +869,7 @@
           </div>
         </section>
 
-        <!-- 8. BASIC ENG -->
+		<!-- 8. BASIC ENG -->
         <section>
           <h3 class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Basic Eng Tab — Hydraulics Calculators</h3>
           <p class="text-sm text-slate-400 mb-4">Three engineering calculators for pipe and flow work. Each is independent and requires its own inputs.</p>
@@ -914,7 +914,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1179,14 +1179,15 @@
           </div>
 
           <div class="mb-8">
-            <h4 class="text-sm font-bold text-green-300 mb-3">4.2 Pressure Drop: Darcy-Weisbach + Churchill Friction Factor</h4>
+			<h4 class="text-sm font-bold text-green-300 mb-3">4.2 Pressure Drop: Darcy-Weisbach + Colebrook-White Friction Factor</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">ΔP = f·(L/D)·(ρ·v²/2) + ρ·g·Δz &nbsp; [Pa]</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
-                <div>Churchill (1977) friction factor — valid for all Re and roughness regimes:</div>
-                <div>f = 8·[ (8/Re)¹² + (A+B)⁻¹·⁵ ]^(1/12)</div>
-                <div>A = {−2.457·ln[(7/Re)⁰·⁹ + 0.27·(ε/D)]}¹⁶ &nbsp; B = (37530/Re)¹⁶</div>
-                <div class="text-amber-300">ε = surface roughness (default 0.046 mm for commercial steel)</div>
+                <div>Iterative Colebrook-White equation — turbulent regime (Re ≥ 2300):</div>
+                <div>1/√f = −2·log₁₀( ε/(3.7·D) + 2.51/(Re·√f) )</div>
+                <div>Laminar regime (Re &lt; 2300): f = 64/Re</div>
+                <div>Solved iteratively to convergence &nbsp;(tolerance = 1×10⁻⁶, max 100 iterations)</div>
+                <div class="text-amber-300">ε = pipe absolute roughness [m]; default 0.045 mm (commercial steel)</div>
               </div>
             </div>
           </div>
@@ -1208,9 +1209,9 @@
               <div class="text-amber-400 font-bold">CODATA 2018</div>
               <div>Universal gas constant R = 8.31446262 J/(mol·K). Standard conditions: T_std = 273.15 K (0°C), P_std = 101325 Pa (1 atm).</div>
             </div>
-            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
-              <div class="text-amber-400 font-bold">Churchill (1977)</div>
-              <div>Explicit friction factor for pipe flow — "Friction factor equations span all fluid-flow regimes", Chemical Engineering, 84(24):91-92.</div>
+			<div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Colebrook &amp; White (1939)</div>
+              <div>Iterative implicit friction factor equation for turbulent pipe flow — "Experiments with Fluid Friction in Roughened Pipes", Proc. Royal Society A, 161:367–381. Solved iteratively (tol 1×10⁻⁶) in the Python backend.</div>
             </div>
           </div>
         </section>
