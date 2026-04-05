@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V2.0</title>
+  <title>O&G Unit Converter V2.0.1</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -754,7 +754,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.0</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.0.1</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -765,7 +765,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v1.10 • Client-Side</span>
+              <span class="text-slate-500 text-[10px]">v2.0.1 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -866,9 +866,36 @@
           </div>
         </section>
 
-        <!-- 4. ADVANCED TAB - COMPOSITION -->
+		<!-- 4. BASIC ENG -->
         <section>
-          <h3 class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">4. Advanced Tab (Section 1) — Gas Composition Input</h3>
+          <h3 class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">4. Basic Eng Tab — Various Calculators</h3>
+          <p class="text-sm text-slate-400 mb-4">Two engineering calculators for pipe geometry and gas compressibility. Each is independent and requires its own inputs.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
+              <div class="text-green-400 font-bold text-[10px] mb-2">PIPE VOLUME</div>
+              <div class="space-y-1 text-[10px] text-slate-400">
+                <div>Inner Diameter → <span class="text-slate-200">mm or inch</span></div>
+                <div>Length → <span class="text-slate-200">m, ft, mile, km</span></div>
+                <div class="text-green-300 mt-1">→ Volume [m³, bbl, gallon]</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
+              <div class="text-green-400 font-bold text-[10px] mb-2">Z-FACTOR (Papay)</div>
+              <div class="space-y-1 text-[10px] text-slate-400">
+                <div>Specific Gravity, T, P inputs</div>
+                <div>Papay correlation method</div>
+                <div class="text-green-300 mt-1">→ Z compressibility factor</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
+            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API).
+          </div>
+        </section>
+		
+        <!-- 5. ADVANCED TAB - COMPOSITION -->
+        <section>
+          <h3 class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">5. Advanced Tab (Section 1) — Gas Composition Input</h3>
           <p class="text-sm text-slate-400 mb-4">Enter the percentage of each component. The total must sum to 100%. Choose between Volumetric Fraction (%) or Mole Fraction (%) input mode.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
             <div class="flex items-center justify-between">
@@ -904,9 +931,9 @@
           </div>
         </section>
 
-        <!-- 5. ADVANCED - OPERATING CONDITIONS -->
+        <!-- 6. ADVANCED - OPERATING CONDITIONS -->
         <section>
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">5. Advanced Tab (Section 2) — Operating Conditions</h3>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">6. Advanced Tab (Section 2) — Operating Conditions</h3>
           <p class="text-sm text-slate-400 mb-4">Override standard conditions (0°C, 0 MPaG) to compute actual volumetric flows at operating pressure and temperature. LNG liquid temp is only used for liquid density calculation.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
             <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2">2. CONDITIONS &amp; OPERATING STATE</div>
@@ -931,9 +958,9 @@
           </div>
         </section>
 
-        <!-- 6. ADVANCED - OUTPUTS SECTION 3 -->
+        <!-- 7. ADVANCED - OUTPUTS SECTION 3 -->
         <section>
-          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">6. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
           <p class="text-sm text-slate-400 mb-4">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Results update automatically whenever any input changes.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs">
             <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2 mb-3">3. PHYSICAL &amp; COMBUSTION PROPERTIES</div>
@@ -971,9 +998,9 @@
           </div>
         </section>
 
-        <!-- 7. ADVANCED - FLOW CONVERSIONS -->
+        <!-- 8. ADVANCED - FLOW CONVERSIONS -->
         <section>
-          <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
+          <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
           <p class="text-sm text-slate-400 mb-4">Two independent sub-panels: (A) Mass → Volume and (B) Volume → Mass. Both use the same gas composition and conditions from the panels above.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -1019,41 +1046,9 @@
           </div>
         </section>
 
-		<!-- 8. BASIC ENG -->
+        <!-- 9. SAFETY TAB -->
         <section>
-          <h3 class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Basic Eng Tab — Various Calculators</h3>
-          <p class="text-sm text-slate-400 mb-4">Two engineering calculators for pipe geometry and gas compressibility. Each is independent and requires its own inputs.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
-              <div class="text-green-400 font-bold text-[10px] mb-2">PIPE VOLUME</div>
-              <div class="space-y-1 text-[10px] text-slate-400">
-                <div>Inner Diameter → <span class="text-slate-200">mm or inch</span></div>
-                <div>Length → <span class="text-slate-200">m, ft, mile, km</span></div>
-                <div class="text-green-300 mt-1">→ Volume [m³, bbl, gallon]</div>
-              </div>
-            </div>
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
-              <div class="text-green-400 font-bold text-[10px] mb-2">Z-FACTOR (Papay)</div>
-              <div class="space-y-1 text-[10px] text-slate-400">
-                <div>Specific Gravity, T, P inputs</div>
-                <div>Papay correlation method</div>
-                <div class="text-green-300 mt-1">→ Z compressibility factor</div>
-              </div>
-            </div>
-          </div>
-          <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
-            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API).
-          </div>
-        </section>
-
-        <!-- 9. REPORT TAB -->
-        <section>
-          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Report Tab — Bug Reports &amp; Feature Requests</h3>
-          <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
-
-        <!-- 10. SAFETY TAB -->
-        <section>
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Safety Tab — PRV Sizing (API 520 Part I)</h3>
           <p class="text-sm text-slate-400 mb-4">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -1080,6 +1075,12 @@
           <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
         </section>
 
+        <!-- 10. REPORT TAB -->
+        <section>
+          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Report Tab — Bug Reports &amp; Feature Requests</h3>
+          <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
+		</section>
+
       </div>
     </div>
 
@@ -1087,7 +1088,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.0. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.0.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1469,6 +1470,10 @@
               <div class="text-amber-400 font-bold">Colebrook &amp; White (1939)</div>
               <div>Iterative implicit friction factor equation for turbulent pipe flow — "Experiments with Fluid Friction in Roughened Pipes", Proc. Royal Society A, 161:367–381. Solved iteratively (tol 1×10⁻⁶) in the Python backend.</div>
             </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">API Standard 520 Part I — Ninth Edition (2014)</div>
+              <div>Sizing, Selection, and Installation of Pressure-relieving Devices — Part I: Sizing and Selection. American Petroleum Institute, Washington D.C. Governs all PRV sizing equations implemented in the Safety tab: §5.6 Gas/Vapor (Eq. 2, 5, 12, 15), §5.7 Steam (Eq. 21, 22), §5.8 Liquid Certified (Eq. 28–30), §5.9 Liquid Non-Certified (Eq. 38, 39), §5.10 Two-Phase Omega Method (Annex C.2.2, Eq. C.12–C.21). API 526 orifice areas (Table 1, D–T) also sourced from this edition.</div>
+            </div>
           </div>
         </section>
 
@@ -1488,7 +1493,7 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">2. Nature of the Application</h3>
-            <p>The Application is a browser-based, client-side engineering utility. All calculations are performed locally within your web browser. No data is transmitted to any external server during normal operation. The Application is provided as a convenience tool for engineering estimation and is <strong>not intended to replace formal engineering analysis, professional judgment, or regulatory-approved calculation methods</strong>.</p>
+            <p>The Application is a browser-based engineering utility. The majority of calculations are performed locally within your web browser. However, two calculators — the Pipe Delta Pressure Calculator (Advanced tab) and the PRV Sizing Calculator (Safety tab) — transmit engineering input data (such as flow rates, pressures, and fluid properties) to serverless API functions hosted on Vercel for server-side computation. No personally identifiable information is transmitted in these requests. The Application is provided as a convenience tool for engineering estimation and is <strong>not intended to replace formal engineering analysis, professional judgment, or regulatory-approved calculation methods</strong>.</p>
           </div>
 
           <div>
@@ -1580,32 +1585,37 @@
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">4. Hosting &amp; Third-Party Services</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">4. Server-Side Calculation APIs</h3>
+            <p>Two calculators in this Application — the Pipe Delta Pressure Calculator and the PRV Sizing Calculator — send engineering input data to serverless functions hosted on Vercel for computation. The data transmitted consists exclusively of numerical engineering parameters (e.g. pressures, flow rates, fluid properties). This data is processed transiently to return a calculation result and is not logged, stored, or associated with any user identity by the Application. Standard Vercel infrastructure logging may capture request metadata (see Section 5 below).</p>
+          </div>
+
+          <div>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">5. Report / Feedback Feature</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">6. Report / Feedback Feature</h3>
             <p>The Report tab generates a mailto: link that opens your local email client. No data is transmitted through the Application — your email client handles the message. The developer (Naoto Yamabe) may receive your email address and the content you write if you choose to send the email. This information will be used solely to respond to your report or request and will not be shared with third parties.</p>
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">6. No Cookies or Tracking</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">7. No Cookies or Tracking</h3>
             <p>The Application does not set any cookies and does not use any tracking technologies including Google Analytics, session tracking, or advertising pixels. Your use of the Application is completely anonymous from the Application's perspective.</p>
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">7. Children's Privacy</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">8. Children's Privacy</h3>
             <p>The Application is intended for professional use by adults. It does not knowingly collect information from children under the age of 16. If you believe a child has submitted information through the Application, please contact the developer.</p>
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">8. Your Rights</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">9. Your Rights</h3>
             <p>As no personal data is collected by the Application, there is no personal data to access, rectify, delete, or export. To remove your locally stored custom modules, use your browser's developer tools or site data clearing options (Settings → Privacy → Clear Site Data for the relevant domain).</p>
           </div>
 
           <div>
-            <h3 class="text-base font-semibold text-amber-500 mb-2">9. Contact</h3>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">10. Contact</h3>
             <p>For privacy-related questions or concerns, please contact the developer via the Report tab or at <span class="text-amber-400">petro.naoto@gmail.com</span>.</p>
           </div>
         </div>
@@ -1650,7 +1660,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.0</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.0.1</div>
     </div>
   </footer>
 
@@ -1745,7 +1755,7 @@
       const name = document.getElementById('report-name').value || "Anonymous User";
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V1.10`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.0.1`);
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
