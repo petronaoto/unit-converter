@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V1.10.3</title>
+  <title>O&G Unit Converter V2.0</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -54,6 +54,7 @@
         <button id="btn-general" onclick="switchTab('general')" class="pb-3 whitespace-nowrap border-b-2 border-amber-500 text-amber-500 hover:text-amber-400 transition-colors uppercase">General</button>
         <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Basic Eng</button>
         <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Advanced</button>
+        <button id="btn-safety" onclick="switchTab('safety')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-red-400 text-red-500/70 transition-colors uppercase">Safety</button>
         <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">How To Use</button>
         <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Theory</button>
         <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Terms of Use</button>
@@ -601,10 +602,159 @@
       </div>
     </div>
 
+
+    <div id="tab-safety" class="hidden">
+      <div class="grid grid-cols-1 gap-6">
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+              PRV Sizing Calculator (API 520 Part I)
+            </h2>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Units:</span>
+                <select id="psv-units" onchange="updatePSVMode()" class="bg-slate-950 border border-slate-700 text-red-400 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
+                  <option value="USC">USC (psia · lb/h · in²)</option>
+                  <option value="SI">SI (kPa · kg/h · mm²)</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Mode:</span>
+                <select id="psv-mode" onchange="updatePSVMode()" class="bg-slate-950 border border-slate-700 text-red-400 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
+                  <option value="gas">§5.6 Gas / Vapor Relief</option>
+                  <option value="steam">§5.7 Steam Relief</option>
+                  <option value="liquid_cert">§5.8 Liquid — Certified PRV</option>
+                  <option value="liquid_noncert">§5.9 Liquid — Non-Certified PRV</option>
+                  <option value="twophase">§5.10 Two-Phase Relief (Omega)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="p-6 space-y-6">
+
+            <!-- GAS/VAPOR -->
+            <div id="psv-inputs-gas" class="space-y-4">
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Gas / Vapor Inputs (§5.6)</h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W" placeholder="e.g. 53500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MOL. WEIGHT M</label><div class="flex"><input type="number" step="any" id="psv-M" placeholder="e.g. 51" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">g/mol</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">HEAT RATIO k (Cp/Cv)</label><div class="flex"><input type="number" step="any" id="psv-k" placeholder="e.g. 1.3" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING TEMP T</label><div class="flex"><input type="number" step="any" id="psv-T" placeholder="e.g. 627" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°R</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">COMPRESSIBILITY Z</label><div class="flex"><input type="number" step="any" id="psv-Z" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1</label><div class="flex"><input type="number" step="any" id="psv-P1" placeholder="e.g. 97.2" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE P2</label><div class="flex"><input type="number" step="any" id="psv-P2" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+              </div>
+              <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal">[0.975 PRV; 0.62 rupture disk]</span></label><input type="number" step="any" id="psv-Kd" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb <span class="text-slate-600 font-normal">[1.0 conventional/pilot]</span></label><input type="number" step="any" id="psv-Kb" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc <span class="text-slate-600 font-normal">[1.0 no disk; 0.9 with disk]</span></label><input type="number" step="any" id="psv-Kc" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/30 rounded p-2 text-[10px] text-amber-300">P1 = Set Pressure × (1 + OP%) + P_atm. Critical vs. Subcritical auto-detected: Pcf = P1 × (2/(k+1))^(k/(k−1)).</div>
+            </div>
+
+            <!-- STEAM -->
+            <div id="psv-inputs-steam" class="hidden space-y-4">
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Steam Inputs (§5.7)</h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" placeholder="e.g. 153500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1</label><div class="flex"><input type="number" step="any" id="psv-P1-steam" placeholder="e.g. 1774.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">KSH <span class="text-slate-600 font-normal">[1.0 = saturated]</span></label><div class="flex"><input type="number" step="any" id="psv-KSH" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">Table 9</span></div></div>
+              </div>
+              <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-steam" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb</label><input type="number" step="any" id="psv-Kb-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+              </div>
+              <div class="bg-slate-800/50 border border-slate-700 rounded p-2 text-[10px] text-slate-400">KN (Napier correction) is computed automatically. KSH = 1.0 for saturated steam; use Table 9 in API 520 for superheated values.</div>
+            </div>
+
+            <!-- LIQUID §5.8 / §5.9 -->
+            <div id="psv-inputs-liquid" class="hidden space-y-4">
+              <h3 id="psv-liquid-heading" class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Liquid Inputs (§5.8 Certified)</h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">FLOW RATE Q</label><div class="flex"><input type="number" step="any" id="psv-Q" placeholder="e.g. 1800" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Q-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">gal/min</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">SPECIFIC GRAVITY Gl</label><div class="flex"><input type="number" step="any" id="psv-Gl" placeholder="e.g. 0.9" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">H₂O=1</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">VISCOSITY µ <span class="text-slate-600 font-normal">[0 = ignore]</span></label><div class="flex"><input type="number" step="any" id="psv-mu" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">cP</span></div></div>
+                <div id="psv-P1-row-liquid"><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1 <span class="text-slate-600 font-normal">[gauge]</span></label><div class="flex"><input type="number" step="any" id="psv-P1-liq" placeholder="e.g. 275" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+                <div id="psv-Ps-row" class="hidden"><label class="block text-[10px] font-semibold text-slate-400 mb-1">SET PRESSURE Ps</label><div class="flex"><input type="number" step="any" id="psv-Ps" placeholder="e.g. 250" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Ps-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE P2</label><div class="flex"><input type="number" step="any" id="psv-P2-liq" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2 border-t border-slate-800">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-liq" value="0.65" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kw <span class="text-slate-600 font-normal">[backpressure]</span></label><input type="number" step="any" id="psv-Kw" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-liq" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div id="psv-Kp-row" class="hidden"><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kp <span class="text-slate-600 font-normal">[25%OP→1.0; 10%→0.6]</span></label><input type="number" step="any" id="psv-Kp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+              </div>
+            </div>
+
+            <!-- TWO-PHASE -->
+            <div id="psv-inputs-twophase" class="hidden space-y-4">
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Two-Phase Inputs — Omega Method (§5.10 / Annex C.2.2)</h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W-tp" placeholder="e.g. 477430" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-tp-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">INLET SPEC. VOL. vo <span class="text-slate-600 font-normal">[at Po]</span></label><div class="flex"><input type="number" step="any" id="psv-vo" placeholder="e.g. 0.3116" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-vo-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">SPEC. VOL. v9 <span class="text-slate-600 font-normal">[flash @ 0.9×Po]</span></label><div class="flex"><input type="number" step="any" id="psv-v9" placeholder="e.g. 0.3629" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-v9-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS Po <span class="text-slate-600 font-normal">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Po" placeholder="e.g. 80.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Po-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE Pa <span class="text-slate-600 font-normal">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Pa" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Pa-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+              </div>
+              <div class="grid grid-cols-4 gap-4 pt-2 border-t border-slate-800">
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal">[0.85 two-phase]</span></label><input type="number" step="any" id="psv-Kd-tp" value="0.85" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb</label><input type="number" step="any" id="psv-Kb-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kv <span class="text-slate-600 font-normal">[viscosity]</span></label><input type="number" step="any" id="psv-Kv-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+              </div>
+              <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-2 text-[10px] text-fuchsia-300">v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg; Po/Pa in kPa abs.</div>
+            </div>
+
+            <!-- CALCULATE -->
+            <button onclick="calcPSV()" class="w-full py-4 bg-red-700 hover:bg-red-600 text-slate-100 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all uppercase">Calculate Orifice Size (API 520)</button>
+
+            <!-- RESULTS -->
+            <div class="bg-slate-900 border border-slate-700 rounded-lg p-5">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="text-xs font-bold tracking-widest text-red-500 uppercase">Sizing Results</h3>
+                <span id="psv-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Calc...</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                <div>
+                  <label class="block text-xs text-slate-500 mb-1">REQUIRED AREA A</label>
+                  <div class="flex items-baseline gap-2">
+                    <span id="psv-out-area" class="text-3xl font-mono font-bold text-white">—</span>
+                    <span id="psv-out-area-unit" class="text-sm text-red-400 font-bold">in²</span>
+                    <button onclick="copyText(document.getElementById('psv-out-area').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors ml-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-500 mb-1">API 526 ORIFICE</label>
+                  <div class="flex items-baseline gap-2">
+                    <span id="psv-out-orifice" class="text-3xl font-mono font-bold text-amber-400">—</span>
+                    <button onclick="copyText(document.getElementById('psv-out-orifice').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-500 mb-1">ORIFICE AREA</label>
+                  <div class="flex items-baseline gap-2">
+                    <span id="psv-out-orifice-area" class="text-xl font-mono text-slate-300">—</span>
+                    <button onclick="copyText(document.getElementById('psv-out-orifice-area').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-slate-950/50 rounded p-2 border border-slate-800 mb-3">
+                <span class="text-[10px] text-slate-400 font-mono" id="psv-out-details">Run calculation to see intermediate values (C, Pcf, KN, ω, η_c, G, Kv, Re…)</span>
+              </div>
+              <div class="bg-red-500/10 border border-red-500/20 rounded p-2 text-[10px] text-red-400">⚠ Preliminary sizing only per API 520 §5.6–§5.10. Final PRV selection requires independent engineering review, manufacturer-certified Kd, and compliance with applicable codes (ASME, local regulations).</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v1.10.3</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.0</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -900,6 +1050,34 @@
         <section>
           <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Report Tab — Bug Reports &amp; Feature Requests</h3>
           <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
+
+        <!-- 10. SAFETY TAB -->
+        <section>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <p class="text-sm text-slate-400 mb-4">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
+              <div class="space-y-1.5 text-slate-400">
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.6</span><span>Gas / Vapor — Critical (Eq. 2/5) or Subcritical (Eq. 12/15); flow regime auto-detected vs. Pcf</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.7</span><span>Steam — Napier equation (Eq. 21/22) with KN and KSH corrections</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.8</span><span>Liquid, Certified PRV — iterative viscosity correction Kv (Eq. 28/29)</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.9</span><span>Liquid, Non-Certified — Kp overpressure correction (Eq. 38/39)</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.10</span><span>Two-Phase — Omega Method, Annex C.2.2 (Eq. C.12–C.21)</span></div>
+              </div>
+            </div>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">KEY OUTPUTS</div>
+              <div class="space-y-1 text-slate-400">
+                <div>Required effective area A <span class="text-slate-200">[in² or mm²]</span></div>
+                <div>API 526 orifice letter <span class="text-slate-200">[D through T]</span></div>
+                <div>API 526 orifice standard area <span class="text-slate-200">[next size ≥ A]</span></div>
+                <div>Flow regime <span class="text-slate-200">[Critical / Subcritical]</span></div>
+                <div>Intermediate values <span class="text-slate-200">[C, Pcf, KN, ω, η_c, G, Kv, Re]</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
         </section>
 
       </div>
@@ -909,7 +1087,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v1.10.3. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.0. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -998,7 +1176,7 @@
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.4 Gross Calorific Value / HHV</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">H = ROUND( Σ(Cmᵢ × Hᵢ) / Z_exact , 2 ) [MJ/Nm³]</div>
-              <div class="text-slate-400 text-[10px]">No per-component rounding of Cmᵢ×Hᵢ before summing. Z_exact = 1−(ΣColJ)². Final result rounded to 2 d.p. → 1.4 Gross Calorific Value / HHV.</div>
+              <div class="text-slate-400 text-[10px]">No per-component rounding of Cmᵢ×Hᵢ before summing. Z_exact = 1−(ΣCm√b)². Final result rounded to 2 d.p. → 1.4 Gross Calorific Value / HHV.</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700">
                 <div class="text-slate-400 text-[10px] mb-1">Reference example:</div>
                 <div class="text-slate-300">Σ(Cmᵢ×Hᵢ) = 0.8887×39.84 + 0.0704×69.79 + ... = 44.444</div>
@@ -1188,6 +1366,89 @@
           </div>
         </section>
 
+        <!-- PART VI: API 520 PRV Sizing Theory -->
+        <section>
+          <h3 class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6">Part VI — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-slate-200">Critical check: P2 ≤ Pcf = P1 × (2/(k+1))^(k/(k−1)) &nbsp;[Eq. 1]</div>
+              <div class="text-2xl text-center text-green-300 py-1">A = W / (C · Kd · P1 · Kb · Kc) × √(T·Z/M)</div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] space-y-1 text-slate-300">
+                <div>C (USC) = 520 × √( k · (2/(k+1))^((k+1)/(k−1)) ) &nbsp;[Eq. 8]</div>
+                <div>C (SI) = 0.03948 × √( k · (2/(k+1))^((k+1)/(k−1)) ) &nbsp;[Eq. 9]</div>
+                <div class="text-amber-300">Kd = 0.975 (PRV) · Kb = 1.0 (conventional/pilot) · Kc = 1.0 (no rupture disk)</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-xl text-center text-blue-300 py-1">F2 = √[ k/(k−1) · r^(2/k) · (1−r^((k−1)/k)) / (1−r) ] &nbsp; r = P2/P1</div>
+              <div class="text-slate-200">USC: A = W / (735 · F2 · Kd · Kc) × √(T·Z / (M·P1·(P1−P2)))</div>
+              <div class="text-slate-200">SI: A = 17.9·W / (F2 · Kd · Kc) × √(T·Z / (M·P1·(P1−P2)))</div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.3 Steam (§5.7, Eq. 21/22)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-slate-200">USC: A = W / (51.5 · P1 · Kd · Kb · Kc · KN · KSH)</div>
+              <div class="text-slate-200">SI: A = 190.5·W / (P1 · Kd · Kb · Kc · KN · KSH)</div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] text-slate-300 space-y-1">
+                <div>KN = 1.0 (P1 ≤ 1500 psia); KN = (0.1906·P1−1000)/(0.2292·P1−1061) (1500 &lt; P1 ≤ 3200 psia)</div>
+                <div>KSH = 1.0 for saturated steam; from Table 9 (API 520) for superheated steam</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-xl text-center text-cyan-300 py-1">USC: A = Q / (38 · Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
+              <div class="text-slate-200">SI: A = 11.78·Q / (Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] text-slate-300 space-y-1">
+                <div>Kv = (0.9935 + 2.878/√Re + 342.75/Re^1.5)^(−1) &nbsp;[Eq. 30]</div>
+                <div>Re = Q·(2800·Gl)/(µ·√A) [USC] or Q·(18800·Gl)/(µ·√A) [SI]</div>
+                <div class="text-amber-300">Iterative: size with Kv=1 → Re from next API 526 size → Kv → resize</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-slate-200">USC: A = Q / (38 · Kd · Kw · Kc · Kv · Kp) × √(Gl / (1.25·Ps−P2))</div>
+              <div class="text-[10px] text-slate-400">Kp = 1.0 at 25% overpressure; Kp ≈ 0.6 at 10% overpressure (Fig. 38). Default Kd = 0.62.</div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-slate-200">Step 1: ω = 9·(v9/vo − 1) &nbsp;[Eq. C.12] &nbsp; v9 = spec. vol. at isenthalpic flash to 0.9·Po</div>
+              <div class="text-slate-200">Step 2: η_c ≈ [1 + (1.0446−0.0093431·√ω)·ω^(−0.56261)]^(−0.70356+0.014685·lnω) &nbsp;[Eq. C.15]</div>
+              <div class="text-slate-200">Step 3 (critical): G = 68.09·η_c·√(Po/(vo·ω)) [USC] | G = η_c·√(Po/(vo·ω)) [SI, Po in Pa]</div>
+              <div class="text-xl text-center text-fuchsia-300 py-1">A = 0.04·W / (Kd·Kb·Kc·Kv·G) [USC, in²] &nbsp;|&nbsp; A = 277.8·W / (Kd·Kb·Kc·Kv·G) [SI, mm²]</div>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-red-300 mb-3">6.7 API 526 Standard Effective Orifice Areas</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs font-mono border-collapse">
+                <thead><tr class="bg-slate-800 text-amber-400"><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th></tr></thead>
+                <tbody class="text-slate-300">
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">D</td><td class="px-2 py-0.5 text-center border border-slate-700">0.110</td><td class="px-2 py-0.5 text-center border border-slate-700">71.0</td><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">N</td><td class="px-2 py-0.5 text-center border border-slate-700">4.340</td><td class="px-2 py-0.5 text-center border border-slate-700">2800</td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">E</td><td class="px-2 py-0.5 text-center border border-slate-700">0.196</td><td class="px-2 py-0.5 text-center border border-slate-700">126.5</td><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">P</td><td class="px-2 py-0.5 text-center border border-slate-700">6.380</td><td class="px-2 py-0.5 text-center border border-slate-700">4116</td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">F</td><td class="px-2 py-0.5 text-center border border-slate-700">0.307</td><td class="px-2 py-0.5 text-center border border-slate-700">198.1</td><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">Q</td><td class="px-2 py-0.5 text-center border border-slate-700">11.05</td><td class="px-2 py-0.5 text-center border border-slate-700">7129</td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">G</td><td class="px-2 py-0.5 text-center border border-slate-700">0.503</td><td class="px-2 py-0.5 text-center border border-slate-700">324.5</td><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">R</td><td class="px-2 py-0.5 text-center border border-slate-700">16.00</td><td class="px-2 py-0.5 text-center border border-slate-700">10323</td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">H</td><td class="px-2 py-0.5 text-center border border-slate-700">0.785</td><td class="px-2 py-0.5 text-center border border-slate-700">506.5</td><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">T</td><td class="px-2 py-0.5 text-center border border-slate-700">26.00</td><td class="px-2 py-0.5 text-center border border-slate-700">16774</td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">J</td><td class="px-2 py-0.5 text-center border border-slate-700">1.287</td><td class="px-2 py-0.5 text-center border border-slate-700">830.3</td><td class="px-2 py-0.5 text-center border border-slate-700" colspan="3"></td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">K</td><td class="px-2 py-0.5 text-center border border-slate-700">1.838</td><td class="px-2 py-0.5 text-center border border-slate-700">1186</td><td class="px-2 py-0.5 text-center border border-slate-700" colspan="3"></td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">L</td><td class="px-2 py-0.5 text-center border border-slate-700">2.853</td><td class="px-2 py-0.5 text-center border border-slate-700">1841</td><td class="px-2 py-0.5 text-center border border-slate-700" colspan="3"></td></tr>
+                  <tr><td class="px-2 py-0.5 text-center border border-slate-700 text-amber-400 font-bold">M</td><td class="px-2 py-0.5 text-center border border-slate-700">3.600</td><td class="px-2 py-0.5 text-center border border-slate-700">2323</td><td class="px-2 py-0.5 text-center border border-slate-700" colspan="3"></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         <!-- PART V: Data Sources -->
         <section>
           <h3 class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-4">Part V — Data Sources &amp; Standards</h3>
@@ -1218,7 +1479,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.10</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.0</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1286,7 +1547,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 1.10</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.0</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1345,7 +1606,7 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">9. Contact</h3>
-            <p>For privacy-related questions or concerns, please contact the developer via the Report tab or at <span class="text-amber-400">petro.naoto@gmail.com</span>.</p>
+            <p>For privacy-related questions or concerns, please contact the developer via the Report tab or at <span class="text-amber-400"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b3b2e3f392465252a243f240b2c262a222765282426">[email&#160;protected]</a></span>.</p>
           </div>
         </div>
       </div>
@@ -1389,7 +1650,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 1.10.3</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.0</div>
     </div>
   </footer>
 
@@ -1438,7 +1699,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     function copyText(text, btnElement) {
       if (!text) return;
       navigator.clipboard.writeText(text).then(() => {
@@ -1454,7 +1715,7 @@
     }
 
     function switchTab(tabId) {
-      const tabs = ['general', 'basic', 'advanced', 'howto', 'theory', 'terms', 'privacy', 'report'];
+      const tabs = ['general', 'basic', 'advanced', 'safety', 'howto', 'theory', 'terms', 'privacy', 'report'];
       tabs.forEach(t => {
         const pane = document.getElementById('tab-' + t);
         if(pane) pane.classList.add('hidden');
@@ -1598,7 +1859,7 @@
         oppGrid.innerHTML+='<div>'+c.id.toUpperCase()+': <span class="text-slate-200">'+pct+'</span></div>';
       });
 
-      // Z_gas: ColJ=ROUND(Cmi×√bi,5) per component; Z=1−(ΣColJ)²  ───────────────────────
+      // Z_gas: Cmi√b=ROUND(Cmi×√bi,5) per component; Z=1−(ΣCm√b)²  ───────────────────────
       let sumJ=0;
       gasComps.forEach(c=>{ sumJ+=Math.round(x[c.id]*c.sqrtbi*1e5)/1e5; });
       const Z_exact  =1-sumJ*sumJ;
@@ -1846,10 +2107,127 @@
       const p = presets[e.target.value];
       document.getElementById('mod-title').value  = p ? p.title  : '';
       document.getElementById('mod-unit1').value  = p ? p.u1     : '';
-      document.getElementById('mod-unit2').value  = p ? p.u2     : '';
+      document.getElementById('mod-unit2').value   = p ? p.u2     : '';
       document.getElementById('mod-factor').value = p ? p.factor : '';
     });
-    window.addEventListener('DOMContentLoaded', () => { savedModules.forEach(createCard); calcGHV(); });
+    window.addEventListener('DOMContentLoaded', () => { savedModules.forEach(createCard); calcGHV(); updatePSVMode(); });
+    // ── PSV SIZING (SAFETY TAB) ──────────────────────────────────────────────
+    function updatePSVMode() {
+      const mode  = document.getElementById('psv-mode').value;
+      const units = document.getElementById('psv-units').value;
+      ['gas','steam','liquid','twophase'].forEach(m => {
+        const el = document.getElementById('psv-inputs-' + m);
+        if (el) el.classList.add('hidden');
+      });
+      if      (mode === 'gas')                                           document.getElementById('psv-inputs-gas').classList.remove('hidden');
+      else if (mode === 'steam')                                         document.getElementById('psv-inputs-steam').classList.remove('hidden');
+      else if (mode === 'liquid_cert' || mode === 'liquid_noncert')      document.getElementById('psv-inputs-liquid').classList.remove('hidden');
+      else if (mode === 'twophase')                                      document.getElementById('psv-inputs-twophase').classList.remove('hidden');
+      const KpRow = document.getElementById('psv-Kp-row');
+      const PsRow = document.getElementById('psv-Ps-row');
+      const P1Row = document.getElementById('psv-P1-row-liquid');
+      const hdg   = document.getElementById('psv-liquid-heading');
+      const KdLiq = document.getElementById('psv-Kd-liq');
+      const nc    = mode === 'liquid_noncert';
+      if (KpRow) KpRow.classList.toggle('hidden', !nc);
+      if (PsRow) PsRow.classList.toggle('hidden', !nc);
+      if (P1Row) P1Row.classList.toggle('hidden',  nc);
+      if (hdg)   hdg.innerText = nc ? 'Liquid Inputs (\u00a75.9 Non-Certified)' : 'Liquid Inputs (\u00a75.8 Certified)';
+      if (KdLiq) KdLiq.value   = nc ? '0.62' : '0.65';
+      _psvUnitLabels(units);
+    }
+
+    function _psvUnitLabels(u) {
+      const s = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = v; };
+      const usc = u === 'USC';
+      s('psv-W-unit',        usc ? 'lb/h'    : 'kg/h');
+      s('psv-W-steam-unit',  usc ? 'lb/h'    : 'kg/h');
+      s('psv-W-tp-unit',     usc ? 'lb/h'    : 'kg/h');
+      s('psv-T-unit',        usc ? '\u00b0R' : 'K');
+      s('psv-P1-unit',       usc ? 'psia'    : 'kPa abs');
+      s('psv-P2-unit',       usc ? 'psia'    : 'kPa abs');
+      s('psv-P1-steam-unit', usc ? 'psia'    : 'kPa abs');
+      s('psv-P1-liq-unit',   usc ? 'psig'    : 'kPag');
+      s('psv-P2-liq-unit',   usc ? 'psig'    : 'kPag');
+      s('psv-Ps-unit',       usc ? 'psig'    : 'kPag');
+      s('psv-Q-unit',        usc ? 'gal/min' : 'L/min');
+      s('psv-vo-unit',       usc ? 'ft\u00b3/lb' : 'm\u00b3/kg');
+      s('psv-v9-unit',       usc ? 'ft\u00b3/lb' : 'm\u00b3/kg');
+      s('psv-Po-unit',       usc ? 'psia'    : 'kPa abs');
+      s('psv-Pa-unit',       usc ? 'psia'    : 'kPa abs');
+    }
+
+    async function calcPSV() {
+      const mode  = document.getElementById('psv-mode').value;
+      const units = document.getElementById('psv-units').value;
+      const badge = document.getElementById('psv-badge');
+      badge.innerText = 'Calculating...';
+      badge.className = 'px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse';
+      const g  = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
+      const gd = (id, def) => { const el = document.getElementById(id); if (!el) return def; const v = parseFloat(el.value); return isNaN(v) ? def : v; };
+      const payload = { mode, units };
+      if (mode === 'gas') {
+        Object.assign(payload, { W:g('psv-W'), M:gd('psv-M',28), k:gd('psv-k',1.3), T:g('psv-T'),
+          Z:gd('psv-Z',1.0), P1:g('psv-P1'), P2:g('psv-P2'),
+          Kd:gd('psv-Kd',0.975), Kb:gd('psv-Kb',1.0), Kc:gd('psv-Kc',1.0) });
+      } else if (mode === 'steam') {
+        Object.assign(payload, { W:g('psv-W-steam'), P1:g('psv-P1-steam'),
+          Kd:gd('psv-Kd-steam',0.975), Kb:gd('psv-Kb-steam',1.0),
+          Kc:gd('psv-Kc-steam',1.0), KSH:gd('psv-KSH',1.0) });
+      } else if (mode === 'liquid_cert') {
+        Object.assign(payload, { Q:g('psv-Q'), Gl:gd('psv-Gl',1.0), P1:g('psv-P1-liq'),
+          P2:g('psv-P2-liq'), mu:g('psv-mu'),
+          Kd:gd('psv-Kd-liq',0.65), Kw:gd('psv-Kw',1.0), Kc:gd('psv-Kc-liq',1.0) });
+      } else if (mode === 'liquid_noncert') {
+        Object.assign(payload, { Q:g('psv-Q'), Gl:gd('psv-Gl',1.0), Ps:g('psv-Ps'),
+          P2:g('psv-P2-liq'), mu:g('psv-mu'),
+          Kd:gd('psv-Kd-liq',0.62), Kw:gd('psv-Kw',1.0),
+          Kc:gd('psv-Kc-liq',1.0), Kp:gd('psv-Kp',1.0) });
+      } else if (mode === 'twophase') {
+        Object.assign(payload, { W:g('psv-W-tp'), vo:g('psv-vo'), v9:g('psv-v9'),
+          Po:g('psv-Po'), Pa:g('psv-Pa'),
+          Kd:gd('psv-Kd-tp',0.85), Kb:gd('psv-Kb-tp',1.0),
+          Kc:gd('psv-Kc-tp',1.0), Kv:gd('psv-Kv-tp',1.0) });
+      }
+      try {
+        const res  = await fetch('/api/psv_calculator', {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.error) {
+          badge.innerText = data.message || 'Error';
+          badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
+          ['psv-out-area','psv-out-orifice','psv-out-orifice-area'].forEach(id => { document.getElementById(id).innerText = '\u2014'; });
+          document.getElementById('psv-out-details').innerText = data.message || '';
+          return;
+        }
+        badge.innerText = data.badge;
+        badge.className = data.badgeClass;
+        document.getElementById('psv-out-area').innerText         = typeof data.area === 'number' ? data.area.toFixed(4) : '\u2014';
+        document.getElementById('psv-out-area-unit').innerText    = data.area_unit;
+        document.getElementById('psv-out-orifice').innerText      = data.orifice;
+        document.getElementById('psv-out-orifice-area').innerText = (typeof data.orifice_area === 'number' ? data.orifice_area.toFixed(2) : '\u2014') + ' ' + data.orifice_unit;
+        const det = [];
+        if (data.flow_regime)                  det.push('Regime: ' + data.flow_regime);
+        if (data.C !== undefined)               det.push('C = ' + data.C);
+        if (data.Pcf !== undefined)             det.push('Pcf = ' + data.Pcf);
+        if (data.critical_ratio !== undefined)  det.push('Pcf/P1 = ' + data.critical_ratio);
+        if (data.KN !== undefined)              det.push('KN = ' + data.KN);
+        if (data.KSH !== undefined)             det.push('KSH = ' + data.KSH);
+        if (data.Kv !== undefined && data.Kv !== 1.0) det.push('Kv = ' + data.Kv);
+        if (data.Re !== null && data.Re !== undefined) det.push('Re = ' + Math.round(data.Re));
+        if (data.omega !== undefined)           det.push('\u03c9 = ' + data.omega);
+        if (data.eta_c !== undefined)           det.push('\u03b7_c = ' + data.eta_c);
+        if (data.Pc !== undefined)              det.push('Pc = ' + data.Pc);
+        if (data.G !== undefined)               det.push('G = ' + data.G);
+        document.getElementById('psv-out-details').innerText = det.join('  |  ');
+      } catch (err) {
+        badge.innerText = 'API Connection Failed';
+        badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
+        console.error('PSV API Error:', err);
+      }
+    }
+
   </script>
 </body>
 </html>
