@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V2.1.1</title>
+  <title>O&G Unit Converter V2.2</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -369,17 +369,35 @@
               </div>
 
               <div class="bg-slate-900 border border-slate-700 rounded-lg p-4 shadow-inner space-y-4">
-                <h3 class="text-xs font-bold tracking-widest text-slate-300 border-b border-slate-800 pb-1 uppercase">3. Physical & Combustion Properties</h3>
+                <div class="flex items-center justify-between border-b border-slate-800 pb-1">
+                  <h3 class="text-xs font-bold tracking-widest text-slate-300 uppercase">3. Physical & Combustion Properties</h3>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase">HV:</span>
+                    <div class="flex rounded overflow-hidden border border-slate-700 text-[9px] font-bold">
+                      <button id="ghv-hv-hhv" onclick="setHVMode('hhv')" class="px-2 py-0.5 bg-orange-600 text-white transition-colors">HHV</button>
+                      <button id="ghv-hv-lhv" onclick="setHVMode('lhv')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">LHV</button>
+                    </div>
+                  </div>
+                </div>
                 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Heating Value (HHV)</span>
+                  <span id="out-ghv-label" class="text-xs font-semibold text-slate-400">Heating Value (HHV)</span>
                   <div class="flex items-center gap-2">
                     <span id="out-ghv" class="font-mono font-bold text-lg text-white">0.00</span>
                     <select id="ghv-unit" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer"><option value="mj">MJ/Nm³</option><option value="btu">btu/scf</option></select>
                     <button onclick="copyText(document.getElementById('out-ghv').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
-                
+
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-400">Mol. Weight (MW)</span>
+                  <div class="flex items-center gap-2">
+                    <span id="out-mw" class="font-mono font-bold text-lg text-white">0.000</span>
+                    <span class="text-xs text-orange-500 font-bold">g/mol</span>
+                    <button onclick="copyText(document.getElementById('out-mw').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-semibold text-slate-400">Specific Gravity <span class="text-[10px] text-slate-600">(Air = 1)</span></span>
                   <div class="flex items-center gap-2">
@@ -389,7 +407,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Wobbe Index (WI)</span>
+                  <span class="text-xs font-semibold text-slate-400">Wobbe Index (WI) <span class="text-[10px] text-slate-600">HHV-based</span></span>
                   <div class="flex items-center gap-2">
                     <span id="out-wi" class="font-mono font-bold text-lg text-white">0.00</span>
                     <button onclick="copyText(document.getElementById('out-wi').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -424,15 +442,22 @@
                     <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Given Mass Flow</label>
                     <div class="flex mb-2">
                       <input type="number" step="any" id="flow-mass-in" value="100" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-orange-500" />
-                      <select id="flow-mass-in-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-orange-500 font-bold outline-none cursor-pointer"><option value="1000">ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
+                      <select id="flow-mass-in-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-orange-500 font-bold outline-none cursor-pointer"><option value="3600">kg/s</option><option value="1">kg/h</option><option value="1000" selected>ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
                     </div>
                   </div>
                   <div class="border-t border-slate-800 pt-3">
-                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Calculated Volumetric Flow</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label class="block text-[10px] font-bold text-slate-500 uppercase">Calculated Output (A)</label>
+                      <div class="flex rounded overflow-hidden border border-slate-700 text-[8px] font-bold">
+                        <button id="flowA-mode-vol" onclick="setFlowAMode('vol')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors">VOL</button>
+                        <button id="flowA-mode-mol" onclick="setFlowAMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">MOL</button>
+                      </div>
+                    </div>
                     <div class="flex items-center justify-between">
                       <span id="out-vol-flow" class="text-2xl font-mono font-bold text-white">0.00</span>
                       <div class="flex items-center gap-2">
                         <select id="flow-vol-out-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="1" class="vf-label" data-val="h">kNm³/h</option><option value="2" class="vf-label" data-val="d">kNm³/d</option><option value="3" class="vf-label" data-val="scf">mscfd</option></select>
+                        <select id="flow-mol-out-u" onchange="calcGHV()" class="hidden bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="kmol_h">kmol/h</option><option value="mol_s">mol/s</option></select>
                         <button onclick="copyText(document.getElementById('out-vol-flow').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                       </div>
                     </div>
@@ -448,11 +473,18 @@
                     </div>
                   </div>
                   <div class="border-t border-slate-800 pt-3">
-                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Calculated Mass Flow</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label class="block text-[10px] font-bold text-slate-500 uppercase">Calculated Output (B)</label>
+                      <div class="flex rounded overflow-hidden border border-slate-700 text-[8px] font-bold">
+                        <button id="flowB-mode-mass" onclick="setFlowBMode('mass')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors">MASS</button>
+                        <button id="flowB-mode-mol" onclick="setFlowBMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">MOL</button>
+                      </div>
+                    </div>
                     <div class="flex items-center justify-between">
                       <span id="out-mass-flow" class="text-2xl font-mono font-bold text-white">0.000</span>
                       <div class="flex items-center gap-2">
-                        <select id="flow-mass-out-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="1000">ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
+                        <select id="flow-mass-out-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="3600">kg/s</option><option value="1">kg/h</option><option value="1000" selected>ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
+                        <select id="flow-mol-out2-u" onchange="calcGHV()" class="hidden bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="kmol_h">kmol/h</option><option value="mol_s">mol/s</option></select>
                         <button onclick="copyText(document.getElementById('out-mass-flow').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                       </div>
                     </div>
@@ -767,7 +799,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.1.1</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.2</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -778,7 +810,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v2.1.1 • Hybrid</span>
+              <span class="text-slate-500 text-[10px]">v2.2 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -977,14 +1009,19 @@
         <!-- 7. ADVANCED - OUTPUTS SECTION 3 -->
         <section>
           <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
-          <p class="text-sm text-slate-400 mb-4">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Results update automatically whenever any input changes.</p>
+          <p class="text-sm text-slate-400 mb-4">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Use the <strong class="text-orange-400">HHV / LHV</strong> toggle inside the Section 3 header row to switch between Higher (総発熱量) and Lower (真発熱量) Heating Value modes. Results update automatically. Note: Wobbe Index always uses HHV per JIS K 2301 §7 regardless of mode.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs">
             <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2 mb-3">3. PHYSICAL &amp; COMBUSTION PROPERTIES</div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-3">
               <div class="bg-slate-900 border border-slate-700 rounded p-2">
                 <div class="text-[10px] text-slate-500">Heating Value (HHV)</div>
                 <div class="text-xl font-bold text-green-400">44.59</div>
                 <div class="text-[10px] text-amber-400">MJ/Nm³</div>
+              </div>
+              <div class="bg-slate-900 border border-orange-700/50 rounded p-2">
+                <div class="text-[10px] text-orange-400">Mol. Weight (MW)</div>
+                <div class="text-xl font-bold text-white">18.305</div>
+                <div class="text-[10px] text-amber-400">g/mol</div>
               </div>
               <div class="bg-slate-900 border border-slate-700 rounded p-2">
                 <div class="text-[10px] text-slate-500">Specific Gravity</div>
@@ -992,7 +1029,7 @@
                 <div class="text-[10px] text-amber-400">Air = 1</div>
               </div>
               <div class="bg-slate-900 border border-slate-700 rounded p-2">
-                <div class="text-[10px] text-slate-500">Wobbe Index</div>
+                <div class="text-[10px] text-slate-500">Wobbe Index (HHV)</div>
                 <div class="text-xl font-bold text-purple-400">56.00</div>
                 <div class="text-[10px] text-amber-400">MJ/Nm³</div>
               </div>
@@ -1001,6 +1038,9 @@
                 <div class="text-xl font-bold text-cyan-400">~466</div>
                 <div class="text-[10px] text-amber-400">kg/m³ @-162°C</div>
               </div>
+            </div>
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded p-2 text-[10px] text-amber-300 mb-2">
+              <strong>HHV/LHV Toggle:</strong> In LHV mode, Heating Value shows 真発熱量 from JIS K 2301 Table 30. LHV (ref. example) ≈ 39.74 MJ/Nm³. WI, SG, MW and density outputs are unaffected by this toggle.
             </div>
             <div class="bg-slate-900 border border-slate-700 rounded p-2">
               <div class="text-[10px] text-slate-500 mb-1">Calculated Molar Fractions (Vol% mode input → Mol% displayed)</div>
@@ -1017,7 +1057,10 @@
         <!-- 8. ADVANCED - FLOW CONVERSIONS -->
         <section>
           <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
-          <p class="text-sm text-slate-400 mb-4">Two independent sub-panels: (A) Mass → Volume and (B) Volume → Mass. Both use the same gas composition and conditions from the panels above.</p>
+          <p class="text-sm text-slate-400 mb-4">Two independent sub-panels: (A) Given Mass → Calculated Output and (B) Given Volume → Calculated Output. Each output panel has a toggle button (VOL/MOL for panel A; MASS/MOL for panel B) to switch between the standard flow output and Molar Flow. Available units: Mass: kg/s, kg/h, ton/h, ton/d, lb/h, lb/d. Molar: kmol/h or mol/s.</p>
+          <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300 mb-4">
+            <strong>🔵 VOL/MOL and MASS/MOL Toggles:</strong> When MOL mode is selected, the output panel displays Molar Flow calculated as ṁ[kg/h] ÷ MW[g/mol] = n_dot[kmol/h]. Select kmol/h or mol/s from the unit dropdown. These molar flow values are useful for combustion air calculations, pipe sizing, and heat exchanger duties.
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">A. MASS → VOLUME</div>
@@ -1104,7 +1147,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.1.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.2. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1123,20 +1166,21 @@
                     <th class="px-2 py-1 border border-slate-700">MW (g/mol)</th>
                     <th class="px-2 py-1 border border-slate-700">Zᵢ</th>
                     <th class="px-2 py-1 border border-slate-700">HHV (MJ/Nm³)</th>
+                    <th class="px-2 py-1 border border-slate-700 text-blue-300">LHV (MJ/Nm³)</th>
                     <th class="px-2 py-1 border border-slate-700">√bᵢ</th>
                     <th class="px-2 py-1 border border-slate-700">Sᵢ (Air=1)</th>
                     <th class="px-2 py-1 border border-slate-700">Flame Spd (cm/s)</th>
                   </tr>
                 </thead>
                 <tbody class="text-slate-300">
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">CH₄</td><td class="px-2 py-0.5 text-center border border-slate-700">16.043</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9976</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">39.84</td><td class="px-2 py-0.5 text-center border border-slate-700">0.049</td><td class="px-2 py-0.5 text-center border border-slate-700">0.554</td><td class="px-2 py-0.5 text-center border border-slate-700">35.9</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">C₂H₆</td><td class="px-2 py-0.5 text-center border border-slate-700">30.07</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9900</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">69.79</td><td class="px-2 py-0.5 text-center border border-slate-700">0.100</td><td class="px-2 py-0.5 text-center border border-slate-700">1.039</td><td class="px-2 py-0.5 text-center border border-slate-700">41</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">C₃H₈</td><td class="px-2 py-0.5 text-center border border-slate-700">44.097</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9789</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">99.22</td><td class="px-2 py-0.5 text-center border border-slate-700">0.1453</td><td class="px-2 py-0.5 text-center border border-slate-700">1.523</td><td class="px-2 py-0.5 text-center border border-slate-700">41</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">iC₄H₁₀</td><td class="px-2 py-0.5 text-center border border-slate-700">58.123</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9580</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">128.23</td><td class="px-2 py-0.5 text-center border border-slate-700">0.2049</td><td class="px-2 py-0.5 text-center border border-slate-700">2.008</td><td class="px-2 py-0.5 text-center border border-slate-700">38</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">nC₄H₁₀</td><td class="px-2 py-0.5 text-center border border-slate-700">58.123</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9572</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">128.66</td><td class="px-2 py-0.5 text-center border border-slate-700">0.2069</td><td class="px-2 py-0.5 text-center border border-slate-700">2.008</td><td class="px-2 py-0.5 text-center border border-slate-700">38</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">N₂</td><td class="px-2 py-0.5 text-center border border-slate-700">28.0135</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9995</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0224</td><td class="px-2 py-0.5 text-center border border-slate-700">0.968</td><td class="px-2 py-0.5 text-center border border-slate-700">—</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">CO₂</td><td class="px-2 py-0.5 text-center border border-slate-700">44.01</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9933</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0819</td><td class="px-2 py-0.5 text-center border border-slate-700">1.520</td><td class="px-2 py-0.5 text-center border border-slate-700">—</td></tr>
-                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">H₂</td><td class="px-2 py-0.5 text-center border border-slate-700">2.016</td><td class="px-2 py-0.5 text-center border border-slate-700">1.0006</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">12.788</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0696</td><td class="px-2 py-0.5 text-center border border-slate-700">282</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">CH₄</td><td class="px-2 py-0.5 text-center border border-slate-700">16.043</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9976</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">39.84</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">35.88</td><td class="px-2 py-0.5 text-center border border-slate-700">0.049</td><td class="px-2 py-0.5 text-center border border-slate-700">0.554</td><td class="px-2 py-0.5 text-center border border-slate-700">35.9</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">C₂H₆</td><td class="px-2 py-0.5 text-center border border-slate-700">30.07</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9900</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">69.79</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">63.79</td><td class="px-2 py-0.5 text-center border border-slate-700">0.100</td><td class="px-2 py-0.5 text-center border border-slate-700">1.039</td><td class="px-2 py-0.5 text-center border border-slate-700">41</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">C₃H₈</td><td class="px-2 py-0.5 text-center border border-slate-700">44.097</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9789</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">99.22</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">91.22</td><td class="px-2 py-0.5 text-center border border-slate-700">0.1453</td><td class="px-2 py-0.5 text-center border border-slate-700">1.523</td><td class="px-2 py-0.5 text-center border border-slate-700">41</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">iC₄H₁₀</td><td class="px-2 py-0.5 text-center border border-slate-700">58.123</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9580</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">128.23</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">118.23</td><td class="px-2 py-0.5 text-center border border-slate-700">0.2049</td><td class="px-2 py-0.5 text-center border border-slate-700">2.008</td><td class="px-2 py-0.5 text-center border border-slate-700">38</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">nC₄H₁₀</td><td class="px-2 py-0.5 text-center border border-slate-700">58.123</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9572</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">128.66</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">118.66</td><td class="px-2 py-0.5 text-center border border-slate-700">0.2069</td><td class="px-2 py-0.5 text-center border border-slate-700">2.008</td><td class="px-2 py-0.5 text-center border border-slate-700">38</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">N₂</td><td class="px-2 py-0.5 text-center border border-slate-700">28.0135</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9995</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0224</td><td class="px-2 py-0.5 text-center border border-slate-700">0.968</td><td class="px-2 py-0.5 text-center border border-slate-700">—</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">CO₂</td><td class="px-2 py-0.5 text-center border border-slate-700">44.01</td><td class="px-2 py-0.5 text-center border border-slate-700">0.9933</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0819</td><td class="px-2 py-0.5 text-center border border-slate-700">1.520</td><td class="px-2 py-0.5 text-center border border-slate-700">—</td></tr>
+                  <tr class="border-b border-slate-800 hover:bg-slate-800/30"><td class="px-2 py-0.5 text-cyan-400 border border-slate-700">H₂</td><td class="px-2 py-0.5 text-center border border-slate-700">2.016</td><td class="px-2 py-0.5 text-center border border-slate-700">1.0006</td><td class="px-2 py-0.5 text-center border border-slate-700 text-green-300">12.788</td><td class="px-2 py-0.5 text-center border border-slate-700 text-blue-300">10.789</td><td class="px-2 py-0.5 text-center border border-slate-700">0</td><td class="px-2 py-0.5 text-center border border-slate-700">0.0696</td><td class="px-2 py-0.5 text-center border border-slate-700">282</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1232,7 +1276,27 @@
           </div>
         </section>
 
-        <!-- PART II: Standard Gas Density & Flow -->
+        <!-- 1.7 LHV -->
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-orange-300 mb-3">1.7 Lower Heating Value (LHV) — 真発熱量 (JIS K 2301 Table 30)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-2xl text-center text-blue-300 py-2">LHV = ROUND( Σ(Cmᵢ × LHVᵢ) / Z_exact , 2 ) [MJ/Nm³]</div>
+              <div class="text-slate-400 text-[10px]">Formula mirrors HHV (§1.4). LHVᵢ is the net calorific value of pure component i at standard conditions (0°C, 101.325 kPa, gaseous water as product) from JIS K 2301:2011 Table 30. Same Z_exact denominator and 2 d.p. rounding apply.</div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] text-slate-300 space-y-1">
+                <div>LHVᵢ = HHVᵢ − n_H₂O × ΔHvap(H₂O,0°C) / Vm</div>
+                <div>ΔHvap correction ≈ 2.00 MJ per Nm³ per mol H₂O (H₂: 1 mol H₂O; CH₄: 2; C₂H₆: 3; etc.)</div>
+                <div class="text-amber-300">⚠ Wobbe Index always uses HHV regardless of mode — per JIS K 2301 §7 definition.</div>
+                <div class="text-amber-300">⚠ C4+ LHV values computed; verify against Table 30 at the standard reference for highest accuracy.</div>
+              </div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700">
+                <div class="text-[10px] text-slate-500 mb-1">Reference example (same composition as §1.4):</div>
+                <div class="text-slate-300">Σ(Cmᵢ×LHVᵢ) = 0.8887×35.88 + 0.0704×63.79 + ... = 39.666...</div>
+                <div class="text-blue-300">LHV = 39.666 / 0.9968 = 39.793... → <strong>39.79 MJ/Nm³</strong></div>
+              </div>
+            </div>
+          </div>
+		  
+		<!-- PART II: Standard Gas Density & Flow -->
         <section>
           <h3 class="text-lg font-bold text-fuchsia-400 uppercase tracking-widest border-b border-fuchsia-900 pb-2 mb-6">Part II — Standard Gas Density &amp; Flow Conversions</h3>
 
@@ -1500,7 +1564,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.1.1</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.2</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1568,7 +1632,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.1.1</p>
+          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.2</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1676,7 +1740,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.1.1</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.2</div>
     </div>
   </footer>
 
@@ -1726,6 +1790,39 @@
   </div>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+	// ── HHV / LHV MODE ──────────────────────────────────────────────────────
+    let hvMode = 'hhv';
+
+    function setHVMode(mode) {
+      hvMode = mode;
+      document.getElementById('ghv-hv-hhv').className = mode==='hhv' ? 'px-2 py-0.5 bg-orange-600 text-white transition-colors' : 'px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      document.getElementById('ghv-hv-lhv').className = mode==='lhv' ? 'px-2 py-0.5 bg-orange-600 text-white transition-colors' : 'px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      const lbl = document.getElementById('out-ghv-label');
+      if (lbl) lbl.innerText = mode==='hhv' ? 'Heating Value (HHV)' : 'Heating Value (LHV)';
+      calcGHV();
+    }
+
+    // ── FLOW OUTPUT MODE ─────────────────────────────────────────────────────
+    let flowAMode = 'vol';  // 'vol' or 'mol'
+    let flowBMode = 'mass'; // 'mass' or 'mol'
+
+    function setFlowAMode(mode) {
+      flowAMode = mode;
+      document.getElementById('flowA-mode-vol').className = mode==='vol' ? 'px-1.5 py-0.5 bg-orange-600 text-white transition-colors' : 'px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      document.getElementById('flowA-mode-mol').className = mode==='mol' ? 'px-1.5 py-0.5 bg-orange-600 text-white transition-colors' : 'px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      document.getElementById('flow-vol-out-u').classList.toggle('hidden', mode==='mol');
+      document.getElementById('flow-mol-out-u').classList.toggle('hidden', mode==='vol');
+      calcGHV();
+    }
+
+    function setFlowBMode(mode) {
+      flowBMode = mode;
+      document.getElementById('flowB-mode-mass').className = mode==='mass' ? 'px-1.5 py-0.5 bg-orange-600 text-white transition-colors' : 'px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      document.getElementById('flowB-mode-mol').className  = mode==='mol'  ? 'px-1.5 py-0.5 bg-orange-600 text-white transition-colors' : 'px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
+      document.getElementById('flow-mass-out-u').classList.toggle('hidden', mode==='mol');
+      document.getElementById('flow-mol-out2-u').classList.toggle('hidden', mode==='mass');
+      calcGHV();
+    }
 	function copyText(text, btnElement) {
       if (!text) return;
       navigator.clipboard.writeText(text).then(() => {
@@ -1771,7 +1868,7 @@
       const name = document.getElementById('report-name').value || "Anonymous User";
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.1.1`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.2`);
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -1779,21 +1876,23 @@
     
     // JIS K2301 (2011) component data — zi=compressibility, sqrtbi=√bi (compression addition factor)
     // si=specific gravity (Air=1), flame_si=flame speed cm/s, fi=combustibility, ai=air requirement
+    // lhv=lower heating value (真発熱量) from JIS K 2301:2011 Table 30 [MJ/Nm³ @ 0°C, 101.325 kPa]
+    // Note: C4+ lhv values computed from HHV using ΔHvap(H₂O)=2.00 MJ/Nm³ per mol H₂O; verify against Table 30.
     const gasComps = [
-      {id:'ch4',  mw:16.043,  hhv:39.84,  zi:0.9976, sqrtbi:0.049,  si:0.554,  flame_si:35.9, fi:8.72,  ai:2.0, comb:true },
-      {id:'c2h6', mw:30.07,   hhv:69.79,  zi:0.99,   sqrtbi:0.1,    si:1.039,  flame_si:41,   fi:16.6,  ai:3.5, comb:true },
-      {id:'c3h8', mw:44.097,  hhv:99.22,  zi:0.9789, sqrtbi:0.1453, si:1.523,  flame_si:41,   fi:24.6,  ai:5.0, comb:true },
-      {id:'ic4',  mw:58.123,  hhv:128.23, zi:0.958,  sqrtbi:0.2049, si:2.008,  flame_si:38,   fi:32.7,  ai:6.5, comb:true },
-      {id:'nc4',  mw:58.123,  hhv:128.66, zi:0.9572, sqrtbi:0.2069, si:2.008,  flame_si:38,   fi:32.7,  ai:6.5, comb:true },
-      {id:'ic5',  mw:72.15,   hhv:157.76, zi:0.937,  sqrtbi:0.251,  si:2.493,  flame_si:40,   fi:38.3,  ai:8.0, comb:true },
-      {id:'nc5',  mw:72.15,   hhv:158.07, zi:0.918,  sqrtbi:0.2864, si:2.493,  flame_si:40,   fi:38.3,  ai:8.0, comb:true },
-      {id:'nc6',  mw:86.177,  hhv:187.53, zi:0.892,  sqrtbi:0.3286, si:2.977,  flame_si:40,   fi:38.3,  ai:9.5, comb:true },
-      {id:'c2h4', mw:28.054,  hhv:63.06,  zi:0.9925, sqrtbi:0.0866, si:0.969,  flame_si:66,   fi:11.0,  ai:3.0, comb:true },
-      {id:'c3h6', mw:42.081,  hhv:91.98,  zi:0.981,  sqrtbi:0.1378, si:1.454,  flame_si:47,   fi:21.8,  ai:4.5, comb:true },
-      {id:'h2',   mw:2.016,   hhv:12.788, zi:1.0006, sqrtbi:0,      si:0.0696, flame_si:282,  fi:1.00,  ai:0.5, comb:true },
-      {id:'co2',  mw:44.01,   hhv:0,      zi:0.9933, sqrtbi:0.0819, si:1.52,   flame_si:0,    fi:0,     ai:0,   comb:false},
-      {id:'n2',   mw:28.0135, hhv:0,      zi:0.9995, sqrtbi:0.0224, si:0.968,  flame_si:0,    fi:0,     ai:0,   comb:false},
-      {id:'o2',   mw:31.9988, hhv:0,      zi:0.999,  sqrtbi:0.0316, si:1.105,  flame_si:0,    fi:0,     ai:0,   comb:false}
+      {id:'ch4',  mw:16.043,  hhv:39.84,  lhv:35.88,  zi:0.9976, sqrtbi:0.049,  si:0.554,  flame_si:35.9, fi:8.72,  ai:2.0, comb:true },
+      {id:'c2h6', mw:30.07,   hhv:69.79,  lhv:63.79,  zi:0.99,   sqrtbi:0.1,    si:1.039,  flame_si:41,   fi:16.6,  ai:3.5, comb:true },
+      {id:'c3h8', mw:44.097,  hhv:99.22,  lhv:91.22,  zi:0.9789, sqrtbi:0.1453, si:1.523,  flame_si:41,   fi:24.6,  ai:5.0, comb:true },
+      {id:'ic4',  mw:58.123,  hhv:128.23, lhv:118.23, zi:0.958,  sqrtbi:0.2049, si:2.008,  flame_si:38,   fi:32.7,  ai:6.5, comb:true },
+      {id:'nc4',  mw:58.123,  hhv:128.66, lhv:118.66, zi:0.9572, sqrtbi:0.2069, si:2.008,  flame_si:38,   fi:32.7,  ai:6.5, comb:true },
+      {id:'ic5',  mw:72.15,   hhv:157.76, lhv:145.76, zi:0.937,  sqrtbi:0.251,  si:2.493,  flame_si:40,   fi:38.3,  ai:8.0, comb:true },
+      {id:'nc5',  mw:72.15,   hhv:158.07, lhv:146.07, zi:0.918,  sqrtbi:0.2864, si:2.493,  flame_si:40,   fi:38.3,  ai:8.0, comb:true },
+      {id:'nc6',  mw:86.177,  hhv:187.53, lhv:173.53, zi:0.892,  sqrtbi:0.3286, si:2.977,  flame_si:40,   fi:38.3,  ai:9.5, comb:true },
+      {id:'c2h4', mw:28.054,  hhv:63.06,  lhv:59.06,  zi:0.9925, sqrtbi:0.0866, si:0.969,  flame_si:66,   fi:11.0,  ai:3.0, comb:true },
+      {id:'c3h6', mw:42.081,  hhv:91.98,  lhv:85.98,  zi:0.981,  sqrtbi:0.1378, si:1.454,  flame_si:47,   fi:21.8,  ai:4.5, comb:true },
+      {id:'h2',   mw:2.016,   hhv:12.788, lhv:10.789, zi:1.0006, sqrtbi:0,      si:0.0696, flame_si:282,  fi:1.00,  ai:0.5, comb:true },
+      {id:'co2',  mw:44.01,   hhv:0,      lhv:0,      zi:0.9933, sqrtbi:0.0819, si:1.52,   flame_si:0,    fi:0,     ai:0,   comb:false},
+      {id:'n2',   mw:28.0135, hhv:0,      lhv:0,      zi:0.9995, sqrtbi:0.0224, si:0.968,  flame_si:0,    fi:0,     ai:0,   comb:false},
+      {id:'o2',   mw:31.9988, hhv:0,      lhv:0,      zi:0.999,  sqrtbi:0.0316, si:1.105,  flame_si:0,    fi:0,     ai:0,   comb:false}
     ];
 
     // ISO 6578 Klosek-McKinley: molar volumes [m³/kmol] at cryogenic temperatures
@@ -1896,10 +1995,12 @@
       gasComps.forEach(c=>{ mw_mix+=x[c.id]*c.mw; });
       const rho_std=101325*(mw_mix/1000)/(Z_rounded*8.31446262*273.15);
 
-      // HHV=Σ(ColI×Hi)/Z_exact [R26]; SG=Σ(ColI×Si)/Z_exact [R27]  ──────────────
-      let sumK=0, sumL=0;
-      gasComps.forEach(c=>{ sumK+=x[c.id]*c.hhv; sumL+=x[c.id]*c.si; });
-      const hhv_mix=Math.round(sumK/Z_exact*100)/100;
+      // HHV/LHV=Σ(ColI×Hi)/Z_exact [R26]; SG=Σ(ColI×Si)/Z_exact [R27]  ──────────────
+      let sumK=0, sumKlhv=0, sumL=0;
+      gasComps.forEach(c=>{ sumK+=x[c.id]*c.hhv; sumKlhv+=x[c.id]*c.lhv; sumL+=x[c.id]*c.si; });
+      const hhv_mix =Math.round(sumK/Z_exact*100)/100;
+      const lhv_mix =Math.round(sumKlhv/Z_exact*100)/100;
+      const hv_mix  = hvMode==='lhv' ? lhv_mix : hhv_mix;
       const sg_calc =Math.round(sumL/Z_exact*1000)/1000;
 
       // WI=ROUND(HHV_2dp/√(SG_3dp),2) [R28]  ────────────────────────────────────
@@ -1917,11 +2018,14 @@
       const mcp_calc=Math.round(base_mcp*(1-K)*10)/10;
 
       // Display section 3 ───────────────────────────────────────────────────────
+      const fmtN = (n, dp) => isFinite(n) ? n.toLocaleString('en-US', {minimumFractionDigits:dp, maximumFractionDigits:dp}) : '0';
       const unitGHV=document.getElementById('ghv-unit').value;
-      document.getElementById('out-ghv').innerText=unitGHV==='mj'?hhv_mix.toFixed(2):(hhv_mix/(0.001055056*37.3258)).toFixed(2);
-      document.getElementById('out-sg').innerText =sg_calc.toFixed(3);
-      document.getElementById('out-wi').innerText =wi_calc.toFixed(2);
-      document.getElementById('out-mcp').innerText=mcp_calc.toFixed(1);
+      const ghvVal = unitGHV==='mj' ? hv_mix : hv_mix/(0.001055056*37.3258);
+      document.getElementById('out-ghv').innerText=fmtN(ghvVal,2);
+      document.getElementById('out-sg').innerText =fmtN(sg_calc,3);
+      document.getElementById('out-wi').innerText =fmtN(wi_calc,2);
+      document.getElementById('out-mcp').innerText=fmtN(mcp_calc,1);
+      document.getElementById('out-mw').innerText =fmtN(mw_mix,3);
 
       // LNG Liquid Density (ISO 6578 Klosek-McKinley)  ────────────────────────
       const tLiqRaw=parseFloat(document.getElementById('op-liq-temp').value);
@@ -1929,7 +2033,7 @@
       const tLiqC  =isNaN(tLiqRaw)?-160:(uLiqT==='C'?tLiqRaw:(tLiqRaw-32)*5/9);
       const rho_liq=calcLNGDensity(x,tLiqC+273.15);
       const uLiqDen=document.getElementById('out-liq-den-u').value;
-      document.getElementById('out-liq-den').innerText=(uLiqDen==='lb/ft3'?rho_liq*0.0624279606:rho_liq).toFixed(2);
+      document.getElementById('out-liq-den').innerText=fmtN(uLiqDen==='lb/ft3'?rho_liq*0.0624279606:rho_liq,2);
 
       // Operating conditions  ───────────────────────────────────────────────────
       const opT=parseFloat(document.getElementById('op-temp').value)||0;
@@ -1958,15 +2062,32 @@
       const vOutU=parseFloat(document.getElementById('flow-vol-out-u').value);
       let vOut=0;
       if(vOutU===1)vOut=q_m3h/1000; else if(vOutU===2)vOut=q_m3h*24/1000; else if(vOutU===3)vOut=q_m3h*24*37.3258/1e6;
-      document.getElementById('out-vol-flow').innerText=vOut.toFixed(2);
+      
+	  // Panel A output (Mass → Vol or Molar)
+      if (flowAMode === 'mol') {
+        const molUa = document.getElementById('flow-mol-out-u').value;
+        const molA_kmolh = mw_mix>0 ? mKgh/mw_mix : 0;
+        document.getElementById('out-vol-flow').innerText = fmtN(molUa==='mol_s' ? molA_kmolh*1000/3600 : molA_kmolh, 3);
+      } else {
+        document.getElementById('out-vol-flow').innerText=fmtN(vOut,2);
+      }
 
       const vIn =parseFloat(document.getElementById('flow-vol-in').value)||0;
       const vInU=parseFloat(document.getElementById('flow-vol-in-u').value);
       let vIn_m3h=0;
       if(vInU===1)vIn_m3h=vIn*1000; else if(vInU===2)vIn_m3h=vIn*1000/24; else if(vInU===3)vIn_m3h=vIn*1e6/(37.3258*24);
       const qStdIn=isStd?vIn_m3h:vIn_m3h*(273.15/T_k)*(P_kpa/101.325);
-      const mOutU=parseFloat(document.getElementById('flow-mass-out-u').value);
-      document.getElementById('out-mass-flow').innerText=(qStdIn*rho_std/mOutU).toFixed(3);
+      const massB_kgh = qStdIn*rho_std;
+
+      // Panel B output (Vol → Mass or Molar)
+      if (flowBMode === 'mol') {
+        const molUb = document.getElementById('flow-mol-out2-u').value;
+        const molB_kmolh = mw_mix>0 ? massB_kgh/mw_mix : 0;
+        document.getElementById('out-mass-flow').innerText = fmtN(molUb==='mol_s' ? molB_kmolh*1000/3600 : molB_kmolh, 3);
+      } else {
+        const mOutU=parseFloat(document.getElementById('flow-mass-out-u').value);
+        document.getElementById('out-mass-flow').innerText=fmtN(massB_kgh/mOutU,3);
+      }
     }
 
     // --- ADVANCED ENG & HYDRAULICS ---
