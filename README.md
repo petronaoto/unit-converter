@@ -1,4 +1,4 @@
-O&G Engineering Converter (V2.2)
+O&G Engineering Converter (V2.3)
 📌 Objective
 The O&G Engineering Converter is a high-precision, control-room-ready suite of engineering tools designed specifically for the Oil & Gas and LNG sectors.
 
@@ -42,6 +42,12 @@ Pipe Delta Pressure (Fanning):
 Calculates pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
 
 Python backend solves the Colebrook-White equation implicitly.
+
+Flow Regime Visualizer:
+
+Classifies the two-phase flow pattern from the Pipe Delta Pressure inputs on simplified Hewitt & Roberts (vertical) / Baker (horizontal) regime maps, selected by the pipe inclination θ = asin(Δz/L).
+
+Maps are rendered server-side with Python seaborn (/api/flowregime) and accompanied by a conceptual Three.js 3D animation of the flow pattern, speed, and inclination.
 
 API 520 PRV Sizing:
 

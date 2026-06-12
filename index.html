@@ -522,7 +522,7 @@
                 <div>
                   <label class="block text-xs font-semibold text-slate-400 mb-1">PIPE ID</label>
                   <div class="flex">
-                    <input type="number" step="any" id="dp-id" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
+                    <input type="number" step="any" id="dp-id" value="4" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-id-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.0254">in</option><option value="0.001">mm</option><option value="0.3048">ft</option><option value="1">m</option></select>
                   </div>
                 </div>
@@ -536,14 +536,14 @@
                 <div>
                   <label class="block text-xs font-semibold text-slate-400 mb-1">PIPE LENGTH</label>
                   <div class="flex">
-                    <input type="number" step="any" id="dp-len" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
+                    <input type="number" step="any" id="dp-len" value="100" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-len-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">m</option><option value="0.3048">ft</option></select>
                   </div>
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-slate-400 mb-1">ELEVATION CHANGE</label>
                   <div class="flex">
-                    <input type="number" step="any" id="dp-elev" value="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
+                    <input type="number" step="any" id="dp-elev" value="70.711" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-elev-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">m</option><option value="0.3048">ft</option></select>
                   </div>
                 </div>
@@ -557,21 +557,21 @@
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">MASS FLOW</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-v-flow" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-v-flow" value="150" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-flow-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.000277778">kg/h</option><option value="0.277778">t/h</option><option value="0.000125998">lb/h</option></select>
                     </div>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">DENSITY</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-v-den" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-v-den" value="10" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-den-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
                     </div>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">DYNAMIC VISCOSITY</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-v-visc" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-v-visc" value="0.012" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-visc-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">cP</option><option value="1">Pa·s</option></select>
                     </div>
                   </div>
@@ -584,21 +584,21 @@
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">MASS FLOW</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-l-flow" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-l-flow" value="7300" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-flow-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.000277778">kg/h</option><option value="0.277778">t/h</option><option value="0.000125998">lb/h</option></select>
                     </div>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">DENSITY</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-l-den" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-l-den" value="500" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-den-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
                     </div>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-500 mb-1">DYNAMIC VISCOSITY</label>
                     <div class="flex">
-                      <input type="number" step="any" id="dp-l-visc" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <input type="number" step="any" id="dp-l-visc" value="0.12" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-visc-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">cP</option><option value="1">Pa·s</option></select>
                     </div>
                   </div>
@@ -640,6 +640,38 @@
                   </div>
                   <select id="dp-out-vel-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1" selected>m/s</option><option value="3.28084">ft/s</option></select>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              Flow Regime
+            </h2>
+            <span id="fr-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Visualization...</span>
+          </div>
+          <div class="p-6 space-y-6">
+            <p class="text-xs text-slate-500 leading-relaxed">Visualizes the two-phase flow pattern from the inputs of the <strong class="text-slate-300">Pipe Delta Pressure Calculator</strong> above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. |θ| ≥ 30° uses the vertical-flow map (Hewitt &amp; Roberts type); |θ| &lt; 30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python <strong class="text-slate-300">seaborn</strong>. Boundaries are simplified — indicative only.</p>
+            <button onclick="calcFlowRegime()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all">
+              VISUALIZE FLOW REGIME
+            </button>
+            <div id="fr-error" class="hidden bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-sm text-red-300"></div>
+            <div id="fr-result" class="hidden space-y-6">
+              <div class="bg-slate-950 border border-slate-700 rounded-lg p-3">
+                <img id="fr-map-img" src="" alt="Flow regime map" class="w-full rounded" />
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-xs font-bold tracking-widest text-cyan-400">3D FLOW ANIMATION</h3>
+                  <span id="fr-3d-caption" class="text-[10px] font-mono text-slate-500"></span>
+                </div>
+                <div id="fr-3d-wrap" class="bg-slate-950 border border-slate-700 rounded-lg overflow-hidden h-80 relative">
+                  <div id="fr-3d-overlay" class="absolute bottom-2 left-3 text-[10px] font-mono text-slate-400 pointer-events-none z-10"></div>
+                </div>
+                <p class="text-[10px] text-slate-600 mt-2">Conceptual animation — phase distribution, speed and inclination are schematic, scaled from j<sub>G</sub>, j<sub>L</sub> and θ. Not a CFD result.</p>
               </div>
             </div>
           </div>
@@ -799,7 +831,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.2</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.3</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -810,7 +842,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v2.2 • Hybrid</span>
+              <span class="text-slate-500 text-[10px]">v2.3 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -937,7 +969,7 @@
             </div>
           </div>
           <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
-            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API).
+            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API). Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 9 below).
           </div>
         </section>
 		
@@ -1105,9 +1137,38 @@
           </div>
         </section>
 
-        <!-- 9. SAFETY TAB -->
+        <!-- 9. ADVANCED - FLOW REGIME -->
         <section>
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Advanced Tab — Flow Regime Visualizer</h3>
+          <p class="text-sm text-slate-400 mb-4">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">MAP SELECTION</div>
+              <div class="space-y-1.5 text-slate-400">
+                <div>θ = asin(Δz / L) — from PIPE LENGTH &amp; ELEVATION CHANGE</div>
+                <div>|θ| ≥ 30° → <span class="text-slate-200">Vertical map (Hewitt &amp; Roberts type)</span> — axes j<sub>G</sub> vs j<sub>L</sub> [m/s]</div>
+                <div>|θ| &lt; 30° → <span class="text-slate-200">Horizontal map (Baker type)</span> — axes G<sub>G</sub> vs G<sub>L</sub> [kg/s·m²]</div>
+                <div class="text-cyan-300 mt-1">→ Regimes: Bubbly / Churn-Slug / Wavy / Stratified / Annular / Disperse</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">ERROR CONDITIONS (red message instead of map)</div>
+              <div class="space-y-1 text-slate-400">
+                <div>|Elevation change| &gt; pipe length (geometrically impossible)</div>
+                <div>Single-phase or zero flow (map needs both phases)</div>
+                <div>Non-positive pipe ID or length</div>
+                <div>Vapor density ≥ liquid density (impossible phase properties)</div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-300">
+            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³, liquid 7,300 kg/h @ 500 kg/m³) produce <strong>Churn / Slug Flow at θ = +45.0°</strong> (j<sub>G</sub> ≈ 0.51 m/s, j<sub>L</sub> ≈ 0.50 m/s, vertical map). Map boundaries are simplified — indicative only, not for design.
+          </div>
+        </section>
+
+        <!-- 10. SAFETY TAB -->
+        <section>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Safety Tab — PRV Sizing (API 520 Part I)</h3>
           <p class="text-sm text-slate-400 mb-4">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -1134,9 +1195,9 @@
           <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
         </section>
 
-        <!-- 10. REPORT TAB -->
+        <!-- 11. REPORT TAB -->
         <section>
-          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Report Tab — Bug Reports &amp; Feature Requests</h3>
+          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">11. Report Tab — Bug Reports &amp; Feature Requests</h3>
           <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
 
@@ -1147,7 +1208,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.2. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.3. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1445,6 +1506,27 @@
               </div>
             </div>
           </div>
+
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-green-300 mb-3">4.3 Two-Phase Flow Regime Maps (Flow Regime Card)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-slate-200">Inclination: θ = asin(Δz / L) &nbsp;|&nbsp; Cross-section: A = π·D²/4 [m²]</div>
+              <div class="text-slate-200">Superficial fluxes: j<sub>G</sub> = W<sub>G</sub>/(ρ<sub>G</sub>·A), &nbsp;j<sub>L</sub> = W<sub>L</sub>/(ρ<sub>L</sub>·A) [m/s] &nbsp;|&nbsp; Mass fluxes: G<sub>G</sub> = W<sub>G</sub>/A, &nbsp;G<sub>L</sub> = W<sub>L</sub>/A [kg/s·m²]</div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div>Map selection: |θ| ≥ 30° → vertical-flow map (Hewitt &amp; Roberts 1969 type, j<sub>G</sub> vs j<sub>L</sub>); |θ| &lt; 30° → horizontal-flow map (Baker 1954 type, G<sub>G</sub> vs G<sub>L</sub>)</div>
+                <div>Region boundaries are simplified piecewise-linear approximations in log-log space — they are NOT a mechanistic model (cf. Taitel &amp; Dukler) and are intended for orientation only</div>
+                <div>Operating points outside the plotted range are clamped to the map boundary and flagged on the figure</div>
+                <div>Rendered server-side with Python seaborn/matplotlib (Vercel API <span class="text-slate-100">/api/flowregime</span>); the 3D animation is conceptual, using the no-slip liquid holdup λ<sub>L</sub> = j<sub>L</sub>/(j<sub>G</sub>+j<sub>L</sub>)</div>
+              </div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div class="text-green-300 font-bold">Worked example (default inputs):</div>
+                <div>D = 4 in = 0.1016 m → A = 8.107×10⁻³ m²; θ = asin(70.711/100) = +45.0° → vertical map</div>
+                <div>W<sub>G</sub> = 150 kg/h = 0.04167 kg/s, ρ<sub>G</sub> = 10 kg/m³ → j<sub>G</sub> = 0.514 m/s</div>
+                <div>W<sub>L</sub> = 7300 kg/h = 2.028 kg/s, ρ<sub>L</sub> = 500 kg/m³ → j<sub>L</sub> = 0.500 m/s</div>
+                <div class="text-green-300">→ Regime: <strong>Churn / Slug Flow</strong> (v<sub>mix</sub> = j<sub>G</sub>+j<sub>L</sub> = 1.01 m/s)</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- PART VI: API 520 PRV Sizing Theory -->
@@ -1551,6 +1633,14 @@
               <div>Iterative implicit friction factor equation for turbulent pipe flow — "Experiments with Fluid Friction in Roughened Pipes", Proc. Royal Society A, 161:367–381. Solved iteratively (tol 1×10⁻⁶) in the Python backend.</div>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Hewitt &amp; Roberts (1969)</div>
+              <div>"Studies of Two-Phase Flow Patterns by Simultaneous X-ray and Flash Photography", AERE-M2159, UKAEA Harwell. Basis of the vertical-flow regime map (simplified boundaries) in the Flow Regime card.</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Baker (1954)</div>
+              <div>"Design of Pipelines for the Simultaneous Flow of Oil and Gas", Oil &amp; Gas Journal, 53:185–195. Basis of the horizontal-flow regime map (simplified boundaries) in the Flow Regime card.</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
               <div class="text-amber-400 font-bold">API Standard 520 Part I — Ninth Edition (2014)</div>
               <div>Sizing, Selection, and Installation of Pressure-relieving Devices — Part I: Sizing and Selection. American Petroleum Institute, Washington D.C. Governs all PRV sizing equations implemented in the Safety tab: §5.6 Gas/Vapor (Eq. 2, 5, 12, 15), §5.7 Steam (Eq. 21, 22), §5.8 Liquid Certified (Eq. 28–30), §5.9 Liquid Non-Certified (Eq. 38, 39), §5.10 Two-Phase Omega Method (Annex C.2.2, Eq. C.12–C.21). API 526 orifice areas (Table 1, D–T) also sourced from this edition.</div>
             </div>
@@ -1564,7 +1654,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.2</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1573,7 +1663,7 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">2. Nature of the Application</h3>
-            <p>The Application is a browser-based engineering utility. The majority of calculations are performed locally within your web browser. However, two calculators — the Pipe Delta Pressure Calculator (Advanced tab) and the PRV Sizing Calculator (Safety tab) — transmit engineering input data (such as flow rates, pressures, and fluid properties) to serverless API functions hosted on Vercel for server-side computation. No personally identifiable information is transmitted in these requests. The Application is provided as a convenience tool for engineering estimation and is <strong>not intended to replace formal engineering analysis, professional judgment, or regulatory-approved calculation methods</strong>.</p>
+            <p>The Application is a browser-based engineering utility. The majority of calculations are performed locally within your web browser. However, three features — the Pipe Delta Pressure Calculator and the Flow Regime visualizer (Advanced tab), and the PRV Sizing Calculator (Safety tab) — transmit engineering input data (such as flow rates, pressures, and fluid properties) to serverless API functions hosted on Vercel for server-side computation, including server-side rendering of the flow regime map image. No personally identifiable information is transmitted in these requests. The Application is provided as a convenience tool for engineering estimation and is <strong>not intended to replace formal engineering analysis, professional judgment, or regulatory-approved calculation methods</strong>.</p>
           </div>
 
           <div>
@@ -1585,7 +1675,7 @@
               <li>Uninterrupted or error-free operation</li>
               <li>Compliance with any specific national or international standard</li>
             </ul>
-            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>.</p>
+            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. In particular, the Flow Regime visualization (Advanced tab) uses simplified, approximate regime-map boundaries and a conceptual 3D animation; it is provided for qualitative orientation only and <strong>must not be used as a basis for design, operational, or safety decisions</strong>.</p>
           </div>
 
           <div>
@@ -1632,7 +1722,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: April 2026 — Version 2.2</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1666,12 +1756,13 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">4. Server-Side Calculation APIs</h3>
-            <p>Two calculators in this Application — the Pipe Delta Pressure Calculator and the PRV Sizing Calculator — send engineering input data to serverless functions hosted on Vercel for computation. The data transmitted consists exclusively of numerical engineering parameters (e.g. pressures, flow rates, fluid properties). This data is processed transiently to return a calculation result and is not logged, stored, or associated with any user identity by the Application. Standard Vercel infrastructure logging may capture request metadata (see Section 5 below).</p>
+            <p>Three features in this Application — the Pipe Delta Pressure Calculator, the Flow Regime visualizer, and the PRV Sizing Calculator — send engineering input data to serverless functions hosted on Vercel for computation. The data transmitted consists exclusively of numerical engineering parameters (e.g. pressures, flow rates, fluid properties). For the Flow Regime visualizer, the server also renders and returns a map image generated from those parameters. This data is processed transiently to return a calculation result and is not logged, stored, or associated with any user identity by the Application. Standard Vercel infrastructure logging may capture request metadata (see Section 5 below).</p>
           </div>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
+            <p class="mt-2">The Application also loads two open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). Like any web resource request, these CDN providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to these CDNs.</p>
           </div>
 
           <div>
@@ -1740,7 +1831,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.2</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.3</div>
     </div>
   </footer>
 
@@ -2205,6 +2296,285 @@
         badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
         console.error("Vercel Python API Error: ", err);
       }
+    }
+
+    // --- FLOW REGIME VISUALIZER (Python seaborn API + Three.js 3D animation) ---
+    let threeLoadPromise = null;
+    function loadThree() {
+      if (window.THREE) return Promise.resolve();
+      if (!threeLoadPromise) {
+        threeLoadPromise = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+          s.onload = resolve;
+          s.onerror = () => { threeLoadPromise = null; reject(new Error('Three.js CDN load failed')); };
+          document.head.appendChild(s);
+        });
+      }
+      return threeLoadPromise;
+    }
+
+    async function calcFlowRegime() {
+      const badge = document.getElementById('fr-badge');
+      const errBox = document.getElementById('fr-error');
+      const resBox = document.getElementById('fr-result');
+      badge.innerText = "Rendering Server-Side...";
+      badge.className = "px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse";
+      errBox.classList.add('hidden');
+
+      const payload = {
+        scale: parseFloat(document.getElementById('dp-scale').value) || 1,
+        id: parseFloat(document.getElementById('dp-id').value) || 0,
+        id_mult: parseFloat(document.getElementById('dp-id-unit').value) || 1,
+        len: parseFloat(document.getElementById('dp-len').value) || 0,
+        len_mult: parseFloat(document.getElementById('dp-len-unit').value) || 1,
+        rough: parseFloat(document.getElementById('dp-rough').value) || 0,
+        rough_mult: parseFloat(document.getElementById('dp-rough-unit').value) || 1,
+        elev: parseFloat(document.getElementById('dp-elev').value) || 0,
+        elev_mult: parseFloat(document.getElementById('dp-elev-unit').value) || 1,
+        v_flow: parseFloat(document.getElementById('dp-v-flow').value) || 0,
+        v_flow_m: parseFloat(document.getElementById('dp-v-flow-u').value) || 1,
+        v_den: parseFloat(document.getElementById('dp-v-den').value) || 1,
+        v_den_m: parseFloat(document.getElementById('dp-v-den-u').value) || 1,
+        v_visc: parseFloat(document.getElementById('dp-v-visc').value) || 0.01,
+        v_visc_m: parseFloat(document.getElementById('dp-v-visc-u').value) || 1,
+        l_flow: parseFloat(document.getElementById('dp-l-flow').value) || 0,
+        l_flow_m: parseFloat(document.getElementById('dp-l-flow-u').value) || 1,
+        l_den: parseFloat(document.getElementById('dp-l-den').value) || 1,
+        l_den_m: parseFloat(document.getElementById('dp-l-den-u').value) || 1,
+        l_visc: parseFloat(document.getElementById('dp-l-visc').value) || 1,
+        l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1
+      };
+
+      try {
+        const res = await fetch('/api/flowregime', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        badge.innerText = data.badge;
+        badge.className = data.badgeClass;
+
+        if (data.error) {
+          resBox.classList.add('hidden');
+          stopFlow3D();
+          errBox.innerText = data.message || 'Unable to visualize flow regime.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+
+        document.getElementById('fr-map-img').src = data.image;
+        document.getElementById('fr-3d-caption').innerText =
+          data.regime + ' | θ = ' + data.theta_deg.toFixed(1) + '° | v_mix = ' + data.v_mix.toFixed(2) + ' m/s';
+        resBox.classList.remove('hidden');
+
+        try {
+          await loadThree();
+          initFlow3D(data);
+        } catch (e) {
+          document.getElementById('fr-3d-overlay').innerText = '3D animation unavailable (Three.js CDN could not be loaded)';
+          console.error(e);
+        }
+      } catch (err) {
+        badge.innerText = "API Connection Failed";
+        badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
+        resBox.classList.add('hidden');
+        stopFlow3D();
+        console.error("Vercel Python API Error: ", err);
+      }
+    }
+
+    let fr3d = null;
+    function stopFlow3D() {
+      if (!fr3d) return;
+      cancelAnimationFrame(fr3d.raf);
+      window.removeEventListener('resize', fr3d.onResize);
+      if (fr3d.renderer.domElement.parentNode) fr3d.renderer.domElement.parentNode.removeChild(fr3d.renderer.domElement);
+      fr3d.renderer.dispose();
+      fr3d = null;
+    }
+
+    function initFlow3D(d) {
+      stopFlow3D();
+      const wrap = document.getElementById('fr-3d-wrap');
+      const W = wrap.clientWidth || 640, H = wrap.clientHeight || 320;
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(W, H);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      wrap.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+      camera.position.set(0, 1.2, 16);
+      camera.lookAt(0, 0, 0);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      const dl = new THREE.DirectionalLight(0xffffff, 0.8);
+      dl.position.set(5, 8, 10);
+      scene.add(dl);
+
+      const theta = d.theta_deg * Math.PI / 180;
+      const group = new THREE.Group();
+      group.rotation.z = theta;
+      scene.add(group);
+
+      const LEN = 12, R = 1.0, HALF = LEN / 2;
+      // visual speed scale [scene units/s] — monotonic with the real velocity [m/s]
+      const vis = v => 0.5 + 2.2 * Math.log10(1 + Math.max(v, 0));
+      const uGas = vis(d.jG), uLiq = vis(d.jL), uMix = vis(d.v_mix);
+
+      // transparent pipe shell + end rings
+      const pipe = new THREE.Mesh(
+        new THREE.CylinderGeometry(R, R, LEN, 36, 1, true),
+        new THREE.MeshPhongMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.14, side: THREE.DoubleSide, depthWrite: false })
+      );
+      pipe.rotation.z = Math.PI / 2;
+      group.add(pipe);
+      [-HALF, HALF].forEach(x => {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(R, 0.035, 8, 48), new THREE.MeshBasicMaterial({ color: 0x475569 }));
+        ring.rotation.y = Math.PI / 2;
+        ring.position.x = x;
+        group.add(ring);
+      });
+      // flow direction arrow above the pipe outlet
+      const arrow = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.7, 16), new THREE.MeshBasicMaterial({ color: 0xfbbf24 }));
+      arrow.rotation.z = -Math.PI / 2;
+      arrow.position.set(HALF + 0.7, 0, 0);
+      group.add(arrow);
+
+      const movers = [];   // {obj, speed, wobAmp, wobFreq, baseY, baseZ}
+      const waveSegs = []; // stratified/wavy surface segments
+      const rnd = (a, b) => a + Math.random() * (b - a);
+      const liquidMat = op => new THREE.MeshPhongMaterial({ color: 0x3b82f6, transparent: true, opacity: op, depthWrite: false });
+      const gasMat = op => new THREE.MeshPhongMaterial({ color: 0xe0f2fe, transparent: true, opacity: op, depthWrite: false });
+      const dropMat = () => new THREE.MeshBasicMaterial({ color: 0x7dd3fc });
+      const addMover = (obj, speed, wobAmp) => {
+        group.add(obj);
+        movers.push({ obj, speed, wobAmp: wobAmp || 0, wobFreq: rnd(1.5, 4), baseY: obj.position.y, baseZ: obj.position.z, phase: rnd(0, 6.28) });
+      };
+      const addDroplets = (n, rMin, rMax, radMax, speed) => {
+        for (let i = 0; i < n; i++) {
+          const drop = new THREE.Mesh(new THREE.SphereGeometry(rnd(rMin, rMax), 8, 8), dropMat());
+          const ang = rnd(0, 6.28), rad = rnd(0, radMax);
+          drop.position.set(rnd(-HALF, HALF), Math.sin(ang) * rad, Math.cos(ang) * rad);
+          addMover(drop, speed * rnd(0.85, 1.15), 0.03);
+        }
+      };
+      const addLiquidLayer = (heightFrac, nSegs, amp) => {
+        // bottom liquid layer built from segments so the surface can travel as a wave
+        for (let i = 0; i < nSegs; i++) {
+          const seg = new THREE.Mesh(new THREE.BoxGeometry(LEN / nSegs * 0.99, 1, 1.55), liquidMat(0.6));
+          seg.userData = { x: -HALF + (i + 0.5) * LEN / nSegs, h0: heightFrac * 2 * R, amp: amp };
+          seg.position.x = seg.userData.x;
+          group.add(seg);
+          waveSegs.push(seg);
+        }
+      };
+
+      const key = d.regime_key;
+      if (key === 'churn_slug' || key === 'slug') {
+        // thin wall film + alternating liquid slugs and Taylor gas bubbles
+        const film = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24, 1, true), liquidMat(0.18));
+        film.rotation.z = Math.PI / 2;
+        group.add(film);
+        const cell = 4.0, nCell = Math.ceil(LEN / cell) + 1;
+        for (let i = 0; i < nCell; i++) {
+          const xc = -HALF - cell + i * cell;
+          const slug = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.93, R * 0.93, 2.1, 24), liquidMat(0.65));
+          slug.rotation.z = Math.PI / 2;
+          slug.position.x = xc;
+          addMover(slug, uMix, 0);
+          for (let b = 0; b < 5; b++) {
+            const bub = new THREE.Mesh(new THREE.SphereGeometry(rnd(0.06, 0.13), 8, 8), gasMat(0.9));
+            bub.position.set(xc + rnd(-0.9, 0.9), rnd(-0.5, 0.5), rnd(-0.5, 0.5));
+            addMover(bub, uMix * rnd(1.0, 1.1), 0.05);
+          }
+          // Taylor bubble (bullet-nosed): cylinder + hemispherical nose
+          const tb = new THREE.Group();
+          const body = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.7, R * 0.7, 1.5, 20), gasMat(0.8));
+          body.rotation.z = Math.PI / 2;
+          tb.add(body);
+          const nose = new THREE.Mesh(new THREE.SphereGeometry(R * 0.7, 20, 16), gasMat(0.8));
+          nose.position.x = 0.75;
+          tb.add(nose);
+          tb.position.x = xc + cell / 2;
+          addMover(tb, uMix * 1.15, 0);
+        }
+      } else if (key === 'bubbly' || key === 'bubble') {
+        const fill = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.35));
+        fill.rotation.z = Math.PI / 2;
+        group.add(fill);
+        for (let i = 0; i < 80; i++) {
+          const bub = new THREE.Mesh(new THREE.SphereGeometry(rnd(0.07, 0.16), 8, 8), gasMat(0.9));
+          const ang = rnd(0, 6.28), rad = rnd(0, R * 0.75);
+          let y = Math.sin(ang) * rad;
+          if (key === 'bubble') y = rnd(0.15, 0.8) * R; // horizontal: bubbles migrate to the top
+          bub.position.set(rnd(-HALF, HALF), y, Math.cos(ang) * rad);
+          addMover(bub, uGas * rnd(0.9, 1.2), 0.06);
+        }
+      } else if (key === 'stratified') {
+        addLiquidLayer(0.45, 24, 0.0);
+        addDroplets(10, 0.03, 0.05, R * 0.3, uGas); // faint gas tracers above
+        movers.forEach(m => { if (m.obj.position.y < 0.2) m.obj.position.y = rnd(0.35, 0.7); });
+      } else if (key === 'wave' || key === 'wavy') {
+        addLiquidLayer(0.42, 24, 0.16);
+        addDroplets(14, 0.03, 0.05, R * 0.3, uGas);
+        movers.forEach(m => { if (m.obj.position.y < 0.2) m.obj.position.y = rnd(0.35, 0.7); });
+      } else if (key === 'annular') {
+        const film = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.94, R * 0.94, LEN, 28, 1, true), liquidMat(0.5));
+        film.rotation.z = Math.PI / 2;
+        group.add(film);
+        for (let i = 0; i < 7; i++) { // film ripples travelling at the liquid speed
+          const rip = new THREE.Mesh(new THREE.TorusGeometry(R * 0.94, 0.045, 8, 36), liquidMat(0.85));
+          rip.rotation.y = Math.PI / 2;
+          rip.position.x = -HALF + i * (LEN / 7);
+          addMover(rip, uLiq, 0);
+        }
+        addDroplets(110, 0.03, 0.07, R * 0.55, uGas); // fast gas core with entrained mist
+      } else { // disperse
+        const mist = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.15));
+        mist.rotation.z = Math.PI / 2;
+        group.add(mist);
+        addDroplets(180, 0.03, 0.09, R * 0.85, uMix);
+      }
+
+      document.getElementById('fr-3d-overlay').innerText =
+        d.regime + ' | θ = ' + d.theta_deg.toFixed(1) + '° | jG = ' + d.jG.toFixed(2) + ' m/s | jL = ' + d.jL.toFixed(2) + ' m/s';
+
+      const clock = new THREE.Clock();
+      let t = 0;
+      function animate() {
+        fr3d.raf = requestAnimationFrame(animate);
+        const dt = Math.min(clock.getDelta(), 0.1);
+        t += dt;
+        for (const m of movers) {
+          m.obj.position.x += m.speed * dt;
+          if (m.obj.position.x > HALF + 2) m.obj.position.x -= LEN + 4;
+          if (m.wobAmp) {
+            m.obj.position.y = m.baseY + Math.sin(t * m.wobFreq + m.phase) * m.wobAmp;
+            m.obj.position.z = m.baseZ + Math.cos(t * m.wobFreq + m.phase) * m.wobAmp;
+          }
+        }
+        for (const seg of waveSegs) {
+          const h = seg.userData.h0 + (seg.userData.amp ? seg.userData.amp * Math.sin(2.2 * seg.userData.x - 2.5 * uLiq * t) : 0);
+          seg.scale.y = h;
+          seg.position.y = -R + h / 2;
+        }
+        camera.position.x = Math.sin(t * 0.12) * 1.2;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+      }
+      const onResize = () => {
+        const w = wrap.clientWidth, h = wrap.clientHeight;
+        if (!w || !h) return;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      };
+      window.addEventListener('resize', onResize);
+      fr3d = { renderer, scene, camera, raf: 0, onResize };
+      animate();
     }
 
     // --- BASE FORMATTING & LOCAL STORAGE---

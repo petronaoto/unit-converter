@@ -1,0 +1,5 @@
+# Dependencies for api/flowregime.py (server-side seaborn rendering).
+# api/dp_calculator.py and api/psv_calculator.py remain standard-library only.
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13

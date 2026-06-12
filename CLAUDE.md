@@ -4,13 +4,15 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.2 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.3 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
   - `index.html` — single-file frontend: vanilla JavaScript + Tailwind CSS via CDN. No build step. All standard conversions and JIS K 2301 compositional calculations run client-side.
   - `api/dp_calculator.py` — Vercel serverless Python: pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, HEM two-phase).
   - `api/psv_calculator.py` — Vercel serverless Python: API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid, §5.10 two-phase Omega method).
+  - `api/flowregime.py` — Vercel serverless Python: two-phase flow regime map (seaborn/matplotlib server-side PNG rendering). Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type, G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator.
+  - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `README.md` — project documentation.
 
 ## CRITICAL Preservation Rules
@@ -19,7 +21,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 2. **Make surgical, minimal diffs.** Do not regenerate whole files or whole sections to apply a small change.
 3. **Do not "improve" working code** (formatting, style, modernization) unless asked.
 4. **Element IDs are an API.** JavaScript references HTML IDs extensively (`out-ghv`, `flow-mass-in-u`, `psv-*`, `dp-*`, etc.). Never change an ID without updating every reference, and only when instructed.
-5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), and both serverless API integrations must all still exist.
+5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist.
 
 ## Calculation Rules (JIS K 2301:2011) — DO NOT ALTER
 
@@ -83,7 +85,8 @@ git push origin main
 
 - `vercel dev` is required to test the two Python API endpoints locally (opening index.html directly breaks the Advanced ΔP and Safety PSV calculators).
 - Test API endpoints with curl POSTs to `/api/dp_calculator` and `/api/psv_calculator` after modifying them.
-- The Python APIs use only the standard library (`json`, `math`, `http.server`) — do not add dependencies.
+- `api/dp_calculator.py` and `api/psv_calculator.py` use only the standard library (`json`, `math`, `http.server`) — do not add dependencies to them. `api/flowregime.py` additionally uses numpy/matplotlib/seaborn, declared in `requirements.txt` — do not add further dependencies.
+- Flow Regime reference case: the v2.3 default ΔP inputs (ID=4 in, L=100 m, Δz=70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) must classify as **Churn / Slug Flow, θ = +45.0°, vertical map** (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
 
 ## Engineering Standards References
 
