@@ -4,7 +4,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.3 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.3.1 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
@@ -87,6 +87,7 @@ git push origin main
 - Test API endpoints with curl POSTs to `/api/dp_calculator` and `/api/psv_calculator` after modifying them.
 - `api/dp_calculator.py` and `api/psv_calculator.py` use only the standard library (`json`, `math`, `http.server`) — do not add dependencies to them. `api/flowregime.py` additionally uses numpy/matplotlib/seaborn, declared in `requirements.txt` — do not add further dependencies.
 - Flow Regime reference case: the v2.3 default ΔP inputs (ID=4 in, L=100 m, Δz=70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) must classify as **Churn / Slug Flow, θ = +45.0°, vertical map** (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
+- Unit-factor convention (dp_calculator.py & flowregime.py): every `*_m` select value is a **multiply-to-SI** factor — flow×factor→kg/s, density×factor→kg/m³ (kg/m³=1, lb/ft³=16.0185), viscosity×factor→Pa·s. Density was fixed in v2.3.1 (was erroneously dividing); always multiply.
 
 ## Engineering Standards References
 

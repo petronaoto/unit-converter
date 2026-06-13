@@ -50,11 +50,11 @@ class handler(BaseHTTPRequestHandler):
         dz = float(data.get('elev', 0)) * float(data.get('elev_mult', 1))
 
         Wv = float(data.get('v_flow', 0)) * float(data.get('v_flow_m', 1)) * scale
-        rhov = float(data.get('v_den', 1)) / float(data.get('v_den_m', 1))
+        rhov = float(data.get('v_den', 1)) * float(data.get('v_den_m', 1))
         muv = float(data.get('v_visc', 0.01)) * float(data.get('v_visc_m', 1))
 
         Wl = float(data.get('l_flow', 0)) * float(data.get('l_flow_m', 1)) * scale
-        rhol = float(data.get('l_den', 1)) / float(data.get('l_den_m', 1))
+        rhol = float(data.get('l_den', 1)) * float(data.get('l_den_m', 1))
         mul = float(data.get('l_visc', 1)) * float(data.get('l_visc_m', 1))
 
         Wt = Wv + Wl

@@ -122,9 +122,9 @@ def compute(data):
         L = float(data.get('len', 0)) * float(data.get('len_mult', 1))
         dz = float(data.get('elev', 0)) * float(data.get('elev_mult', 1))
         Wv = float(data.get('v_flow', 0)) * float(data.get('v_flow_m', 1)) * scale
-        rhov = float(data.get('v_den', 1)) / float(data.get('v_den_m', 1))
+        rhov = float(data.get('v_den', 1)) * float(data.get('v_den_m', 1))
         Wl = float(data.get('l_flow', 0)) * float(data.get('l_flow_m', 1)) * scale
-        rhol = float(data.get('l_den', 1)) / float(data.get('l_den_m', 1))
+        rhol = float(data.get('l_den', 1)) * float(data.get('l_den_m', 1))
     except (TypeError, ValueError):
         return _err("Invalid numeric input.")
 

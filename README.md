@@ -1,87 +1,113 @@
-O&G Engineering Converter (V2.3)
-📌 Objective
-The O&G Engineering Converter is a high-precision, control-room-ready suite of engineering tools designed specifically for the Oil & Gas and LNG sectors.
+# O&G Engineering Converter — v2.3.1
 
-Built to replace fragmented, legacy Excel spreadsheets, this application provides process engineers, operators, and facility managers with instantaneous, standards-compliant thermodynamic and hydraulic calculations accessible directly from a web browser.
+A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
-🏗️ Development Policies & Architecture
-This project strictly adheres to a Hybrid Edge-Server Architecture to maximize both client responsiveness and backend mathematical integrity.
+Built to replace fragmented, legacy Excel spreadsheets, this application gives process engineers, operators, and facility managers instantaneous, standards-compliant thermodynamic and hydraulic calculations — directly from a web browser.
 
-UI & Lightweight Computation (Client-Side): The frontend is built with vanilla JavaScript and Tailwind CSS (via CDN) for zero-build-step deployment. Standard unit conversions, input validation, and layout rendering are handled instantaneously in the browser to ensure a frictionless user experience.
+🔗 **Live:** deployed on Vercel (auto-deploys from `main`)
+📦 **Repository:** <https://github.com/petronaoto/unit-converter>
 
-Iterative Mathematical Engines (Serverless Python): Heavy, standards-governed calculations that require complex iterations (e.g., Colebrook-White friction factors, API 520 critical pressure ratios) are explicitly decoupled from the UI thread. These are offloaded to Python backend endpoints (/api/) deployed as Vercel Serverless Functions.
+---
 
-Stateful yet Stateless UX:
-The application utilizes browser localStorage for the Custom Module Generator. This allows users to persist custom unit conversions across sessions without the overhead or privacy concerns of an external database.
+## 📌 Objective
 
-Graceful Degradation:
-Client-side asynchronous fetch requests are wrapped in robust try/catch blocks. If a serverless function experiences a cold-start timeout or receives malformed data, the UI updates with safe, contextual error badges rather than failing catastrophically.
+Provide a single, trustworthy, browser-based toolkit for the everyday unit conversions and engineering calculations used across gas processing and LNG facilities — fast enough for control-room use, yet traceable to the governing standards.
 
-Self-Contained Documentation:
-All operational manuals and theoretical proofs are embedded natively within the application using CSS-rendered wireframes, eliminating the need to maintain or link out to external wikis.
+---
 
-⚙️ Core Features & Capabilities
-1. General & Basic Engineering
-Standard Conversions: Bidirectional synchronization for Gas Volume (Nm³ ↔ scf), Pressure, Temperature, and Heating Value.
+## 🏗️ Architecture & Development Policy
 
-Custom Module Generator: Users can dynamically instantiate custom conversion cards (e.g., metric tons to barrels) that serialize to local browser cache.
+The project follows a **Hybrid Edge-Server Architecture** to balance client responsiveness with backend mathematical integrity.
 
-Pipe Volume: Rapid capacity calculations across mixed metric/imperial units.
+| Layer | Technology | Responsibility |
+|---|---|---|
+| **Frontend** | Vanilla JavaScript + Tailwind CSS (CDN), Three.js (CDN) | UI, standard conversions, JIS K 2301 compositional calcs, 3D flow animation — all client-side, zero build step |
+| **Serverless** | Python on Vercel (`/api/`) | Iterative / heavy calculations decoupled from the UI thread |
+| **Persistence** | Browser `localStorage` | Stores user-created Custom Modules — no external database |
 
-Z-Factor Estimator: Quick natural gas compressibility estimation using Papay's equation.
+**Guiding principles**
 
-2. Advanced Process Engineering (Serverless Backed)
-Compositional GHV & Flow Calculator:
+- **Decoupled math engines.** Standards-governed iterative calculations (Colebrook-White friction factor, API 520 critical-pressure ratios, server-side regime-map rendering) run in Python serverless functions, not the browser.
+- **Graceful degradation.** Client `fetch` calls are wrapped in `try/catch`; cold-start timeouts or malformed data surface as contextual error badges rather than hard failures.
+- **Self-contained documentation.** Operational manuals and theory are embedded natively in the app (How To Use / Theory tabs) — no external wikis to maintain.
 
-Strict adherence to JIS K 2301:2011 for cascading rounding logic, Wobbe Index, and Maximum Combustion Potential (MCP).
+---
 
-LNG Liquid Density calculation utilizing exact linear temperature intercepts (Klosek-McKinley derived models).
+## ⚙️ Core Features
 
-Pipe Delta Pressure (Fanning):
+### 1. General & Basic Engineering
 
-Calculates pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
+- **Standard conversions** — bidirectional sync for Gas Volume (Nm³ ↔ scf), Pressure, Temperature, and Heating Value.
+- **Custom Module Generator** — dynamically create conversion cards (e.g. tons ↔ barrels) that persist to local browser cache.
+- **Pipe Volume** — rapid capacity calculations across mixed metric/imperial units.
+- **Z-Factor Estimator** — quick natural-gas compressibility via Papay's equation.
 
-Python backend solves the Colebrook-White equation implicitly.
+### 2. Advanced Process Engineering (serverless-backed)
 
-Flow Regime Visualizer:
+- **Compositional GHV & Flow Calculator**
+  - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
+  - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
+- **Pipe Delta Pressure (Fanning)**
+  - Pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
+  - Python backend solves the **Colebrook-White** equation implicitly.
+- **Flow Regime Visualizer** *(new in v2.3)*
+  - Classifies the two-phase flow pattern from the Pipe ΔP inputs on simplified **Hewitt & Roberts** (vertical) / **Baker** (horizontal) regime maps, selected by pipe inclination θ = asin(Δz / L).
+  - Maps are rendered server-side with Python **seaborn** (`/api/flowregime`) and paired with a conceptual **Three.js 3D animation** of the flow pattern, speed, and inclination.
 
-Classifies the two-phase flow pattern from the Pipe Delta Pressure inputs on simplified Hewitt & Roberts (vertical) / Baker (horizontal) regime maps, selected by the pipe inclination θ = asin(Δz/L).
+### 3. Safety
 
-Maps are rendered server-side with Python seaborn (/api/flowregime) and accompanied by a conceptual Three.js 3D animation of the flow pattern, speed, and inclination.
+- **API 520 PRV Sizing** — required orifice areas for Gas, Liquid, Steam, and Two-Phase (Omega method) relief scenarios per API Standard 520 Part I, with API 526 orifice-letter selection.
 
-API 520 PRV Sizing:
+---
 
-Calculates required orifice areas for Gas, Liquid, Steam, and Two-Phase (HEM) relief scenarios per API Standard 520 Part 1.
+## 📜 Engineering Standards
 
-📜 Engineering Standards Compliance
-The algorithms within this repository are rigorously calibrated against the following standards:
+| Standard | Scope |
+|---|---|
+| **JIS K 2301:2011** | Calorific value, density, relative density & Wobbe index from gas composition |
+| **ISO 6578:1991** | Refrigerated hydrocarbon liquids — static measurement (LNG density) |
+| **API 520 Part I (9th Ed., 2014)** | Sizing, selection & installation of pressure-relieving devices |
+| **Colebrook & White (1939)** | Implicit turbulent friction-factor equation |
+| **Hewitt & Roberts (1969) · Baker (1954)** | Two-phase flow regime maps (simplified, indicative) |
+| **CODATA 2018** | Universal gas constant R = 8.31446262 J/(mol·K) |
 
-API 520 Part 1: Sizing, Selection, and Installation of Pressure-Relieving Devices.
+---
 
-JIS K 2301: Fuel gases for natural gas - Calculation of calorific value, density, relative density, and Wobbe index from composition.
+## 🚀 Deployment & Local Setup
 
-ISO 6578: Refrigerated hydrocarbon liquids - Static measurement - Calculation procedure.
+This repository is optimized for **Vercel**, which auto-detects the `api/` directory and provisions the Python scripts as serverless endpoints.
 
-🚀 Deployment & Local Setup
-This repository is optimized for deployment on Vercel. Vercel's build engine automatically detects the api/ directory and provisions the Python scripts as serverless endpoints.
+> ⚠️ Opening `index.html` directly breaks the Advanced ΔP / Flow Regime and Safety PRV calculators, because they depend on the Python serverless functions. Use the Vercel CLI.
 
-To run locally for development:
-Because the application relies on Python serverless functions, opening index.html directly in a browser will break the Advanced Tab calculators. You must use the Vercel CLI.
-
-Install the Vercel CLI:
-
-Bash
+```bash
+# 1. Install the Vercel CLI
 npm i -g vercel
-Navigate to the project root and start the local development server:
 
-Bash
+# 2. From the project root, start the local dev server
 vercel dev
-Open http://localhost:3000 in your browser.
 
-🔒 Privacy & Data Policy
-Zero Data Harvesting: This application does not track, store, or transmit personal user data to external servers. All "Custom Modules" created by the user are stored exclusively within the user's local browser storage (localStorage). The backend API endpoints are entirely stateless.
+# 3. Open the app
+#    http://localhost:3000
+```
 
-⚠️ Disclaimer
-The calculations and conversions provided by this application are for general reference and convenience only. Under no circumstances should the outputs of this application be used as the sole basis for critical engineering decisions, financial billing, process safety, or regulatory compliance.
+**Python dependencies** (`requirements.txt`) are required only by `api/flowregime.py` (numpy / matplotlib / seaborn). `api/dp_calculator.py` and `api/psv_calculator.py` use the standard library only.
+
+---
+
+## 🔒 Privacy & Data Policy
+
+- **Zero data harvesting** — no personal data is tracked, stored, or transmitted.
+- **Local-only state** — Custom Modules live exclusively in your browser's `localStorage`.
+- **Stateless APIs** — serverless endpoints process numerical engineering inputs transiently and return a result (the Flow Regime endpoint also returns a rendered map image); nothing is logged or tied to a user.
+
+See the in-app **Privacy Policy** and **Terms of Use** tabs for full detail.
+
+---
+
+## ⚠️ Disclaimer
+
+The calculations and conversions provided by this application are for **general reference and convenience only**. Under no circumstances should the outputs be used as the sole basis for critical engineering decisions, financial billing, process safety, or regulatory compliance. The Flow Regime visualization uses simplified, approximate regime-map boundaries and a conceptual 3D animation — it is for qualitative orientation only.
+
+---
 
 © 2026 Naoto Yamabe. All rights reserved.

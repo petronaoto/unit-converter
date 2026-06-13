@@ -831,7 +831,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.3</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.3.1</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
 
@@ -842,7 +842,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v2.3 • Hybrid</span>
+              <span class="text-slate-500 text-[10px]">v2.3.1 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -1161,8 +1161,19 @@
               </div>
             </div>
           </div>
-          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-300">
+          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-300 mb-4">
             <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³, liquid 7,300 kg/h @ 500 kg/m³) produce <strong>Churn / Slug Flow at θ = +45.0°</strong> (j<sub>G</sub> ≈ 0.51 m/s, j<sub>L</sub> ≈ 0.50 m/s, vertical map). Map boundaries are simplified — indicative only, not for design.
+          </div>
+          <p class="text-sm text-slate-400 mb-3">Example output for the default inputs — the seaborn regime map (top) and a frame of the Three.js 3D animation (bottom):</p>
+          <div class="grid grid-cols-1 gap-4">
+            <figure class="bg-slate-950 rounded-xl border border-slate-700 p-3">
+              <img src="assets/flow-regime-map.png" alt="Example flow regime map: Churn / Slug Flow at +45° on the vertical (Hewitt &amp; Roberts type) map, with operating point and inclination schematic." loading="lazy" class="w-full rounded" />
+              <figcaption class="text-[10px] text-slate-500 mt-2 text-center">Flow regime map (Python seaborn, server-side) — Churn / Slug Flow, θ = +45.0°, vertical map.</figcaption>
+            </figure>
+            <figure class="bg-slate-950 rounded-xl border border-slate-700 p-3">
+              <img src="assets/flow-regime-3d.gif" alt="Example 3D flow animation: liquid slugs and bullet-nosed Taylor gas bubbles travelling up a pipe inclined at 45 degrees." loading="lazy" class="w-full max-w-xl mx-auto rounded" />
+              <figcaption class="text-[10px] text-slate-500 mt-2 text-center">3D flow animation (Three.js) — slug flow in a 45° inclined pipe. Live in-app; conceptual, not a CFD result.</figcaption>
+            </figure>
           </div>
         </section>
 
@@ -1208,7 +1219,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.3. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.3.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1654,7 +1665,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3.1</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1722,7 +1733,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3.1</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1831,7 +1842,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.3</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.3.1</div>
     </div>
   </footer>
 
