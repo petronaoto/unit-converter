@@ -89,12 +89,38 @@ class handler(BaseHTTPRequestHandler):
         Re = rho * vel * D / mu
         f_d = get_darcy_friction_factor(Re, eps / D)
 
-        dpPa = (f_d * (L / D) * rho * math.pow(vel, 2) / 2.0) + (rho * 9.81 * dz)
+        # Frictional (Darcy-Weisbach) + static-head terms, reported separately
+        dpFric = f_d * (L / D) * rho * math.pow(vel, 2) / 2.0
+        dpStatic = rho * 9.81 * dz
+        dpPa = dpFric + dpStatic
+
+        # Flow-regime label for Reynolds number (single-phase reference only)
+        if Re < 2300:
+            re_regime = "Laminar"
+        elif Re < 4000:
+            re_regime = "Transitional"
+        else:
+            re_regime = "Turbulent"
+
+        # API RP 14E erosional velocity limit: Ve = C / sqrt(rho_mix)
+        # SI form Ve[m/s] = 1.2247 * C / sqrt(rho[kg/m3]); C=100 continuous, 125 intermittent.
+        C_ero = float(data.get('cfactor', 100)) or 100.0
+        v_ero = 1.2247448714 * C_ero / math.sqrt(rho) if rho > 0 else 0.0
+        ero_ratio = (vel / v_ero) if v_ero > 0 else 0.0
 
         response = {
             "error": False,
             "dpPa": dpPa,
+            "dpFric": dpFric,
+            "dpStatic": dpStatic,
             "vel": vel,
+            "Re": Re,
+            "re_regime": re_regime,
+            "f": f_d,
+            "rho_mix": rho,
+            "v_ero": v_ero,
+            "ero_ratio": ero_ratio,
+            "cfactor": C_ero,
             "badge": badge,
             "badgeClass": badgeClass,
             "L": L

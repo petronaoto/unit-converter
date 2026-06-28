@@ -4,12 +4,12 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.3.1 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.4 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
   - `index.html` — single-file frontend: vanilla JavaScript + Tailwind CSS via CDN. No build step. All standard conversions and JIS K 2301 compositional calculations run client-side.
-  - `api/dp_calculator.py` — Vercel serverless Python: pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, HEM two-phase).
+  - `api/dp_calculator.py` — Vercel serverless Python: pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, HEM two-phase). v2.4: also returns Reynolds number `Re`, `re_regime`, Darcy friction factor `f`, the split `dpFric`/`dpStatic` terms, mixture density `rho_mix`, and an **API RP 14E erosional-velocity** check (`v_ero`, `ero_ratio`) computed from the payload's `cfactor` (default 100).
   - `api/psv_calculator.py` — Vercel serverless Python: API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid, §5.10 two-phase Omega method).
   - `api/flowregime.py` — Vercel serverless Python: two-phase flow regime map (seaborn/matplotlib server-side PNG rendering). Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type, G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator.
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
@@ -21,7 +21,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 2. **Make surgical, minimal diffs.** Do not regenerate whole files or whole sections to apply a small change.
 3. **Do not "improve" working code** (formatting, style, modernization) unless asked.
 4. **Element IDs are an API.** JavaScript references HTML IDs extensively (`out-ghv`, `flow-mass-in-u`, `psv-*`, `dp-*`, etc.). Never change an ID without updating every reference, and only when instructed.
-5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist.
+5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore).
 
 ## Calculation Rules (JIS K 2301:2011) — DO NOT ALTER
 
@@ -87,6 +87,7 @@ git push origin main
 - Test API endpoints with curl POSTs to `/api/dp_calculator` and `/api/psv_calculator` after modifying them.
 - `api/dp_calculator.py` and `api/psv_calculator.py` use only the standard library (`json`, `math`, `http.server`) — do not add dependencies to them. `api/flowregime.py` additionally uses numpy/matplotlib/seaborn, declared in `requirements.txt` — do not add further dependencies.
 - Flow Regime reference case: the v2.3 default ΔP inputs (ID=4 in, L=100 m, Δz=70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) must classify as **Churn / Slug Flow, θ = +45.0°, vertical map** (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
+- dp_calculator reference case (same inputs, v2.4): ΔP_total ≈ **176.9 kPa** (dpFric ≈ 2.34 kPa + dpStatic ≈ 174.6 kPa), vel ≈ 1.014 m/s, Re ≈ **2.20×10⁵** (turbulent), Darcy f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³, V_e ≈ **7.72 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT). Re-verify these after touching dp_calculator.py.
 - Unit-factor convention (dp_calculator.py & flowregime.py): every `*_m` select value is a **multiply-to-SI** factor — flow×factor→kg/s, density×factor→kg/m³ (kg/m³=1, lb/ft³=16.0185), viscosity×factor→Pa·s. Density was fixed in v2.3.1 (was erroneously dividing); always multiply.
 
 ## Engineering Standards References
@@ -94,6 +95,8 @@ git push origin main
 - JIS K 2301:2011 — calorific value, density, SG, Wobbe index from composition.
 - ISO 6578:1991 — LNG density (Klosek-McKinley).
 - API Standard 520 Part I, 9th Ed. (2014) — PRV sizing; API 526 orifice areas D–T.
+- API RP 14E (5th Ed., 1991) — erosional-velocity screening criterion V_e = C/√ρ (ΔP card, v2.4).
+- Papay (1968) with Standing-Katz pseudo-criticals — gas Z-factor (Basic Eng); validity 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0.
 - CODATA 2018 — gas constant.
 - Colebrook & White (1939) — friction factor.
 

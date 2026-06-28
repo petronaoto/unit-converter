@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v2.3.1
+# O&G Engineering Converter — v2.4
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -40,16 +40,20 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Standard conversions** — bidirectional sync for Gas Volume (Nm³ ↔ scf), Pressure, Temperature, and Heating Value.
 - **Custom Module Generator** — dynamically create conversion cards (e.g. tons ↔ barrels) that persist to local browser cache.
 - **Pipe Volume** — rapid capacity calculations across mixed metric/imperial units.
-- **Z-Factor Estimator** — quick natural-gas compressibility via Papay's equation.
+- **Z-Factor Estimator** — quick natural-gas compressibility via Papay's equation (flags inputs outside the Pr/Tr validity envelope).
+- **Petroleum Gravity** *(new in v2.4)* — three-way °API ↔ specific gravity ↔ density (water at 60 °F).
+- **Viscosity converter** *(new in v2.4)* — dynamic (cP / Pa·s) ↔ kinematic (cSt / m²/s) via density.
+- **Mass ↔ Volumetric Flow** *(new in v2.4)* — flow-rate conversion by fluid density.
 
 ### 2. Advanced Process Engineering (serverless-backed)
 
 - **Compositional GHV & Flow Calculator**
   - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
-- **Pipe Delta Pressure (Fanning)**
+- **Pipe Delta Pressure (Darcy-Weisbach)**
   - Pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
   - Python backend solves the **Colebrook-White** equation implicitly.
+  - *(new in v2.4)* Also reports Reynolds number, Darcy friction factor, and an **API RP 14E erosional-velocity** check (configurable C-factor), and cross-links the classified flow regime.
 - **Flow Regime Visualizer** *(new in v2.3)*
   - Classifies the two-phase flow pattern from the Pipe ΔP inputs on simplified **Hewitt & Roberts** (vertical) / **Baker** (horizontal) regime maps, selected by pipe inclination θ = asin(Δz / L).
   - Maps are rendered server-side with Python **seaborn** (`/api/flowregime`) and paired with a conceptual **Three.js 3D animation** of the flow pattern, speed, and inclination.
@@ -57,6 +61,13 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 ### 3. Safety
 
 - **API 520 PRV Sizing** — required orifice areas for Gas, Liquid, Steam, and Two-Phase (Omega method) relief scenarios per API Standard 520 Part I, with API 526 orifice-letter selection.
+
+### 4. Productivity *(new in v2.4)*
+
+- **Export PDF report** — one-click printable summary of every active calculation (browser "Save as PDF").
+- **Share links** — encode the full input set into the URL for handover/collaboration (computed entirely client-side).
+- **Session auto-restore** — last inputs and UI preferences persist in browser local storage.
+- **Out-of-range guards** — LNG density (ISO 6578 108–120 K), composition, and Papay Z-factor flag extrapolated inputs instead of silently clamping.
 
 ---
 
@@ -67,6 +78,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 | **JIS K 2301:2011** | Calorific value, density, relative density & Wobbe index from gas composition |
 | **ISO 6578:1991** | Refrigerated hydrocarbon liquids — static measurement (LNG density) |
 | **API 520 Part I (9th Ed., 2014)** | Sizing, selection & installation of pressure-relieving devices |
+| **API RP 14E (5th Ed., 1991)** | Erosional-velocity screening criterion Vₑ = C/√ρ (ΔP card) |
 | **Colebrook & White (1939)** | Implicit turbulent friction-factor equation |
 | **Hewitt & Roberts (1969) · Baker (1954)** | Two-phase flow regime maps (simplified, indicative) |
 | **CODATA 2018** | Universal gas constant R = 8.31446262 J/(mol·K) |

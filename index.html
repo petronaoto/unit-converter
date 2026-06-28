@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V2.2</title>
+  <title>O&G Unit Converter V2.4</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -14,6 +14,10 @@
     select option { background-color: #0f172a; color: #f8fafc; }
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Accessibility — visible keyboard focus indicator (C5) */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid #f59e0b; outline-offset: 1px; border-radius: 2px;
+    }
     
     /* CSS Wireframe Diagram Architecture */
     .wf-box { border: 2px solid #475569; border-radius: 8px; padding: 16px; background: repeating-linear-gradient(45deg, #0f172a, #0f172a 10px, #1e293b 10px, #1e293b 20px); font-family: monospace; margin-bottom: 16px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
@@ -276,7 +280,101 @@
                   <button onclick="copyText(document.getElementById('z-result').innerText, this)" class="text-slate-400 hover:text-purple-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
               </div>
+              <div id="z-warn" class="hidden mt-3 text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
             </div>
+          </div>
+        </div>
+
+        <!-- B2 — Petroleum Liquid Gravity (°API ↔ SG ↔ Density) -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>Petroleum Gravity (°API ↔ SG ↔ Density)</h2>
+          </div>
+          <div class="p-6 space-y-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">API GRAVITY <span class="text-slate-600 font-normal">(°API, 60/60 °F)</span></label>
+              <div class="relative rounded-lg flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500">
+                <input type="number" step="any" id="api-grav" placeholder="e.g. 35" oninput="calcAPI('api')" class="w-full pl-4 py-2.5 bg-transparent text-slate-100 outline-none" />
+                <button onclick="copyText(document.getElementById('api-grav').value, this)" aria-label="Copy API gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">SPECIFIC GRAVITY <span class="text-slate-600 font-normal">(water = 1)</span></label>
+              <div class="relative rounded-lg flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500">
+                <input type="number" step="any" id="api-sg" placeholder="e.g. 0.85" oninput="calcAPI('sg')" class="w-full pl-4 py-2.5 bg-transparent text-slate-100 outline-none" />
+                <button onclick="copyText(document.getElementById('api-sg').value, this)" aria-label="Copy specific gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY <span class="text-slate-600 font-normal">(at 60 °F)</span></label>
+              <div class="flex">
+                <input type="number" step="any" id="api-den" placeholder="e.g. 849" oninput="calcAPI('den')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-amber-500" />
+                <select id="api-den-u" onchange="calcAPI('sg')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="0.0624279606">lb/ft³</option></select>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-600 leading-relaxed">°API = 141.5 / SG − 131.5 &nbsp;·&nbsp; density = SG × 999.016 kg/m³ (water at 60 °F, ASTM D1250 basis).</p>
+          </div>
+        </div>
+
+        <!-- B3a — Viscosity (Dynamic ↔ Kinematic) -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>Viscosity (Dynamic ↔ Kinematic)</h2>
+          </div>
+          <div class="p-6 space-y-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DYNAMIC VISCOSITY (μ)</label>
+              <div class="flex">
+                <input type="number" step="any" id="visc-dyn" placeholder="e.g. 0.85" oninput="calcVisc('dyn')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
+                <select id="visc-dyn-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-cyan-400 outline-none cursor-pointer"><option value="0.001">cP</option><option value="0.001">mPa·s</option><option value="1">Pa·s</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">KINEMATIC VISCOSITY (ν)</label>
+              <div class="flex">
+                <input type="number" step="any" id="visc-kin" placeholder="e.g. 1.0" oninput="calcVisc('kin')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
+                <select id="visc-kin-u" onchange="calcVisc('kin')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-cyan-400 outline-none cursor-pointer"><option value="0.000001">cSt</option><option value="0.000001">mm²/s</option><option value="1">m²/s</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY (ρ) <span class="text-slate-600 font-normal">— required to bridge</span></label>
+              <div class="flex">
+                <input type="number" step="any" id="visc-rho" value="1000" oninput="calcVisc('dyn')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
+                <select id="visc-rho-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-cyan-400 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-600 leading-relaxed">ν = μ / ρ &nbsp;·&nbsp; 1 cSt = 1 mm²/s &nbsp;·&nbsp; 1 cP = 1 mPa·s. Water at 20 °C ≈ 1 cP ≈ 1 cSt.</p>
+          </div>
+        </div>
+
+        <!-- B3b — Mass ↔ Volumetric Flow (by density) -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>Mass ↔ Volumetric Flow (by density)</h2>
+          </div>
+          <div class="p-6 space-y-5">
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">MASS FLOW</label>
+              <div class="flex">
+                <input type="number" step="any" id="mf-mass" placeholder="e.g. 100" oninput="calcMassVol('mass')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
+                <select id="mf-mass-u" onchange="calcMassVol('mass')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-blue-400 outline-none cursor-pointer"><option value="0.277778">t/h</option><option value="1">kg/s</option><option value="0.000277778">kg/h</option><option value="0.000125998">lb/h</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">VOLUMETRIC FLOW</label>
+              <div class="flex">
+                <input type="number" step="any" id="mf-vol" placeholder="e.g. 120" oninput="calcMassVol('vol')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
+                <select id="mf-vol-u" onchange="calcMassVol('vol')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-blue-400 outline-none cursor-pointer"><option value="0.000277778">m³/h</option><option value="1">m³/s</option><option value="0.00000184013">bbl/d</option><option value="0.0000630902">gal/min</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY (ρ) <span class="text-slate-600 font-normal">— at flowing conditions</span></label>
+              <div class="flex">
+                <input type="number" step="any" id="mf-rho" value="850" oninput="calcMassVol('mass')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
+                <select id="mf-rho-u" onchange="calcMassVol('mass')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-blue-400 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-600 leading-relaxed">Q<sub>vol</sub> = ṁ / ρ. For gases, use the density at the stated T &amp; P (or the compositional ρ<sub>std</sub> from the Advanced tab).</p>
           </div>
         </div>
 
@@ -430,6 +528,8 @@
                     <button onclick="copyText(document.getElementById('out-liq-den').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
+                <div id="out-liq-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
+                <div id="comp-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
               </div>
             </div>
 
@@ -500,7 +600,7 @@
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse"></span>
-              Pipe Delta Pressure Calculator (Fanning)
+              Pipe Delta Pressure Calculator (Darcy-Weisbach)
             </h2>
           </div>
           
@@ -545,6 +645,13 @@
                   <div class="flex">
                     <input type="number" step="any" id="dp-elev" value="70.711" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-elev-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">m</option><option value="0.3048">ft</option></select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" title="API RP 14E erosional-velocity constant C. Use 100 for continuous service, 125 for intermittent, higher for solids-free corrosion-resistant lines.">EROSION C-FACTOR <span class="text-slate-600 font-normal">(API RP 14E)</span></label>
+                  <div class="flex">
+                    <input type="number" step="any" id="dp-cfactor" value="100" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
+                    <select id="dp-cfactor-info" disabled class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-slate-500 outline-none"><option>C</option></select>
                   </div>
                 </div>
               </div>
@@ -641,6 +748,30 @@
                   <select id="dp-out-vel-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1" selected>m/s</option><option value="3.28084">ft/s</option></select>
                 </div>
               </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5 pt-4 border-t border-slate-800">
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Reynolds No.</label>
+                  <div class="font-mono text-sm text-slate-200"><span id="dp-out-re">—</span></div>
+                  <div id="dp-out-re-regime" class="text-[10px] text-slate-500">—</div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Darcy Friction <i>f</i></label>
+                  <div class="font-mono text-sm text-slate-200"><span id="dp-out-f">—</span></div>
+                  <div class="text-[10px] text-slate-500">Colebrook-White</div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" title="API RP 14E erosional velocity limit Ve = C/√ρ">Erosional V<sub>e</sub></label>
+                  <div class="font-mono text-sm text-slate-200"><span id="dp-out-ve">—</span> <span class="text-[10px] text-slate-500">m/s</span></div>
+                  <div class="text-[10px] text-slate-500">v / V<sub>e</sub> = <span id="dp-out-eratio">—</span></div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Erosion Check</label>
+                  <span id="dp-out-ero-badge" class="inline-block px-2 py-1 text-[10px] rounded bg-slate-800 text-slate-400">—</span>
+                </div>
+              </div>
+
+              <div id="dp-out-regime-note" class="hidden mt-4 text-[11px] text-cyan-300/80 bg-cyan-500/5 border border-cyan-500/20 rounded p-2 leading-relaxed"></div>
             </div>
           </div>
         </div>
@@ -831,9 +962,25 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.3.1</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.4</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
         </div>
+
+        <!-- 0. WHAT'S NEW IN v2.4 -->
+        <section>
+          <h3 class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">★ New in Version 2.4</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">ΔP card relabelled</strong> — the pressure-drop method is correctly named <strong>Darcy-Weisbach</strong> (it always was; the old "Fanning" label was a misnomer). Outputs now also report <strong>Reynolds number</strong>, the <strong>Darcy friction factor f</strong>, and an <strong>API RP 14E erosional-velocity check</strong> (set the C-factor in the inputs).</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-cyan-400">Flow-regime cross-link</strong> — once you visualise the flow regime, the result is echoed inside the ΔP output panel for a single-glance read.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Out-of-range warnings</strong> — the LNG density (ISO 6578, 108–120 K), gas composition (negatives / off-100% totals), and Papay Z-factor (Pr/Tr envelope) now flag extrapolated inputs instead of silently clamping.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-blue-400">New Basic Eng converters</strong> — Petroleum Gravity (°API ↔ SG ↔ density), Viscosity (dynamic ↔ kinematic), and Mass ↔ Volumetric flow (by density).</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Export PDF report</strong> — the floating <span class="text-amber-400">Export PDF</span> button (bottom-right) opens a printable summary of every current calculation; use your browser's "Save as PDF".</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Share &amp; auto-restore</strong> — the <span class="text-amber-400">Share</span> button copies a link that reproduces all your inputs; the app also restores your last session automatically from local storage.</div>
+          </div>
+          <div class="mt-3 bg-slate-950 rounded-lg border border-slate-700 p-3 text-[11px] text-slate-400">
+            <strong class="text-slate-300">Note on units —</strong> in the Advanced flow section, when Temperature ≠ 0 °C or Pressure ≠ 0, outputs are in <strong>actual</strong> cubic metres (k<strong>A</strong>m³/h), not standard normal cubic metres (kNm³/h). A red banner appears whenever you leave standard conditions.
+          </div>
+        </section>
 
         <!-- 1. NAVIGATION -->
         <section>
@@ -842,7 +989,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v2.3.1 • Hybrid</span>
+              <span class="text-slate-500 text-[10px]">v2.4 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
               <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
@@ -1219,7 +1366,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.3.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.4. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
         </div>
 
         <!-- PART I: JIS K 2301 -->
@@ -1515,6 +1662,13 @@
                 <div>Solved iteratively to convergence &nbsp;(tolerance = 1×10⁻⁶, max 100 iterations)</div>
                 <div class="text-amber-300">ε = pipe absolute roughness [m]; default 0.045 mm (commercial steel)</div>
               </div>
+              <div class="bg-slate-900 rounded p-3 border border-amber-700/40 text-slate-300 text-[10px] space-y-1">
+                <div class="text-amber-300 font-bold">Two-phase model assumptions (Homogeneous Equilibrium Model — HEM):</div>
+                <div>• Homogeneous (no-slip) mixture density: 1/ρ<sub>m</sub> = x/ρ<sub>G</sub> + (1−x)/ρ<sub>L</sub>, with quality x = W<sub>G</sub>/(W<sub>G</sub>+W<sub>L</sub>).</div>
+                <div>• Mixture viscosity uses the <strong>Cicchitti</strong> mass-weighted average: µ<sub>m</sub> = x·µ<sub>G</sub> + (1−x)·µ<sub>L</sub>.</div>
+                <div>• The static-head term ρ·g·Δz uses the same homogeneous ρ<sub>m</sub> (no void-fraction slip correction).</div>
+                <div>• <strong>No acceleration / momentum pressure term</strong> — HEM under-predicts ΔP for strongly flashing or high-void flows. Treat two-phase ΔP as a first-pass estimate.</div>
+              </div>
             </div>
           </div>
 
@@ -1535,6 +1689,19 @@
                 <div>W<sub>G</sub> = 150 kg/h = 0.04167 kg/s, ρ<sub>G</sub> = 10 kg/m³ → j<sub>G</sub> = 0.514 m/s</div>
                 <div>W<sub>L</sub> = 7300 kg/h = 2.028 kg/s, ρ<sub>L</sub> = 500 kg/m³ → j<sub>L</sub> = 0.500 m/s</div>
                 <div class="text-green-300">→ Regime: <strong>Churn / Slug Flow</strong> (v<sub>mix</sub> = j<sub>G</sub>+j<sub>L</sub> = 1.01 m/s)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h4 class="text-sm font-bold text-green-300 mb-3">4.4 Erosional Velocity Limit (API RP 14E)</h4>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="text-2xl text-center text-green-300 py-2">V<sub>e</sub> = C / √ρ<sub>m</sub></div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div>SI form used here: V<sub>e</sub> [m/s] = 1.2247·C / √(ρ<sub>m</sub> [kg/m³]), with ρ<sub>m</sub> the HEM mixture density.</div>
+                <div class="text-amber-300">C = 100 (continuous service) · 125 (intermittent) per API RP 14E; higher C only for solids-free, corrosion-resistant or inhibited lines.</div>
+                <div>The ΔP card reports V<sub>e</sub>, the ratio v/V<sub>e</sub>, and a check badge: <span class="text-green-400">WITHIN LIMIT</span> (&lt; 0.8), <span class="text-amber-400">NEAR LIMIT</span> (0.8–1.0), <span class="text-red-400">EXCEEDS Ve</span> (≥ 1.0).</div>
+                <div>API RP 14E is an empirical screening guideline, not a mechanistic erosion model — confirm against a corrosion/erosion study for final line sizing.</div>
               </div>
             </div>
           </div>
@@ -1633,7 +1800,7 @@
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
               <div class="text-amber-400 font-bold">ISO 6578:1991</div>
-              <div>Refrigerated hydrocarbon liquids — static measurement — calculation procedure. Klosek-McKinley method for LNG density. Tables B.2 (molar volumes) and C (k₁, k₂ corrections).</div>
+              <div>Refrigerated hydrocarbon liquids — static measurement — calculation procedure. Klosek-McKinley method for LNG density. Tables B.2 (molar volumes) and C (k₁, k₂ corrections). <span class="text-amber-300">Tabulated molar-volume range 108–120 K; temperatures outside this band are clamped and flagged as extrapolated in the GHV card.</span></div>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
               <div class="text-amber-400 font-bold">CODATA 2018</div>
@@ -1652,6 +1819,14 @@
               <div>"Design of Pipelines for the Simultaneous Flow of Oil and Gas", Oil &amp; Gas Journal, 53:185–195. Basis of the horizontal-flow regime map (simplified boundaries) in the Flow Regime card.</div>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">API RP 14E (5th Ed., 1991)</div>
+              <div>Recommended Practice for Design and Installation of Offshore Production Platform Piping Systems. Source of the erosional-velocity screening criterion V<sub>e</sub> = C/√ρ<sub>m</sub> reported by the ΔP card (§4.4).</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Papay (1968) · Standing-Katz</div>
+              <div>Single-equation gas Z-factor correlation with Standing-Katz pseudo-criticals (Basic Eng tab). Validity envelope 0 &lt; P<sub>r</sub> ≤ 15 and 1.05 ≤ T<sub>r</sub> ≤ 3.0; results outside it are flagged as extrapolated.</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
               <div class="text-amber-400 font-bold">API Standard 520 Part I — Ninth Edition (2014)</div>
               <div>Sizing, Selection, and Installation of Pressure-relieving Devices — Part I: Sizing and Selection. American Petroleum Institute, Washington D.C. Governs all PRV sizing equations implemented in the Safety tab: §5.6 Gas/Vapor (Eq. 2, 5, 12, 15), §5.7 Steam (Eq. 21, 22), §5.8 Liquid Certified (Eq. 28–30), §5.9 Liquid Non-Certified (Eq. 38, 39), §5.10 Two-Phase Omega Method (Annex C.2.2, Eq. C.12–C.21). API 526 orifice areas (Table 1, D–T) also sourced from this edition.</div>
             </div>
@@ -1665,7 +1840,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3.1</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.4</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
@@ -1686,7 +1861,7 @@
               <li>Uninterrupted or error-free operation</li>
               <li>Compliance with any specific national or international standard</li>
             </ul>
-            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. In particular, the Flow Regime visualization (Advanced tab) uses simplified, approximate regime-map boundaries and a conceptual 3D animation; it is provided for qualitative orientation only and <strong>must not be used as a basis for design, operational, or safety decisions</strong>.</p>
+            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. Several tools deliberately use simplified or screening-level models and are provided for qualitative orientation only — they <strong>must not be used as a basis for design, operational, or safety decisions</strong>. These include: the Flow Regime visualization (approximate regime-map boundaries + a conceptual 3D animation), the Pipe Delta Pressure two-phase calculation (Homogeneous Equilibrium Model — no slip, no acceleration term), the erosional-velocity check (API RP 14E empirical screening), and the Z-Factor Estimator (Papay correlation, valid only within its stated P<sub>r</sub>/T<sub>r</sub> envelope). Where an input falls outside a method's validated range, the Application flags the result as extrapolated; such results are indicative only.</p>
           </div>
 
           <div>
@@ -1733,7 +1908,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.3.1</p>
+          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.4</p>
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
@@ -1742,11 +1917,11 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">2. Data We Do NOT Collect</h3>
-            <p>The Application does <strong>not</strong> collect, store, or transmit any of the following:</p>
+            <p>The Application does <strong>not</strong> collect, transmit to the developer, or remotely store any of the following:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
               <li>Personally identifiable information (name, email, IP address)</li>
-              <li>Gas composition data or engineering inputs you enter</li>
-              <li>Calculation results or session history</li>
+              <li>Gas composition data or engineering inputs you enter (these are kept only in your own browser — see Section 3 — except the transient numerical parameters sent to the calculation APIs in Section 4)</li>
+              <li>Calculation results or session history on any server</li>
               <li>Browser fingerprinting or device identifiers</li>
               <li>Cookies for tracking or analytics purposes</li>
               <li>Any usage telemetry or analytics</li>
@@ -1755,14 +1930,14 @@
 
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">3. Browser Local Storage</h3>
-            <p>The Application uses your browser's <strong>Local Storage</strong> (a built-in browser feature) exclusively to save custom converter modules you create in the General tab. This data:</p>
+            <p>The Application uses your browser's <strong>Local Storage</strong> (a built-in browser feature) to save (a) custom converter modules you create in the General tab and (b) — new in v2.4 — your most recent calculator inputs and UI preferences, so the page restores your last session automatically. This data:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
               <li>Is stored only on your local device, within your browser</li>
-              <li>Never leaves your device or browser</li>
-              <li>Is never transmitted to any external server</li>
+              <li>Never leaves your device or browser, and is never transmitted to any external server</li>
               <li>Can be cleared at any time by clearing your browser's local storage or site data</li>
-              <li>Contains only your custom module names, unit labels, and conversion factors</li>
+              <li>Contains only your custom module definitions and the numerical inputs / unit selections you typed into the calculators</li>
             </ul>
+            <p class="mt-2"><strong>Share links (v2.4).</strong> The "Share" button encodes your current inputs into the page URL (after the <span class="font-mono">#</span> fragment) and copies it to your clipboard. This is performed entirely in your browser; the fragment is never sent to the server. Anyone you give the link to can reconstruct those inputs, so avoid sharing links containing data you consider sensitive.</p>
           </div>
 
           <div>
@@ -1773,7 +1948,7 @@
           <div>
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
-            <p class="mt-2">The Application also loads two open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). Like any web resource request, these CDN providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to these CDNs.</p>
+            <p class="mt-2">The Application also loads open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). In addition, a small <strong>Cloudflare email-protection script</strong> (<span class="font-mono">/cdn-cgi/scripts/.../email-decode.min.js</span>) is served with the page to obfuscate the developer's contact email against scrapers. Like any web resource request, these providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to any of them.</p>
           </div>
 
           <div>
@@ -1836,13 +2011,28 @@
 
   </main>
 
+  <!-- Floating action bar: export report / share link / persistent-state controls -->
+  <div class="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 print:hidden">
+    <span id="state-toast" class="hidden text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-green-400 border border-green-500/30"></span>
+    <div class="flex gap-2">
+      <button onclick="copyShareLink()" aria-label="Copy a shareable link with current inputs" title="Copy a shareable link that restores all current inputs" class="flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 backdrop-blur hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 shadow-lg transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+        Share
+      </button>
+      <button onclick="exportReport()" aria-label="Export a printable calculation report" title="Open a printable report of the current calculations (Save as PDF)" class="flex items-center gap-1.5 px-3 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.35)] transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Export PDF
+      </button>
+    </div>
+  </div>
+
   <footer class="relative z-10 bg-slate-950 border-t border-slate-800/50 mt-auto">
     <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
       <div class="flex items-center gap-2 mb-2 md:mb-0">
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.3.1</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.4</div>
     </div>
   </footer>
 
@@ -1939,7 +2129,9 @@
       copyText(inputEl.value, btnElement);
     }
 
+    let currentTab = 'general';
     function switchTab(tabId) {
+      currentTab = tabId;
       const tabs = ['general', 'basic', 'advanced', 'safety', 'howto', 'theory', 'terms', 'privacy', 'report'];
       tabs.forEach(t => {
         const pane = document.getElementById('tab-' + t);
@@ -1970,7 +2162,7 @@
       const name = document.getElementById('report-name').value || "Anonymous User";
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.2`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.4`);
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -2062,6 +2254,18 @@
       totalEl.classList.toggle('text-red-500',    Math.abs(sumFrac-100)>0.01);
       totalEl.classList.toggle('text-orange-500', Math.abs(sumFrac-100)<=0.01);
 
+      // A3 — composition sanity warnings (negative entries / off-100 sum are silently normalized)
+      const compWarn = document.getElementById('comp-warn');
+      if (compWarn) {
+        const negs = gasComps.filter(c => inputs[c.id] < 0).map(c => c.id.toUpperCase());
+        const msgs = [];
+        if (negs.length) msgs.push('Negative fraction(s): ' + negs.join(', ') + '.');
+        if (sumFrac <= 0) msgs.push('Total composition is zero.');
+        else if (Math.abs(sumFrac-100) > 0.5) msgs.push('Total is ' + sumFrac.toFixed(2) + '% — values are normalized to 100% before calculation.');
+        compWarn.classList.toggle('hidden', msgs.length === 0);
+        compWarn.innerText = msgs.length ? '⚠ ' + msgs.join(' ') : '';
+      }
+
       const rawFrac = {};
       gasComps.forEach(c => { rawFrac[c.id]=sumFrac>0?inputs[c.id]/sumFrac:0; });
 
@@ -2133,9 +2337,18 @@
       const tLiqRaw=parseFloat(document.getElementById('op-liq-temp').value);
       const uLiqT  =document.getElementById('op-liq-temp-u').value;
       const tLiqC  =isNaN(tLiqRaw)?-160:(uLiqT==='C'?tLiqRaw:(tLiqRaw-32)*5/9);
-      const rho_liq=calcLNGDensity(x,tLiqC+273.15);
+      const tLiqK  =tLiqC+273.15;
+      const rho_liq=calcLNGDensity(x,tLiqK);
       const uLiqDen=document.getElementById('out-liq-den-u').value;
       document.getElementById('out-liq-den').innerText=fmtN(uLiqDen==='lb/ft3'?rho_liq*0.0624279606:rho_liq,2);
+
+      // A3 — ISO 6578 molar-volume table covers 108–120 K; flag silent clamping outside it
+      const liqWarn=document.getElementById('out-liq-warn');
+      if (liqWarn) {
+        const oob = tLiqK < 108 || tLiqK > 120;
+        liqWarn.classList.toggle('hidden', !oob);
+        if (oob) liqWarn.innerText = `⚠ LNG temp ${tLiqK.toFixed(1)} K is outside the ISO 6578 table range (108–120 K). Density is clamped to the nearest tabulated temperature — treat as extrapolated.`;
+      }
 
       // Operating conditions  ───────────────────────────────────────────────────
       const opT=parseFloat(document.getElementById('op-temp').value)||0;
@@ -2235,7 +2448,68 @@
       const ppc = 756.8 - 131*sg - 3.6*sg*sg; 
       const tpc = 169.2 + 349.5*sg - 74*sg*sg; 
       const pr = p_psia/ppc; const tr = t_rankine/tpc; 
-      document.getElementById('z-result').innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*tr) + 0.274*pr*pr/Math.pow(10, 0.8157*tr)).toFixed(4); 
+      const zr = document.getElementById('z-result');
+      zr.innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*tr) + 0.274*pr*pr/Math.pow(10, 0.8157*tr)).toFixed(4);
+      // A3 — Papay validity envelope (Standing-Katz pseudo-criticals): 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0
+      const zw = document.getElementById('z-warn');
+      if (zw) {
+        const oob = pr <= 0 || pr > 15 || tr < 1.05 || tr > 3.0;
+        zw.classList.toggle('hidden', !oob);
+        if (oob) zw.innerText = `⚠ Outside Papay validity range (Pr ${pr.toFixed(2)}, Tr ${tr.toFixed(2)}). Valid for 0 < Pr ≤ 15 and 1.05 ≤ Tr ≤ 3.0 — result is extrapolated.`;
+      }
+    }
+
+    // B2 — Petroleum gravity: °API ↔ SG (60/60°F) ↔ density. Water @ 60°F = 999.016 kg/m³.
+    const RHO_WATER_60F = 999.016;
+    function calcAPI(src) {
+      const apiEl = document.getElementById('api-grav');
+      const sgEl  = document.getElementById('api-sg');
+      const denEl = document.getElementById('api-den');
+      const denF  = parseFloat(document.getElementById('api-den-u').value) || 1; // SI→display factor
+      let sg = NaN;
+      if (src === 'api') { const a = parseValue(apiEl.value); if (!isNaN(a)) sg = 141.5/(a+131.5); }
+      else if (src === 'sg') { sg = parseValue(sgEl.value); }
+      else if (src === 'den') { const d = parseValue(denEl.value); if (!isNaN(d)) sg = (d/denF)/RHO_WATER_60F; }
+      if (isNaN(sg) || sg <= 0) { return; }
+      if (src !== 'sg')  sgEl.value  = formatValue(sg);
+      if (src !== 'api') apiEl.value = formatValue(141.5/sg - 131.5);
+      if (src !== 'den') denEl.value = formatValue(sg*RHO_WATER_60F*denF);
+    }
+
+    // B3a — Viscosity: dynamic (μ) ↔ kinematic (ν) via density.  ν = μ/ρ.
+    function calcVisc(src) {
+      const dynEl = document.getElementById('visc-dyn'), kinEl = document.getElementById('visc-kin');
+      const dynF = parseFloat(document.getElementById('visc-dyn-u').value) || 1;   // →Pa·s
+      const kinF = parseFloat(document.getElementById('visc-kin-u').value) || 1;   // →m²/s
+      const rho  = (parseValue(document.getElementById('visc-rho').value)||0) * (parseFloat(document.getElementById('visc-rho-u').value)||1);
+      if (rho <= 0) return;
+      if (src === 'dyn') {
+        const mu = parseValue(dynEl.value); if (isNaN(mu)) { kinEl.value=''; return; }
+        const nu = (mu*dynF)/rho;            // m²/s
+        kinEl.value = formatValue(nu/kinF);
+      } else {
+        const nu = parseValue(kinEl.value); if (isNaN(nu)) { dynEl.value=''; return; }
+        const mu = (nu*kinF)*rho;            // Pa·s
+        dynEl.value = formatValue(mu/dynF);
+      }
+    }
+
+    // B3b — Mass ↔ volumetric flow via density.  Q = ṁ/ρ. All select factors are multiply-to-SI.
+    function calcMassVol(src) {
+      const mEl = document.getElementById('mf-mass'), vEl = document.getElementById('mf-vol');
+      const mF = parseFloat(document.getElementById('mf-mass-u').value) || 1;  // →kg/s
+      const vF = parseFloat(document.getElementById('mf-vol-u').value) || 1;   // →m³/s
+      const rho = (parseValue(document.getElementById('mf-rho').value)||0) * (parseFloat(document.getElementById('mf-rho-u').value)||1);
+      if (rho <= 0) return;
+      if (src === 'mass') {
+        const m = parseValue(mEl.value); if (isNaN(m)) { vEl.value=''; return; }
+        const q = (m*mF)/rho;               // m³/s
+        vEl.value = formatValue(q/vF);
+      } else {
+        const q = parseValue(vEl.value); if (isNaN(q)) { mEl.value=''; return; }
+        const m = (q*vF)*rho;               // kg/s
+        mEl.value = formatValue(m/mF);
+      }
     }
 
 	// --- SERVER-SIDE HYDRAULICS (Python API Call) ---
@@ -2265,7 +2539,8 @@
         l_den: parseFloat(document.getElementById('dp-l-den').value) || 1,
         l_den_m: parseFloat(document.getElementById('dp-l-den-u').value) || 1,
         l_visc: parseFloat(document.getElementById('dp-l-visc').value) || 1,
-        l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1
+        l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1,
+        cfactor: parseFloat(document.getElementById('dp-cfactor').value) || 100
       };
 
       try {
@@ -2302,6 +2577,35 @@
         
         document.getElementById('dp-out-len').innerText = formatValue(dpl);
 
+        // Reynolds number, Darcy friction factor, API RP 14E erosional-velocity check
+        if (data.Re !== undefined) {
+          document.getElementById('dp-out-re').innerText = data.Re >= 1e5
+            ? data.Re.toExponential(2) : Math.round(data.Re).toLocaleString('en-US');
+          document.getElementById('dp-out-re-regime').innerText = data.re_regime || '';
+        }
+        if (data.f !== undefined) document.getElementById('dp-out-f').innerText = data.f.toFixed(5);
+        if (data.v_ero !== undefined) {
+          document.getElementById('dp-out-ve').innerText = data.v_ero.toFixed(2);
+          const r = data.ero_ratio || 0;
+          document.getElementById('dp-out-eratio').innerText = r.toFixed(2);
+          const eb = document.getElementById('dp-out-ero-badge');
+          if (r >= 1.0)      { eb.innerText = 'EXCEEDS Ve'; eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400 border border-red-500/30'; }
+          else if (r >= 0.8) { eb.innerText = 'NEAR LIMIT';  eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30'; }
+          else               { eb.innerText = 'WITHIN LIMIT'; eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-green-500/20 text-green-400 border border-green-500/30'; }
+        }
+        // B4 — cross-link the two-phase flow regime (if already visualized) into this panel
+        const note = document.getElementById('dp-out-regime-note');
+        if (lastFlowRegime) {
+          note.innerHTML = '▶ Two-phase flow regime: <strong class="text-cyan-300">' + lastFlowRegime.regime +
+            '</strong> (θ = ' + lastFlowRegime.theta_deg.toFixed(1) + '°). Re-run <em>Visualize Flow Regime</em> below if inputs changed.';
+          note.classList.remove('hidden');
+        } else if (data.badge && data.badge.indexOf('Two-Phase') !== -1) {
+          note.innerHTML = '▶ Two-phase mixture — use the <em>Flow Regime</em> card below to classify the flow pattern.';
+          note.classList.remove('hidden');
+        } else {
+          note.classList.add('hidden');
+        }
+
       } catch (err) {
         badge.innerText = "API Connection Failed";
         badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
@@ -2310,6 +2614,7 @@
     }
 
     // --- FLOW REGIME VISUALIZER (Python seaborn API + Three.js 3D animation) ---
+    let lastFlowRegime = null;   // cached regime result for the ΔP panel cross-link (B4)
     let threeLoadPromise = null;
     function loadThree() {
       if (window.THREE) return Promise.resolve();
@@ -2371,9 +2676,18 @@
         if (data.error) {
           resBox.classList.add('hidden');
           stopFlow3D();
+          lastFlowRegime = null;
           errBox.innerText = data.message || 'Unable to visualize flow regime.';
           errBox.classList.remove('hidden');
           return;
+        }
+
+        lastFlowRegime = data;   // cache for the ΔP panel cross-link (B4)
+        const dpNote = document.getElementById('dp-out-regime-note');
+        if (dpNote) {
+          dpNote.innerHTML = '▶ Two-phase flow regime: <strong class="text-cyan-300">' + data.regime +
+            '</strong> (θ = ' + data.theta_deg.toFixed(1) + '°, v_mix = ' + data.v_mix.toFixed(2) + ' m/s).';
+          dpNote.classList.remove('hidden');
         }
 
         document.getElementById('fr-map-img').src = data.image;
@@ -2385,7 +2699,12 @@
           await loadThree();
           initFlow3D(data);
         } catch (e) {
-          document.getElementById('fr-3d-overlay').innerText = '3D animation unavailable (Three.js CDN could not be loaded)';
+          // Graceful fallback — the static seaborn regime map above stays fully usable.
+          const wrap = document.getElementById('fr-3d-wrap');
+          wrap.innerHTML = '<div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">' +
+            '<svg class="w-8 h-8 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
+            '<p class="text-xs text-slate-400 font-semibold">3D animation unavailable</p>' +
+            '<p class="text-[10px] text-slate-500 mt-1 max-w-xs">The Three.js library could not be loaded (offline or CDN blocked). The 2D flow-regime map above is unaffected and fully valid.</p></div>';
           console.error(e);
         }
       } catch (err) {
@@ -2410,6 +2729,9 @@
     function initFlow3D(d) {
       stopFlow3D();
       const wrap = document.getElementById('fr-3d-wrap');
+      // Reset wrap to a clean state (may contain a prior CDN-fallback message) and
+      // guarantee the overlay element exists before rendering.
+      wrap.innerHTML = '<div id="fr-3d-overlay" class="absolute bottom-2 left-3 text-[10px] font-mono text-slate-400 pointer-events-none z-10"></div>';
       const W = wrap.clientWidth || 640, H = wrap.clientHeight || 320;
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(W, H);
@@ -2683,7 +3005,16 @@
       document.getElementById('mod-unit2').value   = p ? p.u2     : '';
       document.getElementById('mod-factor').value = p ? p.factor : '';
     });
-    window.addEventListener('DOMContentLoaded', () => { savedModules.forEach(createCard); calcGHV(); updatePSVMode(); });
+    window.addEventListener('DOMContentLoaded', () => {
+      savedModules.forEach(createCard);
+      const shared = decodeShareState();
+      const stored = shared || loadStoredState();
+      if (stored) { applyState(stored); }
+      else { calcGHV(); updatePSVMode(); }
+      enhanceAccessibility();
+      document.addEventListener('input',  scheduleSave);
+      document.addEventListener('change', scheduleSave);
+    });
     // ── PSV SIZING (SAFETY TAB) ──────────────────────────────────────────────
     function updatePSVMode() {
       const mode  = document.getElementById('psv-mode').value;
@@ -2800,6 +3131,222 @@
         badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
         console.error('PSV API Error:', err);
       }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  v2.4 — PERSISTENT STATE (C3), SHARE LINK (C2), EXPORT REPORT (C1),
+    //         ACCESSIBILITY (C5)
+    // ════════════════════════════════════════════════════════════════════════
+    const STATE_KEY = 'og_ui_state_v24';
+
+    function collectInputs() {
+      const data = {};
+      document.querySelectorAll('main input[id], main select[id], main textarea[id]').forEach(el => {
+        if (el.type === 'button' || el.type === 'submit') return;
+        data[el.id] = el.value;
+      });
+      return data;
+    }
+    function applyInputs(data) {
+      Object.keys(data || {}).forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.tagName !== 'BUTTON') el.value = data[id];
+      });
+    }
+    function collectState() {
+      return { v: 1, inputs: collectInputs(),
+               hv: hvMode, fa: flowAMode, fb: flowBMode,
+               p1: pressMode1, p2: pressMode2, tab: currentTab };
+    }
+    function recomputeAll() {
+      [calcGHV, calcPipeVolume, calcZFactor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+    }
+    function applyState(s) {
+      if (!s) return;
+      applyInputs(s.inputs);
+      if (s.hv) setHVMode(s.hv);
+      if (s.fa) setFlowAMode(s.fa);
+      if (s.fb) setFlowBMode(s.fb);
+      if (s.p1) setPressMode(1, s.p1);
+      if (s.p2) setPressMode(2, s.p2);
+      recomputeAll();
+      if (s.tab && s.tab !== 'general') switchTab(s.tab);
+    }
+
+    let saveTimer = null;
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try { localStorage.setItem(STATE_KEY, JSON.stringify(collectState())); } catch (e) {}
+      }, 400);
+    }
+    function loadStoredState() {
+      try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch (e) { return null; }
+    }
+    function decodeShareState() {
+      const m = (location.hash || '').match(/[#&]s=([^&]+)/);
+      if (!m) return null;
+      try { return JSON.parse(decodeURIComponent(escape(atob(m[1])))); } catch (e) { return null; }
+    }
+    function showToast(msg, ok) {
+      const t = document.getElementById('state-toast');
+      if (!t) return;
+      t.innerText = msg;
+      t.className = 'text-[10px] font-mono px-2 py-1 rounded border ' +
+        (ok === false ? 'bg-slate-800 text-red-400 border-red-500/30' : 'bg-slate-800 text-green-400 border-green-500/30');
+      t.classList.remove('hidden');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => t.classList.add('hidden'), 2500);
+    }
+    function copyShareLink() {
+      try {
+        const enc = btoa(unescape(encodeURIComponent(JSON.stringify(collectState()))));
+        const url = location.origin + location.pathname + '#s=' + enc;
+        navigator.clipboard.writeText(url).then(
+          () => showToast('Share link copied ✓'),
+          () => showToast('Copy failed — clipboard blocked', false));
+      } catch (e) { showToast('Share link failed', false); }
+    }
+
+    // ── Accessibility pass (C5) ──────────────────────────────────────────────
+    function enhanceAccessibility() {
+      document.querySelectorAll('button[onclick*="copyText"], button[onclick*="copyToClipboard"]').forEach(b => {
+        if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', 'Copy value to clipboard');
+      });
+      document.querySelectorAll('button[onclick*="closeModal"]').forEach(b => {
+        if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', 'Close dialog');
+      });
+      const nav = document.querySelector('header nav');
+      if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main calculator sections');
+      const modal = document.getElementById('module-modal');
+      if (modal) { modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); }
+    }
+    // Escape closes the custom-module modal (C5)
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('module-modal');
+        if (modal && !modal.classList.contains('hidden')) closeModal();
+      }
+    });
+
+    // ── Export printable report (C1) ─────────────────────────────────────────
+    function exportReport() {
+      const t  = id => { const el = document.getElementById(id); return el ? (el.innerText || el.value || '—').toString().trim() || '—' : '—'; };
+      const us = id => { const el = document.getElementById(id); if (!el) return ''; const o = el.options ? el.options[el.selectedIndex] : null; return o ? o.text : el.value; };
+      const esc = s => (s == null ? '' : String(s)).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+      const now = new Date();
+
+      const comps = [['CH₄','comp-ch4'],['C₂H₆','comp-c2h6'],['C₃H₈','comp-c3h8'],['iC₄','comp-ic4'],['nC₄','comp-nc4'],
+                     ['iC₅','comp-ic5'],['nC₅','comp-nc5'],['nC₆+','comp-nc6'],['C₂H₄','comp-c2h4'],['C₃H₆','comp-c3h6'],
+                     ['H₂','comp-h2'],['CO₂','comp-co2'],['N₂','comp-n2'],['O₂','comp-o2']]
+        .map(([n,id]) => `<tr><td>${n}</td><td>${esc(t(id))}</td></tr>`).join('');
+
+      const row = (k, v) => `<tr><td>${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`;
+
+      const ghv = `
+        <h3>1 · Compositional Gas Properties (JIS K 2301:2011)</h3>
+        <div class="cols">
+          <table><thead><tr><th>Component</th><th>Input %</th></tr></thead><tbody>${comps}
+            <tr class="tot"><td>Total</td><td>${esc(t('comp-total'))}</td></tr></tbody></table>
+          <table><tbody>
+            ${row(t('out-ghv-label'), t('out-ghv') + ' ' + us('ghv-unit'))}
+            ${row('Molecular Weight', t('out-mw') + ' g/mol')}
+            ${row('Specific Gravity (Air=1)', t('out-sg'))}
+            ${row('Wobbe Index (HHV)', t('out-wi'))}
+            ${row('Max Combustion Potential', t('out-mcp'))}
+            ${row('LNG Liquid Density', t('out-liq-den') + ' ' + us('out-liq-den-u'))}
+            ${row('Op. Temperature', t('op-temp') + ' ' + us('op-temp-u'))}
+            ${row('Op. Pressure', t('op-press') + ' ' + us('op-press-u'))}
+            ${row('LNG Liquid Temp', t('op-liq-temp') + ' ' + us('op-liq-temp-u'))}
+          </tbody></table>
+        </div>`;
+
+      const dp = `
+        <h3>2 · Pipe Pressure Drop (Darcy-Weisbach + Colebrook-White)</h3>
+        <div class="cols">
+          <table><tbody>
+            ${row('Pipe ID', t('dp-id') + ' ' + us('dp-id-unit'))}
+            ${row('Length', t('dp-len') + ' ' + us('dp-len-unit'))}
+            ${row('Elevation Δz', t('dp-elev') + ' ' + us('dp-elev-unit'))}
+            ${row('Roughness', t('dp-rough') + ' ' + us('dp-rough-unit'))}
+            ${row('Erosion C-factor', t('dp-cfactor'))}
+            ${row('Vapor flow', t('dp-v-flow') + ' ' + us('dp-v-flow-u'))}
+            ${row('Liquid flow', t('dp-l-flow') + ' ' + us('dp-l-flow-u'))}
+          </tbody></table>
+          <table><tbody>
+            ${row('Total ΔP', t('dp-out-total') + ' ' + us('dp-out-total-u'))}
+            ${row('ΔP / length', t('dp-out-len') + ' ' + us('dp-out-len-u'))}
+            ${row('Velocity', t('dp-out-vel') + ' ' + us('dp-out-vel-u'))}
+            ${row('Reynolds No.', t('dp-out-re') + ' (' + t('dp-out-re-regime') + ')')}
+            ${row('Darcy friction f', t('dp-out-f'))}
+            ${row('Erosional Ve', t('dp-out-ve') + ' m/s — ratio ' + t('dp-out-eratio') + ' (' + t('dp-out-ero-badge') + ')')}
+          </tbody></table>
+        </div>`;
+
+      let regime = '';
+      if (lastFlowRegime) {
+        regime = `
+          <h3>3 · Two-Phase Flow Regime (indicative)</h3>
+          <table><tbody>
+            ${row('Regime', lastFlowRegime.regime)}
+            ${row('Inclination θ', lastFlowRegime.theta_deg.toFixed(1) + '°')}
+            ${row('jG / jL', lastFlowRegime.jG.toFixed(3) + ' / ' + lastFlowRegime.jL.toFixed(3) + ' m/s')}
+            ${row('Mixture velocity', lastFlowRegime.v_mix.toFixed(3) + ' m/s')}
+          </tbody></table>
+          ${lastFlowRegime.image ? `<img class="map" src="${lastFlowRegime.image}" alt="Flow regime map"/>` : ''}`;
+      }
+
+      const psvDet = t('psv-out-details');
+      const psv = `
+        <h3>4 · PRV Sizing (API 520 / API 526)</h3>
+        <table><tbody>
+          ${row('Mode', us('psv-mode'))}
+          ${row('Unit system', us('psv-units'))}
+          ${row('Required area', t('psv-out-area') + ' ' + t('psv-out-area-unit'))}
+          ${row('Selected orifice', t('psv-out-orifice') + ' — ' + t('psv-out-orifice-area'))}
+          ${psvDet && psvDet !== '—' ? row('Details', psvDet) : ''}
+        </tbody></table>`;
+
+      const basic = `
+        <h3>5 · Basic Engineering</h3>
+        <table><tbody>
+          ${row('Pipe Volume', t('pipe-vol-out') + ' ' + us('pipe-out-u'))}
+          ${row('Z-Factor (Papay)', t('z-result'))}
+          ${row('°API / SG / Density', t('api-grav') + ' / ' + t('api-sg') + ' / ' + t('api-den') + ' ' + us('api-den-u'))}
+          ${row('Viscosity μ / ν', t('visc-dyn') + ' ' + us('visc-dyn-u') + ' / ' + t('visc-kin') + ' ' + us('visc-kin-u'))}
+          ${row('Mass ↔ Vol flow', t('mf-mass') + ' ' + us('mf-mass-u') + ' ↔ ' + t('mf-vol') + ' ' + us('mf-vol-u'))}
+        </tbody></table>`;
+
+      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/>
+        <title>O&G Engineering Converter — Report</title>
+        <style>
+          body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;margin:32px;font-size:12px;}
+          h1{font-size:18px;margin:0 0 2px;} h2{font-size:12px;color:#64748b;font-weight:600;margin:0 0 18px;}
+          h3{font-size:13px;border-bottom:2px solid #f59e0b;padding-bottom:3px;margin:22px 0 8px;color:#b45309;}
+          table{border-collapse:collapse;width:100%;margin:4px 0;}
+          td,th{border:1px solid #cbd5e1;padding:4px 8px;text-align:left;vertical-align:top;}
+          th{background:#f1f5f9;font-size:11px;} td:nth-child(2){font-family:ui-monospace,Menlo,Consolas,monospace;}
+          .cols{display:flex;gap:18px;} .cols>table{flex:1;}
+          .tot td{background:#fff7ed;font-weight:bold;}
+          .map{max-width:100%;border:1px solid #cbd5e1;border-radius:6px;margin-top:8px;}
+          .disc{margin-top:26px;padding-top:10px;border-top:1px solid #cbd5e1;color:#64748b;font-size:10px;line-height:1.5;}
+          @media print{body{margin:14mm;} .noprint{display:none;}}
+        </style></head><body>
+        <div class="noprint" style="text-align:right;margin-bottom:10px;">
+          <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">Save as PDF / Print</button>
+        </div>
+        <h1>O&amp;G Engineering Converter — Calculation Report</h1>
+        <h2>Version 2.4 · Generated ${esc(now.toLocaleString())}</h2>
+        ${ghv}${dp}${regime}${psv}${basic}
+        <div class="disc"><b>Disclaimer.</b> Generated by the O&amp;G Engineering Converter for general reference and convenience only.
+        Calculations follow simplified or indicative models (HEM two-phase, Papay Z-factor, simplified flow-regime maps).
+        They must not be used as the sole basis for process-safety, billing, or regulatory decisions. Verify independently
+        against the governing standards (JIS K 2301, ISO 6578, API 520/526, API RP 14E).</div>
+        </body></html>`;
+
+      const w = window.open('', '_blank');
+      if (!w) { showToast('Pop-up blocked — allow pop-ups to export', false); return; }
+      w.document.open(); w.document.write(html); w.document.close();
     }
 
   </script>
