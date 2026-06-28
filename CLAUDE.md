@@ -23,6 +23,17 @@ Project memory for Claude Code. Read and follow all rules below in every session
 4. **Element IDs are an API.** JavaScript references HTML IDs extensively (`out-ghv`, `flow-mass-in-u`, `psv-*`, `dp-*`, etc.). Never change an ID without updating every reference, and only when instructed.
 5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore).
 
+## UI Consistency Rules
+
+The **Pipe Volume Calculator** card in the Basic Eng tab is the canonical reference for converter-card layout. Every conversion card (in any tab) MUST follow its philosophy:
+
+1. **Figure and unit are SEPARATE adjacent boxes**, never a single shared container. The numeric figure sits in its own box (`rounded-l-lg`, holding the input + any copy button); the unit sits in its own box (`rounded-r-lg`) as a sibling in a `flex` row.
+2. **They highlight in orange independently.** The figure box uses `focus-within:ring-2 focus-within:ring-amber-500`; the unit `<select>` uses `focus:ring-2 focus:ring-amber-500`. Never wrap both in one `focus-within`/`unit-field` container that lights up the figure and the unit together.
+3. **Selectable units** are a native `<select>` styled `bg-slate-800 border-y border-r border-slate-700 rounded-r-lg text-amber-500` and MUST keep the browser's native dropdown arrow — do NOT use `appearance-none` or a custom chevron.
+4. **Fixed (non-selectable) units** use a matching static `bg-slate-800 … rounded-r-lg` chip with no arrow, so the layout stays consistent while signalling that the unit is not editable.
+
+This applies to the General tab (Gas Volume, Pressure, Temperature, Heating Value) and any future converter cards; keep them visually identical in philosophy to the Basic Eng Pipe Volume card.
+
 ## Calculation Rules (JIS K 2301:2011) — DO NOT ALTER
 
 These rounding rules are mandated to match the Excel reference worksheet exactly. Any change breaks regulatory traceability.
