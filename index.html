@@ -1123,7 +1123,7 @@
             </div>
           </div>
           <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
-            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API). Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 9 below).
+            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API) — see <strong>Section 9</strong> for the full walkthrough. Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 10 below).
           </div>
         </section>
 		
@@ -1291,9 +1291,45 @@
           </div>
         </section>
 
-        <!-- 9. ADVANCED - FLOW REGIME -->
+        <!-- 9. ADVANCED - PIPE DELTA PRESSURE -->
         <section>
-          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Advanced Tab — Flow Regime Visualizer</h3>
+          <h3 class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
+          <p class="text-sm text-slate-400 mb-4">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">INPUTS — 1. SYSTEM &amp; PIPE</div>
+              <div class="space-y-1 text-slate-400">
+                <div>Scaling factor — multiplies both phase mass flows</div>
+                <div>System pressure · Pipe ID · Roughness ε (default 0.045 mm, commercial steel)</div>
+                <div>Pipe length L · Elevation change Δz (sets static head ρ·g·Δz)</div>
+                <div>Erosion C-factor — <span class="text-slate-200">API RP 14E: 100 continuous, 125 intermittent</span></div>
+              </div>
+              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1 pt-2">INPUTS — 2A / 2B. PHASE PROPERTIES</div>
+              <div class="space-y-1 text-slate-400">
+                <div>Vapor &amp; Liquid each: mass flow · density · dynamic viscosity</div>
+                <div>Leave a phase&rsquo;s mass flow at 0 to model single-phase flow</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">3. HYDRAULIC OUTPUTS</div>
+              <div class="space-y-1 text-slate-400">
+                <div>Total ΔP <span class="text-slate-200">[bar / psi / Pa / kPa / MPa]</span> = friction + static head</div>
+                <div>ΔP / length · mixture Velocity</div>
+                <div>Reynolds number + regime <span class="text-slate-200">[Laminar / Transitional / Turbulent]</span></div>
+                <div>Darcy friction factor f <span class="text-slate-200">(Colebrook–White)</span></div>
+                <div>Erosional velocity V<sub>e</sub> = C/√ρ, ratio v/V<sub>e</sub>, with badge <span class="text-green-400">WITHIN</span> / <span class="text-amber-400">NEAR</span> / <span class="text-red-400">EXCEEDS</span></div>
+                <div class="text-cyan-300">→ A visualised two-phase regime is echoed here (see Section 10)</div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
+            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.72 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The two-phase HEM neglects slip and the acceleration term — treat it as a first-pass estimate.
+          </div>
+        </section>
+
+        <!-- 10. ADVANCED - FLOW REGIME -->
+        <section>
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Advanced Tab — Flow Regime Visualizer</h3>
           <p class="text-sm text-slate-400 mb-4">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -1333,7 +1369,7 @@
 
         <!-- 10. SAFETY TAB -->
         <section>
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">11. Safety Tab — PRV Sizing (API 520 Part I)</h3>
           <p class="text-sm text-slate-400 mb-4">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -1362,7 +1398,7 @@
 
         <!-- 11. REPORT TAB -->
         <section>
-          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">11. Report Tab — Bug Reports &amp; Feature Requests</h3>
+          <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">12. Report Tab — Bug Reports &amp; Feature Requests</h3>
           <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
 
