@@ -18,6 +18,13 @@
     a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
       outline: 2px solid #f59e0b; outline-offset: 1px; border-radius: 2px;
     }
+    /* General-tab unit selectors: amber chevron so they read as pull-downs, not fixed labels */
+    .unit-chevron {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f59e0b' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.45rem center;
+      background-size: 0.8rem;
+    }
     
     /* CSS Wireframe Diagram Architecture */
     .wf-box { border: 2px solid #475569; border-radius: 8px; padding: 16px; background: repeating-linear-gradient(45deg, #0f172a, #0f172a 10px, #1e293b 10px, #1e293b 20px); font-family: monospace; margin-bottom: 16px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
@@ -84,7 +91,7 @@
                 <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('nm3-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="nm3-select" onchange="if(nm3Input.value) nm3Input.dispatchEvent(new Event('input'))" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="1">Nm³</option><option value="1000">kNm³</option><option value="1000000">mNm³</option><option value="1000000000">bNm³</option></select>
+                  <select id="nm3-select" onchange="if(nm3Input.value) nm3Input.dispatchEvent(new Event('input'))" class="unit-chevron h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="1">Nm³</option><option value="1000">kNm³</option><option value="1000000">mNm³</option><option value="1000000000">bNm³</option></select>
                 </div>
               </div>
             </div>
@@ -95,7 +102,7 @@
                 <input type="text" inputmode="decimal" id="scf-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('scf-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="scf-select" onchange="if(scfInput.value) scfInput.dispatchEvent(new Event('input'))" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="1">scf</option><option value="1000000">mscf</option><option value="1000000000">bscf</option><option value="1000000000000">tscf</option></select>
+                  <select id="scf-select" onchange="if(scfInput.value) scfInput.dispatchEvent(new Event('input'))" class="unit-chevron h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="1">scf</option><option value="1000000">mscf</option><option value="1000000000">bscf</option><option value="1000000000000">tscf</option></select>
                 </div>
               </div>
             </div>
@@ -119,7 +126,7 @@
                 <input type="text" inputmode="decimal" id="press-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('press-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="press-select1" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="100000" selected>bar</option><option value="6894.75729">psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
+                  <select id="press-select1" class="unit-chevron h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="100000" selected>bar</option><option value="6894.75729">psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
                 </div>
               </div>
             </div>
@@ -136,7 +143,7 @@
                 <input type="text" inputmode="decimal" id="press-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('press-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="press-select2" class="h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="100000">bar</option><option value="6894.75729" selected>psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
+                  <select id="press-select2" class="unit-chevron h-full py-0 pl-2 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="100000">bar</option><option value="6894.75729" selected>psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
                 </div>
               </div>
             </div>
@@ -155,7 +162,7 @@
                 <input type="text" inputmode="decimal" id="temp-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('temp-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="temp-select1" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="C" selected>°C</option><option value="F">°F</option><option value="K">K</option></select>
+                  <select id="temp-select1" class="unit-chevron h-full py-0 pl-4 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="C" selected>°C</option><option value="F">°F</option><option value="K">K</option></select>
                 </div>
               </div>
             </div>
@@ -166,7 +173,7 @@
                 <input type="text" inputmode="decimal" id="temp-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
                 <button onclick="copyToClipboard('temp-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 <div class="h-full border-l border-slate-700 flex items-center">
-                  <select id="temp-select2" class="h-full py-0 pl-4 pr-6 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="C">°C</option><option value="F" selected>°F</option><option value="K">K</option></select>
+                  <select id="temp-select2" class="unit-chevron h-full py-0 pl-4 pr-7 bg-transparent text-amber-500 font-semibold focus:ring-0 cursor-pointer sm:text-sm outline-none appearance-none"><option value="C">°C</option><option value="F" selected>°F</option><option value="K">K</option></select>
                 </div>
               </div>
             </div>
