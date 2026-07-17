@@ -2185,16 +2185,19 @@
         if(el) {
           el.classList.remove('border-amber-500', 'text-amber-500');
           el.classList.add('border-transparent');
+          el.setAttribute('aria-selected', 'false');
         }
       });
 
       const activePane = document.getElementById('tab-' + tabId);
       if(activePane) activePane.classList.remove('hidden');
-      
+
       const activeBtn = document.getElementById('btn-' + tabId);
       if(activeBtn) {
         activeBtn.classList.remove('border-transparent');
         activeBtn.classList.add('border-amber-500', 'text-amber-500');
+        activeBtn.setAttribute('aria-selected', 'true');
+        activeBtn.scrollIntoView({ inline: 'center', block: 'nearest' });
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -3261,6 +3264,15 @@
       });
       const nav = document.querySelector('header nav');
       if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main calculator sections');
+      if (nav) nav.setAttribute('role', 'tablist');
+      document.querySelectorAll('header nav button[id^="btn-"]').forEach(b => {
+        const paneId = 'tab-' + b.id.slice(4);
+        b.setAttribute('role', 'tab');
+        b.setAttribute('aria-controls', paneId);
+        b.setAttribute('aria-selected', b.id === 'btn-' + currentTab ? 'true' : 'false');
+        const pane = document.getElementById(paneId);
+        if (pane) { pane.setAttribute('role', 'tabpanel'); pane.setAttribute('aria-labelledby', b.id); }
+      });
       const modal = document.getElementById('module-modal');
       if (modal) { modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); }
     }
