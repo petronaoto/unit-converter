@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V2.4</title>
+  <title>O&G Unit Converter V2.5</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -969,10 +969,10 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.4</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.5</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
-            <a href="#howto-new" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
+            <a href="#howto-new25" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
             <a href="#howto-2" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">2 General</a>
             <a href="#howto-3" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">3 Custom</a>
@@ -988,7 +988,18 @@
           </nav>
         </div>
 
-        <!-- 0. WHAT'S NEW IN v2.4 -->
+        <!-- 0. WHAT'S NEW IN v2.5 -->
+        <section>
+          <h3 id="howto-new25" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">★ New in Version 2.5</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Navigation &amp; accessibility</strong> — the active tab now scrolls into view on narrow screens, tab buttons expose proper ARIA tab semantics for screen readers, and the long How To Use / Theory pages gained <strong>jump links</strong> and a floating <strong>Top</strong> button.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Calculator ergonomics</strong> — press <strong>Enter</strong> in any ΔP or PRV input to calculate; missing required inputs show an instant hint instead of a failed server call; editing inputs after a result flags the status badge with <em>inputs changed — recalculate</em>.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Robustness</strong> — Export PDF falls back to an HTML download when pop-ups are blocked, and viscosity unit selections (mPa·s, mm²/s) are preserved across reloads and share links.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Documentation</strong> — the GitHub repository now ships a <strong>docs/</strong> folder: Development Plan (history &amp; roadmap), Detailed Specification of every module and API, and a promotion strategy. Theory §4.1 now correctly documents the <strong>Papay</strong> Z-factor method.</div>
+          </div>
+        </section>
+
+        <!-- 0b. WHAT'S NEW IN v2.4 -->
         <section>
           <h3 id="howto-new" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">★ New in Version 2.4</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
@@ -1424,7 +1435,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div>
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.4. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.5. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Compositional</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Density &amp; Flow</a>
@@ -2102,7 +2113,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         System Online • Vercel Environment
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.4</div>
+      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.5</div>
     </div>
   </footer>
 
@@ -2235,7 +2246,7 @@
       const name = document.getElementById('report-name').value || "Anonymous User";
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.4`);
+      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.5`);
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -3472,7 +3483,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">Save as PDF / Print</button>
         </div>
         <h1>O&amp;G Engineering Converter — Calculation Report</h1>
-        <h2>Version 2.4 · Generated ${esc(now.toLocaleString())}</h2>
+        <h2>Version 2.5 · Generated ${esc(now.toLocaleString())}</h2>
         ${ghv}${dp}${regime}${psv}${basic}
         <div class="disc"><b>Disclaimer.</b> Generated by the O&amp;G Engineering Converter for general reference and convenience only.
         Calculations follow simplified or indicative models (HEM two-phase, Papay Z-factor, simplified flow-regime maps).

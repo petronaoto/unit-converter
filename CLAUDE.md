@@ -4,7 +4,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.4 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.5 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
@@ -14,6 +14,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
   - `api/flowregime.py` — Vercel serverless Python: two-phase flow regime map (seaborn/matplotlib server-side PNG rendering). Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type, G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator.
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `README.md` — project documentation.
+  - `docs/` (v2.5) — `DEVELOPMENT_PLAN.md` (history + roadmap), `SPECIFICATION.md` (full feature & API spec, known-issues register), `MARKETING.md` (promotion strategy).
 
 ## CRITICAL Preservation Rules
 
@@ -21,7 +22,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 2. **Make surgical, minimal diffs.** Do not regenerate whole files or whole sections to apply a small change.
 3. **Do not "improve" working code** (formatting, style, modernization) unless asked.
 4. **Element IDs are an API.** JavaScript references HTML IDs extensively (`out-ghv`, `flow-mass-in-u`, `psv-*`, `dp-*`, etc.). Never change an ID without updating every reference, and only when instructed.
-5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore).
+5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore). v2.5 additions that must also survive: the How To Use / Theory jump-link strips and section anchors (`howto-new25`, `howto-new`, `howto-1`…`howto-12`, `theory-p1`…`theory-p6`), the back-to-top button (`back-to-top` + scroll listener), the runtime ARIA tablist semantics (`enhanceAccessibility()` + `aria-selected` in `switchTab()`), Enter-to-calculate on `dp-*`/`psv-*` inputs, the client-side validation pre-checks in `calcDeltaPressure()`/`calcPSV()`, the stale-input indicator (`dpResultFresh`/`psvResultFresh`/`markResultStale()`), the export pop-up Blob-download fallback, and the distinct viscosity option values (`0.0010` mPa·s / `0.0000010` mm²/s — string-distinct from cP/cSt, numerically identical).
 
 ## UI Consistency Rules
 
@@ -74,6 +75,8 @@ After ANY change touching `calcGHV()`, `gasComps`, or related logic, re-verify t
 `index.html` contains embedded documentation (How To Use tab, Theory tab). Whenever a feature, constant, or calculation changes, check and update:
 - Theory tab: Table 1.1 constants, §1.3–§1.7 worked examples, Part II–VI.
 - How To Use tab: section descriptions and reference-value callout boxes.
+- `docs/SPECIFICATION.md` (v2.5): the affected module/API section and, if applicable, the Known Issues register.
+- `docs/DEVELOPMENT_PLAN.md` (v2.5): roadmap item status when a roadmap feature ships.
 Numbers in worked examples must match actual calculator output exactly.
 
 ## Git Workflow

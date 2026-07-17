@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v2.4
+# O&G Engineering Converter — v2.5
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -68,6 +68,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Share links** — encode the full input set into the URL for handover/collaboration (computed entirely client-side).
 - **Session auto-restore** — last inputs and UI preferences persist in browser local storage.
 - **Out-of-range guards** — LNG density (ISO 6578 108–120 K), composition, and Papay Z-factor flag extrapolated inputs instead of silently clamping.
+- **UX & accessibility polish** *(new in v2.5)* — Enter-to-calculate, instant input-validation hints and stale-result flags on the server-backed cards; jump links + back-to-top on the long documentation tabs; ARIA tab semantics; Export falls back to an HTML download when pop-ups are blocked.
 
 ---
 
@@ -82,6 +83,18 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 | **Colebrook & White (1939)** | Implicit turbulent friction-factor equation |
 | **Hewitt & Roberts (1969) · Baker (1954)** | Two-phase flow regime maps (simplified, indicative) |
 | **CODATA 2018** | Universal gas constant R = 8.31446262 J/(mol·K) |
+
+---
+
+## 📚 Documentation
+
+| Document | Contents |
+|---|---|
+| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, and the v2.6/v3.0 roadmap |
+| [docs/SPECIFICATION.md](docs/SPECIFICATION.md) | Detailed engineering spec of every module, the three API contracts, state/share-link format, calculation rules, reference test vectors, and the known-issues register |
+| [docs/MARKETING.md](docs/MARKETING.md) | Positioning, target segments, SEO/content plan, channels, and privacy-compatible analytics options |
+
+The in-app **How To Use** and **Theory** tabs remain the end-user manual; the `docs/` folder is the maintainer/contributor reference.
 
 ---
 
