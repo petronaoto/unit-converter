@@ -3102,7 +3102,7 @@
       savedModules.forEach(createCard);
       const shared = decodeShareState();
       const stored = shared || loadStoredState();
-      if (stored) { applyState(stored); }
+      if (stored) { applyState(stored, !!shared); }
       else { calcGHV(); updatePSVMode(); }
       enhanceAccessibility();
       document.addEventListener('input',  scheduleSave);
@@ -3268,7 +3268,7 @@
     function recomputeAll() {
       [calcGHV, calcPipeVolume, calcZFactor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
-    function applyState(s) {
+    function applyState(s, restoreTab) {
       if (!s) return;
       applyInputs(s.inputs);
       if (s.hv) setHVMode(s.hv);
@@ -3277,7 +3277,8 @@
       if (s.p1) setPressMode(1, s.p1);
       if (s.p2) setPressMode(2, s.p2);
       recomputeAll();
-      if (s.tab && s.tab !== 'general') switchTab(s.tab);
+      // v2.5.1 — only share links open on their saved tab; normal visits land on General
+      if (restoreTab && s.tab && s.tab !== 'general') switchTab(s.tab);
     }
 
     let saveTimer = null;
