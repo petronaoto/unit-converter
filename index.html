@@ -2616,6 +2616,13 @@
         cfactor: parseFloat(document.getElementById('dp-cfactor').value) || 100
       };
 
+      // v2.5 — client-side pre-check: skip the API round-trip on obviously incomplete input
+      if (payload.id <= 0 || (payload.v_flow <= 0 && payload.l_flow <= 0)) {
+        badge.innerText = payload.id <= 0 ? 'Enter a pipe inner diameter' : 'Enter at least one flow rate';
+        badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        return;
+      }
+
       try {
         const res = await fetch('/api/dp_calculator', {
           method: 'POST',
@@ -3166,6 +3173,18 @@
           Kd:gd('psv-Kd-tp',0.85), Kb:gd('psv-Kb-tp',1.0),
           Kc:gd('psv-Kc-tp',1.0), Kv:gd('psv-Kv-tp',1.0) });
       }
+      // v2.5 — client-side pre-check for required fields (server remains authoritative)
+      const missing = [];
+      if (mode === 'gas') { ['W','P1','T'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
+      else if (mode === 'steam') { ['W','P1'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
+      else if (mode === 'liquid_cert') { ['Q','P1'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
+      else if (mode === 'liquid_noncert') { ['Q','Ps'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
+      else if (mode === 'twophase') { ['W','vo','v9','Po'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
+      if (missing.length) {
+        badge.innerText = 'Enter required input' + (missing.length > 1 ? 's' : '') + ': ' + missing.join(', ');
+        badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        return;
+      }
       try {
         const res  = await fetch('/api/psv_calculator', {
           method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
@@ -3308,6 +3327,12 @@
       if (e.key === 'Escape') {
         const modal = document.getElementById('module-modal');
         if (modal && !modal.classList.contains('hidden')) closeModal();
+      }
+      // Enter in a ΔP / PSV input triggers the card's Calculate (v2.5).
+      // Inputs only — selects, textareas and the Report form keep default behavior.
+      if (e.key === 'Enter' && e.target && e.target.tagName === 'INPUT' && e.target.id) {
+        if (e.target.id.indexOf('dp-') === 0) { e.preventDefault(); calcDeltaPressure(); }
+        else if (e.target.id.indexOf('psv-') === 0) { e.preventDefault(); calcPSV(); }
       }
     });
     // Back-to-top button visibility (v2.5)
