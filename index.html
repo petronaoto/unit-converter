@@ -2590,6 +2590,7 @@
       const badge = document.getElementById('dp-regime-badge');
       badge.innerText = "Calculating Server-Side...";
       badge.className = "px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse";
+      dpResultFresh = false;
 
       const payload = {
         scale: parseFloat(document.getElementById('dp-scale').value) || 1,
@@ -2685,6 +2686,7 @@
         } else {
           note.classList.add('hidden');
         }
+        dpResultFresh = true;
 
       } catch (err) {
         badge.innerText = "API Connection Failed";
@@ -3147,6 +3149,7 @@
       const badge = document.getElementById('psv-badge');
       badge.innerText = 'Calculating...';
       badge.className = 'px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse';
+      psvResultFresh = false;
       const g  = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
       const gd = (id, def) => { const el = document.getElementById(id); if (!el) return def; const v = parseFloat(el.value); return isNaN(v) ? def : v; };
       const payload = { mode, units };
@@ -3218,6 +3221,7 @@
         if (data.Pc !== undefined)              det.push('Pc = ' + data.Pc);
         if (data.G !== undefined)               det.push('G = ' + data.G);
         document.getElementById('psv-out-details').innerText = det.join('  |  ');
+        psvResultFresh = true;
       } catch (err) {
         badge.innerText = 'API Connection Failed';
         badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
@@ -3343,6 +3347,23 @@
       btn.classList.toggle('hidden', !show);
       btn.classList.toggle('flex', show);
     }, { passive: true });
+
+    // ── Stale-result indicator for the server-backed ΔP / PSV cards (v2.5) ──
+    // Flags the status badge when an input changes after a successful calc.
+    // Output values are deliberately left visible.
+    let dpResultFresh = false, psvResultFresh = false;
+    function markResultStale(which) {
+      const badge = document.getElementById(which === 'dp' ? 'dp-regime-badge' : 'psv-badge');
+      if (!badge || !badge.innerText) return;
+      badge.innerText += ' · inputs changed — recalculate';
+      badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+    }
+    ['input', 'change'].forEach(evt => document.addEventListener(evt, e => {
+      const id = e.target && e.target.id;
+      if (!id) return;
+      if (dpResultFresh && id.indexOf('dp-') === 0) { dpResultFresh = false; markResultStale('dp'); }
+      if (psvResultFresh && id.indexOf('psv-') === 0) { psvResultFresh = false; markResultStale('psv'); }
+    }));
 
     // ── Export printable report (C1) ─────────────────────────────────────────
     function exportReport() {
