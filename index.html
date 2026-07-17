@@ -333,14 +333,14 @@
               <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DYNAMIC VISCOSITY (μ)</label>
               <div class="flex">
                 <input type="number" step="any" id="visc-dyn" placeholder="e.g. 0.85" oninput="calcVisc('dyn')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
-                <select id="visc-dyn-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.001">cP</option><option value="0.001">mPa·s</option><option value="1">Pa·s</option></select>
+                <select id="visc-dyn-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.001">cP</option><option value="0.0010">mPa·s</option><option value="1">Pa·s</option></select>
               </div>
             </div>
             <div>
               <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">KINEMATIC VISCOSITY (ν)</label>
               <div class="flex">
                 <input type="number" step="any" id="visc-kin" placeholder="e.g. 1.0" oninput="calcVisc('kin')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
-                <select id="visc-kin-u" onchange="calcVisc('kin')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.000001">cSt</option><option value="0.000001">mm²/s</option><option value="1">m²/s</option></select>
+                <select id="visc-kin-u" onchange="calcVisc('kin')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.000001">cSt</option><option value="0.0000010">mm²/s</option><option value="1">m²/s</option></select>
               </div>
             </div>
             <div>
@@ -3460,7 +3460,19 @@
         </body></html>`;
 
       const w = window.open('', '_blank');
-      if (!w) { showToast('Pop-up blocked — allow pop-ups to export', false); return; }
+      if (!w) {
+        // v2.5 — pop-up blocked: download the same report as an HTML file instead
+        try {
+          const blob = new Blob([html], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'og-converter-report.html';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
+          showToast('Pop-up blocked — report downloaded as HTML instead');
+        } catch (e) { showToast('Pop-up blocked — allow pop-ups to export', false); }
+        return;
+      }
       w.document.open(); w.document.write(html); w.document.close();
     }
 
