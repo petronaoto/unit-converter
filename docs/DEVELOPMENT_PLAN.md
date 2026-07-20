@@ -156,7 +156,7 @@ Milestone 1 (English ⇄ Japanese for the working tool) shipped in **v2.6** (PR 
    - Flow Regime default case: Churn/Slug Flow, θ = +45.0°, vertical map.
 3. **Documentation sync.** Any change to a feature, constant, or calculation updates, in the same PR: the How To Use tab, the Theory tab, `docs/SPECIFICATION.md` (affected section), and the roadmap status in this document.
 4. **Feature-preservation sweep.** Before merging: all 9 tabs render, all toggles work, copy buttons work, custom modules persist, the 3D animation loads, all three API cards respond, export/share/restore round-trip, and (since v2.6) the language switcher works in both directions with no console errors on any tab.
-5. **Versioning.** `feat:`/`fix:`/`docs:`/`chore:` commit types; releases tagged `vX.Y` (hotfixes `vX.Y.Z`). Version strings updated together in `index.html` (footer, report header, report env), `README.md`, `CLAUDE.md`.
+5. **Versioning.** `feat:`/`fix:`/`docs:`/`chore:` commit types; releases tagged `vX.Y` on the post-merge `main` HEAD (hotfixes `vX.Y.Z`). Version strings updated together in `index.html` (footer, report header, report env), **every enabled language's `i18n/*.json`** (`meta.pageTitle` + `footer.copyright`), `README.md`, `CLAUDE.md`, and the `docs/*.md` version headers. See CLAUDE.md's "Version-bump checklist" for the full, mandatory list — this bullet is the summary, that one is the source of truth.
 
 ## 8. Risks & Constraints
 

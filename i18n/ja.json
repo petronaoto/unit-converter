@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&Gユニットコンバーター V2.5"
+    "pageTitle": "O&Gユニットコンバーター V2.6"
   },
   "common": {
     "moreLanguages": "その他の言語",
@@ -266,7 +266,7 @@
     "descPlaceholder": "問題点または要望する機能を詳しく記載してください...",
     "submitButton": "開発者へメールを作成",
     "anonymousUser": "匿名ユーザー",
-    "mailtoBody": "報告内容:\n\n{desc}\n\n---\n環境: ブラウザ/クライアントサイド V2.5"
+    "mailtoBody": "報告内容:\n\n{desc}\n\n---\n環境: ブラウザ/クライアントサイド V2.6"
   },
   "actionBar": {
     "backToTopLabel": "上へ",
@@ -281,7 +281,7 @@
   },
   "footer": {
     "statusLine": "システム稼働中 • Vercel環境",
-    "copyright": "© 2026 O&Gエンジニアリングツールズ by Naoto Yamabe • バージョン 2.5"
+    "copyright": "© 2026 O&Gエンジニアリングツールズ by Naoto Yamabe • バージョン 2.6"
   },
   "moduleModal": {
     "title": "モジュール設定",
