@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.0 (describes app v2.5)
+**Document version:** 1.1 (describes app v2.6)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -23,7 +23,7 @@ This is the engineering specification of every feature in the application. It is
 | Frontend | `index.html` — vanilla JS + Tailwind CSS (CDN) | Single file, no build step. One `<script>` block, global scope, ~40 functions. |
 | 3D | Three.js r128, lazy-loaded from cdnjs via `loadThree()` only when the Flow Regime card is used | Promise-cached; graceful "3D unavailable" fallback if the CDN is blocked. |
 | Serverless | Python on Vercel, `api/` auto-detected | `dp_calculator.py` and `psv_calculator.py`: standard library only. `flowregime.py`: numpy/matplotlib/seaborn (`requirements.txt`). |
-| Persistence | Browser `localStorage` only | Keys: `og_ui_state_v24` (session state), `og_custom_modules` (user-built cards). No server-side storage. |
+| Persistence | Browser `localStorage` only | Keys: `og_ui_state_v24` (session state), `og_custom_modules` (user-built cards), `og_lang` (selected UI language, v2.6). No server-side storage. |
 | Assets | `lng-plant-bg.jpg` (background), `favicon.ico`, `assets/flow-regime-map.png`, `assets/flow-regime-3d.gif` (doc images) | |
 
 Local development requires `vercel dev` (opening `index.html` directly breaks the three API-backed cards).
@@ -188,9 +188,9 @@ plus mode-specific intermediates — gas: `C`, `Pcf`, `critical_ratio`; steam: `
 ## 6. Client State & Share Links
 
 - **Autosave:** every `input`/`change` inside `<main>` schedules a debounced (400 ms) save of the full state to `localStorage['og_ui_state_v24']`.
-- **State shape** (v1): `{ "v": 1, "inputs": { "<element-id>": "<value>", … }, "hv": "hhv|lhv", "fa": "vol|mol", "fb": "mass|mol", "p1": "abs|gau", "p2": "abs|gau", "tab": "<tab-name>" }` — `inputs` covers every `input`/`select`/`textarea` with an id inside `<main>`.
+- **State shape** (v1): `{ "v": 1, "inputs": { "<element-id>": "<value>", … }, "hv": "hhv|lhv", "fa": "vol|mol", "fb": "mass|mol", "p1": "abs|gau", "p2": "abs|gau", "tab": "<tab-name>", "lang": "<language-code>" }` — `inputs` covers every `input`/`select`/`textarea` with an id inside `<main>`. `lang` was added in v2.6 (purely additive; older encoded links with no `lang` key still decode fine and default to English).
 - **Share link:** `copyShareLink()` base64-encodes the same state object into `<origin><path>#s=<base64>`; entirely client-side.
-- **Restore precedence on load:** share-link hash → localStorage → defaults. Restore reapplies inputs, the five toggle modes, and recomputes client-side cards. **Only share links** additionally open on their saved tab (so a shared PSV case lands on Safety); normal visits always land on the General tab (v2.5.1 — localStorage tab restore was removed as a landing-page annoyance, though `tab` is still recorded in the state object for share links).
+- **Restore precedence on load:** share-link hash → localStorage → defaults. Restore reapplies inputs, the five toggle modes, and recomputes client-side cards. **Only share links** additionally open on their saved tab (so a shared PSV case lands on Safety); normal visits always land on the General tab (v2.5.1 — localStorage tab restore was removed as a landing-page annoyance, though `tab` is still recorded in the state object for share links). **Language follows a different policy** (v2.6): a returning visitor's saved `og_lang` auto-restores on a normal visit (unlike `tab`), and a share link's `lang` field takes priority over even that saved preference — see §12.
 - **Custom modules** persist separately in `localStorage['og_custom_modules']` and are **not** part of the share-link payload (documented limitation; roadmap v2.6).
 
 ## 7. Export Report
@@ -249,5 +249,51 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 | 4 | PRV gas mode: k ≤ 1 raises a division error that surfaces as a raw Python message; generic `str(e)` leaks internals | `api/psv_calculator.py` | Fix proposed, awaiting approval |
 | 5 | PRV two-phase: omitted back-pressure defaults to 0, silently forcing the critical branch | `api/psv_calculator.py` | Behavior decision needed (default to atmospheric vs. require input) |
 | 6 | Error-response schemas differ across the three endpoints (dp: badge without message; psv: message without badge; flowregime: both) | all three endpoints | Harmonization to the superset `{error, message, badge, badgeClass}` proposed |
-| 7 | Custom modules are not encoded in Share links | `index.html` state system | Roadmap v2.6 (state format v:2) |
-| 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.6 |
+| 7 | Custom modules are not encoded in Share links | `index.html` state system | Roadmap v2.7 (state format v:2) |
+| 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.7 |
+
+## 12. Internationalization (i18n)
+
+Added in v2.6 as **Milestone 1** of a multi-milestone program (roadmap and decision points in DEVELOPMENT_PLAN.md §6 "Internationalization Program"). Default language is English; the app is fully usable in Japanese today; 8 more languages are scaffolded but not yet translated.
+
+### 12.1 Dictionaries
+
+- `i18n/en.json` — canonical dictionary and the runtime fallback for any key missing in another language.
+- `i18n/ja.json` — Japanese, Milestone-1 scope (below).
+- One flat/nested, dot-path-keyed JSON file per language (e.g. `advanced.deltaP.pipeIdLabel`, `safety.psv.gasHeading`, `js.export.section1Title`), namespaced roughly by tab/card. Fetched lazily at runtime via `fetch('i18n/<code>.json')` — not bundled into `index.html` — so the no-build-step principle holds and a visitor never downloads a language they don't select. English is always fetched too, as the fallback source.
+
+### 12.2 Engine (inline in `index.html`'s existing `<script>` block — no second script file)
+
+| Function | Role |
+|---|---|
+| `LANGUAGES` | Config array of all 10 target languages, `{code, native, enabled}`. Only `en`/`ja` are `enabled: true`; the other 8 render in the settings menu as disabled "coming soon" rows — enabling one is a one-line flag flip plus its dictionary file. |
+| `loadLanguage(code)` | Fetches and caches a dictionary in `translationsCache`. |
+| `tr(key, params)` | Dynamic-string helper for JS-generated text (calc warnings/badges, toasts, the `exportReport()` document, mailto body). Does `{param}` template substitution and falls back to English, then to the raw key, if a key is missing. **Named `tr()`, not `t()`** — `t` already shadows a local variable in several existing functions (`exportReport()`'s id-lookup helper, `calcZFactor()`'s temperature local; the latter's *reduced-temperature-ratio* local was also renamed `pr`/`trr` to avoid colliding with `tr()` itself — a pure rename, zero calculation change). |
+| `applyTranslations()` | Walks `[data-i18n]` (textContent), `[data-i18n-title]`, `[data-i18n-aria]`, `[data-i18n-placeholder]` and sets the matching text/attribute. No `data-i18n-html` variant exists by design — translation files stay plain text with no injection surface; labels mixing a translatable word with a literal symbol (e.g. "MASS FLOW W", "DYNAMIC VISCOSITY (μ)") split the literal symbol into its own sibling `<span>` instead. |
+| `setLanguage(code)` | Persists `localStorage['og_lang']`, syncs `<html lang>`, re-runs `applyTranslations()` + `enhanceAccessibility()` (see 12.4), refreshes client-side calculator output via the existing `recomputeAll()`, and marks server-backed results (ΔP/PSV/Flow Regime badges) stale via the existing `markResultStale()` convention rather than re-firing an API call. |
+| `applyAwaitingBadgeDefaults()` | Re-translates the idle-state badge text ("Awaiting Calc...", "Run calculation to see intermediate values…", etc.) without stomping a live result already showing in a different language. |
+
+### 12.3 Switcher UI
+
+Two-part control in the header (`.flex.items-center.justify-between.mb-4` row), not in the horizontally-scrolling tab `<nav>`:
+- **Quick toggle** — `EN` / `日本語` segmented buttons, visually matching the app's existing Abs/Gauge-style toggle-button pattern.
+- **Settings menu** — a gear-icon button opens a dropdown listing all 10 `LANGUAGES` entries; enabled ones are clickable, pending ones show a muted "coming soon" tag.
+
+### 12.4 Bundled fixes (each was necessary for correct language switching, not scope creep)
+
+- `enhanceAccessibility()`'s three `aria-label` setters were guarded ("if not already set") and would have silently frozen after the first language switch; they are now unconditional (idempotent) and are re-run from `setLanguage()`.
+- `setHVMode()`'s direct DOM-text overwrite of `out-ghv-label` is now routed through `tr()`, and `applyTranslations()` re-syncs that label from the live `hvMode` state (not a static key) so it survives a language switch mid-session.
+- `calcPSV()`'s "Enter required input(s)" message previously baked in English pluralization (`'input' + (n > 1 ? 's' : '')`); replaced with distinct singular/plural translation keys, since Japanese (and several of the pending 8 languages) has no plural marking.
+- `markResultStale()`'s appended suffix (previously the hardcoded literal `' · inputs changed — recalculate'`) is now translated via `tr()`.
+
+### 12.5 Translation scope — Milestone 1
+
+**Translated (EN ⇄ JA):** General, Basic Eng, Advanced, Safety tabs (§4.1–4.4); the floating action bar; the Report form; the module-config modal; every JS-generated dynamic string across `calcGHV()`, `calcDeltaPressure()`, `calcFlowRegime()`, `calcPSV()`, `showToast()`, and `exportReport()`'s full standalone document (which also now sets its own `<html lang>`).
+
+**Out of scope for Milestone 1** (§4.5 tabs; ~4,300 words, deferred to Milestone 3): How To Use, Theory, Terms of Use, Privacy Policy.
+
+**Never translated, by design, in any language:** chemical formulas, SI/imperial unit symbols, standard/code citations (JIS K 2301, API 520/526, ISO 6578, ASTM D1250, CODATA, API RP 14E), engineering variable symbols (W, P1, Kd, θ, ω, Re, …), version strings, the §9 reference test-vector values (byte-identical across languages by requirement), proper nouns, the developer's email.
+
+**Not yet localized (server side):** the three Python endpoints (§5) still return English prose for status/error text. `flowregime.py` already returns a machine-readable `regime_key` alongside its English `regime` label (§5.3) — the ~10+ other message/error branches across the three files are unkeyed. See DEVELOPMENT_PLAN.md §6 Milestone 4 (optional).
+
+**Number formatting is unchanged and language-independent:** `toLocaleString('en-US', …)` applies regardless of UI language — a deliberate decision (avoids decimal-comma ambiguity on values that get copy/pasted or shared cross-language), not a gap.
