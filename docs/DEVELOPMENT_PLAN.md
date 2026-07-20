@@ -1,6 +1,6 @@
 # Development Plan — O&G Engineering Converter
 
-**Document version:** 1.0 (accompanies app v2.5)
+**Document version:** 1.1 (accompanies app v2.6)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Repository:** <https://github.com/petronaoto/unit-converter>
 **Companion documents:** [SPECIFICATION.md](SPECIFICATION.md) (feature-level detail) · [MARKETING.md](MARKETING.md) (promotion strategy)
@@ -55,9 +55,10 @@ Reconstructed from the git log and tags (all dates 2026).
 | v2.2–v2.2.2 | Apr 11 | **LHV values corrected to JIS K 2301 Table 30** (reference LHV 40.25 MJ/Nm³); HHV/LHV toggle relocation; comma formatting; **README.md created** |
 | v2.3 / v2.3.1 | Jun 13 | **Flow Regime visualizer** (server-side seaborn map + Three.js 3D animation); CLAUDE.md project memory; density unit-conversion fix (multiply-to-SI, v2.3.1) |
 | v2.4 | Jun 28 | **API RP 14E erosional velocity** on the ΔP card; three new Basic Eng converters (Petroleum Gravity, Viscosity, Mass↔Vol Flow); Export PDF, Share links, session auto-restore; out-of-range guards; Darcy-Weisbach rename; unit-selector consistency fixes |
-| **v2.5** | Jul 2026 | **Documentation & UX release** — `docs/` folder (this document, SPECIFICATION.md, MARKETING.md); Theory §4.1 corrected to Papay; tab-navigation accessibility (scroll-into-view, ARIA tablist); back-to-top + section anchors in doc tabs; Enter-to-calculate and client-side validation hints on ΔP/PSV; export pop-up fallback; distinct viscosity unit values; stale-input indicator on server-backed cards |
+| v2.5 | Jul 2026 | **Documentation & UX release** — `docs/` folder (this document, SPECIFICATION.md, MARKETING.md); Theory §4.1 corrected to Papay; tab-navigation accessibility (scroll-into-view, ARIA tablist); back-to-top + section anchors in doc tabs; Enter-to-calculate and client-side validation hints on ΔP/PSV; export pop-up fallback; distinct viscosity unit values; stale-input indicator on server-backed cards |
+| **v2.6** | Jul 2026 (PR #3) | **Internationalization Milestone 1** — full i18n mechanism (`i18n/en.json`/`ja.json` dictionaries, `tr()`/`applyTranslations()`/`setLanguage()`, two-part header switcher); complete English↔Japanese translation of the working tool (General, Basic Eng, Advanced, Safety, floating action bar, Report form, module modal, every JS-generated dynamic string); settings menu lists 8 more languages as "coming soon". See §5 and SPECIFICATION.md §12 for full detail. |
 
-## 5. Current State (v2.5)
+## 5. Current State (v2.6)
 
 ### Feature inventory
 
@@ -69,6 +70,18 @@ Reconstructed from the git log and tags (all dates 2026).
 - **Productivity:** copy buttons, Export PDF report, Share links, session auto-restore, out-of-range warnings.
 - **Serverless:** `/api/dp_calculator`, `/api/psv_calculator` (stdlib only), `/api/flowregime` (numpy/matplotlib/seaborn).
 
+### Internationalization (i18n) status
+
+Shipped in v2.6 as **Milestone 1** of a multi-milestone program (full technical detail in SPECIFICATION.md §12):
+
+- **Translated (EN ⇄ JA), fully working today:** General, Basic Eng, Advanced, Safety tabs; floating action bar; Report form; module-config modal; every JS-generated dynamic string (calc warnings/badges, toasts, PSV results, the PDF export document, mailto body). Default language is English; a returning visitor's language choice persists; share links can carry an explicit language.
+- **English-only for now:** the How To Use, Theory, Terms of Use, and Privacy Policy tabs (~4,300 words of documentation/legal prose) — deliberately deferred, see Milestone 3 below.
+- **Scaffolded but not yet translated:** Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German. The settings menu already lists all 10 languages; the 8 pending ones show as disabled "coming soon" entries — enabling each is a matter of adding its dictionary file, not further engineering.
+- **Not yet localized:** the three Python API endpoints still return English prose for server-generated status/error text (see Milestone 4 below).
+- Calculation logic was not touched by this work — the JIS K2301 reference vectors (§9 in SPECIFICATION.md) reproduce byte-identically in both languages.
+
+See "Internationalization Program — next milestones" under §6 Roadmap for the decision points on what to do next.
+
 ### Known limitations (honest register)
 
 | Limitation | Status |
@@ -79,14 +92,17 @@ Reconstructed from the git log and tags (all dates 2026).
 | Very small label typography in dense cards may fall below WCAG contrast targets | Backlog (needs a careful, sweeping pass) |
 | API error responses are not yet schema-harmonized across the three endpoints | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
 | dp_calculator input edge cases (zero viscosity/density) can produce an unstructured 500 | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
-| No automated test suite; regression relies on the manual reference-vector checklist | Roadmap v2.6 (pytest + CI) |
-| English UI only | Roadmap v3.0 (Japanese i18n) |
+| No automated test suite; regression relies on the manual reference-vector checklist | Roadmap v2.7 (pytest + CI) |
+| How To Use / Theory / Terms of Use / Privacy Policy tabs, and 8 of the 10 planned UI languages, are English-only | Roadmap — i18n Milestones 2 & 3, see §6 |
+| Server-generated status/error text (ΔP/PSV/Flow Regime badges) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6 |
 
 ## 6. Roadmap
 
 Each item enters a release only after explicit approval by the maintainer. Effort: L < 1 day · M = 1–3 days · H > 3 days.
 
-### v2.6 — "Junior engineer value pack" (proposed)
+### v2.7 — "Junior engineer value pack" (proposed)
+
+(Renumbered from the originally-proposed "v2.6" — that version number was taken by the i18n Milestone 1 release instead; see §4 and §5.)
 
 | Feature | Value | Effort | Notes |
 |---|---|---|---|
@@ -98,12 +114,24 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 | Mobile navigation affordance (hamburger or wrap) | Med | M | Deferred from v2.5 (layout restructure, needs design care) |
 | Custom modules in Share links (state format v:2) | Med | M | Deferred from v2.5 (state versioning required) |
 
+### Internationalization Program — next milestones
+
+Milestone 1 (English ⇄ Japanese for the working tool) shipped in **v2.6** (PR #3, merged). The remaining program is independent of the v2.7/v3.0 feature roadmap above and can be sequenced whenever it makes sense:
+
+| Milestone | Scope | Effort | Notes |
+|---|---|---|---|
+| **M1 — shipped (v2.6)** | i18n mechanism + full EN/JA translation of General, Basic Eng, Advanced, Safety tabs, action bar, Report form, module modal, and all JS-generated strings | — | Merged; see SPECIFICATION.md §12 |
+| **M2** | Same scope as M1, remaining 8 languages (Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German) | M | Mechanically identical to M1 — no new engineering. The settings menu already lists all 10 languages; each pending one just needs an `i18n/<code>.json` dictionary and its `enabled` flag flipped in `LANGUAGES` |
+| **M3** | How To Use, Theory, Terms of Use, Privacy Policy tabs — ~4,300 words, up to 9 languages | H | Largest remaining content volume. **Terms of Use and Privacy Policy translations need the maintainer's own legal review before publishing** — mistranslated jurisdiction/liability clauses carry real risk |
+| **M4 (optional)** | `api/dp_calculator.py`, `api/psv_calculator.py`, `api/flowregime.py` return machine-readable status/error keys instead of English prose, so server-driven text (flow-regime classification, validation errors) can localize too | M | Backend-only, stdlib-safe additive payload change. `flowregime.py` already returns `regime_key` alongside its English `regime` label (SPECIFICATION.md §5.3) — the other ~10+ message/error branches across the three files remain unkeyed |
+
+**Decision points:** M2 and M3 are independent — either can go first. M2 carries essentially zero engineering risk (pure translation volume against an already-proven mechanism). M3 needs legal-review time budgeted in before publishing. M4 improves consistency for the server-backed cards but isn't a prerequisite for M2 or M3.
+
 ### v3.0 — "Professional pack" (proposed)
 
 | Feature | Value | Effort | Notes |
 |---|---|---|---|
 | Calculation notebook (save/load named scenarios) | High | M | Natural extension of the existing state system |
-| Japanese i18n toggle | High (JP) | H | Large string surface; do after docs stabilize |
 | PWA / offline mode for client-side tabs | Med | M | Service worker; API cards must degrade gracefully |
 | Control valve Cv sizing (IEC 60534 lite, liquid/gas) | Med | M | Client-side |
 | Orifice / venturi metering (ISO 5167 lite) | Med | M–H | Iterative; candidate for a fourth API endpoint |
@@ -122,12 +150,12 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 ## 7. Release & QA Process
 
 1. **Branch → PR → merge.** Work happens on a feature branch; a PR to `main` is reviewed by the maintainer. Merging to `main` deploys to production (Vercel) — merges are therefore a deliberate release act.
-2. **Reference-value regression (mandatory before any release).** The reference vectors in CLAUDE.md and SPECIFICATION.md §9 must reproduce exactly:
+2. **Reference-value regression (mandatory before any release).** The reference vectors in CLAUDE.md and SPECIFICATION.md §9 must reproduce exactly — since v2.6, this means in **every enabled language** (currently English and Japanese; see SPECIFICATION.md §12), not English only:
    - JIS composition case (CH₄ 89 / C₂H₆ 7 / C₃H₈ 2.5 / iC₄ 0.7 / nC₄ 0.5 / N₂ 0.3): HHV 44.59, LHV 40.25, SG 0.634, WI 56.00, MW 18.305, Z 0.996759/0.9968, ρ_std 0.81930, 100 t/h → 122.056 kNm³/h, 100 kNm³/h → 81.930 t/h.
    - ΔP default case: ΔP_total ≈ 176.9 kPa (2.34 friction + 174.6 static), Re ≈ 2.20×10⁵, f ≈ 0.0184, V_e ≈ 7.72 m/s (C=100).
    - Flow Regime default case: Churn/Slug Flow, θ = +45.0°, vertical map.
 3. **Documentation sync.** Any change to a feature, constant, or calculation updates, in the same PR: the How To Use tab, the Theory tab, `docs/SPECIFICATION.md` (affected section), and the roadmap status in this document.
-4. **Feature-preservation sweep.** Before merging: all 9 tabs render, all toggles work, copy buttons work, custom modules persist, the 3D animation loads, all three API cards respond, export/share/restore round-trip.
+4. **Feature-preservation sweep.** Before merging: all 9 tabs render, all toggles work, copy buttons work, custom modules persist, the 3D animation loads, all three API cards respond, export/share/restore round-trip, and (since v2.6) the language switcher works in both directions with no console errors on any tab.
 5. **Versioning.** `feat:`/`fix:`/`docs:`/`chore:` commit types; releases tagged `vX.Y` (hotfixes `vX.Y.Z`). Version strings updated together in `index.html` (footer, report header, report env), `README.md`, `CLAUDE.md`.
 
 ## 8. Risks & Constraints
