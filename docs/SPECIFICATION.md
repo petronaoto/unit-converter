@@ -190,7 +190,7 @@ plus mode-specific intermediates — gas: `C`, `Pcf`, `critical_ratio`; steam: `
 - **Autosave:** every `input`/`change` inside `<main>` schedules a debounced (400 ms) save of the full state to `localStorage['og_ui_state_v24']`.
 - **State shape** (v1): `{ "v": 1, "inputs": { "<element-id>": "<value>", … }, "hv": "hhv|lhv", "fa": "vol|mol", "fb": "mass|mol", "p1": "abs|gau", "p2": "abs|gau", "tab": "<tab-name>" }` — `inputs` covers every `input`/`select`/`textarea` with an id inside `<main>`.
 - **Share link:** `copyShareLink()` base64-encodes the same state object into `<origin><path>#s=<base64>`; entirely client-side.
-- **Restore precedence on load:** share-link hash → localStorage → defaults. Restore reapplies inputs, the five toggle modes, recomputes client-side cards, and switches to the saved tab.
+- **Restore precedence on load:** share-link hash → localStorage → defaults. Restore reapplies inputs, the five toggle modes, and recomputes client-side cards. **Only share links** additionally open on their saved tab (so a shared PSV case lands on Safety); normal visits always land on the General tab (v2.5.1 — localStorage tab restore was removed as a landing-page annoyance, though `tab` is still recorded in the state object for share links).
 - **Custom modules** persist separately in `localStorage['og_custom_modules']` and are **not** part of the share-link payload (documented limitation; roadmap v2.6).
 
 ## 7. Export Report

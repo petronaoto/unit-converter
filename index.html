@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O&G Unit Converter V2.5</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V2.5</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -51,22 +51,37 @@
             <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
             </svg>
-            O&G Engineering Converter
+            <span data-i18n="header.title">O&G Engineering Converter</span>
           </h1>
-          <p class="text-slate-400 text-sm mt-1 ml-11">Precision control room conversion metrics</p>
+          <p class="text-slate-400 text-sm mt-1 ml-11" data-i18n="header.subtitle">Precision control room conversion metrics</p>
+        </div>
+        <div class="flex items-center gap-2" id="lang-switcher">
+          <div class="flex rounded-lg overflow-hidden border border-slate-700" role="group" aria-label="Quick language switch">
+            <button type="button" id="lang-quick-en" onclick="setLanguage('en')" class="px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors bg-amber-500 text-slate-950" aria-pressed="true">EN</button>
+            <button type="button" id="lang-quick-ja" onclick="setLanguage('ja')" class="px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors bg-slate-800 text-slate-400 hover:text-slate-200" aria-pressed="false">日本語</button>
+          </div>
+          <div class="relative" id="lang-settings-wrap">
+            <button type="button" id="lang-settings-btn" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" data-i18n-title="common.moreLanguages" data-i18n-aria="common.moreLanguages" title="More languages" aria-label="More languages" class="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-amber-500 hover:border-amber-500/50 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </button>
+            <div id="lang-menu" class="hidden absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-lg shadow-xl py-1 z-50"></div>
+          </div>
         </div>
       </div>
-      
+
       <nav class="flex space-x-6 md:space-x-8 text-sm font-semibold tracking-wide text-slate-400 overflow-x-auto pb-2 scrollbar-hide">
-        <button id="btn-general" onclick="switchTab('general')" class="pb-3 whitespace-nowrap border-b-2 border-amber-500 text-amber-500 hover:text-amber-400 transition-colors uppercase">General</button>
-        <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Basic Eng</button>
-        <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Advanced</button>
-        <button id="btn-safety" onclick="switchTab('safety')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-red-400 text-red-500/70 transition-colors uppercase">Safety</button>
-        <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">How To Use</button>
-        <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Theory</button>
-        <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Terms of Use</button>
-        <button id="btn-privacy" onclick="switchTab('privacy')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Privacy Policy</button>
-        <button id="btn-report" onclick="switchTab('report')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase">Report</button>
+        <button id="btn-general" onclick="switchTab('general')" class="pb-3 whitespace-nowrap border-b-2 border-amber-500 text-amber-500 hover:text-amber-400 transition-colors uppercase" data-i18n="nav.general">General</button>
+        <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.basic">Basic Eng</button>
+        <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.advanced">Advanced</button>
+        <button id="btn-safety" onclick="switchTab('safety')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-red-400 text-red-500/70 transition-colors uppercase" data-i18n="nav.safety">Safety</button>
+        <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.howto">How To Use</button>
+        <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.theory">Theory</button>
+        <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.terms">Terms of Use</button>
+        <button id="btn-privacy" onclick="switchTab('privacy')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.privacy">Privacy Policy</button>
+        <button id="btn-report" onclick="switchTab('report')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.report">Report</button>
       </nav>
     </div>
   </header>
@@ -78,11 +93,11 @@
         
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>Gas Volume</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span data-i18n="general.gasVolume.title">Gas Volume</span></h2>
           </div>
           <div class="p-6 space-y-6">
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Normal Cubic Meters <span class="text-xs text-slate-500 font-normal ml-1">@ 0°C, 1 atm</span></label>
+              <label class="block text-sm font-medium text-slate-400 mb-2"><span data-i18n="general.gasVolume.nm3Label">Normal Cubic Meters</span> <span class="text-xs text-slate-500 font-normal ml-1">@ 0°C, 1 atm</span></label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -93,7 +108,7 @@
             </div>
             <div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div>
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Standard Cubic Feet <span class="text-xs text-slate-500 font-normal ml-1">@ 60°F, 1 atm</span></label>
+              <label class="block text-sm font-medium text-slate-400 mb-2"><span data-i18n="general.gasVolume.scfLabel">Standard Cubic Feet</span> <span class="text-xs text-slate-500 font-normal ml-1">@ 60°F, 1 atm</span></label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="scf-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -107,15 +122,15 @@
 
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>Pressure</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span data-i18n="general.pressure.title">Pressure</span></h2>
           </div>
           <div class="p-6 space-y-6">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <label class="block text-sm font-medium text-slate-400">Pressure Unit A</label>
+                <label class="block text-sm font-medium text-slate-400" data-i18n="general.pressure.unitALabel">Pressure Unit A</label>
                 <div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold">
-                  <button id="press-mode1-abs" onclick="setPressMode(1,'abs')" class="px-2 py-0.5 bg-blue-600 text-white transition-colors">Abs</button>
-                  <button id="press-mode1-gau" onclick="setPressMode(1,'gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">Gauge</button>
+                  <button id="press-mode1-abs" onclick="setPressMode(1,'abs')" class="px-2 py-0.5 bg-blue-600 text-white transition-colors" data-i18n="common.abs">Abs</button>
+                  <button id="press-mode1-gau" onclick="setPressMode(1,'gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button>
                 </div>
               </div>
               <div class="flex rounded-lg shadow-inner">
@@ -129,10 +144,10 @@
             <div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div>
             <div>
               <div class="flex items-center justify-between mb-2">
-                <label class="block text-sm font-medium text-slate-400">Pressure Unit B</label>
+                <label class="block text-sm font-medium text-slate-400" data-i18n="general.pressure.unitBLabel">Pressure Unit B</label>
                 <div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold">
-                  <button id="press-mode2-abs" onclick="setPressMode(2,'abs')" class="px-2 py-0.5 bg-blue-600 text-white transition-colors">Abs</button>
-                  <button id="press-mode2-gau" onclick="setPressMode(2,'gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">Gauge</button>
+                  <button id="press-mode2-abs" onclick="setPressMode(2,'abs')" class="px-2 py-0.5 bg-blue-600 text-white transition-colors" data-i18n="common.abs">Abs</button>
+                  <button id="press-mode2-gau" onclick="setPressMode(2,'gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button>
                 </div>
               </div>
               <div class="flex rounded-lg shadow-inner">
@@ -143,17 +158,17 @@
                 <select id="press-select2" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="100000">bar</option><option value="6894.75729" selected>psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
               </div>
             </div>
-            <div class="bg-blue-500/10 border border-blue-500/20 rounded p-2 text-[10px] text-blue-400">Gauge = Absolute − 101,325 Pa (1 atm). Toggle Abs/Gauge per side independently. Atmospheric reference: 101.325 kPa.</div>
+            <div class="bg-blue-500/10 border border-blue-500/20 rounded p-2 text-[10px] text-blue-400" data-i18n="general.pressure.info">Gauge = Absolute − 101,325 Pa (1 atm). Toggle Abs/Gauge per side independently. Atmospheric reference: 101.325 kPa.</div>
           </div>
         </div>
 
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>Temperature</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span data-i18n="general.temperature.title">Temperature</span></h2>
           </div>
           <div class="p-6 space-y-6">
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Temperature Unit A</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2" data-i18n="general.temperature.unitALabel">Temperature Unit A</label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="temp-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -164,7 +179,7 @@
             </div>
             <div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div>
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Temperature Unit B</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2" data-i18n="general.temperature.unitBLabel">Temperature Unit B</label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="temp-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -178,11 +193,11 @@
 
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Heating Value (Natural Gas)</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span data-i18n="general.heatingValue.title">Heating Value (Natural Gas)</span></h2>
           </div>
           <div class="p-6 space-y-6">
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Megajoules per Normal Cubic Meter</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2" data-i18n="general.heatingValue.mjLabel">Megajoules per Normal Cubic Meter</label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="hv-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -193,7 +208,7 @@
             </div>
             <div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div>
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Btu per Standard Cubic Foot</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2" data-i18n="general.heatingValue.btuLabel">Btu per Standard Cubic Foot</label>
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="hv-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
@@ -209,7 +224,7 @@
           <div class="p-4 rounded-full bg-slate-800/50 group-hover:bg-amber-500/10 mb-3 transition-colors">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
           </div>
-          <span class="font-semibold tracking-wide text-sm">INITIALIZE NEW MODULE</span>
+          <span class="font-semibold tracking-wide text-sm" data-i18n="general.addModuleCta">INITIALIZE NEW MODULE</span>
         </div>
       </div>
     </div>
@@ -219,28 +234,28 @@
         
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>Pipe Volume Calculator</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span><span data-i18n="basic.pipeVolume.title">Pipe Volume Calculator</span></h2>
           </div>
           <div class="p-6 space-y-6">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">INNER DIAMETER</label>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.pipeVolume.diameterLabel">INNER DIAMETER</label>
                 <div class="flex">
                   <input type="number" step="any" id="pipe-id" placeholder="10.75" oninput="calcPipeVolume()" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
                   <select id="pipe-id-u" onchange="calcPipeVolume()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="in">in</option><option value="mm">mm</option></select>
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">LENGTH</label>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.pipeVolume.lengthLabel">LENGTH</label>
                 <div class="flex">
                   <input type="number" step="any" id="pipe-length" placeholder="1000" oninput="calcPipeVolume()" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
                   <select id="pipe-len-u" onchange="calcPipeVolume()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="m">m</option><option value="ft">ft</option><option value="mile">mile</option><option value="km">km</option></select>
                 </div>
               </div>
             </div>
-            
+
             <div class="pt-4 border-t border-slate-800">
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">CALCULATED VOLUME</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.pipeVolume.volumeLabel">CALCULATED VOLUME</label>
               <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-cyan-500/20">
                 <select id="pipe-out-u" onchange="calcPipeVolume()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="m3">m³</option><option value="bbl">Barrels (bbl)</option><option value="gal">gallon</option></select>
                 <div class="flex items-center gap-3">
@@ -254,34 +269,34 @@
 
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>Z-Factor Estimator (Papay)</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span><span data-i18n="basic.zFactor.title">Z-Factor Estimator</span> (Papay)</h2>
           </div>
           <div class="p-6 space-y-6">
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">SPECIFIC GRAVITY (Air = 1.0)</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.zFactor.sgLabel">SPECIFIC GRAVITY (Air = 1.0)</label>
               <input type="number" step="any" id="z-sg" placeholder="e.g. 0.65" oninput="calcZFactor()" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">PRESSURE</label>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.zFactor.pressureLabel">PRESSURE</label>
                 <div class="flex">
                   <input type="number" step="any" id="z-p" placeholder="2000" oninput="calcZFactor()" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
                   <select id="z-p-u" onchange="calcZFactor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="psi">psi</option><option value="bar">bar</option><option value="Pa">Pa</option><option value="kPa">kPa</option><option value="MPa">MPa</option><option value="atm">atm</option></select>
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">TEMP</label>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.zFactor.tempLabel">TEMP</label>
                 <div class="flex">
                   <input type="number" step="any" id="z-t" placeholder="150" oninput="calcZFactor()" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
                   <select id="z-t-u" onchange="calcZFactor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="F">°F</option><option value="C">°C</option></select>
                 </div>
               </div>
             </div>
-            
+
             <div class="pt-4 border-t border-slate-800">
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">ESTIMATED COMPRESSIBILITY</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.zFactor.resultLabel">ESTIMATED COMPRESSIBILITY</label>
               <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-purple-500/20">
-                <span class="text-sm font-semibold text-purple-500">Z-Factor</span>
+                <span class="text-sm font-semibold text-purple-500" data-i18n="basic.zFactor.zFactorWord">Z-Factor</span>
                 <div class="flex items-center gap-3">
                   <span id="z-result" class="text-2xl font-bold font-mono text-white">0.0000</span>
                   <button onclick="copyText(document.getElementById('z-result').innerText, this)" class="text-slate-400 hover:text-purple-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -295,93 +310,93 @@
         <!-- B2 — Petroleum Liquid Gravity (°API ↔ SG ↔ Density) -->
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>Petroleum Gravity (°API ↔ SG ↔ Density)</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span data-i18n="basic.gravity.title">Petroleum Gravity (°API ↔ SG ↔ Density)</span></h2>
           </div>
           <div class="p-6 space-y-5">
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">API GRAVITY <span class="text-slate-600 font-normal">(°API, 60/60 °F)</span></label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.gravity.apiLabel">API GRAVITY</span> <span class="text-slate-600 font-normal">(°API, 60/60 °F)</span></label>
               <div class="relative rounded-lg flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500">
                 <input type="number" step="any" id="api-grav" placeholder="e.g. 35" oninput="calcAPI('api')" class="w-full pl-4 py-2.5 bg-transparent text-slate-100 outline-none" />
-                <button onclick="copyText(document.getElementById('api-grav').value, this)" aria-label="Copy API gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                <button onclick="copyText(document.getElementById('api-grav').value, this)" data-i18n-aria="basic.gravity.copyApiAria" aria-label="Copy API gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">SPECIFIC GRAVITY <span class="text-slate-600 font-normal">(water = 1)</span></label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.gravity.sgLabel">SPECIFIC GRAVITY</span> <span class="text-slate-600 font-normal" data-i18n="basic.gravity.sgNote">(water = 1)</span></label>
               <div class="relative rounded-lg flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500">
                 <input type="number" step="any" id="api-sg" placeholder="e.g. 0.85" oninput="calcAPI('sg')" class="w-full pl-4 py-2.5 bg-transparent text-slate-100 outline-none" />
-                <button onclick="copyText(document.getElementById('api-sg').value, this)" aria-label="Copy specific gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                <button onclick="copyText(document.getElementById('api-sg').value, this)" data-i18n-aria="basic.gravity.copySgAria" aria-label="Copy specific gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY <span class="text-slate-600 font-normal">(at 60 °F)</span></label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="common.density">DENSITY</span> <span class="text-slate-600 font-normal" data-i18n="basic.gravity.densityNote">(at 60 °F)</span></label>
               <div class="flex">
                 <input type="number" step="any" id="api-den" placeholder="e.g. 849" oninput="calcAPI('den')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-amber-500" />
                 <select id="api-den-u" onchange="calcAPI('sg')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="0.0624279606">lb/ft³</option></select>
               </div>
             </div>
-            <p class="text-[10px] text-slate-600 leading-relaxed">°API = 141.5 / SG − 131.5 &nbsp;·&nbsp; density = SG × 999.016 kg/m³ (water at 60 °F, ASTM D1250 basis).</p>
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.gravity.footnote">°API = 141.5 / SG − 131.5 &nbsp;·&nbsp; density = SG × 999.016 kg/m³ (water at 60 °F, ASTM D1250 basis).</p>
           </div>
         </div>
 
         <!-- B3a — Viscosity (Dynamic ↔ Kinematic) -->
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>Viscosity (Dynamic ↔ Kinematic)</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span><span data-i18n="basic.viscosity.title">Viscosity (Dynamic ↔ Kinematic)</span></h2>
           </div>
           <div class="p-6 space-y-5">
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DYNAMIC VISCOSITY (μ)</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.viscosity.dynLabel">DYNAMIC VISCOSITY</span> (μ)</label>
               <div class="flex">
                 <input type="number" step="any" id="visc-dyn" placeholder="e.g. 0.85" oninput="calcVisc('dyn')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
                 <select id="visc-dyn-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.001">cP</option><option value="0.0010">mPa·s</option><option value="1">Pa·s</option></select>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">KINEMATIC VISCOSITY (ν)</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.viscosity.kinLabel">KINEMATIC VISCOSITY</span> (ν)</label>
               <div class="flex">
                 <input type="number" step="any" id="visc-kin" placeholder="e.g. 1.0" oninput="calcVisc('kin')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
                 <select id="visc-kin-u" onchange="calcVisc('kin')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.000001">cSt</option><option value="0.0000010">mm²/s</option><option value="1">m²/s</option></select>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY (ρ) <span class="text-slate-600 font-normal">— required to bridge</span></label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="common.density">DENSITY</span> (ρ) <span class="text-slate-600 font-normal" data-i18n="basic.viscosity.rhoNote">— required to bridge</span></label>
               <div class="flex">
                 <input type="number" step="any" id="visc-rho" value="1000" oninput="calcVisc('dyn')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-cyan-500" />
                 <select id="visc-rho-u" onchange="calcVisc('dyn')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
               </div>
             </div>
-            <p class="text-[10px] text-slate-600 leading-relaxed">ν = μ / ρ &nbsp;·&nbsp; 1 cSt = 1 mm²/s &nbsp;·&nbsp; 1 cP = 1 mPa·s. Water at 20 °C ≈ 1 cP ≈ 1 cSt.</p>
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.viscosity.footnote">ν = μ / ρ &nbsp;·&nbsp; 1 cSt = 1 mm²/s &nbsp;·&nbsp; 1 cP = 1 mPa·s. Water at 20 °C ≈ 1 cP ≈ 1 cSt.</p>
           </div>
         </div>
 
         <!-- B3b — Mass ↔ Volumetric Flow (by density) -->
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>Mass ↔ Volumetric Flow (by density)</h2>
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span data-i18n="basic.massVolFlow.title">Mass ↔ Volumetric Flow (by density)</span></h2>
           </div>
           <div class="p-6 space-y-5">
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">MASS FLOW</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.massVolFlow.massLabel">MASS FLOW</label>
               <div class="flex">
                 <input type="number" step="any" id="mf-mass" placeholder="e.g. 100" oninput="calcMassVol('mass')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
                 <select id="mf-mass-u" onchange="calcMassVol('mass')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.277778">t/h</option><option value="1">kg/s</option><option value="0.000277778">kg/h</option><option value="0.000125998">lb/h</option></select>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">VOLUMETRIC FLOW</label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.massVolFlow.volLabel">VOLUMETRIC FLOW</label>
               <div class="flex">
                 <input type="number" step="any" id="mf-vol" placeholder="e.g. 120" oninput="calcMassVol('vol')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
                 <select id="mf-vol-u" onchange="calcMassVol('vol')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="0.000277778">m³/h</option><option value="1">m³/s</option><option value="0.00000184013">bbl/d</option><option value="0.0000630902">gal/min</option></select>
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DENSITY (ρ) <span class="text-slate-600 font-normal">— at flowing conditions</span></label>
+              <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="common.density">DENSITY</span> (ρ) <span class="text-slate-600 font-normal" data-i18n="basic.massVolFlow.rhoNote">— at flowing conditions</span></label>
               <div class="flex">
                 <input type="number" step="any" id="mf-rho" value="850" oninput="calcMassVol('mass')" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-blue-500" />
                 <select id="mf-rho-u" onchange="calcMassVol('mass')" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
               </div>
             </div>
-            <p class="text-[10px] text-slate-600 leading-relaxed">Q<sub>vol</sub> = ṁ / ρ. For gases, use the density at the stated T &amp; P (or the compositional ρ<sub>std</sub> from the Advanced tab).</p>
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.massVolFlow.footnote">Q_vol = ṁ / ρ. For gases, use the density at the stated T &amp; P (or the compositional ρ_std from the Advanced tab).</p>
           </div>
         </div>
 
@@ -395,22 +410,22 @@
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-              Gas Heating Value (Compositional) & Flow
+              <span data-i18n="advanced.ghv.title">Gas Heating Value (Compositional) & Flow</span>
             </h2>
             <div class="flex items-center gap-2">
-              <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Input Mode:</span>
+              <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase" data-i18n="advanced.ghv.inputModeLabel">Input Mode:</span>
               <select id="ghv-mode" onchange="calcGHV()" class="bg-slate-950 border border-slate-700 text-orange-500 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
-                <option value="vol">Volumetric Fraction (%)</option>
-                <option value="mol">Mole Fraction (%)</option>
+                <option value="vol" data-i18n="advanced.ghv.volFractionOption">Volumetric Fraction (%)</option>
+                <option value="mol" data-i18n="advanced.ghv.molFractionOption">Mole Fraction (%)</option>
               </select>
             </div>
           </div>
-          
+
           <div class="p-6 space-y-6">
             <div>
               <div class="flex justify-between items-end mb-3">
-                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1">1. GAS COMPOSITION</h3>
-                <div class="text-[10px] text-slate-500 italic">*C6+ evaluated as nC6.</div>
+                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1" data-i18n="advanced.ghv.compositionHeading">1. GAS COMPOSITION</h3>
+                <div class="text-[10px] text-slate-500 italic" data-i18n="advanced.ghv.c6Note">*C6+ evaluated as nC6.</div>
               </div>
               
               <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -430,7 +445,7 @@
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">O₂</label><input type="number" step="any" id="comp-o2" value="0" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
               </div>
               <div class="mt-3 flex items-center justify-between bg-slate-950/50 p-2 rounded border border-slate-800">
-                <span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase">Total Input Fraction</span>
+                <span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase" data-i18n="advanced.ghv.totalFractionLabel">Total Input Fraction</span>
                 <span id="comp-total" class="font-mono text-sm font-bold text-orange-500">100.00%</span>
               </div>
             </div>
@@ -438,24 +453,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               <div class="space-y-4">
-                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 uppercase">2. Conditions & Operating State</h3>
+                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 uppercase" data-i18n="advanced.ghv.conditionsHeading">2. Conditions & Operating State</h3>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
-                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase">Temperature</label>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.ghv.temperatureLabel">Temperature</label>
                     <div class="flex">
                       <input type="number" step="any" id="op-temp" value="0" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
                       <select id="op-temp-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-orange-500 outline-none cursor-pointer"><option value="C">°C</option><option value="F">°F</option></select>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase">Pressure</label>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.ghv.pressureLabel">Pressure</label>
                     <div class="flex">
                       <input type="number" step="any" id="op-press" value="0" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
                       <select id="op-press-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-orange-500 outline-none cursor-pointer"><option value="mpa">MPaG</option><option value="bar">bar</option><option value="kpa">kPa</option><option value="psi">psi</option></select>
                     </div>
                   </div>
                   <div class="col-span-2">
-                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase">LNG Liquid Temp <span class="text-slate-600 font-normal">(For Liquid Density)</span></label>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase"><span data-i18n="advanced.ghv.lngTempLabel">LNG Liquid Temp</span> <span class="text-slate-600 font-normal" data-i18n="advanced.ghv.lngTempNote">(For Liquid Density)</span></label>
                     <div class="flex">
                       <input type="number" step="any" id="op-liq-temp" value="-160" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
                       <select id="op-liq-temp-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-orange-500 outline-none cursor-pointer"><option value="C">°C</option><option value="F">°F</option></select>
@@ -464,7 +479,7 @@
                 </div>
                 <div id="flow-warn" class="hidden flex items-center gap-2 p-2 bg-red-950/30 border border-red-900/50 rounded">
                   <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                  <span class="text-[10px] text-red-400 leading-tight">T/P are not Standard. Flow rates will output as Actual conditions.</span>
+                  <span class="text-[10px] text-red-400 leading-tight" data-i18n="advanced.ghv.flowWarnNotStandard">T/P are not Standard. Flow rates will output as Actual conditions.</span>
                 </div>
 
                 <div class="border border-slate-800 rounded bg-slate-950/40 p-3 mt-4 hidden md:block">
@@ -475,12 +490,12 @@
 
               <div class="bg-slate-900 border border-slate-700 rounded-lg p-4 shadow-inner space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-1">
-                  <h3 class="text-xs font-bold tracking-widest text-slate-300 uppercase">3. Physical & Combustion Properties</h3>
+                  <h3 class="text-xs font-bold tracking-widest text-slate-300 uppercase" data-i18n="advanced.ghv.propertiesHeading">3. Physical & Combustion Properties</h3>
                   <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase">HV:</span>
+                    <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase" data-i18n="advanced.ghv.hvLabel">HV:</span>
                     <div class="flex rounded overflow-hidden border border-slate-700 text-[9px] font-bold">
-                      <button id="ghv-hv-hhv" onclick="setHVMode('hhv')" class="px-2 py-0.5 bg-orange-600 text-white transition-colors">HHV</button>
-                      <button id="ghv-hv-lhv" onclick="setHVMode('lhv')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">LHV</button>
+                      <button id="ghv-hv-hhv" onclick="setHVMode('hhv')" class="px-2 py-0.5 bg-orange-600 text-white transition-colors" data-i18n="common.hhv">HHV</button>
+                      <button id="ghv-hv-lhv" onclick="setHVMode('lhv')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.lhv">LHV</button>
                     </div>
                   </div>
                 </div>
@@ -495,7 +510,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Mol. Weight (MW)</span>
+                  <span class="text-xs font-semibold text-slate-400" data-i18n="advanced.ghv.mwLabel">Mol. Weight (MW)</span>
                   <div class="flex items-center gap-2">
                     <span id="out-mw" class="font-mono font-bold text-lg text-white">0.000</span>
                     <span class="text-xs text-orange-500 font-bold">g/mol</span>
@@ -504,7 +519,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Specific Gravity <span class="text-[10px] text-slate-600">(Air = 1)</span></span>
+                  <span class="text-xs font-semibold text-slate-400"><span data-i18n="advanced.ghv.sgLabel">Specific Gravity</span> <span class="text-[10px] text-slate-600" data-i18n="advanced.ghv.sgNote">(Air = 1)</span></span>
                   <div class="flex items-center gap-2">
                     <span id="out-sg" class="font-mono font-bold text-lg text-white">0.000</span>
                     <button onclick="copyText(document.getElementById('out-sg').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -512,7 +527,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Wobbe Index (WI) <span class="text-[10px] text-slate-600">HHV-based</span></span>
+                  <span class="text-xs font-semibold text-slate-400"><span data-i18n="advanced.ghv.wiLabel">Wobbe Index (WI)</span> <span class="text-[10px] text-slate-600" data-i18n="advanced.ghv.wiNote">HHV-based</span></span>
                   <div class="flex items-center gap-2">
                     <span id="out-wi" class="font-mono font-bold text-lg text-white">0.00</span>
                     <button onclick="copyText(document.getElementById('out-wi').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -520,7 +535,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Max Comb. Potential (MCP)</span>
+                  <span class="text-xs font-semibold text-slate-400" data-i18n="advanced.ghv.mcpLabel">Max Comb. Potential (MCP)</span>
                   <div class="flex items-center gap-2">
                     <span id="out-mcp" class="font-mono font-bold text-lg text-white">0.0</span>
                     <button onclick="copyText(document.getElementById('out-mcp').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -528,7 +543,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-400">Liquid Density <span class="text-[10px] text-slate-600">(LNG approx)</span></span>
+                  <span class="text-xs font-semibold text-slate-400"><span data-i18n="advanced.ghv.liqDenLabel">Liquid Density</span> <span class="text-[10px] text-slate-600" data-i18n="advanced.ghv.liqDenNote">(LNG approx)</span></span>
                   <div class="flex items-center gap-2">
                     <span id="out-liq-den" class="font-mono font-bold text-lg text-white">0.00</span>
                     <select id="out-liq-den-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer"><option value="kg/m3">kg/m³</option><option value="lb/ft3">lb/ft³</option></select>
@@ -541,12 +556,12 @@
             </div>
 
             <div>
-              <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 mb-4 uppercase">4. Mass & Volumetric Flow Conversions</h3>
+              <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 mb-4 uppercase" data-i18n="advanced.ghv.flowConversionsHeading">4. Mass & Volumetric Flow Conversions</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <div class="bg-slate-950/50 border border-slate-700 p-4 rounded flex flex-col justify-between">
                   <div class="mb-4">
-                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Given Mass Flow</label>
+                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase" data-i18n="advanced.ghv.givenMassFlowLabel">Given Mass Flow</label>
                     <div class="flex mb-2">
                       <input type="number" step="any" id="flow-mass-in" value="100" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-orange-500" />
                       <select id="flow-mass-in-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-orange-500 font-bold outline-none cursor-pointer"><option value="3600">kg/s</option><option value="1">kg/h</option><option value="1000" selected>ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
@@ -554,10 +569,10 @@
                   </div>
                   <div class="border-t border-slate-800 pt-3">
                     <div class="flex items-center justify-between mb-1">
-                      <label class="block text-[10px] font-bold text-slate-500 uppercase">Calculated Output (A)</label>
+                      <label class="block text-[10px] font-bold text-slate-500 uppercase" data-i18n="advanced.ghv.calculatedOutputALabel">Calculated Output (A)</label>
                       <div class="flex rounded overflow-hidden border border-slate-700 text-[8px] font-bold">
-                        <button id="flowA-mode-vol" onclick="setFlowAMode('vol')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors">VOL</button>
-                        <button id="flowA-mode-mol" onclick="setFlowAMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">MOL</button>
+                        <button id="flowA-mode-vol" onclick="setFlowAMode('vol')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors" data-i18n="common.vol">VOL</button>
+                        <button id="flowA-mode-mol" onclick="setFlowAMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.mol">MOL</button>
                       </div>
                     </div>
                     <div class="flex items-center justify-between">
@@ -573,7 +588,7 @@
 
                 <div class="bg-slate-950/50 border border-slate-700 p-4 rounded flex flex-col justify-between">
                   <div class="mb-4">
-                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Given Volumetric Flow</label>
+                    <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase" data-i18n="advanced.ghv.givenVolFlowLabel">Given Volumetric Flow</label>
                     <div class="flex mb-2">
                       <input type="number" step="any" id="flow-vol-in" value="100" oninput="calcGHV()" class="w-2/3 px-2 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-orange-500" />
                       <select id="flow-vol-in-u" onchange="calcGHV()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-orange-500 font-bold outline-none cursor-pointer"><option value="1" class="vf-label" data-val="h">kNm³/h</option><option value="2" class="vf-label" data-val="d">kNm³/d</option><option value="3" class="vf-label" data-val="scf">mscfd</option></select>
@@ -581,10 +596,10 @@
                   </div>
                   <div class="border-t border-slate-800 pt-3">
                     <div class="flex items-center justify-between mb-1">
-                      <label class="block text-[10px] font-bold text-slate-500 uppercase">Calculated Output (B)</label>
+                      <label class="block text-[10px] font-bold text-slate-500 uppercase" data-i18n="advanced.ghv.calculatedOutputBLabel">Calculated Output (B)</label>
                       <div class="flex rounded overflow-hidden border border-slate-700 text-[8px] font-bold">
-                        <button id="flowB-mode-mass" onclick="setFlowBMode('mass')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors">MASS</button>
-                        <button id="flowB-mode-mol" onclick="setFlowBMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors">MOL</button>
+                        <button id="flowB-mode-mass" onclick="setFlowBMode('mass')" class="px-1.5 py-0.5 bg-orange-600 text-white transition-colors" data-i18n="common.mass">MASS</button>
+                        <button id="flowB-mode-mol" onclick="setFlowBMode('mol')" class="px-1.5 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.mol">MOL</button>
                       </div>
                     </div>
                     <div class="flex items-center justify-between">
@@ -607,55 +622,55 @@
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse"></span>
-              Pipe Delta Pressure Calculator (Darcy-Weisbach)
+              <span data-i18n="advanced.deltaP.title">Pipe Delta Pressure Calculator</span> (Darcy-Weisbach)
             </h2>
           </div>
-          
+
           <div class="p-6 space-y-8">
             <div>
-              <h3 class="text-xs font-bold tracking-widest text-fuchsia-500 mb-4 border-b border-slate-800 pb-2">1. SYSTEM & PIPE PARAMETERS</h3>
+              <h3 class="text-xs font-bold tracking-widest text-fuchsia-500 mb-4 border-b border-slate-800 pb-2" data-i18n="advanced.deltaP.systemParamsHeading">1. SYSTEM & PIPE PARAMETERS</h3>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">SCALING FACTOR</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.scalingFactorLabel">SCALING FACTOR</label>
                   <input type="number" step="any" id="dp-scale" value="1" class="w-full px-3 py-2 bg-slate-950/70 border border-slate-700 rounded focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">SYSTEM PRESSURE</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.systemPressureLabel">SYSTEM PRESSURE</label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-pres" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-pres-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="100000">bar</option><option value="6894.76">psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">PIPE ID</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.pipeIdLabel">PIPE ID</label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-id" value="4" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-id-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.0254">in</option><option value="0.001">mm</option><option value="0.3048">ft</option><option value="1">m</option></select>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">ROUGHNESS</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.roughnessLabel">ROUGHNESS</label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-rough" value="0.045" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-rough-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">mm</option><option value="0.0254">in</option><option value="0.3048">ft</option></select>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">PIPE LENGTH</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.pipeLengthLabel">PIPE LENGTH</label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-len" value="100" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-len-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">m</option><option value="0.3048">ft</option></select>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1">ELEVATION CHANGE</label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.elevationLabel">ELEVATION CHANGE</label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-elev" value="70.711" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-elev-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">m</option><option value="0.3048">ft</option></select>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-400 mb-1" title="API RP 14E erosional-velocity constant C. Use 100 for continuous service, 125 for intermittent, higher for solids-free corrosion-resistant lines.">EROSION C-FACTOR <span class="text-slate-600 font-normal">(API RP 14E)</span></label>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n-title="advanced.deltaP.cfactorTooltip" title="API RP 14E erosional-velocity constant C. Use 100 for continuous service, 125 for intermittent, higher for solids-free corrosion-resistant lines."><span data-i18n="advanced.deltaP.cfactorLabel">EROSION C-FACTOR</span> <span class="text-slate-600 font-normal">(API RP 14E)</span></label>
                   <div class="flex">
                     <input type="number" step="any" id="dp-cfactor" value="100" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
                     <select id="dp-cfactor-info" disabled class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-slate-500 outline-none"><option>C</option></select>
@@ -666,24 +681,24 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div class="bg-slate-950/40 p-4 rounded-lg border border-slate-800">
-                <h3 class="text-xs font-bold tracking-widest text-slate-400 mb-3">2A. VAPOR PHASE</h3>
+                <h3 class="text-xs font-bold tracking-widest text-slate-400 mb-3" data-i18n="advanced.deltaP.vaporPhaseHeading">2A. VAPOR PHASE</h3>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">MASS FLOW</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.massFlowLabel">MASS FLOW</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-v-flow" value="150" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-flow-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.000277778">kg/h</option><option value="0.277778">t/h</option><option value="0.000125998">lb/h</option></select>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">DENSITY</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.densityLabel">DENSITY</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-v-den" value="10" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-den-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">DYNAMIC VISCOSITY</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.viscosityLabel">DYNAMIC VISCOSITY</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-v-visc" value="0.012" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-v-visc-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">cP</option><option value="1">Pa·s</option></select>
@@ -693,24 +708,24 @@
               </div>
 
               <div class="bg-slate-950/40 p-4 rounded-lg border border-slate-800">
-                <h3 class="text-xs font-bold tracking-widest text-slate-400 mb-3">2B. LIQUID PHASE</h3>
+                <h3 class="text-xs font-bold tracking-widest text-slate-400 mb-3" data-i18n="advanced.deltaP.liquidPhaseHeading">2B. LIQUID PHASE</h3>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">MASS FLOW</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.massFlowLabel">MASS FLOW</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-l-flow" value="7300" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-flow-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.000277778">kg/h</option><option value="0.277778">t/h</option><option value="0.000125998">lb/h</option></select>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">DENSITY</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.densityLabel">DENSITY</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-l-den" value="500" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-den-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="1">kg/m³</option><option value="16.0185">lb/ft³</option></select>
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-500 mb-1">DYNAMIC VISCOSITY</label>
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n="advanced.deltaP.viscosityLabel">DYNAMIC VISCOSITY</label>
                     <div class="flex">
                       <input type="number" step="any" id="dp-l-visc" value="0.12" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-visc-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">cP</option><option value="1">Pa·s</option></select>
@@ -720,18 +735,18 @@
               </div>
             </div>
 
-            <button onclick="calcDeltaPressure()" class="w-full py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(217,70,239,0.3)] transition-all">
+            <button onclick="calcDeltaPressure()" class="w-full py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(217,70,239,0.3)] transition-all" data-i18n="advanced.deltaP.calculateButton">
               CALCULATE PRESSURE DROP
             </button>
 
             <div class="bg-slate-900 border border-slate-700 rounded-lg p-5">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xs font-bold tracking-widest text-amber-500">3. HYDRAULIC OUTPUTS</h3>
+                <h3 class="text-xs font-bold tracking-widest text-amber-500" data-i18n="advanced.deltaP.hydraulicOutputsHeading">3. HYDRAULIC OUTPUTS</h3>
                 <span id="dp-regime-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Calc...</span>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">TOTAL dP</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.totalDpLabel">TOTAL dP</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-total" class="text-2xl font-mono text-white">0.00</span>
                     <button onclick="copyText(document.getElementById('dp-out-total').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -739,7 +754,7 @@
                   <select id="dp-out-total-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="100000">bar</option><option value="6894.76">psi</option><option value="1">Pa</option><option value="1000" selected>kPa</option><option value="1000000">MPa</option></select>
                 </div>
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">dP / LENGTH</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.dpPerLengthLabel">dP / LENGTH</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-len" class="text-2xl font-mono text-white">0.00</span>
                     <button onclick="copyText(document.getElementById('dp-out-len').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -747,7 +762,7 @@
                   <select id="dp-out-len-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1000">bar/100m</option><option value="10" selected>kPa/100m</option><option value="22620.59">psi/ft</option></select>
                 </div>
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">VELOCITY</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.velocityLabel">VELOCITY</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-vel" class="text-2xl font-mono text-white">0.00</span>
                     <button onclick="copyText(document.getElementById('dp-out-vel').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -758,22 +773,22 @@
 
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5 pt-4 border-t border-slate-800">
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Reynolds No.</label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" data-i18n="advanced.deltaP.reynoldsLabel">Reynolds No.</label>
                   <div class="font-mono text-sm text-slate-200"><span id="dp-out-re">—</span></div>
                   <div id="dp-out-re-regime" class="text-[10px] text-slate-500">—</div>
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Darcy Friction <i>f</i></label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider"><span data-i18n="advanced.deltaP.darcyFrictionLabel">Darcy Friction</span> <i>f</i></label>
                   <div class="font-mono text-sm text-slate-200"><span id="dp-out-f">—</span></div>
                   <div class="text-[10px] text-slate-500">Colebrook-White</div>
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" title="API RP 14E erosional velocity limit Ve = C/√ρ">Erosional V<sub>e</sub></label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" data-i18n-title="advanced.deltaP.erosionalVeTooltip" title="API RP 14E erosional velocity limit Ve = C/√ρ"><span data-i18n="advanced.deltaP.erosionalVeLabel">Erosional V</span><sub>e</sub></label>
                   <div class="font-mono text-sm text-slate-200"><span id="dp-out-ve">—</span> <span class="text-[10px] text-slate-500">m/s</span></div>
                   <div class="text-[10px] text-slate-500">v / V<sub>e</sub> = <span id="dp-out-eratio">—</span></div>
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Erosion Check</label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" data-i18n="advanced.deltaP.erosionCheckLabel">Erosion Check</label>
                   <span id="dp-out-ero-badge" class="inline-block px-2 py-1 text-[10px] rounded bg-slate-800 text-slate-400">—</span>
                 </div>
               </div>
@@ -787,13 +802,13 @@
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
-              Flow Regime
+              <span data-i18n="advanced.flowRegime.title">Flow Regime</span>
             </h2>
             <span id="fr-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Visualization...</span>
           </div>
           <div class="p-6 space-y-6">
-            <p class="text-xs text-slate-500 leading-relaxed">Visualizes the two-phase flow pattern from the inputs of the <strong class="text-slate-300">Pipe Delta Pressure Calculator</strong> above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. |θ| ≥ 30° uses the vertical-flow map (Hewitt &amp; Roberts type); |θ| &lt; 30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python <strong class="text-slate-300">seaborn</strong>. Boundaries are simplified — indicative only.</p>
-            <button onclick="calcFlowRegime()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all">
+            <p class="text-xs text-slate-500 leading-relaxed"><span data-i18n="advanced.flowRegime.descPre">Visualizes the two-phase flow pattern from the inputs of the</span> <strong class="text-slate-300" data-i18n="advanced.deltaP.title">Pipe Delta Pressure Calculator</strong> <span data-i18n="advanced.flowRegime.descMid">above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. |θ| ≥ 30° uses the vertical-flow map (Hewitt &amp; Roberts type); |θ| &lt; 30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python</span> <strong class="text-slate-300">seaborn</strong><span data-i18n="advanced.flowRegime.descPost">. Boundaries are simplified — indicative only.</span></p>
+            <button onclick="calcFlowRegime()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all" data-i18n="advanced.flowRegime.visualizeButton">
               VISUALIZE FLOW REGIME
             </button>
             <div id="fr-error" class="hidden bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-sm text-red-300"></div>
@@ -803,13 +818,13 @@
               </div>
               <div>
                 <div class="flex items-center justify-between mb-2">
-                  <h3 class="text-xs font-bold tracking-widest text-cyan-400">3D FLOW ANIMATION</h3>
+                  <h3 class="text-xs font-bold tracking-widest text-cyan-400" data-i18n="advanced.flowRegime.animation3dHeading">3D FLOW ANIMATION</h3>
                   <span id="fr-3d-caption" class="text-[10px] font-mono text-slate-500"></span>
                 </div>
                 <div id="fr-3d-wrap" class="bg-slate-950 border border-slate-700 rounded-lg overflow-hidden h-80 relative">
                   <div id="fr-3d-overlay" class="absolute bottom-2 left-3 text-[10px] font-mono text-slate-400 pointer-events-none z-10"></div>
                 </div>
-                <p class="text-[10px] text-slate-600 mt-2">Conceptual animation — phase distribution, speed and inclination are schematic, scaled from j<sub>G</sub>, j<sub>L</sub> and θ. Not a CFD result.</p>
+                <p class="text-[10px] text-slate-600 mt-2" data-i18n="advanced.flowRegime.animation3dCaption">Conceptual animation — phase distribution, speed and inclination are schematic, scaled from jG, jL and θ. Not a CFD result.</p>
               </div>
             </div>
           </div>
@@ -824,24 +839,24 @@
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-              PRV Sizing Calculator (API 520 Part I)
+              <span data-i18n="safety.psv.title">PRV Sizing Calculator</span> (API 520 Part I)
             </h2>
             <div class="flex items-center gap-4 flex-wrap">
               <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Units:</span>
+                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase" data-i18n="safety.psv.unitsLabel">Units:</span>
                 <select id="psv-units" onchange="updatePSVMode()" class="bg-slate-950 border border-slate-700 text-red-400 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
                   <option value="USC">USC (psia · lb/h · in²)</option>
                   <option value="SI">SI (kPa · kg/h · mm²)</option>
                 </select>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Mode:</span>
+                <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase" data-i18n="safety.psv.modeLabel">Mode:</span>
                 <select id="psv-mode" onchange="updatePSVMode()" class="bg-slate-950 border border-slate-700 text-red-400 text-xs font-semibold rounded px-2 py-1 outline-none cursor-pointer">
-                  <option value="gas">§5.6 Gas / Vapor Relief</option>
-                  <option value="steam">§5.7 Steam Relief</option>
-                  <option value="liquid_cert">§5.8 Liquid — Certified PRV</option>
-                  <option value="liquid_noncert">§5.9 Liquid — Non-Certified PRV</option>
-                  <option value="twophase">§5.10 Two-Phase Relief (Omega)</option>
+                  <option value="gas" data-i18n="safety.psv.modeGas">§5.6 Gas / Vapor Relief</option>
+                  <option value="steam" data-i18n="safety.psv.modeSteam">§5.7 Steam Relief</option>
+                  <option value="liquid_cert" data-i18n="safety.psv.modeLiquidCert">§5.8 Liquid — Certified PRV</option>
+                  <option value="liquid_noncert" data-i18n="safety.psv.modeLiquidNoncert">§5.9 Liquid — Non-Certified PRV</option>
+                  <option value="twophase" data-i18n="safety.psv.modeTwophase">§5.10 Two-Phase Relief (Omega)</option>
                 </select>
               </div>
             </div>
@@ -850,54 +865,54 @@
 
             <!-- GAS/VAPOR -->
             <div id="psv-inputs-gas" class="space-y-4">
-              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Gas / Vapor Inputs (§5.6)</h3>
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.gasHeading">Gas / Vapor Inputs</span> (§5.6)</h3>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W" placeholder="e.g. 53500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MOL. WEIGHT M</label><div class="flex"><input type="number" step="any" id="psv-M" placeholder="e.g. 51" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">g/mol</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">HEAT RATIO k (Cp/Cv)</label><div class="flex"><input type="number" step="any" id="psv-k" placeholder="e.g. 1.3" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING TEMP T</label><div class="flex"><input type="number" step="any" id="psv-T" placeholder="e.g. 627" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°R</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">COMPRESSIBILITY Z</label><div class="flex"><input type="number" step="any" id="psv-Z" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1</label><div class="flex"><input type="number" step="any" id="psv-P1" placeholder="e.g. 97.2" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE P2</label><div class="flex"><input type="number" step="any" id="psv-P2" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W" placeholder="e.g. 53500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.molWeightLabel">MOL. WEIGHT</span> M</label><div class="flex"><input type="number" step="any" id="psv-M" placeholder="e.g. 51" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">g/mol</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.heatRatioLabel">HEAT RATIO</span> k (Cp/Cv)</label><div class="flex"><input type="number" step="any" id="psv-k" placeholder="e.g. 1.3" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingTempLabel">RELIEVING TEMP</span> T</label><div class="flex"><input type="number" step="any" id="psv-T" placeholder="e.g. 627" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°R</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.compressibilityLabel">COMPRESSIBILITY</span> Z</label><div class="flex"><input type="number" step="any" id="psv-Z" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex"><input type="number" step="any" id="psv-P1" placeholder="e.g. 97.2" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> P2</label><div class="flex"><input type="number" step="any" id="psv-P2" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
               </div>
               <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal">[0.975 PRV; 0.62 rupture disk]</span></label><input type="number" step="any" id="psv-Kd" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb <span class="text-slate-600 font-normal">[1.0 conventional/pilot]</span></label><input type="number" step="any" id="psv-Kb" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc <span class="text-slate-600 font-normal">[1.0 no disk; 0.9 with disk]</span></label><input type="number" step="any" id="psv-Kc" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKdPrv">[0.975 PRV; 0.62 rupture disk]</span></label><input type="number" step="any" id="psv-Kd" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKbConventional">[1.0 conventional/pilot]</span></label><input type="number" step="any" id="psv-Kb" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKcDisk">[1.0 no disk; 0.9 with disk]</span></label><input type="number" step="any" id="psv-Kc" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
-              <div class="bg-amber-500/10 border border-amber-500/30 rounded p-2 text-[10px] text-amber-300">P1 = Set Pressure × (1 + OP%) + P_atm. Critical vs. Subcritical auto-detected: Pcf = P1 × (2/(k+1))^(k/(k−1)).</div>
+              <div class="bg-amber-500/10 border border-amber-500/30 rounded p-2 text-[10px] text-amber-300" data-i18n="safety.psv.gasInfoBox">P1 = Set Pressure × (1 + OP%) + P_atm. Critical vs. Subcritical auto-detected: Pcf = P1 × (2/(k+1))^(k/(k−1)).</div>
             </div>
 
             <!-- STEAM -->
             <div id="psv-inputs-steam" class="hidden space-y-4">
-              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Steam Inputs (§5.7)</h3>
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.steamHeading">Steam Inputs</span> (§5.7)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" placeholder="e.g. 153500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1</label><div class="flex"><input type="number" step="any" id="psv-P1-steam" placeholder="e.g. 1774.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">KSH <span class="text-slate-600 font-normal">[1.0 = saturated]</span></label><div class="flex"><input type="number" step="any" id="psv-KSH" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">Table 9</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" placeholder="e.g. 153500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex"><input type="number" step="any" id="psv-P1-steam" placeholder="e.g. 1774.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">KSH <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKshSaturated">[1.0 = saturated]</span></label><div class="flex"><input type="number" step="any" id="psv-KSH" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">Table 9</span></div></div>
               </div>
               <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-steam" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb</label><input type="number" step="any" id="psv-Kb-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
-              <div class="bg-slate-800/50 border border-slate-700 rounded p-2 text-[10px] text-slate-400">KN (Napier correction) is computed automatically. KSH = 1.0 for saturated steam; use Table 9 in API 520 for superheated values.</div>
+              <div class="bg-slate-800/50 border border-slate-700 rounded p-2 text-[10px] text-slate-400" data-i18n="safety.psv.steamInfoBox">KN (Napier correction) is computed automatically. KSH = 1.0 for saturated steam; use Table 9 in API 520 for superheated values.</div>
             </div>
 
             <!-- LIQUID §5.8 / §5.9 -->
             <div id="psv-inputs-liquid" class="hidden space-y-4">
               <h3 id="psv-liquid-heading" class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Liquid Inputs (§5.8 Certified)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">FLOW RATE Q</label><div class="flex"><input type="number" step="any" id="psv-Q" placeholder="e.g. 1800" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Q-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">gal/min</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">SPECIFIC GRAVITY Gl</label><div class="flex"><input type="number" step="any" id="psv-Gl" placeholder="e.g. 0.9" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">H₂O=1</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">VISCOSITY µ <span class="text-slate-600 font-normal">[0 = ignore]</span></label><div class="flex"><input type="number" step="any" id="psv-mu" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">cP</span></div></div>
-                <div id="psv-P1-row-liquid"><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS P1 <span class="text-slate-600 font-normal">[gauge]</span></label><div class="flex"><input type="number" step="any" id="psv-P1-liq" placeholder="e.g. 275" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
-                <div id="psv-Ps-row" class="hidden"><label class="block text-[10px] font-semibold text-slate-400 mb-1">SET PRESSURE Ps</label><div class="flex"><input type="number" step="any" id="psv-Ps" placeholder="e.g. 250" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Ps-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE P2</label><div class="flex"><input type="number" step="any" id="psv-P2-liq" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.flowRateLabel">FLOW RATE</span> Q</label><div class="flex"><input type="number" step="any" id="psv-Q" placeholder="e.g. 1800" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Q-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">gal/min</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="basic.gravity.sgLabel">SPECIFIC GRAVITY</span> Gl</label><div class="flex"><input type="number" step="any" id="psv-Gl" placeholder="e.g. 0.9" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">H₂O=1</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.viscosityLabel">VISCOSITY</span> µ <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintIgnore">[0 = ignore]</span></label><div class="flex"><input type="number" step="any" id="psv-mu" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">cP</span></div></div>
+                <div id="psv-P1-row-liquid"><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1 <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintGauge">[gauge]</span></label><div class="flex"><input type="number" step="any" id="psv-P1-liq" placeholder="e.g. 275" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+                <div id="psv-Ps-row" class="hidden"><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.setPressureLabel">SET PRESSURE</span> Ps</label><div class="flex"><input type="number" step="any" id="psv-Ps" placeholder="e.g. 250" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Ps-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> P2</label><div class="flex"><input type="number" step="any" id="psv-P2-liq" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P2-liq-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psig</span></div></div>
               </div>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2 border-t border-slate-800">
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-liq" value="0.65" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kw <span class="text-slate-600 font-normal">[backpressure]</span></label><input type="number" step="any" id="psv-Kw" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kw <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintBackpressure">[backpressure]</span></label><input type="number" step="any" id="psv-Kw" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-liq" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div id="psv-Kp-row" class="hidden"><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kp <span class="text-slate-600 font-normal">[25%OP→1.0; 10%→0.6]</span></label><input type="number" step="any" id="psv-Kp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
@@ -905,35 +920,35 @@
 
             <!-- TWO-PHASE -->
             <div id="psv-inputs-twophase" class="hidden space-y-4">
-              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Two-Phase Inputs — Omega Method (§5.10 / Annex C.2.2)</h3>
+              <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.twophaseHeading">Two-Phase Inputs — Omega Method</span> (§5.10 / Annex C.2.2)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">MASS FLOW W</label><div class="flex"><input type="number" step="any" id="psv-W-tp" placeholder="e.g. 477430" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-tp-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">INLET SPEC. VOL. vo <span class="text-slate-600 font-normal">[at Po]</span></label><div class="flex"><input type="number" step="any" id="psv-vo" placeholder="e.g. 0.3116" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-vo-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">SPEC. VOL. v9 <span class="text-slate-600 font-normal">[flash @ 0.9×Po]</span></label><div class="flex"><input type="number" step="any" id="psv-v9" placeholder="e.g. 0.3629" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-v9-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">RELIEVING PRESS Po <span class="text-slate-600 font-normal">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Po" placeholder="e.g. 80.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Po-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">BACKPRESSURE Pa <span class="text-slate-600 font-normal">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Pa" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Pa-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-tp" placeholder="e.g. 477430" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-tp-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.inletSpecVolLabel">INLET SPEC. VOL.</span> vo <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAtPo">[at Po]</span></label><div class="flex"><input type="number" step="any" id="psv-vo" placeholder="e.g. 0.3116" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-vo-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.specVolLabel">SPEC. VOL.</span> v9 <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintFlash">[flash @ 0.9×Po]</span></label><div class="flex"><input type="number" step="any" id="psv-v9" placeholder="e.g. 0.3629" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-v9-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> Po <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAbsolute">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Po" placeholder="e.g. 80.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Po-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> Pa <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAbsolute">[absolute]</span></label><div class="flex"><input type="number" step="any" id="psv-Pa" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Pa-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
               </div>
               <div class="grid grid-cols-4 gap-4 pt-2 border-t border-slate-800">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal">[0.85 two-phase]</span></label><input type="number" step="any" id="psv-Kd-tp" value="0.85" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintTwophase">[0.85 two-phase]</span></label><input type="number" step="any" id="psv-Kd-tp" value="0.85" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb</label><input type="number" step="any" id="psv-Kb-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kv <span class="text-slate-600 font-normal">[viscosity]</span></label><input type="number" step="any" id="psv-Kv-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kv <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintViscosity">[viscosity]</span></label><input type="number" step="any" id="psv-Kv-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
-              <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-2 text-[10px] text-fuchsia-300">v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg; Po/Pa in kPa abs.</div>
+              <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-2 text-[10px] text-fuchsia-300" data-i18n="safety.psv.twophaseInfoBox">v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg; Po/Pa in kPa abs.</div>
             </div>
 
             <!-- CALCULATE -->
-            <button onclick="calcPSV()" class="w-full py-4 bg-red-700 hover:bg-red-600 text-slate-100 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all uppercase">Calculate Orifice Size (API 520)</button>
+            <button onclick="calcPSV()" class="w-full py-4 bg-red-700 hover:bg-red-600 text-slate-100 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all uppercase"><span data-i18n="safety.psv.calculateButton">Calculate Orifice Size</span> (API 520)</button>
 
             <!-- RESULTS -->
             <div class="bg-slate-900 border border-slate-700 rounded-lg p-5">
               <div class="flex items-center justify-between mb-5">
-                <h3 class="text-xs font-bold tracking-widest text-red-500 uppercase">Sizing Results</h3>
+                <h3 class="text-xs font-bold tracking-widest text-red-500 uppercase" data-i18n="safety.psv.sizingResultsHeading">Sizing Results</h3>
                 <span id="psv-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Calc...</span>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">REQUIRED AREA A</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="safety.psv.requiredAreaLabel">REQUIRED AREA A</label>
                   <div class="flex items-baseline gap-2">
                     <span id="psv-out-area" class="text-3xl font-mono font-bold text-white">—</span>
                     <span id="psv-out-area-unit" class="text-sm text-red-400 font-bold">in²</span>
@@ -941,14 +956,14 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">API 526 ORIFICE</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="safety.psv.orificeLabel">API 526 ORIFICE</label>
                   <div class="flex items-baseline gap-2">
                     <span id="psv-out-orifice" class="text-3xl font-mono font-bold text-amber-400">—</span>
                     <button onclick="copyText(document.getElementById('psv-out-orifice').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs text-slate-500 mb-1">ORIFICE AREA</label>
+                  <label class="block text-xs text-slate-500 mb-1" data-i18n="safety.psv.orificeAreaLabel">ORIFICE AREA</label>
                   <div class="flex items-baseline gap-2">
                     <span id="psv-out-orifice-area" class="text-xl font-mono text-slate-300">—</span>
                     <button onclick="copyText(document.getElementById('psv-out-orifice-area').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -958,7 +973,7 @@
               <div class="bg-slate-950/50 rounded p-2 border border-slate-800 mb-3">
                 <span class="text-[10px] text-slate-400 font-mono" id="psv-out-details">Run calculation to see intermediate values (C, Pcf, KN, ω, η_c, G, Kv, Re…)</span>
               </div>
-              <div class="bg-red-500/10 border border-red-500/20 rounded p-2 text-[10px] text-red-400">⚠ Preliminary sizing only per API 520 §5.6–§5.10. Final PRV selection requires independent engineering review, manufacturer-certified Kd, and compliance with applicable codes (ASME, local regulations).</div>
+              <div class="bg-red-500/10 border border-red-500/20 rounded p-2 text-[10px] text-red-400" data-i18n="safety.psv.disclaimer">⚠ Preliminary sizing only per API 520 §5.6–§5.10. Final PRV selection requires independent engineering review, manufacturer-certified Kd, and compliance with applicable codes (ASME, local regulations).</div>
             </div>
 
           </div>
@@ -2060,28 +2075,28 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 max-w-2xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-6 flex items-center gap-2">
           <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          System Report & Request Form
+          <span data-i18n="report.title">System Report & Request Form</span>
         </h2>
-        <p class="text-sm text-slate-400 mb-6">Found a calculation bug or have an idea for a new module? Fill out the form below. This will automatically draft an email to the developer (Naoto Yamabe).</p>
-        
+        <p class="text-sm text-slate-400 mb-6" data-i18n="report.intro">Found a calculation bug or have an idea for a new module? Fill out the form below. This will automatically draft an email to the developer (Naoto Yamabe).</p>
+
         <form id="report-form" class="space-y-5">
           <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">REPORT TYPE</label>
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="report.typeLabel">REPORT TYPE</label>
             <select id="report-type" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none">
-              <option value="Bug Report">Bug / Calculation Error</option>
-              <option value="Feature Request">Feature Request</option>
-              <option value="General Inquiry">General Inquiry</option>
+              <option value="Bug Report" data-i18n="report.typeBug">Bug / Calculation Error</option>
+              <option value="Feature Request" data-i18n="report.typeFeature">Feature Request</option>
+              <option value="General Inquiry" data-i18n="report.typeInquiry">General Inquiry</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">YOUR NAME / CALLSIGN (Optional)</label>
-            <input type="text" id="report-name" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="John Doe" />
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="report.nameLabel">YOUR NAME / CALLSIGN (Optional)</label>
+            <input type="text" id="report-name" class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" data-i18n-placeholder="report.namePlaceholder" placeholder="John Doe" />
           </div>
           <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2">DESCRIPTION</label>
-            <textarea id="report-desc" rows="5" required class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" placeholder="Please describe the issue or the requested feature in detail..."></textarea>
+            <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="report.descLabel">DESCRIPTION</label>
+            <textarea id="report-desc" rows="5" required class="w-full px-3 py-3 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none placeholder-slate-600" data-i18n-placeholder="report.descPlaceholder" placeholder="Please describe the issue or the requested feature in detail..."></textarea>
           </div>
-          <button type="submit" class="w-full py-3 mt-2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all">GENERATE EMAIL TO DEVELOPER</button>
+          <button type="submit" class="w-full py-3 mt-2 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all" data-i18n="report.submitButton">GENERATE EMAIL TO DEVELOPER</button>
         </form>
       </div>
     </div>
@@ -2092,17 +2107,17 @@
   <div class="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 print:hidden">
     <span id="state-toast" class="hidden text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-green-400 border border-green-500/30"></span>
     <div class="flex gap-2">
-      <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top" title="Back to top of page" class="hidden items-center gap-1.5 px-3 py-2 bg-slate-800/90 backdrop-blur hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 shadow-lg transition-colors">
+      <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-i18n-aria="actionBar.backToTopAria" data-i18n-title="actionBar.backToTopTitle" aria-label="Back to top" title="Back to top of page" class="hidden items-center gap-1.5 px-3 py-2 bg-slate-800/90 backdrop-blur hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 shadow-lg transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
-        Top
+        <span data-i18n="actionBar.backToTopLabel">Top</span>
       </button>
-      <button onclick="copyShareLink()" aria-label="Copy a shareable link with current inputs" title="Copy a shareable link that restores all current inputs" class="flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 backdrop-blur hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 shadow-lg transition-colors">
+      <button onclick="copyShareLink()" data-i18n-aria="actionBar.shareAria" data-i18n-title="actionBar.shareTitle" aria-label="Copy a shareable link with current inputs" title="Copy a shareable link that restores all current inputs" class="flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 backdrop-blur hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-600 shadow-lg transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-        Share
+        <span data-i18n="actionBar.shareLabel">Share</span>
       </button>
-      <button onclick="exportReport()" aria-label="Export a printable calculation report" title="Open a printable report of the current calculations (Save as PDF)" class="flex items-center gap-1.5 px-3 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.35)] transition-colors">
+      <button onclick="exportReport()" data-i18n-aria="actionBar.exportAria" data-i18n-title="actionBar.exportTitle" aria-label="Export a printable calculation report" title="Open a printable report of the current calculations (Save as PDF)" class="flex items-center gap-1.5 px-3 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.35)] transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-        Export PDF
+        <span data-i18n="actionBar.exportLabel">Export PDF</span>
       </button>
     </div>
   </div>
@@ -2111,52 +2126,52 @@
     <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
       <div class="flex items-center gap-2 mb-2 md:mb-0">
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
-        System Online • Vercel Environment
+        <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div>© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.5</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.5</div>
     </div>
   </footer>
 
   <div id="module-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50">
     <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md mx-4 overflow-hidden transform scale-95 transition-transform duration-200" id="modal-content">
       <div class="bg-slate-800/80 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
-        <h3 class="font-bold tracking-wide text-slate-200 text-sm uppercase">Configure Module</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-amber-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        <h3 class="font-bold tracking-wide text-slate-200 text-sm uppercase" data-i18n="moduleModal.title">Configure Module</h3>
+        <button onclick="closeModal()" aria-label="Close dialog" class="text-slate-400 hover:text-amber-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
       </div>
       <form id="custom-module-form" class="p-6 space-y-5">
         <div class="pb-5 border-b border-slate-800">
-          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">QUICK LOAD TEMPLATE</label>
+          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2" data-i18n="moduleModal.presetLabel">QUICK LOAD TEMPLATE</label>
           <select id="preset-select" class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none">
-            <option value="custom">-- Custom Conversion --</option>
-            <option value="mass-vol">Crude Oil: Metric Tons ↔ Barrels</option>
-            <option value="energy">Energy: MMBtu ↔ GJ</option>
-            <option value="liquid">Liquid Vol: m³ ↔ Barrels</option>
-            <option value="flow-rate">Flow Rate: m³/h ↔ bpd</option>
-            <option value="density">Density: kg/m³ ↔ lb/ft³</option>
-            <option value="viscosity">Dynamic Viscosity: Pa·s ↔ cP</option>
+            <option value="custom" data-i18n="moduleModal.presetCustom">-- Custom Conversion --</option>
+            <option value="mass-vol" data-i18n="moduleModal.presetMassVol">Crude Oil: Metric Tons ↔ Barrels</option>
+            <option value="energy" data-i18n="moduleModal.presetEnergy">Energy: MMBtu ↔ GJ</option>
+            <option value="liquid" data-i18n="moduleModal.presetLiquid">Liquid Vol: m³ ↔ Barrels</option>
+            <option value="flow-rate" data-i18n="moduleModal.presetFlowRate">Flow Rate: m³/h ↔ bpd</option>
+            <option value="density" data-i18n="moduleModal.presetDensity">Density: kg/m³ ↔ lb/ft³</option>
+            <option value="viscosity" data-i18n="moduleModal.presetViscosity">Dynamic Viscosity: Pa·s ↔ cP</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MODULE IDENTIFIER</label>
-          <input type="text" id="mod-title" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" placeholder="e.g., Flow Rate" />
+          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2" data-i18n="moduleModal.identifierLabel">MODULE IDENTIFIER</label>
+          <input type="text" id="mod-title" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" data-i18n-placeholder="moduleModal.identifierPlaceholder" placeholder="e.g., Flow Rate" />
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 1</label>
+            <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2" data-i18n="moduleModal.unit1Label">UNIT 1</label>
             <input type="text" id="mod-unit1" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">UNIT 2</label>
+            <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2" data-i18n="moduleModal.unit2Label">UNIT 2</label>
             <input type="text" id="mod-unit2" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" />
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2">MULTIPLIER FACTOR</label>
-          <input type="number" step="any" id="mod-factor" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" placeholder="Unit 1 × Factor = Unit 2" />
+          <label class="block text-xs font-semibold tracking-wider text-slate-500 mb-2" data-i18n="moduleModal.factorLabel">MULTIPLIER FACTOR</label>
+          <input type="number" step="any" id="mod-factor" required class="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-200 outline-none" data-i18n-placeholder="moduleModal.factorPlaceholder" placeholder="Unit 1 × Factor = Unit 2" />
         </div>
         <div class="pt-4 flex justify-end gap-3">
-          <button type="button" onclick="closeModal()" class="px-5 py-2.5 text-slate-400 font-medium hover:text-slate-200 transition-colors">Abort</button>
-          <button type="submit" class="px-5 py-2.5 bg-amber-600 text-slate-950 font-bold rounded-lg hover:bg-amber-500 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.4)]">Initialize</button>
+          <button type="button" onclick="closeModal()" class="px-5 py-2.5 text-slate-400 font-medium hover:text-slate-200 transition-colors" data-i18n="moduleModal.abortButton">Abort</button>
+          <button type="submit" class="px-5 py-2.5 bg-amber-600 text-slate-950 font-bold rounded-lg hover:bg-amber-500 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.4)]" data-i18n="moduleModal.initializeButton">Initialize</button>
         </div>
       </form>
     </div>
@@ -2171,7 +2186,7 @@
       document.getElementById('ghv-hv-hhv').className = mode==='hhv' ? 'px-2 py-0.5 bg-orange-600 text-white transition-colors' : 'px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
       document.getElementById('ghv-hv-lhv').className = mode==='lhv' ? 'px-2 py-0.5 bg-orange-600 text-white transition-colors' : 'px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors';
       const lbl = document.getElementById('out-ghv-label');
-      if (lbl) lbl.innerText = mode==='hhv' ? 'Heating Value (HHV)' : 'Heating Value (LHV)';
+      if (lbl) lbl.innerText = tr(mode==='hhv' ? 'advanced.ghv.heatingValueHHV' : 'advanced.ghv.heatingValueLHV');
       calcGHV();
     }
 
@@ -2243,10 +2258,10 @@
     document.getElementById('report-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const type = document.getElementById('report-type').value;
-      const name = document.getElementById('report-name').value || "Anonymous User";
+      const name = document.getElementById('report-name').value || tr('report.anonymousUser');
       const desc = document.getElementById('report-desc').value;
       const subject = encodeURIComponent(`[O&G Converter] ${type} from ${name}`);
-      const body = encodeURIComponent(`Report Details:\n\n${desc}\n\n---\nEnv: Browser/Client-Side V2.5`);
+      const body = encodeURIComponent(tr('report.mailtoBody', {desc}));
       window.location.href = `mailto:petro.naoto@gmail.com?subject=${subject}&body=${body}`;
     });
 
@@ -2343,9 +2358,9 @@
       if (compWarn) {
         const negs = gasComps.filter(c => inputs[c.id] < 0).map(c => c.id.toUpperCase());
         const msgs = [];
-        if (negs.length) msgs.push('Negative fraction(s): ' + negs.join(', ') + '.');
-        if (sumFrac <= 0) msgs.push('Total composition is zero.');
-        else if (Math.abs(sumFrac-100) > 0.5) msgs.push('Total is ' + sumFrac.toFixed(2) + '% — values are normalized to 100% before calculation.');
+        if (negs.length) msgs.push(tr('advanced.ghv.warnNegativeFraction', {list: negs.join(', ')}));
+        if (sumFrac <= 0) msgs.push(tr('advanced.ghv.warnZeroTotal'));
+        else if (Math.abs(sumFrac-100) > 0.5) msgs.push(tr('advanced.ghv.warnNotNormalized', {pct: sumFrac.toFixed(2)}));
         compWarn.classList.toggle('hidden', msgs.length === 0);
         compWarn.innerText = msgs.length ? '⚠ ' + msgs.join(' ') : '';
       }
@@ -2359,13 +2374,13 @@
         let sumH=0; const colH={};
         gasComps.forEach(c=>{ colH[c.id]=rawFrac[c.id]/c.zi; sumH+=colH[c.id]; });
         gasComps.forEach(c=>{ x[c.id]=sumH>0?Math.round(colH[c.id]/sumH*1e4)/1e4:0; v[c.id]=rawFrac[c.id]; });
-        document.getElementById('opp-mode-title').innerText='CALCULATED MOLAR FRACTIONS (Mol %)';
+        document.getElementById('opp-mode-title').innerText=tr('advanced.ghv.oppMolarTitle');
       } else {
         gasComps.forEach(c=>{ x[c.id]=Math.round(rawFrac[c.id]*1e4)/1e4; });
         let sumQ=0; const colQ={};
         gasComps.forEach(c=>{ colQ[c.id]=x[c.id]*c.zi; sumQ+=colQ[c.id]; });
         gasComps.forEach(c=>{ v[c.id]=sumQ>0?colQ[c.id]/sumQ:0; });
-        document.getElementById('opp-mode-title').innerText='CALCULATED VOLUMETRIC FRACTIONS (Vol %)';
+        document.getElementById('opp-mode-title').innerText=tr('advanced.ghv.oppVolumetricTitle');
       }
       const oppGrid=document.getElementById('opp-frac-grid');
       oppGrid.innerHTML='';
@@ -2431,7 +2446,7 @@
       if (liqWarn) {
         const oob = tLiqK < 108 || tLiqK > 120;
         liqWarn.classList.toggle('hidden', !oob);
-        if (oob) liqWarn.innerText = `⚠ LNG temp ${tLiqK.toFixed(1)} K is outside the ISO 6578 table range (108–120 K). Density is clamped to the nearest tabulated temperature — treat as extrapolated.`;
+        if (oob) liqWarn.innerText = '⚠ ' + tr('advanced.ghv.warnLngTempOutOfRange', {temp: tLiqK.toFixed(1)});
       }
 
       // Operating conditions  ───────────────────────────────────────────────────
@@ -2531,15 +2546,15 @@
 
       const ppc = 756.8 - 131*sg - 3.6*sg*sg; 
       const tpc = 169.2 + 349.5*sg - 74*sg*sg; 
-      const pr = p_psia/ppc; const tr = t_rankine/tpc; 
+      const pr = p_psia/ppc; const trr = t_rankine/tpc;
       const zr = document.getElementById('z-result');
-      zr.innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*tr) + 0.274*pr*pr/Math.pow(10, 0.8157*tr)).toFixed(4);
+      zr.innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*trr) + 0.274*pr*pr/Math.pow(10, 0.8157*trr)).toFixed(4);
       // A3 — Papay validity envelope (Standing-Katz pseudo-criticals): 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0
       const zw = document.getElementById('z-warn');
       if (zw) {
-        const oob = pr <= 0 || pr > 15 || tr < 1.05 || tr > 3.0;
+        const oob = pr <= 0 || pr > 15 || trr < 1.05 || trr > 3.0;
         zw.classList.toggle('hidden', !oob);
-        if (oob) zw.innerText = `⚠ Outside Papay validity range (Pr ${pr.toFixed(2)}, Tr ${tr.toFixed(2)}). Valid for 0 < Pr ≤ 15 and 1.05 ≤ Tr ≤ 3.0 — result is extrapolated.`;
+        if (oob) zw.innerText = '⚠ ' + tr('basic.zFactor.warnOutOfRange', {pr: pr.toFixed(2), trv: trr.toFixed(2)});
       }
     }
 
@@ -2599,7 +2614,7 @@
 	// --- SERVER-SIDE HYDRAULICS (Python API Call) ---
     async function calcDeltaPressure() {
       const badge = document.getElementById('dp-regime-badge');
-      badge.innerText = "Calculating Server-Side...";
+      badge.innerText = tr('advanced.deltaP.calculatingServerSide');
       badge.className = "px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse";
       dpResultFresh = false;
 
@@ -2630,7 +2645,7 @@
 
       // v2.5 — client-side pre-check: skip the API round-trip on obviously incomplete input
       if (payload.id <= 0 || (payload.v_flow <= 0 && payload.l_flow <= 0)) {
-        badge.innerText = payload.id <= 0 ? 'Enter a pipe inner diameter' : 'Enter at least one flow rate';
+        badge.innerText = tr(payload.id <= 0 ? 'advanced.deltaP.enterPipeId' : 'advanced.deltaP.enterFlowRate');
         badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
         return;
       }
@@ -2681,18 +2696,17 @@
           const r = data.ero_ratio || 0;
           document.getElementById('dp-out-eratio').innerText = r.toFixed(2);
           const eb = document.getElementById('dp-out-ero-badge');
-          if (r >= 1.0)      { eb.innerText = 'EXCEEDS Ve'; eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400 border border-red-500/30'; }
-          else if (r >= 0.8) { eb.innerText = 'NEAR LIMIT';  eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30'; }
-          else               { eb.innerText = 'WITHIN LIMIT'; eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-green-500/20 text-green-400 border border-green-500/30'; }
+          if (r >= 1.0)      { eb.innerText = tr('advanced.deltaP.exceedsVe'); eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400 border border-red-500/30'; }
+          else if (r >= 0.8) { eb.innerText = tr('advanced.deltaP.nearLimit');  eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30'; }
+          else               { eb.innerText = tr('advanced.deltaP.withinLimit'); eb.className = 'inline-block px-2 py-1 text-[10px] rounded bg-green-500/20 text-green-400 border border-green-500/30'; }
         }
         // B4 — cross-link the two-phase flow regime (if already visualized) into this panel
         const note = document.getElementById('dp-out-regime-note');
         if (lastFlowRegime) {
-          note.innerHTML = '▶ Two-phase flow regime: <strong class="text-cyan-300">' + lastFlowRegime.regime +
-            '</strong> (θ = ' + lastFlowRegime.theta_deg.toFixed(1) + '°). Re-run <em>Visualize Flow Regime</em> below if inputs changed.';
+          note.innerHTML = '▶ ' + tr('advanced.deltaP.regimeNoteWithResult', {regime: lastFlowRegime.regime, theta: lastFlowRegime.theta_deg.toFixed(1)});
           note.classList.remove('hidden');
         } else if (data.badge && data.badge.indexOf('Two-Phase') !== -1) {
-          note.innerHTML = '▶ Two-phase mixture — use the <em>Flow Regime</em> card below to classify the flow pattern.';
+          note.innerHTML = '▶ ' + tr('advanced.deltaP.regimeNoteNoResult');
           note.classList.remove('hidden');
         } else {
           note.classList.add('hidden');
@@ -2700,7 +2714,7 @@
         dpResultFresh = true;
 
       } catch (err) {
-        badge.innerText = "API Connection Failed";
+        badge.innerText = tr('common.apiConnectionFailed');
         badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
         console.error("Vercel Python API Error: ", err);
       }
@@ -2727,7 +2741,7 @@
       const badge = document.getElementById('fr-badge');
       const errBox = document.getElementById('fr-error');
       const resBox = document.getElementById('fr-result');
-      badge.innerText = "Rendering Server-Side...";
+      badge.innerText = tr('advanced.flowRegime.renderingServerSide');
       badge.className = "px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse";
       errBox.classList.add('hidden');
 
@@ -2770,7 +2784,7 @@
           resBox.classList.add('hidden');
           stopFlow3D();
           lastFlowRegime = null;
-          errBox.innerText = data.message || 'Unable to visualize flow regime.';
+          errBox.innerText = data.message || tr('advanced.flowRegime.unableToVisualize');
           errBox.classList.remove('hidden');
           return;
         }
@@ -2778,14 +2792,13 @@
         lastFlowRegime = data;   // cache for the ΔP panel cross-link (B4)
         const dpNote = document.getElementById('dp-out-regime-note');
         if (dpNote) {
-          dpNote.innerHTML = '▶ Two-phase flow regime: <strong class="text-cyan-300">' + data.regime +
-            '</strong> (θ = ' + data.theta_deg.toFixed(1) + '°, v_mix = ' + data.v_mix.toFixed(2) + ' m/s).';
+          dpNote.innerHTML = '▶ ' + tr('advanced.deltaP.regimeNoteFromViz', {regime: data.regime, theta: data.theta_deg.toFixed(1), vmix: data.v_mix.toFixed(2)});
           dpNote.classList.remove('hidden');
         }
 
         document.getElementById('fr-map-img').src = data.image;
         document.getElementById('fr-3d-caption').innerText =
-          data.regime + ' | θ = ' + data.theta_deg.toFixed(1) + '° | v_mix = ' + data.v_mix.toFixed(2) + ' m/s';
+          tr('advanced.flowRegime.caption3dTemplate', {regime: data.regime, theta: data.theta_deg.toFixed(1), vmix: data.v_mix.toFixed(2)});
         resBox.classList.remove('hidden');
 
         try {
@@ -2796,12 +2809,12 @@
           const wrap = document.getElementById('fr-3d-wrap');
           wrap.innerHTML = '<div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">' +
             '<svg class="w-8 h-8 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
-            '<p class="text-xs text-slate-400 font-semibold">3D animation unavailable</p>' +
-            '<p class="text-[10px] text-slate-500 mt-1 max-w-xs">The Three.js library could not be loaded (offline or CDN blocked). The 2D flow-regime map above is unaffected and fully valid.</p></div>';
+            '<p class="text-xs text-slate-400 font-semibold">' + tr('advanced.flowRegime.animation3dUnavailableTitle') + '</p>' +
+            '<p class="text-[10px] text-slate-500 mt-1 max-w-xs">' + tr('advanced.flowRegime.animation3dUnavailableDesc') + '</p></div>';
           console.error(e);
         }
       } catch (err) {
-        badge.innerText = "API Connection Failed";
+        badge.innerText = tr('common.apiConnectionFailed');
         badge.className = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400";
         resBox.classList.add('hidden');
         stopFlow3D();
@@ -3098,11 +3111,21 @@
       document.getElementById('mod-unit2').value   = p ? p.u2     : '';
       document.getElementById('mod-factor').value = p ? p.factor : '';
     });
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       savedModules.forEach(createCard);
       const shared = decodeShareState();
       const stored = shared || loadStoredState();
-      if (stored) { applyState(stored); }
+      // v2.6 — resolve initial language: share link > saved preference > English default
+      const initialLang = (shared && shared.lang) || localStorage.getItem('og_lang') || 'en';
+      await loadLanguage('en');
+      if (initialLang !== 'en') await loadLanguage(initialLang);
+      currentLang = translationsCache[initialLang] ? initialLang : 'en';
+      try { localStorage.setItem('og_lang', currentLang); } catch (e) {}
+      document.documentElement.lang = currentLang;
+      applyTranslations();
+      applyAwaitingBadgeDefaults();
+      updateLangSwitcherUI();
+      if (stored) { applyState(stored, !!shared); }
       else { calcGHV(); updatePSVMode(); }
       enhanceAccessibility();
       document.addEventListener('input',  scheduleSave);
@@ -3129,7 +3152,7 @@
       if (KpRow) KpRow.classList.toggle('hidden', !nc);
       if (PsRow) PsRow.classList.toggle('hidden', !nc);
       if (P1Row) P1Row.classList.toggle('hidden',  nc);
-      if (hdg)   hdg.innerText = nc ? 'Liquid Inputs (\u00a75.9 Non-Certified)' : 'Liquid Inputs (\u00a75.8 Certified)';
+      if (hdg)   hdg.innerText = tr('safety.psv.liquidHeading') + ' (' + (nc ? '\u00a75.9 ' + tr('safety.psv.nonCertified') : '\u00a75.8 ' + tr('safety.psv.certified')) + ')';
       if (KdLiq) KdLiq.value   = nc ? '0.62' : '0.65';
       _psvUnitLabels(units);
     }
@@ -3158,7 +3181,7 @@
       const mode  = document.getElementById('psv-mode').value;
       const units = document.getElementById('psv-units').value;
       const badge = document.getElementById('psv-badge');
-      badge.innerText = 'Calculating...';
+      badge.innerText = tr('safety.psv.calculating');
       badge.className = 'px-2 py-1 text-[10px] rounded bg-slate-700 text-slate-300 animate-pulse';
       psvResultFresh = false;
       const g  = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
@@ -3195,7 +3218,7 @@
       else if (mode === 'liquid_noncert') { ['Q','Ps'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
       else if (mode === 'twophase') { ['W','vo','v9','Po'].forEach(k => { if (!(payload[k] > 0)) missing.push(k); }); }
       if (missing.length) {
-        badge.innerText = 'Enter required input' + (missing.length > 1 ? 's' : '') + ': ' + missing.join(', ');
+        badge.innerText = tr(missing.length > 1 ? 'safety.psv.missingInputsPlural' : 'safety.psv.missingInputsSingular', {list: missing.join(', ')});
         badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
         return;
       }
@@ -3205,7 +3228,7 @@
         });
         const data = await res.json();
         if (data.error) {
-          badge.innerText = data.message || 'Error';
+          badge.innerText = data.message || tr('common.genericError');
           badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
           ['psv-out-area','psv-out-orifice','psv-out-orifice-area'].forEach(id => { document.getElementById(id).innerText = '\u2014'; });
           document.getElementById('psv-out-details').innerText = data.message || '';
@@ -3234,10 +3257,125 @@
         document.getElementById('psv-out-details').innerText = det.join('  |  ');
         psvResultFresh = true;
       } catch (err) {
-        badge.innerText = 'API Connection Failed';
+        badge.innerText = tr('common.apiConnectionFailed');
         badge.className = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400';
         console.error('PSV API Error:', err);
       }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  v2.6 — INTERNATIONALIZATION (I18N)
+    // ════════════════════════════════════════════════════════════════════════
+    const LANGUAGES = [
+      { code: 'en', native: 'English',          enabled: true  },
+      { code: 'ja', native: '日本語',             enabled: true  },
+      { code: 'zh', native: '中文',               enabled: false },
+      { code: 'ko', native: '한국어',             enabled: false },
+      { code: 'th', native: 'ไทย',                enabled: false },
+      { code: 'id', native: 'Bahasa Indonesia',  enabled: false },
+      { code: 'ru', native: 'Русский',            enabled: false },
+      { code: 'es', native: 'Español',           enabled: false },
+      { code: 'fr', native: 'Français',          enabled: false },
+      { code: 'de', native: 'Deutsch',           enabled: false }
+    ];
+    let currentLang = 'en';
+    const translationsCache = {};
+
+    async function loadLanguage(code) {
+      if (translationsCache[code]) return translationsCache[code];
+      try {
+        const res = await fetch('i18n/' + code + '.json');
+        const data = await res.json();
+        translationsCache[code] = data;
+        return data;
+      } catch (e) { return null; }
+    }
+    function _trLookup(dict, key) {
+      return dict && key.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : undefined, dict);
+    }
+    // Dynamic-string helper for JS-generated text. Named `tr()` rather than `t()` —
+    // `t` already shadows a local elsewhere in this file (e.g. exportReport()'s id-lookup helper).
+    function tr(key, params) {
+      let s = _trLookup(translationsCache[currentLang], key);
+      if (s === undefined) s = _trLookup(translationsCache.en, key);
+      if (s === undefined) return key;
+      if (params) Object.keys(params).forEach(p => { s = s.split('{' + p + '}').join(params[p]); });
+      return s;
+    }
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.getAttribute('data-i18n')); });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = tr(el.getAttribute('data-i18n-title')); });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', tr(el.getAttribute('data-i18n-aria'))); });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = tr(el.getAttribute('data-i18n-placeholder')); });
+      // out-ghv-label's text depends on the current HHV/LHV toggle state, not a fixed key —
+      // keep it in sync with hvMode instead of a static data-i18n attribute (see setHVMode()).
+      const ghvLbl = document.getElementById('out-ghv-label');
+      if (ghvLbl) ghvLbl.textContent = tr(hvMode === 'lhv' ? 'advanced.ghv.heatingValueLHV' : 'advanced.ghv.heatingValueHHV');
+    }
+    // One-time translation of "awaiting result" badge defaults. These badges are later
+    // overwritten by server responses (calcDeltaPressure/calcFlowRegime); a language switch
+    // deliberately does NOT retranslate a live result — see markResultStale() — only this
+    // initial idle state.
+    function applyAwaitingBadgeDefaults() {
+      const dpBadge = document.getElementById('dp-regime-badge');
+      if (dpBadge && !dpResultFresh) dpBadge.textContent = tr('advanced.deltaP.awaitingCalc');
+      const frBadge = document.getElementById('fr-badge');
+      if (frBadge && !lastFlowRegime) frBadge.textContent = tr('advanced.flowRegime.awaitingViz');
+      const psvBadge = document.getElementById('psv-badge');
+      if (psvBadge && !psvResultFresh) psvBadge.textContent = tr('safety.psv.awaitingCalc');
+      const psvDetails = document.getElementById('psv-out-details');
+      if (psvDetails && !psvResultFresh) psvDetails.textContent = tr('safety.psv.detailsPlaceholder');
+    }
+    function buildLangMenu() {
+      const menu = document.getElementById('lang-menu');
+      if (!menu) return;
+      menu.innerHTML = LANGUAGES.map(l => {
+        const active = l.code === currentLang;
+        if (!l.enabled) {
+          return '<span class="w-full flex items-center justify-between px-3 py-1.5 text-sm text-slate-600 cursor-not-allowed"><span>' + l.native +
+            '</span><span class="text-[9px] uppercase tracking-wide border border-slate-700 rounded px-1">' + tr('common.comingSoon') + '</span></span>';
+        }
+        const cls = 'w-full text-left px-3 py-1.5 text-sm flex items-center justify-between hover:bg-slate-800 transition-colors ' +
+          (active ? 'text-amber-500 font-semibold' : 'text-slate-300');
+        return '<button type="button" onclick="setLanguage(\'' + l.code + '\')" class="' + cls + '"><span>' + l.native +
+          '</span>' + (active ? '<span>✓</span>' : '') + '</button>';
+      }).join('');
+    }
+    function toggleLangMenu(force) {
+      const menu = document.getElementById('lang-menu');
+      const btn = document.getElementById('lang-settings-btn');
+      if (!menu) return;
+      const show = force !== undefined ? force : menu.classList.contains('hidden');
+      menu.classList.toggle('hidden', !show);
+      if (btn) btn.setAttribute('aria-expanded', show ? 'true' : 'false');
+    }
+    document.addEventListener('click', e => {
+      const wrap = document.getElementById('lang-settings-wrap');
+      if (wrap && !wrap.contains(e.target)) toggleLangMenu(false);
+    });
+    function updateLangSwitcherUI() {
+      const activeCls   = 'px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors bg-amber-500 text-slate-950';
+      const inactiveCls = 'px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors bg-slate-800 text-slate-400 hover:text-slate-200';
+      const enBtn = document.getElementById('lang-quick-en');
+      const jaBtn = document.getElementById('lang-quick-ja');
+      if (enBtn) { enBtn.className = currentLang === 'en' ? activeCls : inactiveCls; enBtn.setAttribute('aria-pressed', String(currentLang === 'en')); }
+      if (jaBtn) { jaBtn.className = currentLang === 'ja' ? activeCls : inactiveCls; jaBtn.setAttribute('aria-pressed', String(currentLang === 'ja')); }
+      buildLangMenu();
+    }
+    async function setLanguage(code) {
+      if (code === currentLang) { toggleLangMenu(false); return; }
+      if (!translationsCache[code]) { const ok = await loadLanguage(code); if (!ok) return; }
+      currentLang = code;
+      try { localStorage.setItem('og_lang', code); } catch (e) {}
+      document.documentElement.lang = code;
+      applyTranslations();
+      applyAwaitingBadgeDefaults();
+      enhanceAccessibility();
+      updateLangSwitcherUI();
+      toggleLangMenu(false);
+      recomputeAll();
+      if (dpResultFresh) { dpResultFresh = false; markResultStale('dp'); }
+      if (psvResultFresh) { psvResultFresh = false; markResultStale('psv'); }
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -3263,12 +3401,12 @@
     function collectState() {
       return { v: 1, inputs: collectInputs(),
                hv: hvMode, fa: flowAMode, fb: flowBMode,
-               p1: pressMode1, p2: pressMode2, tab: currentTab };
+               p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
       [calcGHV, calcPipeVolume, calcZFactor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
-    function applyState(s) {
+    function applyState(s, restoreTab) {
       if (!s) return;
       applyInputs(s.inputs);
       if (s.hv) setHVMode(s.hv);
@@ -3277,7 +3415,8 @@
       if (s.p1) setPressMode(1, s.p1);
       if (s.p2) setPressMode(2, s.p2);
       recomputeAll();
-      if (s.tab && s.tab !== 'general') switchTab(s.tab);
+      // v2.5.1 — only share links open on their saved tab; normal visits land on General
+      if (restoreTab && s.tab && s.tab !== 'general') switchTab(s.tab);
     }
 
     let saveTimer = null;
@@ -3310,21 +3449,23 @@
         const enc = btoa(unescape(encodeURIComponent(JSON.stringify(collectState()))));
         const url = location.origin + location.pathname + '#s=' + enc;
         navigator.clipboard.writeText(url).then(
-          () => showToast('Share link copied ✓'),
-          () => showToast('Copy failed — clipboard blocked', false));
-      } catch (e) { showToast('Share link failed', false); }
+          () => showToast(tr('common.shareLinkCopied')),
+          () => showToast(tr('common.copyFailed'), false));
+      } catch (e) { showToast(tr('common.shareLinkFailed'), false); }
     }
 
     // ── Accessibility pass (C5) ──────────────────────────────────────────────
     function enhanceAccessibility() {
+      // v2.6 — unconditional (idempotent) so a language switch keeps these in sync;
+      // previously guarded ("if not already set"), which silently froze them after the first run.
       document.querySelectorAll('button[onclick*="copyText"], button[onclick*="copyToClipboard"]').forEach(b => {
-        if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', 'Copy value to clipboard');
+        b.setAttribute('aria-label', tr('common.copyValue'));
       });
       document.querySelectorAll('button[onclick*="closeModal"]').forEach(b => {
-        if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', 'Close dialog');
+        b.setAttribute('aria-label', tr('common.closeDialog'));
       });
       const nav = document.querySelector('header nav');
-      if (nav && !nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Main calculator sections');
+      if (nav) nav.setAttribute('aria-label', tr('common.mainSections'));
       if (nav) nav.setAttribute('role', 'tablist');
       document.querySelectorAll('header nav button[id^="btn-"]').forEach(b => {
         const paneId = 'tab-' + b.id.slice(4);
@@ -3366,7 +3507,7 @@
     function markResultStale(which) {
       const badge = document.getElementById(which === 'dp' ? 'dp-regime-badge' : 'psv-badge');
       if (!badge || !badge.innerText) return;
-      badge.innerText += ' · inputs changed — recalculate';
+      badge.innerText += ' · ' + tr('common.inputsChangedRecalculate');
       badge.className = 'px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
     }
     ['input', 'change'].forEach(evt => document.addEventListener(evt, e => {
@@ -3391,81 +3532,81 @@
       const row = (k, v) => `<tr><td>${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`;
 
       const ghv = `
-        <h3>1 · Compositional Gas Properties (JIS K 2301:2011)</h3>
+        <h3>${esc(tr('js.export.section1Title'))}</h3>
         <div class="cols">
-          <table><thead><tr><th>Component</th><th>Input %</th></tr></thead><tbody>${comps}
-            <tr class="tot"><td>Total</td><td>${esc(t('comp-total'))}</td></tr></tbody></table>
+          <table><thead><tr><th>${esc(tr('js.export.componentHeader'))}</th><th>${esc(tr('js.export.inputPctHeader'))}</th></tr></thead><tbody>${comps}
+            <tr class="tot"><td>${esc(tr('js.export.totalLabel'))}</td><td>${esc(t('comp-total'))}</td></tr></tbody></table>
           <table><tbody>
             ${row(t('out-ghv-label'), t('out-ghv') + ' ' + us('ghv-unit'))}
-            ${row('Molecular Weight', t('out-mw') + ' g/mol')}
-            ${row('Specific Gravity (Air=1)', t('out-sg'))}
-            ${row('Wobbe Index (HHV)', t('out-wi'))}
-            ${row('Max Combustion Potential', t('out-mcp'))}
-            ${row('LNG Liquid Density', t('out-liq-den') + ' ' + us('out-liq-den-u'))}
-            ${row('Op. Temperature', t('op-temp') + ' ' + us('op-temp-u'))}
-            ${row('Op. Pressure', t('op-press') + ' ' + us('op-press-u'))}
-            ${row('LNG Liquid Temp', t('op-liq-temp') + ' ' + us('op-liq-temp-u'))}
+            ${row(tr('js.export.molecularWeightLabel'), t('out-mw') + ' g/mol')}
+            ${row(tr('js.export.specificGravityAirLabel'), t('out-sg'))}
+            ${row(tr('js.export.wobbeIndexHhvLabel'), t('out-wi'))}
+            ${row(tr('js.export.maxCombustionLabel'), t('out-mcp'))}
+            ${row(tr('js.export.lngLiquidDensityLabel'), t('out-liq-den') + ' ' + us('out-liq-den-u'))}
+            ${row(tr('js.export.opTemperatureLabel'), t('op-temp') + ' ' + us('op-temp-u'))}
+            ${row(tr('js.export.opPressureLabel'), t('op-press') + ' ' + us('op-press-u'))}
+            ${row(tr('js.export.lngLiquidTempLabel'), t('op-liq-temp') + ' ' + us('op-liq-temp-u'))}
           </tbody></table>
         </div>`;
 
       const dp = `
-        <h3>2 · Pipe Pressure Drop (Darcy-Weisbach + Colebrook-White)</h3>
+        <h3>${esc(tr('js.export.section2Title'))}</h3>
         <div class="cols">
           <table><tbody>
-            ${row('Pipe ID', t('dp-id') + ' ' + us('dp-id-unit'))}
-            ${row('Length', t('dp-len') + ' ' + us('dp-len-unit'))}
-            ${row('Elevation Δz', t('dp-elev') + ' ' + us('dp-elev-unit'))}
-            ${row('Roughness', t('dp-rough') + ' ' + us('dp-rough-unit'))}
-            ${row('Erosion C-factor', t('dp-cfactor'))}
-            ${row('Vapor flow', t('dp-v-flow') + ' ' + us('dp-v-flow-u'))}
-            ${row('Liquid flow', t('dp-l-flow') + ' ' + us('dp-l-flow-u'))}
+            ${row(tr('js.export.pipeIdLabel'), t('dp-id') + ' ' + us('dp-id-unit'))}
+            ${row(tr('js.export.lengthLabel'), t('dp-len') + ' ' + us('dp-len-unit'))}
+            ${row(tr('js.export.elevationLabel'), t('dp-elev') + ' ' + us('dp-elev-unit'))}
+            ${row(tr('js.export.roughnessLabel'), t('dp-rough') + ' ' + us('dp-rough-unit'))}
+            ${row(tr('js.export.erosionCFactorLabel'), t('dp-cfactor'))}
+            ${row(tr('js.export.vaporFlowLabel'), t('dp-v-flow') + ' ' + us('dp-v-flow-u'))}
+            ${row(tr('js.export.liquidFlowLabel'), t('dp-l-flow') + ' ' + us('dp-l-flow-u'))}
           </tbody></table>
           <table><tbody>
-            ${row('Total ΔP', t('dp-out-total') + ' ' + us('dp-out-total-u'))}
-            ${row('ΔP / length', t('dp-out-len') + ' ' + us('dp-out-len-u'))}
-            ${row('Velocity', t('dp-out-vel') + ' ' + us('dp-out-vel-u'))}
-            ${row('Reynolds No.', t('dp-out-re') + ' (' + t('dp-out-re-regime') + ')')}
-            ${row('Darcy friction f', t('dp-out-f'))}
-            ${row('Erosional Ve', t('dp-out-ve') + ' m/s — ratio ' + t('dp-out-eratio') + ' (' + t('dp-out-ero-badge') + ')')}
+            ${row(tr('js.export.totalDpLabel'), t('dp-out-total') + ' ' + us('dp-out-total-u'))}
+            ${row(tr('js.export.dpPerLengthLabel'), t('dp-out-len') + ' ' + us('dp-out-len-u'))}
+            ${row(tr('js.export.velocityLabel'), t('dp-out-vel') + ' ' + us('dp-out-vel-u'))}
+            ${row(tr('js.export.reynoldsLabel'), t('dp-out-re') + ' (' + t('dp-out-re-regime') + ')')}
+            ${row(tr('js.export.darcyFrictionLabel'), t('dp-out-f'))}
+            ${row(tr('js.export.erosionalVeLabel'), tr('js.export.veValueTemplate', {ve: t('dp-out-ve'), ratio: t('dp-out-eratio'), badge: t('dp-out-ero-badge')}))}
           </tbody></table>
         </div>`;
 
       let regime = '';
       if (lastFlowRegime) {
         regime = `
-          <h3>3 · Two-Phase Flow Regime (indicative)</h3>
+          <h3>${esc(tr('js.export.section3Title'))}</h3>
           <table><tbody>
-            ${row('Regime', lastFlowRegime.regime)}
-            ${row('Inclination θ', lastFlowRegime.theta_deg.toFixed(1) + '°')}
-            ${row('jG / jL', lastFlowRegime.jG.toFixed(3) + ' / ' + lastFlowRegime.jL.toFixed(3) + ' m/s')}
-            ${row('Mixture velocity', lastFlowRegime.v_mix.toFixed(3) + ' m/s')}
+            ${row(tr('js.export.regimeLabel'), lastFlowRegime.regime)}
+            ${row(tr('js.export.inclinationLabel'), lastFlowRegime.theta_deg.toFixed(1) + '°')}
+            ${row(tr('js.export.jgJlLabel'), lastFlowRegime.jG.toFixed(3) + ' / ' + lastFlowRegime.jL.toFixed(3) + ' m/s')}
+            ${row(tr('js.export.mixtureVelocityLabel'), lastFlowRegime.v_mix.toFixed(3) + ' m/s')}
           </tbody></table>
           ${lastFlowRegime.image ? `<img class="map" src="${lastFlowRegime.image}" alt="Flow regime map"/>` : ''}`;
       }
 
       const psvDet = t('psv-out-details');
       const psv = `
-        <h3>4 · PRV Sizing (API 520 / API 526)</h3>
+        <h3>${esc(tr('js.export.section4Title'))}</h3>
         <table><tbody>
-          ${row('Mode', us('psv-mode'))}
-          ${row('Unit system', us('psv-units'))}
-          ${row('Required area', t('psv-out-area') + ' ' + t('psv-out-area-unit'))}
-          ${row('Selected orifice', t('psv-out-orifice') + ' — ' + t('psv-out-orifice-area'))}
-          ${psvDet && psvDet !== '—' ? row('Details', psvDet) : ''}
+          ${row(tr('js.export.modeLabel'), us('psv-mode'))}
+          ${row(tr('js.export.unitSystemLabel'), us('psv-units'))}
+          ${row(tr('js.export.requiredAreaLabel'), t('psv-out-area') + ' ' + t('psv-out-area-unit'))}
+          ${row(tr('js.export.selectedOrificeLabel'), t('psv-out-orifice') + ' — ' + t('psv-out-orifice-area'))}
+          ${psvDet && psvDet !== '—' ? row(tr('js.export.detailsLabel'), psvDet) : ''}
         </tbody></table>`;
 
       const basic = `
-        <h3>5 · Basic Engineering</h3>
+        <h3>${esc(tr('js.export.section5Title'))}</h3>
         <table><tbody>
-          ${row('Pipe Volume', t('pipe-vol-out') + ' ' + us('pipe-out-u'))}
-          ${row('Z-Factor (Papay)', t('z-result'))}
-          ${row('°API / SG / Density', t('api-grav') + ' / ' + t('api-sg') + ' / ' + t('api-den') + ' ' + us('api-den-u'))}
-          ${row('Viscosity μ / ν', t('visc-dyn') + ' ' + us('visc-dyn-u') + ' / ' + t('visc-kin') + ' ' + us('visc-kin-u'))}
-          ${row('Mass ↔ Vol flow', t('mf-mass') + ' ' + us('mf-mass-u') + ' ↔ ' + t('mf-vol') + ' ' + us('mf-vol-u'))}
+          ${row(tr('js.export.pipeVolumeLabel'), t('pipe-vol-out') + ' ' + us('pipe-out-u'))}
+          ${row(tr('js.export.zFactorPapayLabel'), t('z-result'))}
+          ${row(tr('js.export.apiSgDensityLabel'), t('api-grav') + ' / ' + t('api-sg') + ' / ' + t('api-den') + ' ' + us('api-den-u'))}
+          ${row(tr('js.export.viscosityLabel'), t('visc-dyn') + ' ' + us('visc-dyn-u') + ' / ' + t('visc-kin') + ' ' + us('visc-kin-u'))}
+          ${row(tr('js.export.massVolFlowLabel'), t('mf-mass') + ' ' + us('mf-mass-u') + ' ↔ ' + t('mf-vol') + ' ' + us('mf-vol-u'))}
         </tbody></table>`;
 
-      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/>
-        <title>O&G Engineering Converter — Report</title>
+      const html = `<!DOCTYPE html><html lang="${currentLang}"><head><meta charset="utf-8"/>
+        <title>${esc(tr('js.export.reportTitle'))}</title>
         <style>
           body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;margin:32px;font-size:12px;}
           h1{font-size:18px;margin:0 0 2px;} h2{font-size:12px;color:#64748b;font-weight:600;margin:0 0 18px;}
@@ -3480,15 +3621,12 @@
           @media print{body{margin:14mm;} .noprint{display:none;}}
         </style></head><body>
         <div class="noprint" style="text-align:right;margin-bottom:10px;">
-          <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">Save as PDF / Print</button>
+          <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
-        <h1>O&amp;G Engineering Converter — Calculation Report</h1>
-        <h2>Version 2.5 · Generated ${esc(now.toLocaleString())}</h2>
+        <h1>${esc(tr('js.export.h1'))}</h1>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '2.5', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}
-        <div class="disc"><b>Disclaimer.</b> Generated by the O&amp;G Engineering Converter for general reference and convenience only.
-        Calculations follow simplified or indicative models (HEM two-phase, Papay Z-factor, simplified flow-regime maps).
-        They must not be used as the sole basis for process-safety, billing, or regulatory decisions. Verify independently
-        against the governing standards (JIS K 2301, ISO 6578, API 520/526, API RP 14E).</div>
+        <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
 
       const w = window.open('', '_blank');
@@ -3501,8 +3639,8 @@
           a.href = url; a.download = 'og-converter-report.html';
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
           setTimeout(() => URL.revokeObjectURL(url), 5000);
-          showToast('Pop-up blocked — report downloaded as HTML instead');
-        } catch (e) { showToast('Pop-up blocked — allow pop-ups to export', false); }
+          showToast(tr('common.popupBlockedDownloaded'));
+        } catch (e) { showToast(tr('common.popupBlockedAllow'), false); }
         return;
       }
       w.document.open(); w.document.write(html); w.document.close();
