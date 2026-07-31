@@ -983,7 +983,7 @@
 
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
-        <div>
+        <div data-i18n-html="docs.howto.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.6</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
@@ -1005,8 +1005,8 @@
 
         <!-- 0. WHAT'S NEW IN v2.5 -->
         <section>
-          <h3 id="howto-new25" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">★ New in Version 2.5</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+          <h3 id="howto-new25" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b002">★ New in Version 2.5</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b003">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Navigation &amp; accessibility</strong> — the active tab now scrolls into view on narrow screens, tab buttons expose proper ARIA tab semantics for screen readers, and the long How To Use / Theory pages gained <strong>jump links</strong> and a floating <strong>Top</strong> button.</div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Calculator ergonomics</strong> — press <strong>Enter</strong> in any ΔP or PRV input to calculate; missing required inputs show an instant hint instead of a failed server call; editing inputs after a result flags the status badge with <em>inputs changed — recalculate</em>.</div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Robustness</strong> — Export PDF falls back to an HTML download when pop-ups are blocked, and viscosity unit selections (mPa·s, mm²/s) are preserved across reloads and share links.</div>
@@ -1016,8 +1016,8 @@
 
         <!-- 0b. WHAT'S NEW IN v2.4 -->
         <section>
-          <h3 id="howto-new" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">★ New in Version 2.4</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+          <h3 id="howto-new" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b004">★ New in Version 2.4</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b005">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">ΔP card relabelled</strong> — the pressure-drop method is correctly named <strong>Darcy-Weisbach</strong> (it always was; the old "Fanning" label was a misnomer). Outputs now also report <strong>Reynolds number</strong>, the <strong>Darcy friction factor f</strong>, and an <strong>API RP 14E erosional-velocity check</strong> (set the C-factor in the inputs).</div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-cyan-400">Flow-regime cross-link</strong> — once you visualise the flow regime, the result is echoed inside the ΔP output panel for a single-glance read.</div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Out-of-range warnings</strong> — the LNG density (ISO 6578, 108–120 K), gas composition (negatives / off-100% totals), and Papay Z-factor (Pr/Tr envelope) now flag extrapolated inputs instead of silently clamping.</div>
@@ -1025,16 +1025,16 @@
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Export PDF report</strong> — the floating <span class="text-amber-400">Export PDF</span> button (bottom-right) opens a printable summary of every current calculation; use your browser's "Save as PDF".</div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Share &amp; auto-restore</strong> — the <span class="text-amber-400">Share</span> button copies a link that reproduces all your inputs; the app also restores your last session automatically from local storage.</div>
           </div>
-          <div class="mt-3 bg-slate-950 rounded-lg border border-slate-700 p-3 text-[11px] text-slate-400">
+          <div class="mt-3 bg-slate-950 rounded-lg border border-slate-700 p-3 text-[11px] text-slate-400" data-i18n-html="docs.howto.b006">
             <strong class="text-slate-300">Note on units —</strong> in the Advanced flow section, when Temperature ≠ 0 °C or Pressure ≠ 0, outputs are in <strong>actual</strong> cubic metres (k<strong>A</strong>m³/h), not standard normal cubic metres (kNm³/h). A red banner appears whenever you leave standard conditions.
           </div>
         </section>
 
         <!-- 1. NAVIGATION -->
         <section>
-          <h3 id="howto-1" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">1. Application Header &amp; Tab Navigation</h3>
-          <p class="text-sm text-slate-400 mb-4">The dark header bar contains all navigational tabs. Click any tab to switch context. The active tab shows an amber underline.</p>
-          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2">
+          <h3 id="howto-1" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b007">1. Application Header &amp; Tab Navigation</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b008">The dark header bar contains all navigational tabs. Click any tab to switch context. The active tab shows an amber underline.</p>
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2" data-i18n-html="docs.howto.b009">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
               <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
               <span class="text-slate-500 text-[10px]">v2.4 • Hybrid</span>
@@ -1055,13 +1055,13 @@
 
         <!-- 2. GENERAL TAB -->
         <section>
-          <h3 id="howto-2" class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">2. General Tab — Standard Converter Blocks</h3>
-          <p class="text-sm text-slate-400 mb-4">Pre-built converter cards for the most common O&G unit pairs. Each card has two input fields; editing either side auto-converts the other.</p>
+          <h3 id="howto-2" class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b010">2. General Tab — Standard Converter Blocks</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b011">Pre-built converter cards for the most common O&G unit pairs. Each card has two input fields; editing either side auto-converts the other.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
-              <div class="text-blue-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">STANDARD CARD (e.g. Pressure)</div>
+              <div class="text-blue-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1" data-i18n-html="docs.howto.b012">STANDARD CARD (e.g. Pressure)</div>
               <div class="bg-slate-900 rounded p-2 border border-slate-700">
-                <div class="text-[10px] text-slate-500 mb-1">INPUT →</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b013">INPUT →</div>
                 <div class="flex items-center gap-2">
                   <span class="flex-1 bg-slate-800 rounded px-2 py-1 text-slate-200">101.325</span>
                   <select class="bg-slate-800 text-amber-400 text-[10px] rounded px-1"><option>kPa</option></select>
@@ -1069,14 +1069,14 @@
               </div>
               <div class="flex justify-center text-slate-600">⇅</div>
               <div class="bg-slate-900 rounded p-2 border border-slate-700">
-                <div class="text-[10px] text-slate-500 mb-1">OUTPUT →</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b014">OUTPUT →</div>
                 <div class="flex items-center gap-2">
                   <span class="flex-1 bg-slate-800 rounded px-2 py-1 text-slate-200">14.696</span>
                   <select class="bg-slate-800 text-amber-400 text-[10px] rounded px-1"><option>psi</option></select>
                 </div>
               </div>
             </div>
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2" data-i18n-html="docs.howto.b015">
               <div class="text-blue-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">STANDARD CARDS AVAILABLE</div>
               <div class="space-y-1 text-slate-400">
                 <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500"></span>Nm³ ↔ scf (gas volume)</div>
@@ -1087,43 +1087,43 @@
               </div>
             </div>
           </div>
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-300">
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-300" data-i18n-html="docs.howto.b016">
             <strong>📋 Copy to Clipboard:</strong> Click the clipboard icon next to any output field to instantly copy the value for use in reports or spreadsheets.
           </div>
-          <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-xs text-blue-300 mt-3">
+          <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-xs text-blue-300 mt-3" data-i18n-html="docs.howto.b017">
             <strong>🔵 Pressure Abs/Gauge Toggle:</strong> Each pressure side (A and B) has an independent <strong>Abs</strong> / <strong>Gauge</strong> toggle button. Set each side to Absolute or Gauge independently before entering a value. The conversion always routes through Pa absolute internally, using 101,325 Pa (1 atm) as the atmospheric reference. Example: 101,325 Pa (Abs) = 0 Pa (Gauge) = 1 atm.
           </div>
         </section>
 
         <!-- 3. CUSTOM MODULES -->
         <section>
-          <h3 id="howto-3" class="text-sm font-bold text-purple-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">3. Custom Modules — Configure &amp; Save</h3>
-          <p class="text-sm text-slate-400 mb-4">Create unlimited custom unit converters using a linear multiplier (Unit1 × Factor = Unit2). Saved to browser Local Storage — persists across sessions.</p>
+          <h3 id="howto-3" class="text-sm font-bold text-purple-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b018">3. Custom Modules — Configure &amp; Save</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b019">Create unlimited custom unit converters using a linear multiplier (Unit1 × Factor = Unit2). Saved to browser Local Storage — persists across sessions.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
-              <div class="text-purple-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">CONFIGURE MODULE MODAL</div>
+              <div class="text-purple-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1" data-i18n-html="docs.howto.b020">CONFIGURE MODULE MODAL</div>
               <div class="space-y-2">
                 <div>
-                  <div class="text-[10px] text-slate-500 mb-1">QUICK LOAD TEMPLATE</div>
+                  <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b021">QUICK LOAD TEMPLATE</div>
                   <select class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-300 text-[10px]">
                     <option>Crude Oil: Metric Tons ↔ Barrels</option>
                     <option>Energy: MMBtu ↔ GJ</option>
                     <option>Liquid Vol: m³ ↔ Barrels</option>
                   </select>
                 </div>
-                <div><div class="text-[10px] text-slate-500 mb-1">MODULE IDENTIFIER</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-[10px]">Crude Oil</div></div>
-                <div class="grid grid-cols-2 gap-2">
+                <div data-i18n-html="docs.howto.b022"><div class="text-[10px] text-slate-500 mb-1">MODULE IDENTIFIER</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-[10px]">Crude Oil</div></div>
+                <div class="grid grid-cols-2 gap-2" data-i18n-html="docs.howto.b023">
                   <div><div class="text-[10px] text-slate-500 mb-1">UNIT 1</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-[10px]">Metric Tons</div></div>
                   <div><div class="text-[10px] text-slate-500 mb-1">UNIT 2</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-[10px]">Barrels (bbl)</div></div>
                 </div>
-                <div><div class="text-[10px] text-slate-500 mb-1">MULTIPLIER FACTOR</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-amber-400 text-[10px]">7.33</div></div>
-                <div class="flex justify-end gap-2 pt-1">
+                <div data-i18n-html="docs.howto.b024"><div class="text-[10px] text-slate-500 mb-1">MULTIPLIER FACTOR</div><div class="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-amber-400 text-[10px]">7.33</div></div>
+                <div class="flex justify-end gap-2 pt-1" data-i18n-html="docs.howto.b025">
                   <span class="px-3 py-1 text-slate-400 text-[10px]">Abort</span>
                   <span class="px-3 py-1 bg-amber-600 text-slate-950 font-bold rounded text-[10px]">Initialize</span>
                 </div>
               </div>
             </div>
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2" data-i18n-html="docs.howto.b026">
               <div class="text-purple-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">CREATED CARD EXAMPLE</div>
               <div class="bg-slate-900 border border-slate-700 rounded p-3 space-y-2">
                 <div class="flex justify-between items-center">
@@ -1143,9 +1143,9 @@
 
 		<!-- 4. BASIC ENG -->
         <section>
-          <h3 id="howto-4" class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">4. Basic Eng Tab — Various Calculators</h3>
-          <p class="text-sm text-slate-400 mb-4">Two engineering calculators for pipe geometry and gas compressibility. Each is independent and requires its own inputs.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 id="howto-4" class="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b027">4. Basic Eng Tab — Various Calculators</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b028">Two engineering calculators for pipe geometry and gas compressibility. Each is independent and requires its own inputs.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-i18n-html="docs.howto.b029">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-3 font-mono text-xs">
               <div class="text-green-400 font-bold text-[10px] mb-2">PIPE VOLUME</div>
               <div class="space-y-1 text-[10px] text-slate-400">
@@ -1163,16 +1163,16 @@
               </div>
             </div>
           </div>
-          <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
+          <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300" data-i18n-html="docs.howto.b030">
             <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API) — see <strong>Section 9</strong> for the full walkthrough. Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 10 below).
           </div>
         </section>
 		
         <!-- 5. ADVANCED TAB - COMPOSITION -->
         <section>
-          <h3 id="howto-5" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">5. Advanced Tab (Section 1) — Gas Composition Input</h3>
-          <p class="text-sm text-slate-400 mb-4">Enter the percentage of each component. The total must sum to 100%. Choose between Volumetric Fraction (%) or Mole Fraction (%) input mode.</p>
-          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
+          <h3 id="howto-5" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b031">5. Advanced Tab (Section 1) — Gas Composition Input</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b032">Enter the percentage of each component. The total must sum to 100%. Choose between Volumetric Fraction (%) or Mole Fraction (%) input mode.</p>
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3" data-i18n-html="docs.howto.b033">
             <div class="flex items-center justify-between">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest">1. GAS COMPOSITION INPUT</div>
               <div class="flex gap-2">
@@ -1208,9 +1208,9 @@
 
         <!-- 6. ADVANCED - OPERATING CONDITIONS -->
         <section>
-          <h3 id="howto-6" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">6. Advanced Tab (Section 2) — Operating Conditions</h3>
-          <p class="text-sm text-slate-400 mb-4">Override standard conditions (0°C, 0 MPaG) to compute actual volumetric flows at operating pressure and temperature. LNG liquid temp is only used for liquid density calculation.</p>
-          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3">
+          <h3 id="howto-6" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b034">6. Advanced Tab (Section 2) — Operating Conditions</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b035">Override standard conditions (0°C, 0 MPaG) to compute actual volumetric flows at operating pressure and temperature. LNG liquid temp is only used for liquid density calculation.</p>
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3" data-i18n-html="docs.howto.b036">
             <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2">2. CONDITIONS &amp; OPERATING STATE</div>
             <div class="grid grid-cols-3 gap-3">
               <div class="bg-slate-900 rounded p-2 border border-slate-700">
@@ -1235,9 +1235,9 @@
 
         <!-- 7. ADVANCED - OUTPUTS SECTION 3 -->
         <section>
-          <h3 id="howto-7" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">7. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
-          <p class="text-sm text-slate-400 mb-4">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Use the <strong class="text-orange-400">HHV / LHV</strong> toggle inside the Section 3 header row to switch between Higher (総発熱量) and Lower (真発熱量) Heating Value modes. Results update automatically. Note: Wobbe Index always uses HHV per JIS K 2301 §7 regardless of mode.</p>
-          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs">
+          <h3 id="howto-7" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b037">7. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b038">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Use the <strong class="text-orange-400">HHV / LHV</strong> toggle inside the Section 3 header row to switch between Higher (総発熱量) and Lower (真発熱量) Heating Value modes. Results update automatically. Note: Wobbe Index always uses HHV per JIS K 2301 §7 regardless of mode.</p>
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs" data-i18n-html="docs.howto.b039">
             <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2 mb-3">3. PHYSICAL &amp; COMBUSTION PROPERTIES</div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-3">
               <div class="bg-slate-900 border border-slate-700 rounded p-2">
@@ -1283,24 +1283,24 @@
 
         <!-- 8. ADVANCED - FLOW CONVERSIONS -->
         <section>
-          <h3 id="howto-8" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">8. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
-          <p class="text-sm text-slate-400 mb-4">Two independent sub-panels: (A) Given Mass → Calculated Output and (B) Given Volume → Calculated Output. Each output panel has a toggle button (VOL/MOL for panel A; MASS/MOL for panel B) to switch between the standard flow output and Molar Flow. Available units: Mass: kg/s, kg/h, ton/h, ton/d, lb/h, lb/d. Molar: kmol/h or mol/s.</p>
-          <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300 mb-4">
+          <h3 id="howto-8" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b040">8. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b041">Two independent sub-panels: (A) Given Mass → Calculated Output and (B) Given Volume → Calculated Output. Each output panel has a toggle button (VOL/MOL for panel A; MASS/MOL for panel B) to switch between the standard flow output and Molar Flow. Available units: Mass: kg/s, kg/h, ton/h, ton/d, lb/h, lb/d. Molar: kmol/h or mol/s.</p>
+          <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300 mb-4" data-i18n-html="docs.howto.b042">
             <strong>🔵 VOL/MOL and MASS/MOL Toggles:</strong> When MOL mode is selected, the output panel displays Molar Flow calculated as ṁ[kg/h] ÷ MW[g/mol] = n_dot[kmol/h]. Select kmol/h or mol/s from the unit dropdown. These molar flow values are useful for combustion air calculations, pipe sizing, and heat exchanger duties.
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
-              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">A. MASS → VOLUME</div>
+              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1" data-i18n-html="docs.howto.b043">A. MASS → VOLUME</div>
               <div>
-                <div class="text-[10px] text-slate-500 mb-1">Given Mass Flow</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b044">Given Mass Flow</div>
                 <div class="flex gap-1">
                   <span class="flex-1 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200">100</span>
                   <select class="bg-slate-800 border border-slate-700 rounded px-1 text-amber-400 text-[10px]"><option>ton/h</option></select>
                 </div>
               </div>
-              <div class="flex justify-center text-slate-600">↓ ÷ ρ_std</div>
+              <div class="flex justify-center text-slate-600" data-i18n-html="docs.howto.b045">↓ ÷ ρ_std</div>
               <div>
-                <div class="text-[10px] text-slate-500 mb-1">Calculated Volumetric Flow</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b046">Calculated Volumetric Flow</div>
                 <div class="flex gap-1">
                   <span class="flex-1 bg-slate-900 border border-green-700 rounded px-2 py-1 text-green-400 font-bold">122.06</span>
                   <select class="bg-slate-800 border border-slate-700 rounded px-1 text-amber-400 text-[10px]"><option>kNm³/h</option></select>
@@ -1308,17 +1308,17 @@
               </div>
             </div>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
-              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">B. VOLUME → MASS</div>
+              <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1" data-i18n-html="docs.howto.b047">B. VOLUME → MASS</div>
               <div>
-                <div class="text-[10px] text-slate-500 mb-1">Given Volumetric Flow</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b048">Given Volumetric Flow</div>
                 <div class="flex gap-1">
                   <span class="flex-1 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200">100</span>
                   <select class="bg-slate-800 border border-slate-700 rounded px-1 text-amber-400 text-[10px]"><option>kNm³/h</option></select>
                 </div>
               </div>
-              <div class="flex justify-center text-slate-600">↓ × ρ_std</div>
+              <div class="flex justify-center text-slate-600" data-i18n-html="docs.howto.b049">↓ × ρ_std</div>
               <div>
-                <div class="text-[10px] text-slate-500 mb-1">Calculated Mass Flow</div>
+                <div class="text-[10px] text-slate-500 mb-1" data-i18n-html="docs.howto.b050">Calculated Mass Flow</div>
                 <div class="flex gap-1">
                   <span class="flex-1 bg-slate-900 border border-green-700 rounded px-2 py-1 text-green-400 font-bold">81.930</span>
                   <select class="bg-slate-800 border border-slate-700 rounded px-1 text-amber-400 text-[10px]"><option>ton/h</option></select>
@@ -1326,7 +1326,7 @@
               </div>
             </div>
           </div>
-          <div class="mt-3 bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300">
+          <div class="mt-3 bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300" data-i18n-html="docs.howto.b051">
             <strong>ℹ Reference values (CH₄=89%, C₂=7%, C₃=2.5%, iC₄=0.7%, nC₄=0.5%, N₂=0.3%):</strong><br>
             100 ton/h → 122.056 kNm³/h &nbsp;|&nbsp; 100 kNm³/h → 81.930 ton/h &nbsp;(matches JIS K 2301 / Excel exactly)
           </div>
@@ -1334,9 +1334,9 @@
 
         <!-- 9. ADVANCED - PIPE DELTA PRESSURE -->
         <section>
-          <h3 id="howto-9" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">9. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
-          <p class="text-sm text-slate-400 mb-4">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <h3 id="howto-9" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">9. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b053">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b054">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">INPUTS — 1. SYSTEM &amp; PIPE</div>
               <div class="space-y-1 text-slate-400">
@@ -1363,16 +1363,16 @@
               </div>
             </div>
           </div>
-          <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300">
+          <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300" data-i18n-html="docs.howto.b055">
             <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.72 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The two-phase HEM neglects slip and the acceleration term — treat it as a first-pass estimate.
           </div>
         </section>
 
         <!-- 10. ADVANCED - FLOW REGIME -->
         <section>
-          <h3 id="howto-10" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">10. Advanced Tab — Flow Regime Visualizer</h3>
-          <p class="text-sm text-slate-400 mb-4">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <h3 id="howto-10" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">10. Advanced Tab — Flow Regime Visualizer</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b057">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b058">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">MAP SELECTION</div>
               <div class="space-y-1.5 text-slate-400">
@@ -1392,27 +1392,27 @@
               </div>
             </div>
           </div>
-          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-300 mb-4">
+          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-300 mb-4" data-i18n-html="docs.howto.b059">
             <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³, liquid 7,300 kg/h @ 500 kg/m³) produce <strong>Churn / Slug Flow at θ = +45.0°</strong> (j<sub>G</sub> ≈ 0.51 m/s, j<sub>L</sub> ≈ 0.50 m/s, vertical map). Map boundaries are simplified — indicative only, not for design.
           </div>
-          <p class="text-sm text-slate-400 mb-3">Example output for the default inputs — the seaborn regime map (top) and a frame of the Three.js 3D animation (bottom):</p>
+          <p class="text-sm text-slate-400 mb-3" data-i18n-html="docs.howto.b060">Example output for the default inputs — the seaborn regime map (top) and a frame of the Three.js 3D animation (bottom):</p>
           <div class="grid grid-cols-1 gap-4">
             <figure class="bg-slate-950 rounded-xl border border-slate-700 p-3">
               <img src="assets/flow-regime-map.png" alt="Example flow regime map: Churn / Slug Flow at +45° on the vertical (Hewitt &amp; Roberts type) map, with operating point and inclination schematic." loading="lazy" class="w-full rounded" />
-              <figcaption class="text-[10px] text-slate-500 mt-2 text-center">Flow regime map (Python seaborn, server-side) — Churn / Slug Flow, θ = +45.0°, vertical map.</figcaption>
+              <figcaption class="text-[10px] text-slate-500 mt-2 text-center" data-i18n-html="docs.howto.b061">Flow regime map (Python seaborn, server-side) — Churn / Slug Flow, θ = +45.0°, vertical map.</figcaption>
             </figure>
             <figure class="bg-slate-950 rounded-xl border border-slate-700 p-3">
               <img src="assets/flow-regime-3d.gif" alt="Example 3D flow animation: liquid slugs and bullet-nosed Taylor gas bubbles travelling up a pipe inclined at 45 degrees." loading="lazy" class="w-full max-w-xl mx-auto rounded" />
-              <figcaption class="text-[10px] text-slate-500 mt-2 text-center">3D flow animation (Three.js) — slug flow in a 45° inclined pipe. Live in-app; conceptual, not a CFD result.</figcaption>
+              <figcaption class="text-[10px] text-slate-500 mt-2 text-center" data-i18n-html="docs.howto.b062">3D flow animation (Three.js) — slug flow in a 45° inclined pipe. Live in-app; conceptual, not a CFD result.</figcaption>
             </figure>
           </div>
         </section>
 
         <!-- 10. SAFETY TAB -->
         <section>
-          <h3 id="howto-11" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">11. Safety Tab — PRV Sizing (API 520 Part I)</h3>
-          <p class="text-sm text-slate-400 mb-4">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <h3 id="howto-11" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">11. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
               <div class="space-y-1.5 text-slate-400">
@@ -1434,13 +1434,13 @@
               </div>
             </div>
           </div>
-          <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
+          <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300" data-i18n-html="docs.howto.b066"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
         </section>
 
         <!-- 11. REPORT TAB -->
         <section>
-          <h3 id="howto-12" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2">12. Report Tab — Bug Reports &amp; Feature Requests</h3>
-          <p class="text-sm text-slate-400">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
+          <h3 id="howto-12" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b067">12. Report Tab — Bug Reports &amp; Feature Requests</h3>
+          <p class="text-sm text-slate-400" data-i18n-html="docs.howto.b068">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
 
       </div>
@@ -1448,7 +1448,7 @@
 
     <div id="tab-theory" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
-        <div>
+        <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
           <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.6. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
@@ -1463,14 +1463,14 @@
 
         <!-- PART I: JIS K 2301 -->
         <section>
-          <h3 id="theory-p1" class="text-lg font-bold text-orange-400 uppercase tracking-widest border-b border-orange-900 pb-2 mb-6">Part I — Gas Compositional Analysis (JIS K 2301:2011)</h3>
+          <h3 id="theory-p1" class="text-lg font-bold text-orange-400 uppercase tracking-widest border-b border-orange-900 pb-2 mb-6" data-i18n-html="docs.theory.b002">Part I — Gas Compositional Analysis (JIS K 2301:2011)</h3>
 
           <!-- 1.1 Component Data -->
           <div class="mb-8">
-            <h4 class="text-sm font-bold text-orange-300 mb-3">1.1 Component Physical Constants (JIS K 2301 Table)</h4>
-            <p class="text-xs text-slate-400 mb-3">All component constants are sourced directly from JIS K 2301:2011. The compressibility factor Zᵢ and √bᵢ are key to Z-correction; Hᵢ is gross calorific value at 0°C, 101.325 kPa.</p>
+            <h4 class="text-sm font-bold text-orange-300 mb-3" data-i18n-html="docs.theory.b003">1.1 Component Physical Constants (JIS K 2301 Table)</h4>
+            <p class="text-xs text-slate-400 mb-3" data-i18n-html="docs.theory.b004">All component constants are sourced directly from JIS K 2301:2011. The compressibility factor Zᵢ and √bᵢ are key to Z-correction; Hᵢ is gross calorific value at 0°C, 101.325 kPa.</p>
             <div class="overflow-x-auto">
-              <table class="w-full text-xs font-mono border-collapse">
+              <table class="w-full text-xs font-mono border-collapse" data-i18n-html="docs.theory.b005">
                 <thead>
                   <tr class="bg-slate-800 text-amber-400">
                     <th class="px-2 py-1 text-left border border-slate-700">Component</th>
@@ -1498,7 +1498,7 @@
           </div>
 
           <!-- 1.2 Vol→Mol Conversion -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b006">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.2 Volumetric → Mole Fraction Conversion (JIS K 2301 §7)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-4">
               <div class="space-y-3">
@@ -1528,7 +1528,7 @@
           </div>
 
           <!-- 1.3 Z Compressibility -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b007">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.3 Sample Gas Compressibility Factor (Z)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Cmᵢ × √bᵢ = ROUND( Cmᵢ × √bᵢ , 5 ) &nbsp; <span class="text-amber-400">[rounded per-component to 5 d.p.]</span></div>
@@ -1544,7 +1544,7 @@
           </div>
 
           <!-- 1.4 HHV -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b008">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.4 Gross Calorific Value / HHV</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">H = ROUND( Σ(Cmᵢ × Hᵢ) / Z_exact , 2 ) [MJ/Nm³]</div>
@@ -1558,7 +1558,7 @@
           </div>
 
           <!-- 1.5 SG and WI -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b009">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.5 Specific Gravity &amp; Wobbe Index</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-blue-300 py-1">S = ROUND( Σ(Cmᵢ × Sᵢ) / Z_exact , 3 ) [Air=1]</div>
@@ -1572,7 +1572,7 @@
           </div>
 
           <!-- 1.6 MCP -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b010">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.6 Maximum Combustion Point (MCP)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Base MCP = ROUND( Σ(Aᵢ × fᵢ × SFᵢ) / Σ(Aᵢ × fᵢ) , 2 )</div>
@@ -1588,7 +1588,7 @@
         </section>
 
         <!-- 1.7 LHV -->
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b011">
             <h4 class="text-sm font-bold text-orange-300 mb-3">1.7 Lower Heating Value (LHV) — 真発熱量 (JIS K 2301 Table 30)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-blue-300 py-2">LHV = ROUND( Σ(Cmᵢ × LHVᵢ) / Z_exact , 2 ) [MJ/Nm³]</div>
@@ -1609,9 +1609,9 @@
 		  
 		<!-- PART II: Standard Gas Density & Flow -->
         <section>
-          <h3 id="theory-p2" class="text-lg font-bold text-fuchsia-400 uppercase tracking-widest border-b border-fuchsia-900 pb-2 mb-6">Part II — Standard Gas Density &amp; Flow Conversions</h3>
+          <h3 id="theory-p2" class="text-lg font-bold text-fuchsia-400 uppercase tracking-widest border-b border-fuchsia-900 pb-2 mb-6" data-i18n-html="docs.theory.b012">Part II — Standard Gas Density &amp; Flow Conversions</h3>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b013">
             <h4 class="text-sm font-bold text-fuchsia-300 mb-3">2.1 Standard Gas Density ρ_std</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">ρ_std = P·(MW/1000) / (Z_rounded·R·T_std) [kg/Nm³]</div>
@@ -1629,7 +1629,7 @@
             </div>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b014">
             <h4 class="text-sm font-bold text-fuchsia-300 mb-3">2.2 Mass ↔ Volume Flow Conversion</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1663,9 +1663,9 @@
 
         <!-- PART III: ISO 6578 LNG Density -->
         <section>
-          <h3 id="theory-p3" class="text-lg font-bold text-cyan-400 uppercase tracking-widest border-b border-cyan-900 pb-2 mb-6">Part III — LNG Liquid Density (ISO 6578:1991 Klosek-McKinley)</h3>
+          <h3 id="theory-p3" class="text-lg font-bold text-cyan-400 uppercase tracking-widest border-b border-cyan-900 pb-2 mb-6" data-i18n-html="docs.theory.b015">Part III — LNG Liquid Density (ISO 6578:1991 Klosek-McKinley)</h3>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b016">
             <h4 class="text-sm font-bold text-cyan-300 mb-3">3.1 Klosek-McKinley Method Overview</h4>
             <p class="text-xs text-slate-400 mb-4">The ISO 6578 Klosek-McKinley method computes LNG liquid density by summing the molar volumes of pure-component liquids, then applying correction factors k₁ and k₂ for CH₄ and N₂ interactions.</p>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
@@ -1675,7 +1675,7 @@
             </div>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b017">
             <h4 class="text-sm font-bold text-cyan-300 mb-3">3.2 Molar Volume Table (ISO 6578 Table B.2) — Selected Values [m³/kmol]</h4>
             <div class="overflow-x-auto">
               <table class="w-full text-xs font-mono border-collapse">
@@ -1704,7 +1704,7 @@
             <p class="text-[10px] text-slate-500 mt-2">Interpolated values computed by linear interpolation between adjacent temperature rows. Highlighted row shows the exact interpolated values at -162°C (111.15 K) from the Excel reference.</p>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b018">
             <h4 class="text-sm font-bold text-cyan-300 mb-3">3.3 k₁, k₂ Correction Factors (ISO 6578 Table C)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="overflow-x-auto">
@@ -1728,9 +1728,9 @@
 
         <!-- PART IV: Hydraulics -->
         <section>
-          <h3 id="theory-p4" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6">Part IV — Hydraulics &amp; Gas Laws (Advanced Tab)</h3>
+          <h3 id="theory-p4" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6" data-i18n-html="docs.theory.b019">Part IV — Hydraulics &amp; Gas Laws (Advanced Tab)</h3>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b020">
             <h4 class="text-sm font-bold text-green-300 mb-3">4.1 Z-Factor: Papay Method (Standing-Katz Pseudo-Criticals)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Pseudo-criticals (Standing-Katz, from gas SG γ): P_pc = 756.8 − 131.0·γ − 3.6·γ² [psia] &nbsp; T_pc = 169.2 + 349.5·γ − 74.0·γ² [°R]</div>
@@ -1743,7 +1743,7 @@
             </div>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b021">
 			<h4 class="text-sm font-bold text-green-300 mb-3">4.2 Pressure Drop: Darcy-Weisbach + Colebrook-White Friction Factor</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">ΔP = f·(L/D)·(ρ·v²/2) + ρ·g·Δz &nbsp; [Pa]</div>
@@ -1764,7 +1764,7 @@
             </div>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b022">
             <h4 class="text-sm font-bold text-green-300 mb-3">4.3 Two-Phase Flow Regime Maps (Flow Regime Card)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Inclination: θ = asin(Δz / L) &nbsp;|&nbsp; Cross-section: A = π·D²/4 [m²]</div>
@@ -1785,7 +1785,7 @@
             </div>
           </div>
 
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b023">
             <h4 class="text-sm font-bold text-green-300 mb-3">4.4 Erosional Velocity Limit (API RP 14E)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">V<sub>e</sub> = C / √ρ<sub>m</sub></div>
@@ -1801,8 +1801,8 @@
 
         <!-- PART VI: API 520 PRV Sizing Theory -->
         <section>
-          <h3 id="theory-p6" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6">Part VI — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
-          <div class="mb-8">
+          <h3 id="theory-p6" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6" data-i18n-html="docs.theory.b024">Part VI — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
+          <div class="mb-8" data-i18n-html="docs.theory.b025">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Critical check: P2 ≤ Pcf = P1 × (2/(k+1))^(k/(k−1)) &nbsp;[Eq. 1]</div>
@@ -1814,7 +1814,7 @@
               </div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b026">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-blue-300 py-1">F2 = √[ k/(k−1) · r^(2/k) · (1−r^((k−1)/k)) / (1−r) ] &nbsp; r = P2/P1</div>
@@ -1822,7 +1822,7 @@
               <div class="text-slate-200">SI: A = 17.9·W / (F2 · Kd · Kc) × √(T·Z / (M·P1·(P1−P2)))</div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b027">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.3 Steam (§5.7, Eq. 21/22)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = W / (51.5 · P1 · Kd · Kb · Kc · KN · KSH)</div>
@@ -1833,7 +1833,7 @@
               </div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b028">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-cyan-300 py-1">USC: A = Q / (38 · Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
@@ -1845,14 +1845,14 @@
               </div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b029">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = Q / (38 · Kd · Kw · Kc · Kv · Kp) × √(Gl / (1.25·Ps−P2))</div>
               <div class="text-[10px] text-slate-400">Kp = 1.0 at 25% overpressure; Kp ≈ 0.6 at 10% overpressure (Fig. 38). Default Kd = 0.62.</div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b030">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Step 1: ω = 9·(v9/vo − 1) &nbsp;[Eq. C.12] &nbsp; v9 = spec. vol. at isenthalpic flash to 0.9·Po</div>
@@ -1861,7 +1861,7 @@
               <div class="text-xl text-center text-fuchsia-300 py-1">A = 0.04·W / (Kd·Kb·Kc·Kv·G) [USC, in²] &nbsp;|&nbsp; A = 277.8·W / (Kd·Kb·Kc·Kv·G) [SI, mm²]</div>
             </div>
           </div>
-          <div class="mb-8">
+          <div class="mb-8" data-i18n-html="docs.theory.b031">
             <h4 class="text-sm font-bold text-red-300 mb-3">6.7 API 526 Standard Effective Orifice Areas</h4>
             <div class="overflow-x-auto">
               <table class="w-full text-xs font-mono border-collapse">
@@ -1884,8 +1884,8 @@
 
         <!-- PART V: Data Sources -->
         <section>
-          <h3 id="theory-p5" class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-4">Part V — Data Sources &amp; Standards</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-400">
+          <h3 id="theory-p5" class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-4" data-i18n-html="docs.theory.b032">Part V — Data Sources &amp; Standards</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-400" data-i18n-html="docs.theory.b033">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
               <div class="text-amber-400 font-bold">JIS K 2301:2011</div>
               <div>Gas composition analysis methods for heating value, specific gravity, and Wobbe index. All component constants (Hᵢ, Sᵢ, √bᵢ, Zᵢ) sourced from this standard.</div>
@@ -1930,21 +1930,22 @@
 
     <div id="tab-terms" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
-        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Terms of Use</h2>
+        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.terms.b001">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.terms.b002">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500 italic" data-i18n-html="docs.terms.langNote">Translations of these Terms of Use are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
-          <div>
+          <div data-i18n-html="docs.terms.b003">
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Acceptance of Terms</h3>
             <p>By accessing or using the O&G Engineering Converter ("Application"), you agree to be bound by these Terms of Use. If you do not agree, you must not use the Application. These terms apply to all users including engineers, operators, researchers, and students.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b004">
             <h3 class="text-base font-semibold text-amber-500 mb-2">2. Nature of the Application</h3>
             <p>The Application is a browser-based engineering utility. The majority of calculations are performed locally within your web browser. However, three features — the Pipe Delta Pressure Calculator and the Flow Regime visualizer (Advanced tab), and the PRV Sizing Calculator (Safety tab) — transmit engineering input data (such as flow rates, pressures, and fluid properties) to serverless API functions hosted on Vercel for server-side computation, including server-side rendering of the flow regime map image. No personally identifiable information is transmitted in these requests. The Application is provided as a convenience tool for engineering estimation and is <strong>not intended to replace formal engineering analysis, professional judgment, or regulatory-approved calculation methods</strong>.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b005">
             <h3 class="text-base font-semibold text-amber-500 mb-2">3. Disclaimer of Warranties</h3>
             <p>The Application is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, express or implied, including but not limited to:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
@@ -1956,7 +1957,7 @@
             <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. Several tools deliberately use simplified or screening-level models and are provided for qualitative orientation only — they <strong>must not be used as a basis for design, operational, or safety decisions</strong>. These include: the Flow Regime visualization (approximate regime-map boundaries + a conceptual 3D animation), the Pipe Delta Pressure two-phase calculation (Homogeneous Equilibrium Model — no slip, no acceleration term), the erosional-velocity check (API RP 14E empirical screening), and the Z-Factor Estimator (Papay correlation, valid only within its stated P<sub>r</sub>/T<sub>r</sub> envelope). Where an input falls outside a method's validated range, the Application flags the result as extrapolated; such results are indicative only.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b006">
             <h3 class="text-base font-semibold text-amber-500 mb-2">4. Limitation of Liability</h3>
             <p>To the maximum extent permitted by applicable law, the developer (Naoto Yamabe) and any associated parties shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
@@ -1967,7 +1968,7 @@
             </ul>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b007">
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Intended Use and User Responsibilities</h3>
             <p>This Application is designed for use by qualified professionals familiar with oil and gas engineering principles. Users are solely responsible for:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
@@ -1978,17 +1979,17 @@
             </ul>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b008">
             <h3 class="text-base font-semibold text-amber-500 mb-2">6. Intellectual Property</h3>
             <p>The Application code, design, and documentation are the intellectual property of Naoto Yamabe. The underlying calculation methods and physical constants are derived from publicly available engineering standards (JIS K 2301, ISO 6578, etc.), which remain the property of their respective issuing bodies. Redistribution or commercial use of the Application without explicit written permission is prohibited.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b009">
             <h3 class="text-base font-semibold text-amber-500 mb-2">7. Modifications and Updates</h3>
             <p>The developer reserves the right to modify, update, or discontinue the Application at any time without notice. These Terms of Use may be updated periodically; continued use of the Application constitutes acceptance of any revised terms.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.terms.b010">
             <h3 class="text-base font-semibold text-amber-500 mb-2">8. Governing Law</h3>
             <p>These Terms shall be governed by and construed in accordance with the laws of Japan. Any disputes arising from the use of this Application shall be subject to the exclusive jurisdiction of the courts of Japan.</p>
           </div>
@@ -1998,16 +1999,17 @@
 
     <div id="tab-privacy" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
-        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4">Privacy Policy</h2>
+        <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.privacy.b001">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500 italic" data-i18n-html="docs.privacy.langNote">Translations of this Privacy Policy are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b003">
             <h3 class="text-base font-semibold text-amber-500 mb-2">1. Overview</h3>
             <p>The O&G Engineering Converter is committed to protecting your privacy. This policy describes how the Application handles information. As a client-side application, it is architecturally designed to minimize data collection and external transmission.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b004">
             <h3 class="text-base font-semibold text-amber-500 mb-2">2. Data We Do NOT Collect</h3>
             <p>The Application does <strong>not</strong> collect, transmit to the developer, or remotely store any of the following:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
@@ -2020,7 +2022,7 @@
             </ul>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b005">
             <h3 class="text-base font-semibold text-amber-500 mb-2">3. Browser Local Storage</h3>
             <p>The Application uses your browser's <strong>Local Storage</strong> (a built-in browser feature) to save (a) custom converter modules you create in the General tab and (b) — new in v2.4 — your most recent calculator inputs and UI preferences, so the page restores your last session automatically. This data:</p>
             <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
@@ -2032,38 +2034,38 @@
             <p class="mt-2"><strong>Share links (v2.4).</strong> The "Share" button encodes your current inputs into the page URL (after the <span class="font-mono">#</span> fragment) and copies it to your clipboard. This is performed entirely in your browser; the fragment is never sent to the server. Anyone you give the link to can reconstruct those inputs, so avoid sharing links containing data you consider sensitive.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b006">
             <h3 class="text-base font-semibold text-amber-500 mb-2">4. Server-Side Calculation APIs</h3>
             <p>Three features in this Application — the Pipe Delta Pressure Calculator, the Flow Regime visualizer, and the PRV Sizing Calculator — send engineering input data to serverless functions hosted on Vercel for computation. The data transmitted consists exclusively of numerical engineering parameters (e.g. pressures, flow rates, fluid properties). For the Flow Regime visualizer, the server also renders and returns a map image generated from those parameters. This data is processed transiently to return a calculation result and is not logged, stored, or associated with any user identity by the Application. Standard Vercel infrastructure logging may capture request metadata (see Section 5 below).</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b007">
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
             <p class="mt-2">The Application also loads open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). In addition, a small <strong>Cloudflare email-protection script</strong> (<span class="font-mono">/cdn-cgi/scripts/.../email-decode.min.js</span>) is served with the page to obfuscate the developer's contact email against scrapers. Like any web resource request, these providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to any of them.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b008">
             <h3 class="text-base font-semibold text-amber-500 mb-2">6. Report / Feedback Feature</h3>
             <p>The Report tab generates a mailto: link that opens your local email client. No data is transmitted through the Application — your email client handles the message. The developer (Naoto Yamabe) may receive your email address and the content you write if you choose to send the email. This information will be used solely to respond to your report or request and will not be shared with third parties.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b009">
             <h3 class="text-base font-semibold text-amber-500 mb-2">7. No Cookies or Tracking</h3>
             <p>The Application does not set any cookies and does not use any tracking technologies including Google Analytics, session tracking, or advertising pixels. Your use of the Application is completely anonymous from the Application's perspective.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b010">
             <h3 class="text-base font-semibold text-amber-500 mb-2">8. Children's Privacy</h3>
             <p>The Application is intended for professional use by adults. It does not knowingly collect information from children under the age of 16. If you believe a child has submitted information through the Application, please contact the developer.</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b011">
             <h3 class="text-base font-semibold text-amber-500 mb-2">9. Your Rights</h3>
             <p>As no personal data is collected by the Application, there is no personal data to access, rectify, delete, or export. To remove your locally stored custom modules, use your browser's developer tools or site data clearing options (Settings → Privacy → Clear Site Data for the relevant domain).</p>
           </div>
 
-          <div>
+          <div data-i18n-html="docs.privacy.b012">
             <h3 class="text-base font-semibold text-amber-500 mb-2">10. Contact</h3>
             <p>For privacy-related questions or concerns, please contact the developer via the Report tab or at <span class="text-amber-400">petro.naoto@gmail.com</span>.</p>
           </div>
@@ -3302,8 +3304,20 @@
       if (params) Object.keys(params).forEach(p => { s = s.split('{' + p + '}').join(params[p]); });
       return s;
     }
+    // v2.7 — original English innerHTML of every [data-i18n-html] block, captured once
+    // on first applyTranslations() before any swap. English doc content lives inline in
+    // the HTML (not in en.json); switching back to EN restores from this cache, and any
+    // language missing a docs.* key falls back to it too.
+    const i18nHtmlOriginals = {};
     function applyTranslations() {
       document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.getAttribute('data-i18n')); });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (!(key in i18nHtmlOriginals)) i18nHtmlOriginals[key] = el.innerHTML;
+        const s = _trLookup(translationsCache[currentLang], key);
+        const next = (s !== undefined) ? s : i18nHtmlOriginals[key];
+        if (el.innerHTML !== next) el.innerHTML = next;
+      });
       document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = tr(el.getAttribute('data-i18n-title')); });
       document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', tr(el.getAttribute('data-i18n-aria'))); });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = tr(el.getAttribute('data-i18n-placeholder')); });
