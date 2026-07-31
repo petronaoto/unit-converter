@@ -10,9 +10,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
   - `index.html` — single-file frontend: vanilla JavaScript + Tailwind CSS via CDN. No build step. All standard conversions and JIS K 2301 compositional calculations run client-side.
-  - `api/dp_calculator.py` — Vercel serverless Python: pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, HEM two-phase). v2.4: also returns Reynolds number `Re`, `re_regime`, Darcy friction factor `f`, the split `dpFric`/`dpStatic` terms, mixture density `rho_mix`, and an **API RP 14E erosional-velocity** check (`v_ero`, `ero_ratio`) computed from the payload's `cfactor` (default 100).
-  - `api/psv_calculator.py` — Vercel serverless Python: API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid, §5.10 two-phase Omega method).
-  - `api/flowregime.py` — Vercel serverless Python: two-phase flow regime map (seaborn/matplotlib server-side PNG rendering). Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type, G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator.
+  - `api/` — three Vercel serverless Python endpoints: `dp_calculator.py` (pipe ΔP, Darcy-Weisbach + Colebrook-White + HEM two-phase + RP 14E erosion check), `psv_calculator.py` (API 520 Part I PRV sizing), `flowregime.py` (two-phase flow regime map PNG). **Detailed API rules — endpoint specs, dependency constraints, the multiply-to-SI unit-factor convention, and the dp/flowregime reference cases — live in [`api/CLAUDE.md`](api/CLAUDE.md); read it before touching anything in `api/`.**
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `i18n/en.json`, `i18n/ja.json` — translation dictionaries (v2.6). `en.json` is the canonical source and runtime fallback for any key missing elsewhere. Fetched lazily by `index.html`, not bundled — adding these files did not compromise the no-build-step principle.
   - `README.md` — project documentation.
@@ -118,11 +116,7 @@ Grep for the outgoing version number across the whole repo (`grep -rn "v2\.5\|V2
 ## Local Development & Testing
 
 - `vercel dev` is required to test the two Python API endpoints locally (opening index.html directly breaks the Advanced ΔP and Safety PSV calculators).
-- Test API endpoints with curl POSTs to `/api/dp_calculator` and `/api/psv_calculator` after modifying them.
-- `api/dp_calculator.py` and `api/psv_calculator.py` use only the standard library (`json`, `math`, `http.server`) — do not add dependencies to them. `api/flowregime.py` additionally uses numpy/matplotlib/seaborn, declared in `requirements.txt` — do not add further dependencies.
-- Flow Regime reference case: the v2.3 default ΔP inputs (ID=4 in, L=100 m, Δz=70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) must classify as **Churn / Slug Flow, θ = +45.0°, vertical map** (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
-- dp_calculator reference case (same inputs, v2.4): ΔP_total ≈ **176.9 kPa** (dpFric ≈ 2.34 kPa + dpStatic ≈ 174.6 kPa), vel ≈ 1.014 m/s, Re ≈ **2.20×10⁵** (turbulent), Darcy f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³, V_e ≈ **7.72 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT). Re-verify these after touching dp_calculator.py.
-- Unit-factor convention (dp_calculator.py & flowregime.py): every `*_m` select value is a **multiply-to-SI** factor — flow×factor→kg/s, density×factor→kg/m³ (kg/m³=1, lb/ft³=16.0185), viscosity×factor→Pa·s. Density was fixed in v2.3.1 (was erroneously dividing); always multiply.
+- API-side rules — stdlib-only dependency constraints, curl test procedure, the multiply-to-SI unit-factor convention, and the mandatory dp_calculator / Flow Regime reference cases — are maintained in [`api/CLAUDE.md`](api/CLAUDE.md). Re-verify those reference cases after touching any file in `api/`.
 
 ## Engineering Standards References
 
