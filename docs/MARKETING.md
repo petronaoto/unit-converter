@@ -1,6 +1,6 @@
 # Advertisement & Promotion Strategy — O&G Engineering Converter
 
-**Document version:** 1.0 (accompanies app v2.5)
+**Document version:** 1.1 (accompanies app v2.6)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [SPECIFICATION.md](SPECIFICATION.md)
 
@@ -23,7 +23,7 @@ A pragmatic promotion plan for a solo-maintained, free, zero-tracking engineerin
 
 ## 2. Target Segments
 
-1. **Japanese LNG terminal / city-gas utility engineers** — the JIS K 2301:2011 compositional chain with exact Excel-matching rounding is a unique hook; almost no free web tool offers it. Japanese-language content is the door-opener (i18n toggle is on the v3.0 roadmap).
+1. **Japanese LNG terminal / city-gas utility engineers** — the JIS K 2301:2011 compositional chain with exact Excel-matching rounding is a unique hook; almost no free web tool offers it. **Update (v2.6):** the working calculators (General, Basic Eng, Advanced, Safety, plus Export/Share/Report) now have a full Japanese UI — the EN/日本語 switch is live and can be promoted today. The *content-marketing* angle in §3 below (turning Theory-tab sections into Qiita/Zenn articles) still leans on the Theory tab, which remains English-only until i18n Milestone 3 (see DEVELOPMENT_PLAN.md §6) — so a worked-example post can link to a genuinely bilingual calculator right now, but a fully Japanese-language *article* explaining the theory isn't ready to source directly from the app yet.
 2. **Global O&G / LNG process & facilities engineers** — daily ΔP screening, PSV sanity checks, erosional-velocity checks (RP 14E), flow-regime orientation.
 3. **EPC junior engineers & graduates** — the How To Use + Theory tabs make the tool a learning aid; juniors who adopt a tool keep it for a career.
 4. **Chemical/petroleum engineering students & instructors** — free, browser-based, theory-documented; instructors can link it in coursework.
@@ -53,7 +53,7 @@ A pragmatic promotion plan for a solo-maintained, free, zero-tracking engineerin
 
 | Channel | Action | Cadence |
 |---|---|---|
-| **Qiita / Zenn (Japanese)** | JIS K 2301 / LNG density articles — the most differentiated content; Japanese engineering community is underserved for this niche | 1 article / month |
+| **Qiita / Zenn (Japanese)** | JIS K 2301 / LNG density articles — the most differentiated content; Japanese engineering community is underserved for this niche. Since v2.6 the linked calculator itself renders in Japanese, so articles can now show a genuinely native-language tool, not just a native-language write-up of an English UI. | 1 article / month |
 | **LinkedIn** | Short worked-example posts (screenshot + Share link + one insight); tag oil & gas / LNG hashtags | 2 posts / month |
 | **Reddit** (r/ChemicalEngineering, r/oilandgasworkers, r/engineering) | Share as a free tool in tool-recommendation threads; always follow each sub's self-promotion rules; answer questions using the tool | Opportunistic |
 | **Hacker News (Show HN)** | One well-timed "Show HN: A standards-traceable O&G engineering calculator (no signup, no tracking)" — the single-file no-build architecture is itself HN-interesting | Once, when v2.5+ is polished |

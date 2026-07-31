@@ -4,7 +4,8 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.5 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.6 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+  - Default UI language is English; a header switch offers Japanese (fully translated for the working tool as of v2.6); 8 more languages are scaffolded in the settings menu but not yet translated. See "Internationalization (i18n)" below and `docs/SPECIFICATION.md` §12.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
 - **Architecture**: Hybrid Edge-Server
@@ -13,8 +14,9 @@ Project memory for Claude Code. Read and follow all rules below in every session
   - `api/psv_calculator.py` — Vercel serverless Python: API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid, §5.10 two-phase Omega method).
   - `api/flowregime.py` — Vercel serverless Python: two-phase flow regime map (seaborn/matplotlib server-side PNG rendering). Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type, G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator.
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
+  - `i18n/en.json`, `i18n/ja.json` — translation dictionaries (v2.6). `en.json` is the canonical source and runtime fallback for any key missing elsewhere. Fetched lazily by `index.html`, not bundled — adding these files did not compromise the no-build-step principle.
   - `README.md` — project documentation.
-  - `docs/` (v2.5) — `DEVELOPMENT_PLAN.md` (history + roadmap), `SPECIFICATION.md` (full feature & API spec, known-issues register), `MARKETING.md` (promotion strategy).
+  - `docs/` (v2.6) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy).
 
 ## CRITICAL Preservation Rules
 
@@ -22,7 +24,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 2. **Make surgical, minimal diffs.** Do not regenerate whole files or whole sections to apply a small change.
 3. **Do not "improve" working code** (formatting, style, modernization) unless asked.
 4. **Element IDs are an API.** JavaScript references HTML IDs extensively (`out-ghv`, `flow-mass-in-u`, `psv-*`, `dp-*`, etc.). Never change an ID without updating every reference, and only when instructed.
-5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore). v2.5 additions that must also survive: the How To Use / Theory jump-link strips and section anchors (`howto-new25`, `howto-new`, `howto-1`…`howto-12`, `theory-p1`…`theory-p6`), the back-to-top button (`back-to-top` + scroll listener), the runtime ARIA tablist semantics (`enhanceAccessibility()` + `aria-selected` in `switchTab()`), Enter-to-calculate on `dp-*`/`psv-*` inputs, the client-side validation pre-checks in `calcDeltaPressure()`/`calcPSV()`, the stale-input indicator (`dpResultFresh`/`psvResultFresh`/`markResultStale()`), the export pop-up Blob-download fallback, and the distinct viscosity option values (`0.0010` mPa·s / `0.0000010` mm²/s — string-distinct from cP/cSt, numerically identical).
+5. **Before committing, verify no feature was dropped**: tabs (General / Basic Eng / Advanced / Safety / How To Use / Theory / Terms / Privacy / Report), custom modules, copy buttons, all toggles (Abs/Gauge, HHV/LHV, VOL/MOL, MASS/MOL), the Flow Regime card (map image + Three.js 3D animation), and all three serverless API integrations must all still exist. v2.4 additions that must also survive: the three Basic Eng converter cards (Petroleum Gravity `api-*`, Viscosity `visc-*`, Mass↔Vol Flow `mf-*`), the ΔP card's Erosion C-factor input (`dp-cfactor`) and second output row (`dp-out-re/-f/-ve/-eratio/-ero-badge` + `dp-out-regime-note`), the out-of-range warnings (`z-warn`, `out-liq-warn`, `comp-warn`), and the floating action bar (Export PDF `exportReport()`, Share `copyShareLink()`, plus `STATE_KEY` persistence/restore). v2.5 additions that must also survive: the How To Use / Theory jump-link strips and section anchors (`howto-new25`, `howto-new`, `howto-1`…`howto-12`, `theory-p1`…`theory-p6`), the back-to-top button (`back-to-top` + scroll listener), the runtime ARIA tablist semantics (`enhanceAccessibility()` + `aria-selected` in `switchTab()`), Enter-to-calculate on `dp-*`/`psv-*` inputs, the client-side validation pre-checks in `calcDeltaPressure()`/`calcPSV()`, the stale-input indicator (`dpResultFresh`/`psvResultFresh`/`markResultStale()`), the export pop-up Blob-download fallback, and the distinct viscosity option values (`0.0010` mPa·s / `0.0000010` mm²/s — string-distinct from cP/cSt, numerically identical). v2.6 additions that must also survive: the i18n engine (`LANGUAGES` config, `loadLanguage()`, `tr()`, `applyTranslations()`, `setLanguage()`, `applyAwaitingBadgeDefaults()`) and the header switcher (EN/日本語 toggle + settings-menu dropdown) — do not rename `tr()` to `t()` or reuse `t` as a local variable name in any function that calls it (it already collides with locals in `exportReport()` and formerly in `calcZFactor()`, renamed to `trr`); every `data-i18n`/`data-i18n-title`/`data-i18n-aria`/`data-i18n-placeholder` attribute in `index.html` must have a matching key in **both** `i18n/en.json` and `i18n/ja.json`; `localStorage['og_lang']` and the `lang` field in `collectState()`/share-link state; the idempotent (unconditional) aria-label setters in `enhanceAccessibility()` — do not reintroduce the old `if (!b.getAttribute('aria-label'))` guard, it silently freezes translations after the first language switch.
 
 ## UI Consistency Rules
 
@@ -75,8 +77,9 @@ After ANY change touching `calcGHV()`, `gasComps`, or related logic, re-verify t
 `index.html` contains embedded documentation (How To Use tab, Theory tab). Whenever a feature, constant, or calculation changes, check and update:
 - Theory tab: Table 1.1 constants, §1.3–§1.7 worked examples, Part II–VI.
 - How To Use tab: section descriptions and reference-value callout boxes.
-- `docs/SPECIFICATION.md` (v2.5): the affected module/API section and, if applicable, the Known Issues register.
-- `docs/DEVELOPMENT_PLAN.md` (v2.5): roadmap item status when a roadmap feature ships.
+- `docs/SPECIFICATION.md` (v2.6): the affected module/API section and, if applicable, the Known Issues register.
+- `docs/DEVELOPMENT_PLAN.md` (v2.6): roadmap item status when a roadmap feature ships.
+- **(v2.6+) `i18n/en.json` and `i18n/ja.json`:** any new or changed user-visible string in the Milestone-1 scope (General/Basic Eng/Advanced/Safety tabs, action bar, Report form, module modal, dynamic JS strings) needs a matching key added/updated in **both** files — English and Japanese — in the same commit. A key present in `en.json` but missing from `ja.json` silently falls back to English at runtime rather than erroring, so this is easy to miss; check deliberately.
 Numbers in worked examples must match actual calculator output exactly.
 
 ## Git Workflow
@@ -91,9 +94,26 @@ git push origin main
 ```
 
 - Commit message types: `feat:`, `fix:`, `docs:`, `chore:`.
-- Tag releases: `git tag -a vX.Y -m "..."` then `git push origin vX.Y`. Hotfixes use vX.Y.Z.
+- Tag releases: `git tag -a vX.Y -m "..."` then `git push origin vX.Y`. Hotfixes use vX.Y.Z. Tag the actual commit on `main` **after** it lands there — if the change went through a PR, the merged SHA on `main` is very often *not* the same SHA as the feature branch's tip (squash or merge commits both create a new SHA), so tag `origin/main`'s HEAD post-merge, not your local branch.
 - Never force-push to `main`. Never commit without showing the diff first.
 - Pushing to `main` triggers a live Vercel deployment — confirm with Naoto before pushing anything non-trivial.
+
+### Version-bump checklist — every location, every time
+
+A version number change is **not done** until every one of these is updated together, in the same change. This list exists because v2.6 shipped without it and left the app displaying "Version 2.5" in three places for a full release cycle — treat every entry below as mandatory, not best-effort:
+
+- [ ] `index.html` `<title>` (`meta.pageTitle` key — see below, not the literal HTML text, though update that fallback text too)
+- [ ] `index.html` footer copyright line (`footer.copyright` key)
+- [ ] `index.html` `exportReport()` — the `{version: '…'}` argument passed to `tr('js.export.versionGenerated', …)`
+- [ ] `i18n/*.json` `report.mailtoBody` key — embeds `Env: Browser/Client-Side VX.Y` in the bug-report email body
+- [ ] `index.html` How To Use tab heading ("Operations Manual vX.Y") and Theory tab intro paragraph ("…implemented in vX.Y") — update these two; do **not** touch historical `★ New in Version X.Y` changelog headings or `// vX.Y — …` code comments, which correctly describe *when that specific thing was added*, not the current version
+- [ ] **`i18n/en.json` and every other enabled language's dictionary** (currently `i18n/ja.json`; will include more files as more languages ship) — both the `meta.pageTitle` and `footer.copyright` keys, in **every** file. This is the location most likely to be missed, since it's data, not markup.
+- [ ] `README.md` — the `# … — vX.Y` title line, plus the docs-table row that names the current proposed-roadmap version (keep it in sync with whatever DEVELOPMENT_PLAN.md's roadmap section is currently called — version-bucket names get renumbered when a shipped release takes a number a roadmap proposal was already using, as happened between v2.6 and the "v2.7" pack)
+- [ ] `CLAUDE.md` — the `App:` line at the top, and the `docs/ (vX.Y)` reference just below it
+- [ ] `docs/DEVELOPMENT_PLAN.md`, `docs/SPECIFICATION.md`, `docs/MARKETING.md` — each file's own `**Document version:** X.Y (accompanies/describes app vX.Y)` header line, plus a new Version History row in DEVELOPMENT_PLAN.md §4
+- [ ] Git tag on the post-merge `main` HEAD (see above)
+
+Grep for the outgoing version number across the whole repo (`grep -rn "v2\.5\|V2\.5" .` style, adjusted per bump) before considering a version change finished — treat any hit outside a historical changelog/comment as a miss.
 
 ## Local Development & Testing
 
