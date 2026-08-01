@@ -233,6 +233,10 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 
 **Vector 3 — Flow Regime default case** (same inputs): **Churn / Slug Flow**, θ = **+45.0°**, vertical map, j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s.
 
+**Vector 4 — PRV sizing (candidate, v2.8):** five USC cases, one per API 520 sizing mode, generated from the Safety card's own placeholder inputs. Encoded in `tests/test_psv_calculator.py` but **not yet blessed as engineering reference values** — they are behavior locks pending the maintainer's review, and are therefore listed here without the "MUST REPRODUCE EXACTLY" status the other three carry. Summary: §5.6 gas → 5.7047 in² (orifice P); §5.7 steam → 1.7030 in² (K); §5.8 liquid certified → 4.1690 in² (N); §5.9 liquid non-certified → 4.1001 in² (N); §5.10 two-phase → 38.0227 in² (T+, over-range), ω = 1.4817, η_c = 0.6564.
+
+Vectors 1–3 are enforced automatically on every push and pull request — see §13.
+
 ## 10. Deployment
 
 - **Production:** Vercel, auto-deploy on push to `main`. Zero-config: static `index.html` + auto-provisioned `api/` Python functions.
@@ -251,6 +255,8 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 | 6 | Error-response schemas differ across the three endpoints (dp: badge without message; psv: message without badge; flowregime: both) | all three endpoints | Harmonization to the superset `{error, message, badge, badgeClass}` proposed |
 | 7 | Custom modules are not encoded in Share links | `index.html` state system | Roadmap v2.8 (state format v:2) |
 | 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.8 |
+| 9 | API RP 14E SI constant is `1.2247448714` (= √1.5); the exact conversion is **1.21990** (= 0.3048·√16.018463). V_e is over-predicted by **+0.42 %**, so the erosional-velocity screen is marginally *non-conservative* (7.7222 vs 7.6899 m/s on Vector 2) | `api/dp_calculator.py:108` | Logged v2.8. Fix deferred to a deliberate, separately-tagged change — correcting it moves the documented V_e ≈ 7.72 m/s in CLAUDE.md, api/CLAUDE.md, this document and the Theory tab, so it must not happen as a side effect. `tests/test_dp_calculator.py` pins the shipped constant and names this entry |
+| 10 | `index.html:2182` loads `/cdn-cgi/scripts/…/email-decode.min.js`, a Cloudflare email-obfuscation script baked into the file. The app deploys to Vercel, where `/cdn-cgi/` does not exist, and no `__cf_email__` element remains for it to decode — so it is most likely a dead 404 on every page load. Disclosed in the Privacy Policy tab (`index.html:2045`), which would also need updating if it is removed | `index.html:2182` | Logged v2.8; removal not yet approved |
 
 ## 12. Internationalization (i18n)
 
@@ -306,3 +312,64 @@ Two-part control in the header (`.flex.items-center.justify-between.mb-4` row), 
 - **Translation integrity is machine-checked** (build-side, not runtime): each translated value must have a byte-identical HTML tag/attribute sequence to its English source, identical `{placeholder}` sets, and digit-for-digit identical numeric tokens (the Theory tab's worked examples and Table 1.1 constants are regulatory reference values). The checker lives with the maintainer tooling; re-run it whenever a `docs.*` key changes.
 - **Sync rule:** any edit to the inline English documentation HTML must update the corresponding `docs.*` key in all 9 non-English dictionaries in the same commit (see CLAUDE.md Documentation Sync Rule).
 
+
+## 13. Automated Testing & CI (v2.8)
+
+Added in v2.8. Before this, the reference-value regression in DEVELOPMENT_PLAN.md §7.2 was
+a manual checklist; it now runs on every push and pull request.
+
+### 13.1 Layout
+
+| Path | Purpose |
+|---|---|
+| `pytest.ini` | Runner config; `testpaths = tests` |
+| `requirements-dev.txt` | **pytest only.** Deliberately separate from `requirements.txt`, which Vercel installs into the production serverless runtime |
+| `tests/conftest.py` | Loads the three `api/*.py` endpoints by path (they are Vercel functions, not a package) and provides the `post_to_handler` fixture |
+| `tests/test_dp_calculator.py` | Vector 2, unit-factor guards, friction-factor and phase-detection branches |
+| `tests/test_psv_calculator.py` | Vector 4 candidates (§9), the five sizing modes, API 526 orifice selection |
+| `tests/test_flowregime.py` | Vector 3, map selection by inclination, validation guards |
+| `tests/test_i18n_parity.py` | Key parity across all 10 dictionaries; `index.html` ↔ dictionary agreement |
+| `tests/test_architecture.py` | The stdlib-only rule, the no-build-step rule, dev/prod dependency separation |
+| `.github/workflows/ci.yml` | Two jobs — see 13.3 |
+
+### 13.2 How `dp_calculator.py` is tested without refactoring it
+
+`psv_calculator.py` and `flowregime.py` keep their math in module-level pure functions
+(`size_gas(...)`, `compute(...)`) and are called directly. `dp_calculator.py` does not —
+all of its physics is inline inside `handler.do_POST`, interleaved with the response
+plumbing.
+
+Adding a `compute()` function purely for testability would be a refactor of working,
+deployed code, which CLAUDE.md preservation rules 1–3 forbid without explicit
+instruction. Instead `post_to_handler` constructs the handler via
+`handler.__new__(cls)` — bypassing `BaseHTTPRequestHandler.__init__`, which would attempt
+socket setup — then injects `headers`/`rfile`/`wfile` and stubs the response methods. The
+endpoint is exercised exactly as deployed, through its real HTTP entry point.
+
+This couples to stdlib internals rather than a public API, so it is confined to that one
+fixture; a future Python release breaking it is a one-line fix in `conftest.py`.
+
+### 13.3 CI jobs
+
+1. **`stdlib-only`** — installs `requirements-dev.txt` and nothing else, then runs the ΔP,
+   PRV, i18n and architecture suites. The absent install is itself the test: adding a
+   third-party import to `dp_calculator.py` or `psv_calculator.py` makes this job fail to
+   import, enforcing the `api/CLAUDE.md` dependency rule mechanically.
+2. **`flow-regime`** — installs `requirements.txt` (numpy/matplotlib/seaborn) and runs the
+   Flow Regime suite. Only `compute()` is exercised; no PNG is rendered.
+
+### 13.4 Scope and deliberate limits
+
+- The suite **locks current behavior**, including the defects in §11. Where it does, the
+  test says so and names the register entry, so closing an issue is a deliberate act that
+  updates both together rather than a silent change to a shipped value.
+- **The JIS K 2301 chain (Vector 1) is not yet covered.** It lives in JavaScript
+  (`calcGHV()`), which pytest cannot import. The chosen route for a later release is to
+  extract `index.html`'s self-contained slice and run it under `node -e` with a small DOM
+  shim, keeping **one** source of truth for the regulatory math. A Python port was
+  rejected as the primary mechanism: two sources of truth for regulatory-traceable
+  arithmetic is precisely the divergence the preservation rules exist to prevent. (If one
+  is ever written as a supplement, it must use `math.floor(x + 0.5)` — Python's `round()`
+  is banker's rounding, JavaScript's `Math.round()` is half-up, and the JIS rules round at
+  five separate places.)
+- **Vector 4 (PRV) is a behavior lock, not a blessed engineering reference** — see §9.

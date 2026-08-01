@@ -1,0 +1,8 @@
+# Development / CI dependencies ONLY.
+#
+# Do NOT move anything from this file into requirements.txt — Vercel installs
+# requirements.txt into the production serverless runtime, where pytest has no
+# business being. requirements.txt stays flowregime.py's dependency list, nothing more.
+#
+# Install locally with:  pip install -r requirements.txt -r requirements-dev.txt
+pytest>=8.0

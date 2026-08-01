@@ -61,3 +61,23 @@ Server-generated status/error text is English prose regardless of UI language. T
 fix (i18n Milestone 4) is to return machine-readable status/error **keys** in addition to the
 English text — an additive, stdlib-safe payload change. `flowregime.py` already follows this
 pattern with `regime_key`; the other message/error branches across the three files remain unkeyed.
+
+## Automated Tests (v2.8)
+
+`pytest` from the repo root. Details in `docs/SPECIFICATION.md` §13; what matters here:
+
+- The dp / psv / flowregime reference cases above are now **enforced on every push and PR**,
+  not just by this file asking you to re-verify them. They still need re-verifying by hand
+  when you change the physics, but a regression will no longer reach `main` silently.
+- **`dp_calculator.py` is tested through `do_POST` with a fake request**, not by calling a
+  `compute()` function — because it does not have one, and adding one would be a refactor
+  of working code. Do not add a `compute()` "to make it testable"; the harness in
+  `tests/conftest.py` already handles it.
+- **The stdlib-only rule is now machine-enforced.** `tests/test_architecture.py` parses the
+  AST of `dp_calculator.py` and `psv_calculator.py` and fails on any non-stdlib import, and
+  the `stdlib-only` CI job installs nothing but pytest. Adding a dependency to either file
+  breaks the build immediately.
+- **The multiply-to-SI convention is machine-enforced too.** The v2.3.1 density bug
+  (dividing rather than multiplying) is guarded by tests that deliberately use lb/ft³,
+  because the reference case sends kg/m³ — whose factor is 1.0, making multiply and divide
+  indistinguishable. Any new unit-factor code needs a test with a factor that is not 1.

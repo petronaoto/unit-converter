@@ -92,7 +92,8 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 | Very small label typography in dense cards may fall below WCAG contrast targets | Backlog (needs a careful, sweeping pass) |
 | API error responses are not yet schema-harmonized across the three endpoints | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
 | dp_calculator input edge cases (zero viscosity/density) can produce an unstructured 500 | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
-| No automated test suite; regression relies on the manual reference-vector checklist | Roadmap v2.8 (pytest + CI) |
+| ~~No automated test suite; regression relies on the manual reference-vector checklist~~ | **Shipped v2.8** — pytest + GitHub Actions run Vectors 2 and 3, i18n key parity across all 10 dictionaries, and the architectural constraints on every push/PR (SPECIFICATION.md §13). **Vector 1 (JIS) is still uncovered** — it lives in JavaScript; see §13.4 |
+| API RP 14E SI constant is √1.5 rather than the exact 1.21990 (V_e +0.42 %, marginally non-conservative) | Logged v2.8 as Known Issue #9; fix deferred to a separately-tagged change because it moves a documented reference value |
 | Non-English Terms of Use / Privacy Policy translations await the maintainer's legal review (governing-language note mitigates) | Open — review before promoting non-EN legal pages |
 | Server-generated status/error text (ΔP/PSV/Flow Regime badges) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6 |
 
@@ -110,7 +111,7 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 | Sonic velocity & Joule-Thomson coefficient | Med | L | Client-side; same input set (SG, P, T, k) |
 | Line sizing helper (velocity + ΔP/100 m vs. typical service criteria) | High | M | Reuses ΔP outputs; large value for juniors sizing lines |
 | Fittings / K-factor equivalent length in the ΔP card | High | M | Backward-compatible payload extension to dp_calculator |
-| pytest + GitHub Actions reference regression (JIS vector, dp/psv cases) | High | M | Directly protects the CLAUDE.md reference values on every push |
+| ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 99 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |
 | Mobile navigation affordance (hamburger or wrap) | Med | M | Deferred from v2.5 (layout restructure, needs design care) |
 | Custom modules in Share links (state format v:2) | Med | M | Deferred from v2.5 (state versioning required) |
 
@@ -148,7 +149,11 @@ Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in 
 ## 7. Release & QA Process
 
 1. **Branch → PR → merge.** Work happens on a feature branch; a PR to `main` is reviewed by the maintainer. Merging to `main` deploys to production (Vercel) — merges are therefore a deliberate release act.
-2. **Reference-value regression (mandatory before any release).** The reference vectors in CLAUDE.md and SPECIFICATION.md §9 must reproduce exactly — since v2.6, this means in **every enabled language** (currently English and Japanese; see SPECIFICATION.md §12), not English only:
+2. **Reference-value regression (mandatory before any release).** The reference vectors in CLAUDE.md and SPECIFICATION.md §9 must reproduce exactly — since v2.6, this means in **every enabled language** (all 10; see SPECIFICATION.md §12), not English only.
+
+   **Since v2.8 this is partly automated** (`pytest`, run on every push and PR — SPECIFICATION.md §13). CI covers Vectors 2 and 3, i18n key parity, and the architectural rules. It does **not** yet cover Vector 1 (JIS), which remains a manual check because the calculation is JavaScript. The numeric path is language-independent apart from `fmtN`'s hardcoded `en-US` locale, so the per-language requirement is really about the UI not breaking — which is what the feature-preservation sweep in step 4 covers, and which CI cannot do.
+
+   Vectors, for reference:
    - JIS composition case (CH₄ 89 / C₂H₆ 7 / C₃H₈ 2.5 / iC₄ 0.7 / nC₄ 0.5 / N₂ 0.3): HHV 44.59, LHV 40.25, SG 0.634, WI 56.00, MW 18.305, Z 0.996759/0.9968, ρ_std 0.81930, 100 t/h → 122.056 kNm³/h, 100 kNm³/h → 81.930 t/h.
    - ΔP default case: ΔP_total ≈ 176.9 kPa (2.34 friction + 174.6 static), Re ≈ 2.20×10⁵, f ≈ 0.0184, V_e ≈ 7.72 m/s (C=100).
    - Flow Regime default case: Churn/Slug Flow, θ = +45.0°, vertical map.
