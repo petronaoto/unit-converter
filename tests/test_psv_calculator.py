@@ -1,23 +1,30 @@
 """Reference-value regression for api/psv_calculator.py (API 520 Part I, 9th Ed.).
 
-NOTE ON PROVENANCE — read before trusting these numbers.
+These are **Vector 4** in docs/SPECIFICATION.md §9 — five USC cases, one per sizing mode,
+reviewed and approved by the maintainer in v2.8. Before v2.8 no PSV reference vector
+existed anywhere in the repo, although the roadmap item named "dp/psv cases".
 
-Unlike the ΔP and Flow Regime cases, no PSV reference vector has ever been documented in
-CLAUDE.md, api/CLAUDE.md or docs/SPECIFICATION.md §9. The five cases below were generated
-by running the CURRENT implementation against the placeholder values already shown in the
-Safety card's own input fields (index.html `psv-*` placeholders), then hand-checked where
-the arithmetic is short enough to check.
+Provenance: the inputs are the placeholder values already shown in the Safety card's own
+fields (index.html `psv-*` placeholders), so they are auditable from the UI. Two
+adjustments were made during review:
 
-They are therefore *behavior locks*, not independently blessed engineering references:
-they prove the endpoint has not changed, not that it was right to begin with. They are
-proposed for the maintainer's review and, once blessed, for promotion into
-docs/SPECIFICATION.md §9 as Vector 4.
+  * §5.10 two-phase W was halved to 238,715 lb/h so the required area (19.01 in²) lands
+    inside the API 526 range on orifice T, rather than over-ranging to `T+`. The
+    over-range path is still covered — see test_oversized_requirement_is_flagged.
+  * The reported Pc was fixed (see test_twophase_reports_pc_from_relieving_pressure).
 
 Hand-check performed on the gas case (§5.6, USC, k = 1.3):
     C   = 520 * sqrt(1.3 * (2/2.3)^(2.3/0.3)) = 346.98
     pcr = (2/2.3)^(1.3/0.3)                   = 0.5457
     Pcf = 0.5457 * 97.2                       = 53.04 psia
     A   = 53500 / (346.98*0.975*97.2) * sqrt(627/51) = 5.704 in²  -> orifice P (6.38 in²)
+
+Hand-check performed on the two-phase case (§5.10, USC):
+    omega = 9 * (0.3629/0.3116 - 1)                    = 1.4817
+    eta_c                                              = 0.6564
+    G     = 68.09 * 0.6564 * sqrt(80.7/(0.3116*1.4817)) = 590.891
+    A     = 0.04 * 238715 / (0.85 * 590.891)            = 19.0114 in² -> orifice T
+    Pc    = 0.6564 * 80.7                               = 52.971 psia
 """
 
 import math
@@ -126,13 +133,17 @@ def test_liquid_viscosity_correction_reduces_capacity(psv_module):
 
 # ── §5.10 Two-phase (Omega method) ───────────────────────────────────────────────
 
+TWOPHASE_CASE = {"W": 238715, "vo": 0.3116, "v9": 0.3629, "Po": 80.7, "Pa": 0,
+                 "Kd": 0.85, "Kb": 1.0, "Kc": 1.0, "Kv": 1.0}
+
+
 def test_twophase_critical_omega(psv_module):
-    data = {"W": 477430, "vo": 0.3116, "v9": 0.3629, "Po": 80.7, "Pa": 0,
-            "Kd": 0.85, "Kb": 1.0, "Kc": 1.0, "Kv": 1.0}
-    res = psv_module.size_twophase(data, "USC")
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE), "USC")
 
     assert res["error"] is False
-    assert res["area"] == pytest.approx(38.0227, abs=5e-4)
+    assert res["area"] == pytest.approx(19.0114, abs=5e-4)
+    assert res["orifice"] == "T"
+    assert res["orifice_area"] == pytest.approx(26.00, abs=5e-3)
     assert res["flow_regime"] == "Two-Phase Critical (Omega)"
     assert res["badge"] == "Two-Phase (Omega Method)"
     assert res["omega"] == pytest.approx(1.4817, abs=5e-5)
@@ -140,28 +151,48 @@ def test_twophase_critical_omega(psv_module):
     assert res["G"] == pytest.approx(590.891, abs=5e-4)
 
 
-def test_twophase_reported_pc_encodes_known_issue_1(psv_module):
-    """KNOWN ISSUE (docs/SPECIFICATION.md §11 #1): the reported Pc is computed from the
-    back-pressure Pa instead of the relieving pressure Po. The sizing itself is correct —
-    the internal critical/subcritical decision uses eta_c * Po — but the DISPLAYED Pc is
-    wrong. With the default Pa = 0 it degrades to exactly 0.0.
+def test_twophase_reports_pc_from_relieving_pressure(psv_module):
+    """FIXED IN v2.8 (closes docs/SPECIFICATION.md §11 issue #1).
 
-    Locked here so that fixing the issue is a deliberate act that updates this test and
-    the register entry together, rather than a silent change to a displayed value.
+    The reported Pc was computed from the back-pressure Pa instead of the relieving
+    pressure Po, so it read exactly 0.0 whenever Pa was left at its default — which is
+    the default. Sizing was never affected: the internal critical/subcritical decision
+    on psv_calculator.py:299 always used eta_c * Po. Only the displayed value was wrong,
+    and it is displayed (index.html:3257 pushes it into psv-out-details).
+
+    Pc = eta_c * Po = 0.6564 * 80.7 = 52.971 psia.
     """
-    data = {"W": 477430, "vo": 0.3116, "v9": 0.3629, "Po": 80.7, "Pa": 0,
-            "Kd": 0.85, "Kb": 1.0, "Kc": 1.0, "Kv": 1.0}
-    res = psv_module.size_twophase(data, "USC")
-    assert res["Pc"] == pytest.approx(0.0)
-    # What it SHOULD be, once #1 is fixed:
-    assert res["eta_c"] * data["Po"] == pytest.approx(52.97, abs=0.05)
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE), "USC")
+    assert res["Pc"] == pytest.approx(52.971, abs=5e-4)
+    assert res["Pc"] == pytest.approx(res["eta_c"] * TWOPHASE_CASE["Po"], abs=1e-3)
+
+
+def test_twophase_pc_is_independent_of_back_pressure(psv_module):
+    """The regression guard for #1: Pc must not move when only Pa changes.
+
+    Pa still (correctly) decides the critical/subcritical branch, so this compares the
+    two runs while both remain critical (Pa < Pc = 52.97).
+    """
+    at_zero = psv_module.size_twophase(dict(TWOPHASE_CASE, Pa=0), "USC")
+    at_forty = psv_module.size_twophase(dict(TWOPHASE_CASE, Pa=40), "USC")
+
+    assert at_zero["flow_regime"] == at_forty["flow_regime"] == "Two-Phase Critical (Omega)"
+    assert at_forty["Pc"] == pytest.approx(at_zero["Pc"], abs=1e-9)
+    assert at_forty["Pc"] == pytest.approx(52.971, abs=5e-4)
+
+
+def test_twophase_subcritical_branch(psv_module):
+    """Back-pressure above Pc must switch to the subcritical mass-flux equation."""
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE, Pa=70), "USC")
+    assert res["error"] is False
+    assert res["flow_regime"] == "Two-Phase Subcritical (Omega)"
+    # Pc is a property of Po and omega, so it is unchanged by the branch taken.
+    assert res["Pc"] == pytest.approx(52.971, abs=5e-4)
 
 
 def test_twophase_rejects_v9_below_vo(psv_module):
     """omega < 0 is physically impossible — the two-phase specific volume must expand."""
-    data = {"W": 477430, "vo": 0.3629, "v9": 0.3116, "Po": 80.7, "Pa": 0,
-            "Kd": 0.85, "Kb": 1.0, "Kc": 1.0, "Kv": 1.0}
-    res = psv_module.size_twophase(data, "USC")
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE, vo=0.3629, v9=0.3116), "USC")
     assert res["error"] is True
 
 

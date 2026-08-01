@@ -42,6 +42,14 @@ Re-verify after ANY change to the corresponding file, before committing.
   V_e ≈ **7.72 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT).
 - **flowregime** (same inputs): must classify as **Churn / Slug Flow, θ = +45.0°, vertical map**
   (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
+- **psv_calculator** (added v2.8 — five USC cases, one per sizing mode; full inputs in
+  `docs/SPECIFICATION.md` §9 Vector 4, enforced by `tests/test_psv_calculator.py`):
+  §5.6 gas → **5.7047 in²** (orifice P), C = 346.9764, P_cf = 53.045 psia;
+  §5.7 steam → **1.7030 in²** (K), K_N = 1.0115;
+  §5.8 liquid certified → **4.1690 in²** (N);
+  §5.9 liquid non-certified → **4.1001 in²** (N);
+  §5.10 two-phase → **19.0114 in²** (T), ω = 1.4817, η_c = 0.6564, **P_c = 52.971 psia**,
+  G = 590.891.
 
 ## Local Testing
 

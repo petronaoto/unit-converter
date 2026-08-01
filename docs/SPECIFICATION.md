@@ -233,9 +233,19 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 
 **Vector 3 — Flow Regime default case** (same inputs): **Churn / Slug Flow**, θ = **+45.0°**, vertical map, j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s.
 
-**Vector 4 — PRV sizing (candidate, v2.8):** five USC cases, one per API 520 sizing mode, generated from the Safety card's own placeholder inputs. Encoded in `tests/test_psv_calculator.py` but **not yet blessed as engineering reference values** — they are behavior locks pending the maintainer's review, and are therefore listed here without the "MUST REPRODUCE EXACTLY" status the other three carry. Summary: §5.6 gas → 5.7047 in² (orifice P); §5.7 steam → 1.7030 in² (K); §5.8 liquid certified → 4.1690 in² (N); §5.9 liquid non-certified → 4.1001 in² (N); §5.10 two-phase → 38.0227 in² (T+, over-range), ω = 1.4817, η_c = 0.6564.
+**Vector 4 — PRV sizing (added and approved in v2.8).** Five USC cases, one per API 520 Part I sizing mode. Inputs are the Safety card's own placeholder values, so every case is reproducible directly from the UI. Enforced by `tests/test_psv_calculator.py`.
 
-Vectors 1–3 are enforced automatically on every push and pull request — see §13.
+| Mode | Inputs | Required area | Orifice | Intermediates |
+|---|---|---|---|---|
+| **§5.6 Gas** | W 53,500 lb/h · M 51 · k 1.3 · T 627 °R · Z 1.0 · P₁ 97.2 psia · P₂ 0 · K_d 0.975 | **5.7047 in²** | **P** (6.38 in²) | C 346.9764 · critical ratio 0.5457 · P_cf 53.045 psia · Critical Flow |
+| **§5.7 Steam** | W 153,500 lb/h · P₁ 1,774.7 psia · K_d 0.975 · K_SH 1.0 | **1.7030 in²** | **K** (1.838 in²) | K_N 1.0115 (Napier correction active above 1,500 psia) |
+| **§5.8 Liquid, certified** | Q 1,800 gal/min · G_l 0.9 · μ 0 · P₁ 275 psig · P₂ 0 · K_d 0.65 | **4.1690 in²** | **N** (4.34 in²) | K_v 1.0 · Re `None` (correction skipped when μ = 0) |
+| **§5.9 Liquid, non-certified** | Q 1,800 gal/min · G_l 0.9 · μ 0 · P_s 250 psig · P₂ 0 · K_d 0.62 · K_p 1.0 | **4.1001 in²** | **N** (4.34 in²) | sizes on set pressure P_s rather than P₁ |
+| **§5.10 Two-phase (Omega)** | W 238,715 lb/h · v_o 0.3116 · v₉ 0.3629 ft³/lb · P_o 80.7 psia · P_a 0 · K_d 0.85 | **19.0114 in²** | **T** (26.00 in²) | ω 1.4817 · η_c 0.6564 · **P_c 52.971 psia** · G 590.891 · Two-Phase Critical |
+
+Hand-checks recorded in the test module's docstring: the gas case reproduces from C = 520·√(k(2/(k+1))^((k+1)/(k−1))) and the two-phase case from ω = 9(v₉/v_o − 1), both to 4 d.p.
+
+All four vectors are enforced automatically on every push and pull request, except Vector 1 — see §13.
 
 ## 10. Deployment
 
@@ -247,7 +257,7 @@ Vectors 1–3 are enforced automatically on every push and pull request — see 
 
 | # | Issue | Location | Status |
 |---|---|---|---|
-| 1 | Two-phase PRV result line displays Pc computed from back-pressure `Pa` instead of relieving pressure `Po` (sizing itself is correct — the internal critical/subcritical decision uses η_c·Po) | `api/psv_calculator.py:329` | Fix proposed, awaiting maintainer approval |
+| 1 | ~~Two-phase PRV result line displays Pc computed from back-pressure `Pa` instead of relieving pressure `Po`~~ | `api/psv_calculator.py` | **FIXED v2.8.** `Pc_display` now uses `Po_input × η_c`, matching the internal `Pc` that drives the critical/subcritical decision. Sizing was never affected — only the displayed value, which read exactly `0.0` whenever `Pa` was left at its default (the default). On Vector 4's two-phase case it now reads **52.971 psia** instead of 0.0. Guarded by `test_twophase_reports_pc_from_relieving_pressure` and `test_twophase_pc_is_independent_of_back_pressure` |
 | 2 | ΔP API: zero viscosity/density inputs can raise an uncaught exception → HTTP 500 without CORS/JSON, surfacing as a generic "API Connection Failed" badge | `api/dp_calculator.py` | Fix proposed, awaiting approval |
 | 3 | ΔP API accepts a negative erosion C-factor (produces a negative V_e with a green WITHIN LIMIT badge); `cfactor: 0` silently becomes 100 | `api/dp_calculator.py:107` | Fix proposed, awaiting approval |
 | 4 | PRV gas mode: k ≤ 1 raises a division error that surfaces as a raw Python message; generic `str(e)` leaks internals | `api/psv_calculator.py` | Fix proposed, awaiting approval |
@@ -372,4 +382,4 @@ fixture; a future Python release breaking it is a one-line fix in `conftest.py`.
   is ever written as a supplement, it must use `math.floor(x + 0.5)` — Python's `round()`
   is banker's rounding, JavaScript's `Math.round()` is half-up, and the JIS rules round at
   five separate places.)
-- **Vector 4 (PRV) is a behavior lock, not a blessed engineering reference** — see §9.
+- **Vector 4 (PRV) was authored during v2.8** and reviewed and approved by the maintainer before promotion into §9. Its two-phase case was adjusted during that review — W halved so the result lands on a real API 526 orifice rather than over-ranging — and the review is what surfaced Known Issue #1, now fixed.
