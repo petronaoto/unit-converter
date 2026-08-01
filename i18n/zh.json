@@ -23,7 +23,8 @@
     "copyFailed": "复制失败 — 剪贴板被禁止",
     "shareLinkFailed": "分享链接生成失败",
     "popupBlockedDownloaded": "弹出窗口被拦截 — 报告已改为以 HTML 文件下载",
-    "popupBlockedAllow": "弹出窗口被拦截 — 请允许弹出窗口以导出"
+    "popupBlockedAllow": "弹出窗口被拦截 — 请允许弹出窗口以导出",
+    "openNavigation": "打开栏目导航"
   },
   "nav": {
     "general": "通用",

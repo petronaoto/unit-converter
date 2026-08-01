@@ -23,7 +23,8 @@
     "copyFailed": "Copy failed — clipboard blocked",
     "shareLinkFailed": "Share link failed",
     "popupBlockedDownloaded": "Pop-up blocked — report downloaded as HTML instead",
-    "popupBlockedAllow": "Pop-up blocked — allow pop-ups to export"
+    "popupBlockedAllow": "Pop-up blocked — allow pop-ups to export",
+    "openNavigation": "Open section navigation"
   },
   "nav": {
     "general": "General",

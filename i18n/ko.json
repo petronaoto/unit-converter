@@ -23,7 +23,8 @@
     "copyFailed": "복사 실패 — 클립보드가 차단되어 있습니다",
     "shareLinkFailed": "공유 링크 생성에 실패했습니다",
     "popupBlockedDownloaded": "팝업이 차단되어 리포트를 HTML로 다운로드했습니다",
-    "popupBlockedAllow": "팝업이 차단되어 있습니다 — 내보내기를 하려면 팝업을 허용해 주십시오"
+    "popupBlockedAllow": "팝업이 차단되어 있습니다 — 내보내기를 하려면 팝업을 허용해 주십시오",
+    "openNavigation": "섹션 내비게이션 열기"
   },
   "nav": {
     "general": "일반",

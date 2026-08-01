@@ -23,7 +23,8 @@
     "copyFailed": "Gagal menyalin — clipboard diblokir",
     "shareLinkFailed": "Gagal membuat tautan berbagi",
     "popupBlockedDownloaded": "Pop-up diblokir — laporan diunduh sebagai HTML",
-    "popupBlockedAllow": "Pop-up diblokir — izinkan pop-up untuk mengekspor"
+    "popupBlockedAllow": "Pop-up diblokir — izinkan pop-up untuk mengekspor",
+    "openNavigation": "Buka navigasi bagian"
   },
   "nav": {
     "general": "Umum",

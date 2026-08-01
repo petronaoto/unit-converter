@@ -23,7 +23,8 @@
     "copyFailed": "コピーに失敗しました — クリップボードがブロックされています",
     "shareLinkFailed": "共有リンクの作成に失敗しました",
     "popupBlockedDownloaded": "ポップアップがブロックされたため、レポートをHTMLとしてダウンロードしました",
-    "popupBlockedAllow": "ポップアップがブロックされています — 出力するにはポップアップを許可してください"
+    "popupBlockedAllow": "ポップアップがブロックされています — 出力するにはポップアップを許可してください",
+    "openNavigation": "セクションナビゲーションを開く"
   },
   "nav": {
     "general": "一般",
