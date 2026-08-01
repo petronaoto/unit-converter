@@ -87,8 +87,14 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 #### 4.3.2 Pipe Delta Pressure (Darcy-Weisbach) — server-backed
 
 - **Inputs** (`dp-*`): `dp-scale`, `dp-id`/`dp-id-unit`, `dp-len`/`dp-len-unit`, `dp-rough`/`dp-rough-unit`, `dp-elev`/`dp-elev-unit`; vapor `dp-v-flow`/`-u`, `dp-v-den`/`-u`, `dp-v-visc`/`-u`; liquid `dp-l-flow`/`-u`, `dp-l-den`/`-u`, `dp-l-visc`/`-u`; erosion C-factor `dp-cfactor` (default 100).
-- **Outputs:** `dp-out-total`(+unit), `dp-out-len` (ΔP per 100 m / 100 ft), `dp-out-vel`(+unit), second row `dp-out-re`/`dp-out-re-regime`, `dp-out-f`, `dp-out-ve`, `dp-out-eratio`, `dp-out-ero-badge` (WITHIN LIMIT < 0.8 ≤ NEAR LIMIT < 1.0 ≤ EXCEEDS Ve), regime cross-link note `dp-out-regime-note`, status badge `dp-regime-badge`.
-- **Method (server, §5.1):** phase detection → single vapor / single liquid / two-phase HEM; Darcy-Weisbach friction term + hydrostatic term; Colebrook-White friction factor (iterative); API RP 14E erosional velocity V_e = 1.2247·C/√ρ_mix (SI form of V_e = C/√ρ in lb/ft³ units).
+- **Fittings & valves (v2.8, `dp-fit-*`):** a `<details id="dp-fit-details">` block between the Calculate button and the outputs panel, **collapsed by default with every count at 0**, so an untouched card sends `k_total = 0` and reproduces the v2.7 result exactly. Twelve Crane TP-410 types: `dp-fit-elbow90` (n = 30), `-elbow90lr` (16), `-elbow45` (16), `-return180` (50), `-teerun` (20), `-teebranch` (60), `-gate` (8), `-globe` (340), `-ball` (3), `-checkswing` (100), plus direct-K `-entrance` (K = 0.50) and `-exit` (K = 1.00). Live readouts `dp-fit-ksum`, `dp-fit-nominal`, `dp-fit-ft`. `updateFittingSum()` maps the entered ID to the **nearest nominal size** in the Crane App. A-26 f_T ladder (0.027 at ½" down to 0.012 at 18–24") — tabulated in size bands, so it snaps rather than interpolating — then returns ΣK = Σ qty·(n·f_T or K). The table lives **client-side** so `api/dp_calculator.py` stays standard-library-only; only ΣK crosses the wire.
+- **Outputs:** `dp-out-total`(+unit), `dp-out-len` (ΔP per 100 m / 100 ft), `dp-out-vel`(+unit), second row `dp-out-re`/`dp-out-re-regime`, `dp-out-f`, `dp-out-ve`, `dp-out-eratio`, `dp-out-ero-badge` (WITHIN LIMIT < 0.8 ≤ NEAR LIMIT < 1.0 ≤ EXCEEDS Ve), regime cross-link note `dp-out-regime-note`, status badge `dp-regime-badge`. **Third row (v2.8):** `dp-out-dpfit`, `dp-out-leq`, service selector `dp-service`, `dp-out-dpfric100`, `dp-out-vmax`, `dp-out-sizing-badge`, `dp-out-vratio`.
+- **Line sizing (v2.8, `renderLineSizing()`):** screens the result against **NORSOK P-001** §6.3.2/§6.4 and Tables 3–4. Gas v_max = min(175·ρ^−0.43, 60) m/s; two-phase v_max = min(183·ρ_mix^−0.5, 25) m/s non-corrosive / 10 m/s corrosive; liquid bands 1–6 m/s carbon steel, 1–7 SS/Ti, **1–3 Cu-Ni** (lowest, because of seawater erosion), 1–6 GRP; pump circuits use ΔP limits of 0.25 / 0.05 / 0.9 bar per 100 m (sub-cooled suction / boiling suction / discharge). Badge thresholds mirror the erosion check (< 0.8 within, < 1.0 near, ≥ 1.0 exceeds), plus a BELOW MIN VELOCITY state for the liquid bands and a PHASE MISMATCH state when the chosen service does not match `phase_key`. The `auto` service maps `phase_key` → gas / liquid-CS / two-phase-non-corrosive. Results are cached in `lastDpResult` so changing the service re-renders without another API call.
+
+  ⚠ **The verdict judges `dpFric` only, never the displayed ΔP/length.** That figure includes static head, which on this card's own default (Δz = 70.711 m) is 98 % of the total — judging against it would flag almost every elevated line as ΔP-oversized. Static head is not a line-sizing criterion.
+
+  ⚠ **NORSOK-only by design.** Widely-circulated GPSA-attributed velocity/ΔP tables could not be verified against primary text during v2.8 research — only secondary aggregators — so they are omitted rather than cited falsely. The API RP 14E erosional check is separate and is not duplicated here.
+- **Method (server, §5.1):** phase detection → single vapor / single liquid / two-phase HEM; Darcy-Weisbach friction term + hydrostatic term + **fittings term ΣK·ρv²/2 (v2.8)**; Colebrook-White friction factor (iterative); API RP 14E erosional velocity V_e = 1.2247·C/√ρ_mix (SI form of V_e = C/√ρ in lb/ft³ units — see Known Issue #9).
 
 #### 4.3.3 Flow Regime — server-backed visualizer
 
@@ -134,24 +140,42 @@ All endpoints: `POST` JSON body, JSON response, `Access-Control-Allow-Origin: *`
   "rough": 0.045, "rough_mult": 0.001, "elev": 70.711, "elev_mult": 1,
   "v_flow": 150, "v_flow_m": 0.000277778, "v_den": 10, "v_den_m": 1, "v_visc": 0.012, "v_visc_m": 0.001,
   "l_flow": 7300, "l_flow_m": 0.000277778, "l_den": 500, "l_den_m": 1, "l_visc": 0.12, "l_visc_m": 0.001,
-  "cfactor": 100 }
+  "cfactor": 100, "k_total": 0 }
 ```
+
+`k_total` (v2.8, **optional, default 0**) is ΣK for the fittings on the run, summed client-side from the Crane TP-410 table. Omitting it — as every pre-v2.8 payload and share link does — makes `dpFittings` exactly `0.0` and leaves `dpPa` bit-identical to v2.7. Negative values are clamped to 0. The Crane table stays client-side so this endpoint remains standard-library-only.
 
 **Success response:**
 
 ```json
 { "error": false,
-  "dpPa": 176919.0, "dpFric": 2340.0, "dpStatic": 174580.0,
-  "vel": 1.014, "Re": 220000.0, "re_regime": "Turbulent", "f": 0.0184,
-  "rho_mix": 251.7, "v_ero": 7.72, "ero_ratio": 0.13, "cfactor": 100.0,
-  "L": 100.0, "badge": "Two-Phase (HEM)", "badgeClass": "…tailwind classes…" }
+  "dpPa": 176929.0, "dpFric": 2338.3, "dpStatic": 174590.0, "dpFittings": 0.0,
+  "vel": 1.014, "Re": 220110.0, "re_regime": "Turbulent", "re_regime_key": "turbulent",
+  "f": 0.01835, "rho_mix": 251.69, "v_ero": 7.72, "ero_ratio": 0.131, "cfactor": 100.0,
+  "k_total": 0.0, "L_eq": 0.0, "L": 100.0, "L_eff": 100.0,
+  "badge": "Two-Phase (HEM)", "phase_key": "twophase", "badgeClass": "…tailwind classes…" }
 ```
 
-(Values shown are the reference case, approximate; `re_regime` ∈ Laminar < 2300 ≤ Transitional < 4000 ≤ Turbulent.)
+(Values shown are the reference case; `re_regime` ∈ Laminar < 2300 ≤ Transitional < 4000 ≤ Turbulent.)
+
+**v2.8 additions — all additive; no field was renamed or removed.**
+
+| Field | Meaning |
+|---|---|
+| `dpFittings` | ΔP across the fittings, ΣK·ρv²/2 [Pa]. Included in `dpPa`; `0.0` when `k_total` is absent or ≤ 0 |
+| `k_total` | ΣK as received (clamped to ≥ 0), echoed for traceability |
+| `L_eq` | Equivalent straight length ΣK·D/f at the **actual flowing** friction factor [m]. Reported for information only — `dpFittings` is computed directly from ΣK and never round-trips through `L_eq` |
+| `L_eff` | `L + L_eq` |
+| `phase_key` | `vapor` | `liquid` | `twophase` — machine-readable companion to `badge` |
+| `re_regime_key` | `laminar` | `transitional` | `turbulent` — companion to `re_regime` |
+
+⚠ **`L` deliberately remains the STRAIGHT-pipe length.** The client divides by it to render ΔP per unit length; returning `L + L_eq` there would silently turn that display into "per effective metre", which is not what a piping engineer expects. `L_eff` carries the fittings-inclusive figure.
+
+`phase_key` and `re_regime_key` follow the i18n Milestone 4 pattern that `flowregime.py` already established with `regime_key` (§5.3). They exist because the frontend previously branched on the English string `badge.indexOf('Two-Phase')`, which would silently stop firing in all 10 languages the moment the badge is localized.
 
 **Error response:** `{ "error": true, "badge": "…", "badgeClass": "…" }` — note: no `message` field (Known Issue #6).
 
-**Method:** HEM two-phase mixing (x = W_v/W_t; 1/ρ = x/ρ_v + (1−x)/ρ_l; μ = x·μ_v + (1−x)·μ_l), Darcy-Weisbach ΔP_fric = f·(L/D)·ρ·v²/2 with iterative Colebrook-White f (laminar 64/Re below Re 2300), ΔP_static = ρ·g·Δz (g = 9.81), API RP 14E V_e = 1.2247·C/√ρ.
+**Method:** HEM two-phase mixing (x = W_v/W_t; 1/ρ = x/ρ_v + (1−x)/ρ_l; μ = x·μ_v + (1−x)·μ_l), Darcy-Weisbach ΔP_fric = f·(L/D)·ρ·v²/2 with iterative Colebrook-White f (laminar 64/Re below Re 2300), ΔP_static = ρ·g·Δz (g = 9.81), **ΔP_fittings = ΣK·ρ·v²/2 (v2.8)**, API RP 14E V_e = 1.2247·C/√ρ (see Known Issue #9 on that constant). ΔP_total = ΔP_fric + ΔP_static + ΔP_fittings.
 
 ### 5.2 `POST /api/psv_calculator`
 
@@ -273,6 +297,28 @@ Hand-checks recorded in the test module's docstring: the gas case reproduces fro
 | **μ_JT** | **0.3279 K/bar** = 0.04069 °F/psi |
 
 Cross-check worth keeping: at Z = 1 the sonic velocity would be 441.0 m/s, **7.5 % higher** — that gap is why the card shows Z alongside c.
+
+**Vector 7 — Crane fittings (added v2.8).** Vector 2's hydraulics with a representative fitting set on the 4-inch line: **4× 90° standard elbow, 1× gate valve (full open), 1× swing check valve, 1× sharp-edged entrance, 1× pipe exit.**
+
+| Step | Expected |
+|---|---|
+| Nominal size → f_T (Crane App. A-26) | 4" → **0.017** |
+| 4× 90° elbow, K = 30·f_T | 4 × 0.5100 = 2.0400 |
+| Gate valve, K = 8·f_T | 0.1360 |
+| Swing check, K = 100·f_T | 1.7000 |
+| Entrance (direct K) / Exit (direct K) | 0.5000 / 1.0000 |
+| **ΣK** | **5.3760** |
+| Velocity head ρv²/2 | 129.4370 Pa |
+| **ΔP_fittings = ΣK·ρv²/2** | **695.8532 Pa = 0.69585 kPa** |
+| **L_eq = ΣK·D/f** (f = 0.0183544 flowing) | **29.75863 m** |
+| L_eff | 129.75863 m |
+| **ΔP_total** | **177.6247 kPa** |
+
+**Self-consistency check built into the suite:** re-running the *straight* pipe at L = 129.75863 m with no fittings raises ΔP_fric from 2338.3238 Pa to 3034.1770 Pa — a difference of **695.8532 Pa**, identical to the direct ΣK·ρv²/2 result. The two methods agree by construction because L_eq = ΣK·D/f; if they ever diverge, one has been reimplemented incorrectly.
+
+**Why the K method is primary.** A fitting's loss is a fixed number of velocity heads — a property of its geometry. The equivalent length that produces that loss depends on the pipe's *actual* friction factor. The Crane L/D shortcut (L_eq = n·D) implicitly assumes f = f_T, i.e. that the pipe is in fully-rough flow, which is false for most process lines including this one (Re = 2.20×10⁵, f = 0.01835 > f_T = 0.017). For this fitting set the shortcut gives Σn·D = 228 × 0.1016 = 23.16 m, **22 % below** the K-method's 29.76 m — and entrance and exit have no n at all, so they cannot appear in it.
+
+⚠ **Gradual reducers are deliberately absent** from the fitting list. Crane's Formula 1–4 coefficients could not be verified against a primary source during v2.8 research (the Crane PDF and its mirrors were inaccessible). Publishing an unverified constant is the exact failure mode this project's traceability rules exist to prevent. Sudden contraction/enlargement are textbook-citable and could be added; gradual reducers wait for a verified copy of TP-410.
 
 All four vectors are enforced automatically on every push and pull request, except Vector 1 — see §13.
 

@@ -89,3 +89,23 @@ pattern with `regime_key`; the other message/error branches across the three fil
   (dividing rather than multiplying) is guarded by tests that deliberately use lb/ft³,
   because the reference case sends kg/m³ — whose factor is 1.0, making multiply and divide
   indistinguishable. Any new unit-factor code needs a test with a factor that is not 1.
+
+## v2.8 — Fittings & machine-readable keys (dp_calculator.py)
+
+- **`k_total` (optional, default 0)** is ΣK for the run's fittings, summed CLIENT-side from
+  the Crane TP-410 table in `index.html`. The endpoint only multiplies:
+  `dpFittings = k_total · ρ · v² / 2`, added into `dpPa`. **The default of 0 is
+  load-bearing** — an omitted or non-positive `k_total` makes `dpFittings` exactly `0.0`,
+  so every pre-v2.8 payload and share link still reproduces ΔP_total ≈ 176.9 kPa.
+  Negative values are clamped to 0. Keeping the Crane table client-side is what allows
+  this file to stay standard-library-only.
+- **`L` still means STRAIGHT-pipe length.** The frontend divides by it to render ΔP per
+  unit length. `L_eq` (= ΣK·D/f, at the *actual flowing* f) and `L_eff` (= L + L_eq) are
+  separate fields. Do not fold L_eq into `L`.
+- **`phase_key`** (`vapor`/`liquid`/`twophase`) and **`re_regime_key`**
+  (`laminar`/`transitional`/`turbulent`) accompany the English `badge`/`re_regime`
+  strings — the i18n Milestone 4 pattern `flowregime.py` already uses for `regime_key`.
+  The frontend branches on these, never on the English text.
+- **Reference case (Vector 7, `docs/SPECIFICATION.md` §9):** ΣK = 5.3760 on the Vector 2
+  hydraulics → dpFittings ≈ **695.853 Pa**, L_eq ≈ **29.7586 m**, ΔP_total ≈ **177.625 kPa**.
+  Re-verify alongside Vector 2 after touching this file.

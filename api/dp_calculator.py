@@ -68,16 +68,23 @@ class handler(BaseHTTPRequestHandler):
             return
 
         # Determine Phase & Mixture Properties (HEM Model)
+        # v2.8 — `phase_key` accompanies each English `badge`. The frontend used to test
+        # `badge.indexOf('Two-Phase')`, which breaks the moment the badge is localized;
+        # it now branches on this key instead (i18n Milestone 4 pattern, matching the
+        # `regime_key` that flowregime.py already returns).
         if Wv > 0 and Wl == 0:
             badge = "Single Phase (Vapor)"
+            phase_key = "vapor"
             badgeClass = "px-2 py-1 text-[10px] rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
             rho, mu = rhov, muv
         elif Wl > 0 and Wv == 0:
             badge = "Single Phase (Liquid)"
+            phase_key = "liquid"
             badgeClass = "px-2 py-1 text-[10px] rounded bg-blue-500/20 text-blue-400 border border-blue-500/30"
             rho, mu = rhol, mul
         else:
             badge = "Two-Phase (HEM)"
+            phase_key = "twophase"
             badgeClass = "px-2 py-1 text-[10px] rounded bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30"
             x = Wv / Wt
             rho = 1.0 / ((x / rhov) + ((1 - x) / rhol))
@@ -92,15 +99,40 @@ class handler(BaseHTTPRequestHandler):
         # Frictional (Darcy-Weisbach) + static-head terms, reported separately
         dpFric = f_d * (L / D) * rho * math.pow(vel, 2) / 2.0
         dpStatic = rho * 9.81 * dz
-        dpPa = dpFric + dpStatic
+
+        # v2.8 — Crane TP-410 fittings. `k_total` is ΣK, summed CLIENT-side from Crane's
+        # resistance-coefficient table (K = n·f_T, plus direct-K entrance/exit terms) and
+        # sent as a single number, which keeps the Crane table out of this stdlib-only
+        # endpoint. The loss is a fixed number of velocity heads: ΔP = ΣK·ρv²/2.
+        #
+        # DEFAULT 0 IS LOAD-BEARING: an omitted or zero k_total makes dpFittings exactly
+        # 0.0, so every pre-v2.8 payload and share link reproduces the pinned reference
+        # case (176.93 kPa) bit-for-bit. Do not change this default.
+        #
+        # L_eq is the equivalent straight length that would produce the same loss at the
+        # ACTUAL flowing friction factor (L_eq = ΣK·D/f). It is reported for information
+        # only — dpFittings above is computed directly from ΣK and never round-trips
+        # through L_eq. Note `L` in the response deliberately remains the STRAIGHT-pipe
+        # length, because the client divides by it to render ΔP per unit length; `L_eff`
+        # carries the fittings-inclusive figure.
+        k_total = float(data.get('k_total', 0) or 0)
+        if k_total < 0:
+            k_total = 0.0
+        dpFittings = k_total * rho * math.pow(vel, 2) / 2.0
+        L_eq = (k_total * D / f_d) if f_d > 0 else 0.0
+
+        dpPa = dpFric + dpStatic + dpFittings
 
         # Flow-regime label for Reynolds number (single-phase reference only)
         if Re < 2300:
             re_regime = "Laminar"
+            re_regime_key = "laminar"
         elif Re < 4000:
             re_regime = "Transitional"
+            re_regime_key = "transitional"
         else:
             re_regime = "Turbulent"
+            re_regime_key = "turbulent"
 
         # API RP 14E erosional velocity limit: Ve = C / sqrt(rho_mix)
         # SI form Ve[m/s] = 1.2247 * C / sqrt(rho[kg/m3]); C=100 continuous, 125 intermittent.
@@ -113,17 +145,23 @@ class handler(BaseHTTPRequestHandler):
             "dpPa": dpPa,
             "dpFric": dpFric,
             "dpStatic": dpStatic,
+            "dpFittings": dpFittings,
             "vel": vel,
             "Re": Re,
             "re_regime": re_regime,
+            "re_regime_key": re_regime_key,
             "f": f_d,
             "rho_mix": rho,
             "v_ero": v_ero,
             "ero_ratio": ero_ratio,
             "cfactor": C_ero,
+            "k_total": k_total,
+            "L_eq": L_eq,
             "badge": badge,
             "badgeClass": badgeClass,
-            "L": L
+            "phase_key": phase_key,
+            "L": L,
+            "L_eff": L + L_eq
         }
 
         self.send_response(200)
