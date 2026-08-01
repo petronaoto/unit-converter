@@ -23,7 +23,8 @@
     "copyFailed": "Error al copiar — portapapeles bloqueado",
     "shareLinkFailed": "Error al crear el enlace de compartir",
     "popupBlockedDownloaded": "Ventana emergente bloqueada — el informe se descargó como HTML",
-    "popupBlockedAllow": "Ventana emergente bloqueada — permita las ventanas emergentes para exportar"
+    "popupBlockedAllow": "Ventana emergente bloqueada — permita las ventanas emergentes para exportar",
+    "openNavigation": "Abrir navegación de secciones"
   },
   "nav": {
     "general": "General",

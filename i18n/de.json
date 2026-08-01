@@ -23,7 +23,8 @@
     "copyFailed": "Kopieren fehlgeschlagen — Zwischenablage blockiert",
     "shareLinkFailed": "Freigabelink fehlgeschlagen",
     "popupBlockedDownloaded": "Pop-up blockiert — Bericht stattdessen als HTML heruntergeladen",
-    "popupBlockedAllow": "Pop-up blockiert — zum Exportieren Pop-ups zulassen"
+    "popupBlockedAllow": "Pop-up blockiert — zum Exportieren Pop-ups zulassen",
+    "openNavigation": "Abschnittsnavigation öffnen"
   },
   "nav": {
     "general": "Allgemein",

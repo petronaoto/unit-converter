@@ -23,7 +23,8 @@
     "copyFailed": "Échec de la copie — presse-papiers bloqué",
     "shareLinkFailed": "Échec du lien de partage",
     "popupBlockedDownloaded": "Pop-up bloquée — le rapport a été téléchargé en HTML à la place",
-    "popupBlockedAllow": "Pop-up bloquée — autorisez les pop-ups pour exporter"
+    "popupBlockedAllow": "Pop-up bloquée — autorisez les pop-ups pour exporter",
+    "openNavigation": "Ouvrir la navigation des sections"
   },
   "nav": {
     "general": "Général",

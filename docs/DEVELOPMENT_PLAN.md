@@ -86,7 +86,7 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 
 | Limitation | Status |
 |---|---|
-| No dedicated mobile navigation (tab bar scrolls horizontally) | Roadmap v2.8 |
+| ~~No dedicated mobile navigation (tab bar scrolls horizontally)~~ | **Shipped v2.8** — dropdown navigation below the `md` breakpoint; desktop bar untouched |
 | Custom modules are not encoded in Share links (localStorage only) | Roadmap v2.8 |
 | Mixed interaction model: converters update live, server cards need a button click | Mitigated in v2.5 (stale-input indicator, Enter-to-calculate) |
 | Very small label typography in dense cards may fall below WCAG contrast targets | Backlog (needs a careful, sweeping pass) |
@@ -112,7 +112,7 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 | ~~Line sizing helper (velocity + ΔP/100 m vs. typical service criteria)~~ | High | M | **Shipped.** NORSOK P-001 §6.3.2/§6.4 + Tables 3–4, client-side, judging **frictional** ΔP only. GPSA-attributed rows were dropped — unverifiable against primary text. SPECIFICATION.md §4.3.2 |
 | ~~Fittings / K-factor equivalent length in the ΔP card~~ | High | M | **Shipped.** Crane TP-410, 12 fitting types, table client-side so dp_calculator stays stdlib-only. `k_total` defaults to 0 so every pre-v2.8 payload reproduces Vector 2 bit-for-bit. Vector 7 added |
 | ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 99 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |
-| Mobile navigation affordance (hamburger or wrap) | Med | M | Deferred from v2.5 (layout restructure, needs design care) |
+| ~~Mobile navigation affordance (hamburger or wrap)~~ | Med | M | **Shipped.** Dropdown rather than a wrapping grid — nine tabs would wrap to three rows and push the content below the fold on a phone. Menu is generated from the existing tab buttons, so no second list to maintain. SPECIFICATION.md §3 |
 | Custom modules in Share links (state format v:2) | Med | M | Deferred from v2.5 (state versioning required) |
 
 ### Internationalization Program — next milestones
