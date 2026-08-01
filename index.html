@@ -2650,7 +2650,12 @@
       const uP = document.getElementById('z-p-u').value;
       const t = parseFloat(document.getElementById('z-t').value);
       const uT = document.getElementById('z-t-u').value;
-      if(!sg || !p || !t) return;
+      // v2.8 — `!t` became `isNaN(t)`: 0 is falsy, so 0 °C (an ordinary process
+      // temperature) used to abort and leave the PREVIOUS result on screen with no
+      // indication it was stale. Closes SPECIFICATION.md §11 issue #11. sg and p keep
+      // the falsy guard deliberately — zero gas gravity or zero absolute pressure are
+      // genuinely invalid, not merely unusual.
+      if(!sg || !p || isNaN(t)) return;
 
       // v2.8 — the unit ladders and the correlation moved into toPsia()/toRankine()/
       // papayZ() above so the Gas Property Estimator shares them. Behaviour, output
@@ -2690,8 +2695,9 @@
 
       const blank = ['gp-out-z','gp-out-mu','gp-out-c','gp-out-jt'];
       // NOTE: t is checked with isNaN, not falsiness — 0 °C is a perfectly valid input.
-      // (The older Z-Factor card uses `if(!sg || !p || !t) return;`, which silently
-      // rejects exactly 0°; logged as a known issue rather than changed here.)
+      // The Z-Factor card had the falsy-zero bug here (SPECIFICATION.md §11 issue #11,
+      // fixed in v2.8); both cards now accept 0 °C and agree on Z = 0.6934 at
+      // SG 0.65 / 2,000 psi. Do not "simplify" this back to `!t`.
       if (isNaN(sg) || sg <= 0 || isNaN(p) || p <= 0 || isNaN(t) || isNaN(k) || k <= 1) {
         blank.forEach(id => { document.getElementById(id).innerText = '—'; });
         document.getElementById('gp-warn').classList.add('hidden');

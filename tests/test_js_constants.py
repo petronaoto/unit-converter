@@ -130,6 +130,32 @@ def test_air_molecular_weight_is_documented(html):
 
 # ── Joule-Thomson numerical derivative ──────────────────────────────────────────
 
+def test_zero_temperature_is_not_treated_as_missing_input(html):
+    """Regression guard for SPECIFICATION.md §11 issue #11 (fixed v2.8).
+
+    `if(!sg || !p || !t) return;` rejected a temperature of exactly 0 because 0 is
+    falsy, leaving the previous result on screen with no indication it was stale. 0 °C
+    is an ordinary process temperature. Reverting to `!t` is an easy accident to make
+    when editing nearby code, and pytest cannot execute the JS to catch it — so the
+    guard is pinned at source level.
+
+    sg and p keep the falsy check deliberately: zero gas gravity or zero absolute
+    pressure are genuinely invalid, not merely unusual.
+    """
+    assert "if(!sg || !p || isNaN(t)) return;" in html, (
+        "calcZFactor()'s input guard has changed; a temperature of exactly 0 must not "
+        "be treated as a missing input (issue #11)")
+    assert "if(!sg || !p || !t) return;" not in html, (
+        "issue #11 has regressed — `!t` rejects 0 °C")
+
+
+def test_gas_property_card_accepts_zero_temperature(html):
+    """The newer card uses isNaN throughout; it must never adopt the falsy pattern."""
+    assert "isNaN(t)" in html
+    assert "isNaN(sg) || sg <= 0 || isNaN(p) || p <= 0 || isNaN(t)" in html, (
+        "calcGasProps()'s guard has changed shape; it must keep accepting 0 °C")
+
+
 def test_jt_derivative_step_is_hard_coded(html):
     """h = 0.5 degR. Below about 0.01 K the central difference loses precision to
     float64 cancellation, so h must never become a user input."""
