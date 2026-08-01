@@ -34,10 +34,12 @@ def test_reference_case_reproduces(dp_module, post_to_handler, dp_reference_payl
     assert data["re_regime"] == "Turbulent"
     assert data["f"] == pytest.approx(0.01835, abs=5e-5)
 
-    # ρ_mix ≈ 251.7 kg/m³, V_e ≈ 7.72 m/s at C = 100, v/V_e ≈ 0.13 → within limit
+    # ρ_mix ≈ 251.7 kg/m³, V_e ≈ 7.69 m/s at C = 100, v/V_e ≈ 0.13 → within limit
     assert data["rho_mix"] == pytest.approx(251.69, abs=0.05)
-    assert data["v_ero"] == pytest.approx(7.720, abs=0.005)
-    assert data["ero_ratio"] == pytest.approx(0.1314, abs=0.0005)
+    # v2.8 — V_e moved 7.720 -> 7.689 when the RP 14E SI constant was corrected from
+    # sqrt(1.5) to the exact 1.2199033 (issue #9). The verdict is unchanged.
+    assert data["v_ero"] == pytest.approx(7.689, abs=0.005)
+    assert data["ero_ratio"] == pytest.approx(0.1319, abs=0.0005)
     assert data["cfactor"] == 100
 
     assert data["badge"] == "Two-Phase (HEM)"
@@ -59,21 +61,45 @@ def test_response_schema_is_stable(dp_module, post_to_handler, dp_reference_payl
 
 # ── Erosional velocity (API RP 14E) ──────────────────────────────────────────────
 
-def test_erosional_velocity_uses_the_shipped_constant(dp_module, post_to_handler,
-                                                      dp_reference_payload):
-    """V_e = 1.2247448714 * C / sqrt(rho) as currently shipped.
+def test_erosional_velocity_constant_is_the_exact_unit_conversion(dp_module,
+                                                                  post_to_handler,
+                                                                  dp_reference_payload):
+    """FIXED IN v2.8 (closes docs/SPECIFICATION.md §11 issue #9).
 
-    KNOWN ISSUE: the exact SI conversion of the RP 14E criterion is 1.21990
-    (= 0.3048 * sqrt(16.018463)), not 1.2247448714 (= sqrt(1.5)). The shipped constant
-    over-predicts V_e by +0.42 %, making the screening check slightly non-conservative.
-    Logged in docs/SPECIFICATION.md §11 pending a deliberate, separately-tagged fix —
-    correcting it changes the documented V_e ≈ 7.72 m/s in four places, so it must not
-    happen as a side effect. When it is fixed, update this test and that register entry
-    together.
+    The SI constant is an exact unit conversion, not a fitted value:
+
+        Ve[ft/s] = C / sqrt(rho[lb/ft3]),   rho[lb/ft3] = rho_SI / 16.0184634
+        Ve[m/s]  = 0.3048 * sqrt(16.0184634) * C / sqrt(rho_SI)
+                 = 1.2199032517 * C / sqrt(rho_SI)
+
+    where 16.0184634 = 0.45359237 / 0.3048**3. It was shipped as 1.2247448714 — exactly
+    sqrt(1.5) — which over-predicted Ve by +0.40 % and made this screening check very
+    slightly NON-conservative.
+
+    Derived here from first principles rather than hard-coded, so the assertion cannot
+    drift with the implementation.
     """
     _, data = post_to_handler(dp_module, dp_reference_payload)
-    shipped = 1.2247448714 * data["cfactor"] / math.sqrt(data["rho_mix"])
-    assert data["v_ero"] == pytest.approx(shipped, rel=1e-12)
+
+    lb_per_ft3_to_kg_per_m3 = 0.45359237 / 0.3048 ** 3
+    exact = 0.3048 * math.sqrt(lb_per_ft3_to_kg_per_m3)
+    assert exact == pytest.approx(1.2199032517, abs=5e-10)
+
+    expected = exact * data["cfactor"] / math.sqrt(data["rho_mix"])
+    assert data["v_ero"] == pytest.approx(expected, rel=1e-9)
+    # And the old wrong value must not come back.
+    wrong = 1.2247448714 * data["cfactor"] / math.sqrt(data["rho_mix"])
+    assert data["v_ero"] != pytest.approx(wrong, rel=1e-6)
+
+
+def test_erosional_velocity_round_trips_through_field_units(dp_module, post_to_handler,
+                                                            dp_reference_payload):
+    """The whole point of the constant: computing Ve in ft/s from lb/ft3 and converting,
+    versus computing directly in SI, must agree."""
+    _, data = post_to_handler(dp_module, dp_reference_payload)
+    rho_lb_ft3 = data["rho_mix"] / (0.45359237 / 0.3048 ** 3)
+    ve_ft_s = data["cfactor"] / math.sqrt(rho_lb_ft3)
+    assert data["v_ero"] == pytest.approx(ve_ft_s * 0.3048, rel=1e-9)
 
 
 def test_cfactor_scales_erosional_velocity(dp_module, post_to_handler,

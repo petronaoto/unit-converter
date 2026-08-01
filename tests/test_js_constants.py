@@ -95,12 +95,35 @@ def test_lee_gonzalez_eakin_uses_the_original_coefficients(constant, html):
         "coefficient set must be used; the rounded variant shifts mu by ~2.1 %")
 
 
+@pytest.fixture(scope="module")
+def script_block(html):
+    """Just the executable JavaScript.
+
+    The Theory tab deliberately NAMES the corrupted coefficient variants so an engineer
+    reading the manual knows which numbers to distrust. Scanning the whole file for those
+    strings would therefore flag the documentation that exists to prevent the very bug —
+    so the bad-variant checks look only at code.
+    """
+    start = html.rindex("<script>")
+    end = html.index("</script>", start)
+    return html[start:end]
+
+
 @pytest.mark.parametrize("wrong, why", [
     ("3.488", "corrupted X coefficient circulating on wiki sites (should be 3.448)"),
     ("2.4 - 0.2 * lgeX", "rounded Y coefficient (should be 2.447 - 0.2224*X)"),
+    ("9.4 + 0.02", "rounded K coefficients (should be 9.379 + 0.01607)"),
 ])
-def test_known_bad_lge_variants_are_absent(wrong, why, html):
-    assert wrong not in html, f"found {wrong!r} in index.html — {why}"
+def test_known_bad_lge_variants_are_absent_from_code(wrong, why, script_block):
+    assert wrong not in script_block, f"found {wrong!r} in the script block — {why}"
+
+
+def test_theory_tab_names_the_bad_variants(html, script_block):
+    """The converse: the documentation SHOULD warn about them, so a future editor does
+    not 'tidy' the coefficients into one of the wrong sets."""
+    prose = html.replace(script_block, "")
+    assert "3.488" in prose, (
+        "the Theory tab should name the corrupted X = 3.488 variant as a warning")
 
 
 def test_lge_validity_envelope_is_enforced(html):

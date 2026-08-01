@@ -39,7 +39,8 @@ Re-verify after ANY change to the corresponding file, before committing.
   @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP):
   ΔP_total ≈ **176.9 kPa** (dpFric ≈ 2.34 kPa + dpStatic ≈ 174.6 kPa), vel ≈ 1.014 m/s,
   Re ≈ **2.20×10⁵** (turbulent), Darcy f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³,
-  V_e ≈ **7.72 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT).
+  V_e ≈ **7.69 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT). *(v2.8: was 7.72 with the
+  old √1.5 constant; the SI constant is now the exact 1.2199033 — see the note below.)*
 - **flowregime** (same inputs): must classify as **Churn / Slug Flow, θ = +45.0°, vertical map**
   (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
 - **psv_calculator** (added v2.8 — five USC cases, one per sizing mode; full inputs in

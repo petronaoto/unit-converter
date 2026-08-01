@@ -1,6 +1,6 @@
 # Development Plan — O&G Engineering Converter
 
-**Document version:** 1.2 (accompanies app v2.7)
+**Document version:** 1.3 (accompanies app v2.8)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Repository:** <https://github.com/petronaoto/unit-converter>
 **Companion documents:** [SPECIFICATION.md](SPECIFICATION.md) (feature-level detail) · [MARKETING.md](MARKETING.md) (promotion strategy)
@@ -58,8 +58,9 @@ Reconstructed from the git log and tags (all dates 2026).
 | v2.5 | Jul 2026 | **Documentation & UX release** — `docs/` folder (this document, SPECIFICATION.md, MARKETING.md); Theory §4.1 corrected to Papay; tab-navigation accessibility (scroll-into-view, ARIA tablist); back-to-top + section anchors in doc tabs; Enter-to-calculate and client-side validation hints on ΔP/PSV; export pop-up fallback; distinct viscosity unit values; stale-input indicator on server-backed cards |
 | **v2.6** | Jul 2026 (PR #3) | **Internationalization Milestone 1** — full i18n mechanism (`i18n/en.json`/`ja.json` dictionaries, `tr()`/`applyTranslations()`/`setLanguage()`, two-part header switcher); complete English↔Japanese translation of the working tool (General, Basic Eng, Advanced, Safety, floating action bar, Report form, module modal, every JS-generated dynamic string); settings menu lists 8 more languages as "coming soon". See §5 and SPECIFICATION.md §12 for full detail. |
 | **v2.7** | Aug 2026 | **Internationalization Milestones 2+3** — all 10 menu languages live (adds 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, Deutsch); the four documentation tabs (How To Use, Theory, Terms, Privacy) translated in all 9 non-English languages via the new `data-i18n-html` block-swap mechanism (125 `docs.*` keys/language, English cached inline); governing-language notes on Terms/Privacy; CLAUDE.md split into root + `api/` scoped files. SPECIFICATION.md §12.6. |
+| **v2.8** | Aug 2026 | **"Junior engineer value pack"** — shipped as six reviewed PRs. **Testing:** first automated suite (173 pytest assertions + GitHub Actions), covering Vectors 2–4, i18n key parity across all 10 dictionaries, and the architectural constraints; mutation-tested, which exposed two real gaps in the tests themselves. **Basic Eng:** Gas Property Estimator — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson — on a shared `papayZ()` helper verified against the original arithmetic over 7,203 input combinations. **Advanced:** Crane TP-410 fittings (backward-compatible `k_total`, default 0) and a NORSOK P-001 line-sizing screen judging frictional ΔP only; `phase_key`/`re_regime_key` replace English-badge branching. **UX:** mobile navigation dropdown; share links now carry custom modules (state v:2) behind a sanitizing import boundary. **Corrections:** RP 14E SI constant (#9), two-phase PRV `Pc` (#1), Z-Factor 0 °C guard (#11); `report-*` removed from state; guarded `og_custom_modules` parse. New reference Vectors 4–7. Documentation sections for all of the above are English-only pending v2.8.1 translation. |
 
-## 5. Current State (v2.7)
+## 5. Current State (v2.8)
 
 ### Feature inventory
 
@@ -93,8 +94,9 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 | API error responses are not yet schema-harmonized across the three endpoints | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
 | dp_calculator input edge cases (zero viscosity/density) can produce an unstructured 500 | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
 | ~~No automated test suite; regression relies on the manual reference-vector checklist~~ | **Shipped v2.8** — pytest + GitHub Actions run Vectors 2 and 3, i18n key parity across all 10 dictionaries, and the architectural constraints on every push/PR (SPECIFICATION.md §13). **Vector 1 (JIS) is still uncovered** — it lives in JavaScript; see §13.4 |
-| API RP 14E SI constant is √1.5 rather than the exact 1.21990 (V_e +0.42 %, marginally non-conservative) | Logged v2.8 as Known Issue #9; fix deferred to a separately-tagged change because it moves a documented reference value |
+| ~~API RP 14E SI constant is √1.5 rather than the exact 1.2199033~~ | **Fixed v2.8.** V_e was over-predicted by +0.40 %, making the erosional screen marginally non-conservative. Reference value moves 7.72 → 7.69 m/s; the WITHIN LIMIT verdict is unchanged |
 | Non-English Terms of Use / Privacy Policy translations await the maintainer's legal review (governing-language note mitigates) | Open — review before promoting non-EN legal pages |
+| The v2.8 How To Use / Theory sections (14 blocks, ~13,200 characters) ship in English only | **Scheduled v2.8.1.** Missing `docs.*` keys fall back to the inline English at runtime, so non-English users see those sections in English rather than an error. `tests/test_i18n_parity.py` freezes the exemption to exactly these 14 keys and fails if the list grows |
 | Server-generated status/error text (PSV / Flow Regime badges, and all three endpoints' error messages) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6. **Partially addressed in v2.8:** `dp_calculator` now returns `phase_key` and `re_regime_key`, and the ΔP card's phase/Reynolds labels localize. PSV and Flow Regime remain unkeyed |
 
 ## 6. Roadmap
@@ -155,7 +157,7 @@ Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in 
 
    Vectors, for reference:
    - JIS composition case (CH₄ 89 / C₂H₆ 7 / C₃H₈ 2.5 / iC₄ 0.7 / nC₄ 0.5 / N₂ 0.3): HHV 44.59, LHV 40.25, SG 0.634, WI 56.00, MW 18.305, Z 0.996759/0.9968, ρ_std 0.81930, 100 t/h → 122.056 kNm³/h, 100 kNm³/h → 81.930 t/h.
-   - ΔP default case: ΔP_total ≈ 176.9 kPa (2.34 friction + 174.6 static), Re ≈ 2.20×10⁵, f ≈ 0.0184, V_e ≈ 7.72 m/s (C=100).
+   - ΔP default case: ΔP_total ≈ 176.9 kPa (2.34 friction + 174.6 static), Re ≈ 2.20×10⁵, f ≈ 0.0184, V_e ≈ 7.69 m/s (C=100, corrected constant in v2.8).
    - Flow Regime default case: Churn/Slug Flow, θ = +45.0°, vertical map.
 3. **Documentation sync.** Any change to a feature, constant, or calculation updates, in the same PR: the How To Use tab, the Theory tab, `docs/SPECIFICATION.md` (affected section), and the roadmap status in this document.
 4. **Feature-preservation sweep.** Before merging: all 9 tabs render, all toggles work, copy buttons work, custom modules persist, the 3D animation loads, all three API cards respond, export/share/restore round-trip, and (since v2.6) the language switcher works in both directions with no console errors on any tab.

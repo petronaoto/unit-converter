@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.2 (describes app v2.7)
+**Document version:** 1.3 (describes app v2.8)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -96,7 +96,7 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
   ⚠ **The verdict judges `dpFric` only, never the displayed ΔP/length.** That figure includes static head, which on this card's own default (Δz = 70.711 m) is 98 % of the total — judging against it would flag almost every elevated line as ΔP-oversized. Static head is not a line-sizing criterion.
 
   ⚠ **NORSOK-only by design.** Widely-circulated GPSA-attributed velocity/ΔP tables could not be verified against primary text during v2.8 research — only secondary aggregators — so they are omitted rather than cited falsely. The API RP 14E erosional check is separate and is not duplicated here.
-- **Method (server, §5.1):** phase detection → single vapor / single liquid / two-phase HEM; Darcy-Weisbach friction term + hydrostatic term + **fittings term ΣK·ρv²/2 (v2.8)**; Colebrook-White friction factor (iterative); API RP 14E erosional velocity V_e = 1.2247·C/√ρ_mix (SI form of V_e = C/√ρ in lb/ft³ units — see Known Issue #9).
+- **Method (server, §5.1):** phase detection → single vapor / single liquid / two-phase HEM; Darcy-Weisbach friction term + hydrostatic term + **fittings term ΣK·ρv²/2 (v2.8)**; Colebrook-White friction factor (iterative); API RP 14E erosional velocity V_e = 1.2199033·C/√ρ_mix (the exact SI form of V_e = C/√ρ in lb/ft³ units; corrected in v2.8 — §11 #9).
 
 #### 4.3.3 Flow Regime — server-backed visualizer
 
@@ -153,7 +153,7 @@ All endpoints: `POST` JSON body, JSON response, `Access-Control-Allow-Origin: *`
 { "error": false,
   "dpPa": 176929.0, "dpFric": 2338.3, "dpStatic": 174590.0, "dpFittings": 0.0,
   "vel": 1.014, "Re": 220110.0, "re_regime": "Turbulent", "re_regime_key": "turbulent",
-  "f": 0.01835, "rho_mix": 251.69, "v_ero": 7.72, "ero_ratio": 0.131, "cfactor": 100.0,
+  "f": 0.01835, "rho_mix": 251.69, "v_ero": 7.689, "ero_ratio": 0.132, "cfactor": 100.0,
   "k_total": 0.0, "L_eq": 0.0, "L": 100.0, "L_eff": 100.0,
   "badge": "Two-Phase (HEM)", "phase_key": "twophase", "badgeClass": "…tailwind classes…" }
 ```
@@ -177,7 +177,7 @@ All endpoints: `POST` JSON body, JSON response, `Access-Control-Allow-Origin: *`
 
 **Error response:** `{ "error": true, "badge": "…", "badgeClass": "…" }` — note: no `message` field (Known Issue #6).
 
-**Method:** HEM two-phase mixing (x = W_v/W_t; 1/ρ = x/ρ_v + (1−x)/ρ_l; μ = x·μ_v + (1−x)·μ_l), Darcy-Weisbach ΔP_fric = f·(L/D)·ρ·v²/2 with iterative Colebrook-White f (laminar 64/Re below Re 2300), ΔP_static = ρ·g·Δz (g = 9.81), **ΔP_fittings = ΣK·ρ·v²/2 (v2.8)**, API RP 14E V_e = 1.2247·C/√ρ (see Known Issue #9 on that constant). ΔP_total = ΔP_fric + ΔP_static + ΔP_fittings.
+**Method:** HEM two-phase mixing (x = W_v/W_t; 1/ρ = x/ρ_v + (1−x)/ρ_l; μ = x·μ_v + (1−x)·μ_l), Darcy-Weisbach ΔP_fric = f·(L/D)·ρ·v²/2 with iterative Colebrook-White f (laminar 64/Re below Re 2300), ΔP_static = ρ·g·Δz (g = 9.81), **ΔP_fittings = ΣK·ρ·v²/2 (v2.8)**, API RP 14E V_e = 1.2199033·C/√ρ — an exact unit conversion, 0.3048·√16.0184634 (corrected in v2.8, see §11 #9). ΔP_total = ΔP_fric + ΔP_static + ΔP_fittings.
 
 ### 5.2 `POST /api/psv_calculator`
 
@@ -279,7 +279,7 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 | 100 ton/h → | 122.056 kNm³/h |
 | 100 kNm³/h → | 81.930 ton/h |
 
-**Vector 2 — Pipe ΔP default case** (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP, C = 100): ΔP_total ≈ **176.9 kPa** (friction ≈ 2.34 kPa + static ≈ 174.6 kPa), vel ≈ 1.014 m/s, Re ≈ **2.20×10⁵** (Turbulent), f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³, V_e ≈ **7.72 m/s**, v/V_e ≈ 0.13 → WITHIN LIMIT.
+**Vector 2 — Pipe ΔP default case** (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP, C = 100): ΔP_total ≈ **176.9 kPa** (friction ≈ 2.34 kPa + static ≈ 174.6 kPa), vel ≈ 1.014 m/s, Re ≈ **2.20×10⁵** (Turbulent), f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³, V_e ≈ **7.69 m/s**, v/V_e ≈ 0.13 → WITHIN LIMIT. *(v2.8: V_e was 7.72 until the RP 14E SI constant was corrected — §11 #9. The verdict is unchanged.)*
 
 **Vector 3 — Flow Regime default case** (same inputs): **Churn / Slug Flow**, θ = **+45.0°**, vertical map, j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s.
 
@@ -363,7 +363,7 @@ All four vectors are enforced automatically on every push and pull request, exce
 | 6 | Error-response schemas differ across the three endpoints (dp: badge without message; psv: message without badge; flowregime: both) | all three endpoints | Harmonization to the superset `{error, message, badge, badgeClass}` proposed |
 | 7 | ~~Custom modules are not encoded in Share links~~ | `index.html` state system | **FIXED v2.8.** State format v:2 carries module definitions, with a sanitizing import boundary (§6.1). Also hardened alongside: the `og_custom_modules` parse is now guarded, `report-*` fields are excluded from state, and over-long share links warn |
 | 8 | ~~No dedicated mobile navigation; tab bar relies on horizontal scroll~~ | `index.html` header | **FIXED v2.8.** Dropdown navigation below the `md` breakpoint (§3). Verified at 375 px: all 9 tabs reachable, trigger re-labels, menu auto-closes on selection, click-outside and Escape close it, no collision with the floating action bar, no horizontal overflow. Desktop unchanged — the bar still renders `display:flex` with all 9 buttons at 1280 px |
-| 9 | API RP 14E SI constant is `1.2247448714` (= √1.5); the exact conversion is **1.21990** (= 0.3048·√16.018463). V_e is over-predicted by **+0.42 %**, so the erosional-velocity screen is marginally *non-conservative* (7.7222 vs 7.6899 m/s on Vector 2) | `api/dp_calculator.py:108` | Logged v2.8. Fix deferred to a deliberate, separately-tagged change — correcting it moves the documented V_e ≈ 7.72 m/s in CLAUDE.md, api/CLAUDE.md, this document and the Theory tab, so it must not happen as a side effect. `tests/test_dp_calculator.py` pins the shipped constant and names this entry |
+| 9 | ~~API RP 14E SI constant is `1.2247448714` (= √1.5)~~ | `api/dp_calculator.py` | **FIXED v2.8.** The constant is an exact unit conversion, not a fitted value: 0.3048·√16.0184634 = **1.2199032517**, where 16.0184634 = 0.45359237/0.3048³. √1.5 was a rounded "1.22" that had been "precisioned" into the wrong closed form; it over-predicted V_e by **+0.40 %**, making the screen marginally *non-conservative*. Vector 2's V_e moves **7.720 → 7.689 m/s** (ratio 0.1314 → 0.1319); the WITHIN LIMIT verdict is unchanged. Updated together in this document, CLAUDE.md, api/CLAUDE.md, the Theory tab and the How To Use callout. `test_erosional_velocity_constant_is_the_exact_unit_conversion` derives the constant from first principles rather than hard-coding it, and a second test round-trips V_e through field units |
 | 10 | `index.html:2182` loads `/cdn-cgi/scripts/…/email-decode.min.js`, a Cloudflare email-obfuscation script baked into the file. The app deploys to Vercel, where `/cdn-cgi/` does not exist, and no `__cf_email__` element remains for it to decode — so it is most likely a dead 404 on every page load. Disclosed in the Privacy Policy tab (`index.html:2045`), which would also need updating if it is removed | `index.html:2182` | Logged v2.8; removal not yet approved |
 | 11 | ~~Z-Factor Estimator silently ignores a temperature of exactly **0**~~ (`0` is falsy, so `if(!sg \|\| !p \|\| !t) return;` aborted and left the *previous* result on screen with no indication it was stale — and 0 °C is an ordinary process temperature) | `index.html` `calcZFactor()` | **FIXED v2.8.** Guard is now `if(!sg \|\| !p \|\| isNaN(t)) return;`. `sg` and `p` keep the falsy check deliberately — zero gas gravity or zero absolute pressure are genuinely invalid, not merely unusual. Verified in a browser: 0 °C → Z = 0.6934 on **both** cards (they disagreed before), 0 °F → 0.6185, blank/`sg = 0`/`p = 0` still rejected, Vector 5 unchanged at 0.8646. Pinned by `test_zero_temperature_is_not_treated_as_missing_input` |
 
@@ -413,6 +413,12 @@ Two-part control in the header (`.flex.items-center.justify-between.mb-4` row), 
 **Not yet localized (server side):** the three Python endpoints (§5) still return English prose for status/error text. `flowregime.py` already returns a machine-readable `regime_key` alongside its English `regime` label (§5.3) — the ~10+ other message/error branches across the three files are unkeyed. See DEVELOPMENT_PLAN.md §6 Milestone 4 (optional).
 
 **Number formatting is unchanged and language-independent:** `toLocaleString('en-US', …)` applies regardless of UI language — a deliberate decision (avoids decimal-comma ambiguity on values that get copy/pasted or shared cross-language), not a gap.
+
+### 12.5.1 Pending translation (v2.8)
+
+The v2.8 documentation additions — How To Use "★ New in Version 2.8" plus sections 13–15, and Theory Part VII (7.1 Lee-Gonzalez-Eakin, 7.2 sonic velocity, 7.3 Joule-Thomson, 7.4 Crane TP-410, 7.5 NORSOK criteria) — **ship in English only**: 14 blocks totalling ~13,200 characters of technical prose. A missing `docs.*` key falls back to the inline English cached in `i18nHtmlOriginals` (§12.6), so non-English readers see those sections in English rather than an error or a raw key.
+
+The exemption is **frozen, not general**. `tests/test_i18n_parity.py` names all 14 keys in a `PENDING_TRANSLATION` set and enforces three things: every *other* block key still resolves in all 9 dictionaries; the set cannot grow (a new untranslated block fails the suite); and a key must leave the set once its translation lands. Scheduled for **v2.8.1**, at which point the set and its guard tests are deleted together.
 
 ### 12.6 Documentation-tab translation mechanism (v2.7, Milestones 2+3)
 

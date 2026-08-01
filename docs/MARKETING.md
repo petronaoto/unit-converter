@@ -1,6 +1,6 @@
 # Advertisement & Promotion Strategy — O&G Engineering Converter
 
-**Document version:** 1.2 (accompanies app v2.7)
+**Document version:** 1.3 (accompanies app v2.8)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [SPECIFICATION.md](SPECIFICATION.md)
 

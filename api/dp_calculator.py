@@ -135,9 +135,22 @@ class handler(BaseHTTPRequestHandler):
             re_regime_key = "turbulent"
 
         # API RP 14E erosional velocity limit: Ve = C / sqrt(rho_mix)
-        # SI form Ve[m/s] = 1.2247 * C / sqrt(rho[kg/m3]); C=100 continuous, 125 intermittent.
+        #
+        # SI form Ve[m/s] = 1.2199033 * C / sqrt(rho[kg/m3]); C=100 continuous,
+        # 125 intermittent. The constant is an exact unit conversion, not a fitted value:
+        #     Ve[ft/s] = C / sqrt(rho[lb/ft3]),  rho[lb/ft3] = rho_SI / 16.0184634
+        #     Ve[m/s]  = 0.3048 * sqrt(16.0184634) * C / sqrt(rho_SI)
+        #              = 0.3048 * 4.00230725 * C / sqrt(rho_SI)
+        #              = 1.2199032517 * C / sqrt(rho_SI)
+        # where 16.0184634 = 0.45359237 / 0.3048^3 (lb/ft3 -> kg/m3).
+        #
+        # v2.8 — was 1.2247448714, which is exactly sqrt(1.5): a rounded "1.22" that had
+        # been "precisioned" into the wrong closed form. It over-predicted Ve by +0.40 %,
+        # making this screening check very slightly NON-conservative. Fixing it moves the
+        # documented reference value from Ve ~ 7.72 to ~ 7.69 m/s at C=100; see
+        # docs/SPECIFICATION.md §11 issue #9 and Vector 2.
         C_ero = float(data.get('cfactor', 100)) or 100.0
-        v_ero = 1.2247448714 * C_ero / math.sqrt(rho) if rho > 0 else 0.0
+        v_ero = 1.2199032517 * C_ero / math.sqrt(rho) if rho > 0 else 0.0
         ero_ratio = (vel / v_ero) if v_ero > 0 else 0.0
 
         response = {

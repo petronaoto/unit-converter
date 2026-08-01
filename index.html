@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V2.7</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V2.8</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -1156,10 +1156,10 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.7</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.8</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
-            <a href="#howto-new25" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
+            <a href="#howto-new28" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
             <a href="#howto-2" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">2 General</a>
             <a href="#howto-3" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">3 Custom</a>
@@ -1172,8 +1172,23 @@
             <a href="#howto-10" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">10 Flow Regime</a>
             <a href="#howto-11" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">11 PRV</a>
             <a href="#howto-12" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">12 Report</a>
+            <a href="#howto-13" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">13 Gas Props</a>
+            <a href="#howto-14" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">14 Fittings</a>
+            <a href="#howto-15" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">15 Mobile</a>
           </nav>
         </div>
+
+        <!-- 0. WHAT'S NEW IN v2.8 -->
+        <section>
+          <h3 id="howto-new28" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b069">★ New in Version 2.8</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b070"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Gas Property Estimator</strong> — a new Basic Eng card returning gas viscosity (Lee-Gonzalez-Eakin), sonic velocity and the Joule-Thomson coefficient from one gas-gravity / pressure / temperature / k input set. All four outputs chain off the same Papay Z as the Z-Factor card, so the two can never disagree.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Fittings &amp; valves on the ΔP card</strong> — an optional, collapsed block with twelve Crane TP-410 fitting types. Enter counts and the card adds ΣK·ρv²/2 to the pressure drop, reporting the fittings term and the equivalent length separately. Leave every count at 0 and the result is identical to v2.7.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Line-sizing screen</strong> — pick a service and the ΔP card judges velocity or frictional ΔP/100 m against NORSOK P-001 criteria, with a WITHIN / NEAR / EXCEEDS badge. Independent of the API RP 14E erosional check beside it.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Mobile navigation</strong> — below tablet width the nine-tab bar becomes a dropdown listing every section, so nothing is hidden off-screen. The desktop tab bar is unchanged.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Share links carry custom modules</strong> — your custom converter cards now travel with a share link and are added to the recipient's browser. Imported text is sanitised and identifiers regenerated, so a link cannot overwrite modules they already had.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Corrections &amp; hardening</strong> — the API RP 14E SI constant is now the exact unit conversion (V<sub>e</sub> was over-predicted by 0.40 %); the two-phase PRV result reports the correct critical pressure; the Z-Factor card accepts 0 °C; and bug-report text is no longer stored or shared. An automated test suite now guards every reference value on each change.</div>
+          </div>
+        </section>
 
         <!-- 0. WHAT'S NEW IN v2.5 -->
         <section>
@@ -1536,7 +1551,7 @@
             </div>
           </div>
           <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300" data-i18n-html="docs.howto.b055">
-            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.72 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The two-phase HEM neglects slip and the acceleration term — treat it as a first-pass estimate.
+            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.69 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The two-phase HEM neglects slip and the acceleration term — treat it as a first-pass estimate.
           </div>
         </section>
 
@@ -1615,6 +1630,40 @@
           <p class="text-sm text-slate-400" data-i18n-html="docs.howto.b068">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
 
+        <!-- 13. GAS PROPERTY ESTIMATOR (v2.8) -->
+        <section>
+          <h3 id="howto-13" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b071">13. Basic Eng — Gas Property Estimator</h3>
+          <div data-i18n-html="docs.howto.b072"><p class="text-sm text-slate-400 leading-relaxed">Enter <strong class="text-slate-200">gas gravity</strong> (air = 1.0), <strong class="text-slate-200">pressure</strong>, <strong class="text-slate-200">temperature</strong> and the <strong class="text-slate-200">isentropic exponent k</strong> (default 1.3, matching the PRV card). The card returns four values at once:</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300 mt-3">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-emerald-400">Z — compressibility</strong><br>Papay (1968) with Standing-Katz pseudo-criticals. The same routine the Z-Factor Estimator uses, so both cards always agree.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-emerald-400">μ — gas viscosity</strong><br>Lee, Gonzalez &amp; Eakin (1966). Density comes from ρ = PM/(ZRT), so the viscosity inherits Z.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-emerald-400">c — sonic velocity</strong><br>√(k·Z·R·T/M). Useful for flare and relief headers, where a Mach limit usually governs before pressure drop does.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-emerald-400">μ<sub>JT</sub> — Joule-Thomson</strong><br>Temperature change per unit pressure drop across a restriction. Positive means the gas <em>cools</em> as it expands — the normal case for natural gas, and the reason valve outlets can reach hydrate or brittle-fracture territory.</div>
+          </div>
+          <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-xs text-emerald-300 mt-3"><strong>ℹ Worked example</strong> — gravity 0.65, 2,000 psi, 150 °F, k = 1.3 gives <strong>Z = 0.8646</strong>, <strong>μ = 0.016663 cP</strong>, <strong>c = 410.03 m/s</strong> and <strong>μ<sub>JT</sub> = 0.3279 K/bar</strong>. At Z = 1 the sonic velocity would read 441.0 m/s — 7.5 % higher — which is why the card shows Z next to c.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Read the SCREENING label seriously.</strong> These are not standards. Papay and Lee-Gonzalez-Eakin are published correlations; the sonic-velocity expression is an engineering approximation (the form API 520 uses for critical flow); and the Joule-Thomson coefficient has no single governing document at all. The card warns — it never clamps — when you leave the Papay envelope or the correlation's 100–340 °F / 100–8,000 psia experimental basis. Lee-Gonzalez-Eakin carries no H₂S/CO₂/N₂ correction, so treat sour or high-inert gas as indicative only.</p></div>
+        </section>
+
+        <!-- 14. FITTINGS & LINE SIZING (v2.8) -->
+        <section>
+          <h3 id="howto-14" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b073">14. ΔP Card — Fittings, Valves &amp; Line Sizing</h3>
+          <div data-i18n-html="docs.howto.b074"><p class="text-sm text-slate-400 leading-relaxed">Two additions sit either side of the CALCULATE button. Both are optional and neither changes an existing calculation unless you use it.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">2C. Fittings &amp; valves</strong> — expand the block and enter how many of each fitting the run contains. The card looks up Crane TP-410 resistance coefficients (K = n·f<sub>T</sub>, where f<sub>T</sub> is the fully-turbulent friction factor for the nearest nominal size — shown beneath the grid so you can audit it) and sums them into ΣK. The pressure drop gains ΣK·ρv²/2, reported as its own output alongside the equivalent straight length L<sub>eq</sub>. <strong>Every count starts at 0</strong>, so an untouched block leaves the result byte-identical to v2.7.</p>
+          <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300 mt-3"><strong>ℹ Worked example</strong> — on the default 4-inch line (f<sub>T</sub> = 0.017), four 90° standard elbows + one gate valve + one swing check + entrance + exit give <strong>ΣK = 5.376</strong>, adding <strong>0.696 kPa</strong> and an equivalent length of <strong>29.76 m</strong>. Total ΔP moves 176.9 → 177.6 kPa.</div>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">Line sizing</strong> — choose the service (or leave it on <em>Auto</em>, which follows the detected phase) and the card compares your result with NORSOK P-001 criteria, showing v<sub>max</sub> or the ΔP limit, the ratio, and a WITHIN LIMIT / NEAR LIMIT / EXCEEDS badge. Liquid services also flag velocities below the 1 m/s minimum, where solids can settle out.</p>
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-300 mt-3"><strong>⚠ The sizing check uses frictional ΔP only.</strong> Static head is excluded because it is not a sizing criterion — on this card's own default inputs the 70.7 m elevation contributes 98 % of the total pressure drop, and judging against that number would flag almost every elevated line as oversized. The check is also independent of the API RP 14E erosional-velocity check beside it: the two answer different questions, and either can govern.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Choosing a service whose phase does not match the calculated one shows <strong>PHASE MISMATCH</strong> rather than a verdict. The reported velocity for two-phase flow is the homogeneous mixture velocity, and judging it against a single-phase criterion would give a confident but wrong answer. Crane TP-410 is an industry technical paper, not an ISO or API standard; gradual reducers are deliberately omitted because their coefficients could not be verified against a primary source.</p></div>
+        </section>
+
+        <!-- 15. MOBILE NAV & SHARED MODULES (v2.8) -->
+        <section>
+          <h3 id="howto-15" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b075">15. Mobile Navigation &amp; Sharing Custom Modules</h3>
+          <div data-i18n-html="docs.howto.b076"><p class="text-sm text-slate-400 leading-relaxed"><strong class="text-slate-200">On a phone or narrow window</strong>, the nine-tab bar is replaced by a single button showing the current section. Tap it for a dropdown listing every tab; choosing one switches section and closes the menu. Tapping outside or pressing <strong>Esc</strong> also closes it. At tablet width and above the familiar tab bar returns unchanged.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">Share links now carry your custom modules.</strong> Any converter cards you built in the General tab travel with the link — title, unit labels and conversion factor — and are added to the recipient's browser when they open it, with a brief notice of how many arrived. They persist, so the recipient can keep using them; each can be removed with its own TERMINATE button.</p>
+          <div class="bg-slate-800/60 border border-slate-600 rounded-lg p-3 text-xs text-slate-300 mt-3"><strong class="text-amber-400">What a shared link cannot do.</strong> Imported module text is escaped on arrival and internal identifiers are regenerated, so a link cannot inject content into your page, and cannot overwrite or delete modules you already had. A single link may add at most 20 modules. <strong>Report-tab text is no longer shared or stored at all</strong> — your name and description stay in the form until you choose to send them by email.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Share links encode state after the <span class="font-mono">#</span> in the URL, so nothing is ever sent to a server. They can get long — a full session with several custom modules easily exceeds 2,000 characters, and some chat and mail clients silently truncate at about that length. When a copied link passes that threshold the confirmation says so; the link is still valid, but check that it pasted whole.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -1622,7 +1671,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.7. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.8. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Compositional</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Density &amp; Flow</a>
@@ -1630,6 +1679,7 @@
             <a href="#theory-p4" class="px-2 py-1 rounded bg-slate-800 text-green-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IV Hydraulics</a>
             <a href="#theory-p6" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VI PRV Sizing</a>
             <a href="#theory-p5" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">V Data Sources</a>
+            <a href="#theory-p7" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VII Real Gas</a>
           </nav>
         </div>
 
@@ -1962,7 +2012,7 @@
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">V<sub>e</sub> = C / √ρ<sub>m</sub></div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
-                <div>SI form used here: V<sub>e</sub> [m/s] = 1.2247·C / √(ρ<sub>m</sub> [kg/m³]), with ρ<sub>m</sub> the HEM mixture density.</div>
+                <div>SI form used here: V<sub>e</sub> [m/s] = 1.2199033·C / √(ρ<sub>m</sub> [kg/m³]), with ρ<sub>m</sub> the HEM mixture density. The constant is an exact unit conversion, 0.3048·√16.0184634, not a fitted value — corrected in v2.8 from an erroneous √1.5 that over-predicted V<sub>e</sub> by 0.40 %.</div>
                 <div class="text-amber-300">C = 100 (continuous service) · 125 (intermittent) per API RP 14E; higher C only for solids-free, corrosion-resistant or inhibited lines.</div>
                 <div>The ΔP card reports V<sub>e</sub>, the ratio v/V<sub>e</sub>, and a check badge: <span class="text-green-400">WITHIN LIMIT</span> (&lt; 0.8), <span class="text-amber-400">NEAR LIMIT</span> (0.8–1.0), <span class="text-red-400">EXCEEDS Ve</span> (≥ 1.0).</div>
                 <div>API RP 14E is an empirical screening guideline, not a mechanistic erosion model — confirm against a corrosion/erosion study for final line sizing.</div>
@@ -2097,7 +2147,71 @@
           </div>
         </section>
 
-      </div>
+      
+        <section>
+          <h3 id="theory-p7" class="text-lg font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-900 pb-2 mb-6" data-i18n-html="docs.theory.b034">Part VII — Real-Gas Properties &amp; Fittings (v2.8)</h3>
+          <div class="space-y-8">
+            <div data-i18n-html="docs.theory.b035"><h4 class="text-base font-semibold text-emerald-400 mb-2">7.1 Gas Viscosity — Lee, Gonzalez &amp; Eakin (1966)</h4>
+          <p class="text-sm leading-relaxed">A correlation fitted to four natural gases over 100–340 °F and 100–8,000 psia, with a reported average absolute error near 2.7 %. Units are not negotiable: <strong>T in °R, M in lb/lbmol, ρ in g/cm³, μ in cP</strong>.</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>K = (9.379 + 0.01607·M)·T<sup>1.5</sup> / (209.2 + 19.26·M + T)</div>
+            <div>X = 3.448 + 986.4/T + 0.01009·M</div>
+            <div>Y = 2.447 − 0.2224·X</div>
+            <div>μ = 10⁻⁴ · K · exp(X · ρ<sup>Y</sup>)</div>
+            <div class="text-slate-500">ρ = P·M / (Z·R·T), R = 10.731577 psia·ft³/(lbmol·°R), M = SG × 28.9647</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">These are the <strong>original unrounded coefficients</strong>. A rounded variant (9.4 / 0.02 / 209 / 19) circulates widely and shifts μ by about −2.1 % — the same order as the correlation's own error, so it destroys reproducibility for no benefit. Two further variants on wiki sites are simply corrupt (X = 3.488, and 0.001·M in place of 0.01·M). The density term inherits Papay's Z, so the viscosity is only as good as the Z estimate beneath it.</p>
+          <div class="bg-emerald-500/10 border border-emerald-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — SG 0.65, 2,000 psia, 150 °F: T = 609.67 °R, M = 18.827055, Z = 0.864584, ρ = 6.656512 lb/ft³ = 0.1066271 g/cm³, K = 123.356242, X = 5.255889, Y = 1.278090, ρ<sup>Y</sup> = 0.0572173 → <strong>μ = 0.016663 cP</strong>. Sanity check at the dilute limit: pure methane at 60 °F and 1 atm gives 0.01101 cP against a literature 0.0109.</div></div>
+            <div data-i18n-html="docs.theory.b036"><h4 class="text-base font-semibold text-cyan-400 mb-2">7.2 Sonic Velocity</h4>
+          <p class="text-sm leading-relaxed">The speed of a pressure wave in a real gas, in the form API 520 Part I uses for critical-flow PRV sizing:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>c = √( k · Z · R<sub>u</sub> · T / M )</div>
+            <div class="text-slate-500">R<sub>u</sub> = 8314.462618 J/(kmol·K), T in K, M in kg/kmol, k = C<sub>p</sub>/C<sub>v</sub></div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">This is an <strong>engineering approximation</strong>, not an identity. The exact definition is c² = (∂P/∂ρ)<sub>s</sub>; the expression above neglects the (∂Z/∂P)<sub>T</sub> and (∂Z/∂T)<sub>P</sub> contributions. It is defensible because it is the form the sizing standard itself adopts, but it should not be treated as rigorous acoustics.</p>
+          <div class="bg-cyan-500/10 border border-cyan-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — k = 1.3, Z = 0.864584, T = 338.7056 K, M = 18.827055 kg/kmol → <strong>c = 410.03 m/s</strong> (1,345.2 ft/s). Setting Z = 1 gives 441.0 m/s, <strong>7.5 % high</strong> — a useful reminder that ignoring compressibility is not conservative when a Mach limit governs. Flare and relief headers are commonly screened at Ma ≤ 0.5 for the design case, with 0.7 treated as an upper bound; both are industry practice rather than code requirements.</div></div>
+            <div data-i18n-html="docs.theory.b037"><h4 class="text-base font-semibold text-fuchsia-400 mb-2">7.3 Joule-Thomson Coefficient</h4>
+          <p class="text-sm leading-relaxed">The temperature change per unit pressure drop in an isenthalpic expansion — across a control valve, an orifice or a choke. Starting from the exact definition and substituting V = ZRT/P:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>μ<sub>JT</sub> = (1/C<sub>p</sub>)·[ T·(∂V/∂T)<sub>P</sub> − V ]</div>
+            <div>(∂V/∂T)<sub>P</sub> = (R/P)·( Z + T·∂Z/∂T )</div>
+            <div>⇒ μ<sub>JT</sub> = (R·T² / (P·C<sub>p</sub>)) · (∂Z/∂T)<sub>P</sub></div>
+            <div class="text-slate-500">C<sub>p</sub> = k·R/(k−1), R = 8.314462618 J/(mol·K), P in Pa → μ<sub>JT</sub> in K/Pa</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">The Z terms cancel <strong>exactly</strong> in that substitution, so no approximation enters at this step. Everything uncertain lives in two places: Papay's Z, and the ideal-gas heat capacity. ∂Z/∂T is evaluated by central difference on the same Papay expression, with a fixed step of 0.5 °R — small enough to track the derivative, large enough to stay clear of floating-point cancellation. A <strong>positive</strong> coefficient means the gas cools on expansion, which is the normal natural-gas case and the reason valve outlets can drop into hydrate-formation or low-temperature-embrittlement territory.</p>
+          <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — at the same state with k = 1.3: ∂Z/∂T = 1.707785×10⁻³ K⁻¹, C<sub>p</sub> = 36.0293 J/(mol·K) → <strong>μ<sub>JT</sub> = 0.3279 K/bar</strong>. A 50 bar let-down would then cool the gas by roughly 16 K, before any latent-heat effects. This is a <strong>screening estimate</strong>: unlike every other calculation in this application it rests on no governing standard whatsoever.</div></div>
+            <div data-i18n-html="docs.theory.b038"><h4 class="text-base font-semibold text-amber-400 mb-2">7.4 Fitting Losses — Crane TP-410</h4>
+          <p class="text-sm leading-relaxed">Crane expresses each valve and fitting as a resistance coefficient K, a fixed number of velocity heads:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>K = n · f<sub>T</sub>       ΔP = ΣK · ρ·v² / 2       L<sub>eq</sub> = ΣK · D / f</div>
+            <div class="text-slate-500">n = tabulated L/D for the fitting type; f<sub>T</sub> = fully-turbulent friction factor at that nominal size</div>
+            <div class="text-slate-500">f = the ACTUAL flowing friction factor (Colebrook-White), not f<sub>T</sub></div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Note that f<sub>T</sub> and f are different quantities. f<sub>T</sub> characterises the <em>fitting</em> and depends only on nominal size; f characterises the <em>flow</em> and depends on Reynolds number and roughness. The application applies the <strong>K method</strong> and reports L<sub>eq</sub> as derived information, because a fitting's loss is a property of its geometry while the equivalent length that produces that loss depends on the pipe's operating point. The alternative L/D shortcut (L<sub>eq</sub> = n·D) implicitly assumes f = f<sub>T</sub> — that the line is in fully-rough flow — which is false for most process piping.</p>
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — 4-inch line, f<sub>T</sub> = 0.017, flowing f = 0.018354, ρ = 251.69 kg/m³, v = 1.0142 m/s. Four 90° elbows (4×30×0.017 = 2.040) + gate valve (8×0.017 = 0.136) + swing check (100×0.017 = 1.700) + entrance (0.500) + exit (1.000) → <strong>ΣK = 5.376</strong>. Velocity head = 129.437 Pa, so <strong>ΔP = 695.85 Pa</strong> and <strong>L<sub>eq</sub> = 29.759 m</strong>. Cross-check: extending the straight run by L<sub>eq</sub> raises the friction term by exactly 695.85 Pa — the two methods agree by construction. The L/D shortcut would give 23.16 m, <strong>22 % lower</strong>, and cannot represent entrance or exit at all.</div></div>
+            <div data-i18n-html="docs.theory.b039"><h4 class="text-base font-semibold text-blue-400 mb-2">7.5 Line-Sizing Criteria — NORSOK P-001</h4>
+          <p class="text-sm leading-relaxed">Screening limits for process piping, applied to the <strong>frictional</strong> pressure drop only. Static head is a real pressure change but not a sizing criterion — a vertical line is not undersized because it is tall.</p>
+          <div class="overflow-x-auto mt-3">
+            <table class="w-full text-xs border-collapse">
+              <thead><tr class="border-b border-slate-700 text-slate-400"><th class="text-left py-2 pr-4">Service</th><th class="text-left py-2 pr-4">Velocity</th><th class="text-left py-2">Frictional ΔP / 100 m</th></tr></thead>
+              <tbody class="text-slate-300">
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Gas / vapour</td><td class="py-2 pr-4 font-mono">min(175·ρ<sup>−0.43</sup>, 60) m/s</td><td class="py-2 font-mono">0.001–0.11 bar (&lt;35 barg) · 0.11–0.27 (35–138) · P/500 (&gt;138)</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Liquid — carbon steel</td><td class="py-2 pr-4 font-mono">1–6 m/s</td><td class="py-2">—</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Liquid — stainless / titanium</td><td class="py-2 pr-4 font-mono">1–7 m/s</td><td class="py-2">—</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Liquid — copper-nickel</td><td class="py-2 pr-4 font-mono">1–3 m/s</td><td class="py-2">—</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Liquid — GRP</td><td class="py-2 pr-4 font-mono">1–6 m/s</td><td class="py-2">—</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Pump suction — sub-cooled / boiling</td><td class="py-2 pr-4">—</td><td class="py-2 font-mono">≤ 0.25 / ≤ 0.05 bar</td></tr>
+                <tr class="border-b border-slate-800"><td class="py-2 pr-4">Pump discharge</td><td class="py-2 pr-4">—</td><td class="py-2 font-mono">≤ 0.9 bar</td></tr>
+                <tr><td class="py-2 pr-4">Two-phase — non-corrosive / corrosive</td><td class="py-2 pr-4 font-mono">min(183·ρ<sub>m</sub><sup>−0.5</sup>, 25 / 10) m/s</td><td class="py-2">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Copper-nickel carries the lowest velocity band of the four liquid materials — 3 m/s, half the carbon-steel figure — because of its susceptibility to erosion-corrosion in seawater. The <strong>minimum</strong> of 1 m/s matters as much as the maximum: below it, solids and water can settle out of the stream.</p>
+          <div class="bg-blue-500/10 border border-blue-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — the default two-phase case (ρ<sub>m</sub> = 251.7 kg/m³, v = 1.014 m/s): 183 × 251.7<sup>−0.5</sup> = <strong>11.54 m/s</strong>, so v/v<sub>max</sub> = 0.09 in non-corrosive service. In corrosive service the 10 m/s cap governs instead. For a gas line at ρ = 10 kg/m³, 175 × 10<sup>−0.43</sup> = 65.0 m/s, so the 60 m/s ceiling is what actually applies.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Only NORSOK P-001 criteria are implemented. Velocity and ΔP tables attributed to other sources circulate widely but could not be verified against primary text, and this application does not cite a standard it has not checked. These limits screen a line size; they do not replace a hydraulic study, a surge analysis, or a vibration assessment.</p></div>
+          </div>
+        </section>
+</div>
     </div>
 
     <div id="tab-terms" class="hidden">
@@ -2304,7 +2418,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.7</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.8</div>
     </div>
   </footer>
 
@@ -4303,7 +4417,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '2.7', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '2.8', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
