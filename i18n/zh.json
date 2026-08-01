@@ -24,7 +24,10 @@
     "shareLinkFailed": "分享链接生成失败",
     "popupBlockedDownloaded": "弹出窗口被拦截 — 报告已改为以 HTML 文件下载",
     "popupBlockedAllow": "弹出窗口被拦截 — 请允许弹出窗口以导出",
-    "openNavigation": "打开栏目导航"
+    "openNavigation": "打开栏目导航",
+    "sharedModuleAdded": "已添加 1 个共享模块",
+    "sharedModulesAdded": "已添加 {n} 个共享模块",
+    "shareLinkCopiedLong": "链接已复制 ({n} 字符) — 部分聊天/邮件客户端可能会截断"
   },
   "nav": {
     "general": "通用",
@@ -496,7 +499,7 @@
       "b002": "最后更新：2026 年 6 月 — 版本 2.4",
       "b003": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">1. 概述</h3> <p>O&G Engineering Converter 致力于保护您的隐私。本政策说明本应用如何处理信息。作为客户端应用，其架构设计即以最大限度减少数据收集与对外传输为目标。</p>",
       "b004": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">2. 我们不收集的数据</h3> <p>本应用<strong>不会</strong>收集、向开发者传输或在远程存储以下任何信息：</p> <ul class=\"list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4\"> <li>个人身份信息（姓名、电子邮件、IP 地址）</li> <li>您输入的气体组成数据或工程输入值（这些数据仅保存在您自己的浏览器中 — 见第 3 条 — 但第 4 条所述发送至计算 API 的临时数值参数除外）</li> <li>任何服务器上的计算结果或会话历史</li> <li>浏览器指纹或设备标识符</li> <li>用于追踪或分析目的的 Cookie</li> <li>任何使用遥测或统计分析数据</li> </ul>",
-      "b005": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">3. 浏览器本地存储</h3> <p>本应用使用浏览器的 <strong>Local Storage</strong>（浏览器内置功能）保存：(a) 您在通用选项卡中创建的自定义换算模块；以及 (b) — v2.4 新增 — 您最近一次的计算器输入与界面偏好，以便页面自动恢复上次会话。这些数据：</p> <ul class=\"list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4\"> <li>仅存储在您本地设备的浏览器中</li> <li>绝不会离开您的设备或浏览器，也绝不会传输至任何外部服务器</li> <li>可随时通过清除浏览器的本地存储或站点数据予以删除</li> <li>仅包含您的自定义模块定义以及您在计算器中输入的数值与所选单位</li> </ul> <p class=\"mt-2\"><strong>分享链接（v2.4）。</strong>“分享”按钮会将您当前的输入编码到页面 URL 中（位于 <span class=\"font-mono\">#</span> 片段之后）并复制到剪贴板。该操作完全在您的浏览器中完成；URL 片段绝不会发送至服务器。获得链接的任何人都可以还原这些输入，因此请避免分享包含您认为敏感数据的链接。</p>",
+      "b005": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">3. 浏览器本地存储</h3> <p>本应用使用浏览器的 <strong>Local Storage</strong>（浏览器内置功能）保存：(a) 您在通用选项卡中创建的自定义换算模块；以及 (b) — v2.4 新增 — 您最近一次的计算器输入与界面偏好，以便页面自动恢复上次会话。这些数据：</p> <ul class=\"list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4\"> <li>仅存储在您本地设备的浏览器中</li> <li>绝不会离开您的设备或浏览器，也绝不会传输至任何外部服务器</li> <li>可随时通过清除浏览器的本地存储或站点数据予以删除</li> <li>仅包含您的自定义模块定义以及您在计算器中输入的数值与所选单位</li> </ul> <p class=\"mt-2\"><strong>分享链接（v2.4）。</strong>“分享”按钮会将您当前的输入编码到页面 URL 中（位于 <span class=\"font-mono\">#</span> 片段之后）并复制到剪贴板。该操作完全在您的浏览器中完成；URL 片段绝不会发送至服务器。获得链接的任何人都可以还原这些输入，因此请避免分享包含您认为敏感数据的链接。</p><p class=\"mt-2\"><strong>共享链接现包含自定义模块 (v2.8)。</strong> 共享链接还会编码您创建的自定义换算模块的<em>定义</em> — 标题、单位标签和换算系数。他人打开该链接时，这些模块会添加到其浏览器的本地存储中，并在<strong>重新加载后保留</strong>，以便继续使用。屏幕上会简短提示已添加的数量。导入的模块文本在接收时会被净化处理，其内部标识符会重新生成，因此链接无法覆盖或删除接收者已有的模块。任何人都可以通过 TERMINATE 按钮或清除站点数据来移除导入的模块。</p><p class=\"mt-2\"><strong>问题报告表单已排除 (v2.8)。</strong> 在「报告」标签页中输入的任何内容 — 您的姓名、描述、报告类型 — <strong>不再</strong>写入本地存储或编码到共享链接中。此前这些字段会与计算输入一同被记录。现在这些内容仅在您选择打开邮件客户端发送报告时才会使用。</p>",
       "b006": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">4. 服务器端计算 API</h3> <p>本应用中的三项功能 — 管道压降计算、流型可视化及安全阀 (PRV) 定径计算 — 会将工程输入数据发送至托管于 Vercel 的无服务器函数进行计算。传输的数据仅限数值型工程参数（如压力、流量、流体物性）。对于流型可视化，服务器还会根据这些参数渲染并返回流型图图像。这些数据仅作瞬态处理以返回计算结果，本应用不会对其进行记录或存储，也不会将其与任何用户身份相关联。Vercel 的标准基础设施日志可能会记录请求元数据（见下文第 5 条）。</p>",
       "b007": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">5. 托管与第三方服务</h3> <p>本应用托管于 <strong>Vercel</strong>。与任何网络托管服务一样，Vercel 可能会在其基础设施运营过程中收集标准的服务器访问日志（如请求时间戳与 IP 地址）。这不在本应用开发者的控制范围内。有关其数据处理方式的详情，请参阅 <a href=\"https://vercel.com/legal/privacy-policy\" class=\"text-amber-400 hover:underline\" target=\"_blank\">Vercel 隐私政策</a>。</p> <p class=\"mt-2\">本应用还会从公共内容分发网络 (CDN) 加载开源库：Tailwind CSS 框架 (cdn.tailwindcss.com)，以及仅在首次使用流型 3D 动画时加载的 Three.js 3D 库 (cdnjs.cloudflare.com)。此外，页面还附带一个小型 <strong>Cloudflare 邮箱保护脚本</strong>（<span class=\"font-mono\">/cdn-cgi/scripts/.../email-decode.min.js</span>），用于对开发者的联系邮箱进行混淆以防爬虫抓取。与任何网络资源请求一样，这些提供商可能会记录标准请求元数据（如 IP 地址、用户代理）。任何工程输入数据或计算结果均不会发送给上述任何一方。</p>",
       "b008": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">6. 反馈功能</h3> <p>反馈选项卡会生成一个 mailto: 链接，用于打开您本地的电子邮件客户端。任何数据都不会经由本应用传输 — 邮件由您的电子邮件客户端处理。如您选择发送该邮件，开发者（Naoto Yamabe）可能会收到您的电子邮件地址及您撰写的内容。这些信息将仅用于回复您的反馈或请求，不会与第三方共享。</p>",

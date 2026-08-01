@@ -24,7 +24,10 @@
     "shareLinkFailed": "Share link failed",
     "popupBlockedDownloaded": "Pop-up blocked — report downloaded as HTML instead",
     "popupBlockedAllow": "Pop-up blocked — allow pop-ups to export",
-    "openNavigation": "Open section navigation"
+    "openNavigation": "Open section navigation",
+    "sharedModuleAdded": "1 shared module added",
+    "sharedModulesAdded": "{n} shared modules added",
+    "shareLinkCopiedLong": "Link copied ({n} chars) — may be truncated by some chat/mail clients"
   },
   "nav": {
     "general": "General",
