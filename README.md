@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v2.7
+# O&G Engineering Converter — v2.8
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -70,7 +70,16 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Out-of-range guards** — LNG density (ISO 6578 108–120 K), composition, and Papay Z-factor flag extrapolated inputs instead of silently clamping.
 - **UX & accessibility polish** *(new in v2.5)* — Enter-to-calculate, instant input-validation hints and stale-result flags on the server-backed cards; jump links + back-to-top on the long documentation tabs; ARIA tab semantics; Export falls back to an HTML download when pop-ups are blocked.
 
-### 5. Internationalization *(v2.6–v2.7)*
+### 5. Engineering additions *(v2.8)*
+
+- **Gas Property Estimator** *(Basic Eng)* — gas viscosity (Lee-Gonzalez-Eakin 1966), sonic velocity and the Joule-Thomson coefficient from one gravity / pressure / temperature / k input set, all chained to the same Papay Z as the Z-Factor card.
+- **Crane TP-410 fittings** *(ΔP card)* — twelve fitting types; ΣK·ρv²/2 added to the pressure drop, with the equivalent length reported alongside. Optional and off by default.
+- **NORSOK P-001 line-sizing screen** — velocity and frictional ΔP/100 m against per-service criteria, with a WITHIN / NEAR / EXCEEDS verdict.
+- **Mobile navigation** — the nine-tab bar becomes a dropdown below tablet width.
+- **Share links carry custom modules** — state format v:2, behind a sanitizing import boundary.
+- **Automated regression suite** — 173 pytest assertions plus GitHub Actions, guarding every documented reference vector on each change.
+
+### 6. Internationalization *(v2.6–v2.7)*
 
 - **10 UI languages, fully live** *(v2.7)* — English, 日本語, 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, and Deutsch, selectable from the header's quick toggle and settings menu. Every language covers the complete working tool (General, Basic Eng, Advanced, Safety, action bar, Report form, module modal, all dynamic calculator messages) **and** all four documentation tabs (How To Use, Theory, Terms of Use, Privacy Policy).
 - **Default English, persistent choice** — first-time visitors always land in English; a returning visitor's language choice is remembered; a Share link can carry an explicit language so a shared case opens the way the sender configured it.

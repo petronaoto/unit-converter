@@ -4,7 +4,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v2.7 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v2.8 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
   - Default UI language is English; as of v2.7 all 10 menu languages (en, ja, zh, ko, th, id, ru, es, fr, de) are fully live — working tool AND the four documentation tabs. See "Internationalization (i18n)" below and `docs/SPECIFICATION.md` §12.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
@@ -14,7 +14,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `i18n/*.json` — translation dictionaries, 10 files as of v2.7 (`en`, `ja`, `zh`, `ko`, `th`, `id`, `ru`, `es`, `fr`, `de`). `en.json` is the canonical source and runtime fallback for any working-tool key missing elsewhere; for `docs.*` keys the fallback is the inline English HTML in `index.html` (cached at runtime by `applyTranslations()` — English doc content is deliberately NOT duplicated into `en.json`). Fetched lazily by `index.html`, not bundled — the no-build-step principle holds.
   - `README.md` — project documentation.
-  - `docs/` (v2.7) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy).
+  - `docs/` (v2.8) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy).
 
 ## CRITICAL Preservation Rules
 
@@ -91,8 +91,8 @@ Shared by the Z-Factor Estimator and the Gas Property Estimator through `papayZ(
 `index.html` contains embedded documentation (How To Use tab, Theory tab). Whenever a feature, constant, or calculation changes, check and update:
 - Theory tab: Table 1.1 constants, §1.3–§1.7 worked examples, Part II–VI.
 - How To Use tab: section descriptions and reference-value callout boxes.
-- `docs/SPECIFICATION.md` (v2.7): the affected module/API section and, if applicable, the Known Issues register.
-- `docs/DEVELOPMENT_PLAN.md` (v2.7): roadmap item status when a roadmap feature ships.
+- `docs/SPECIFICATION.md` (v2.8): the affected module/API section and, if applicable, the Known Issues register.
+- `docs/DEVELOPMENT_PLAN.md` (v2.8): roadmap item status when a roadmap feature ships.
 - **(v2.7+) all 10 `i18n/*.json` files:** any new or changed user-visible working-tool string needs a matching key added/updated in **every** dictionary in the same commit. Any edit to the How To Use / Theory / Terms / Privacy inline English HTML must be mirrored into the corresponding `docs.*` key in **all 9 non-English dictionaries** (English doc content lives only inline in `index.html`). Missing keys silently fall back to English at runtime rather than erroring, so stale translations are easy to miss; check deliberately.
 Numbers in worked examples must match actual calculator output exactly.
 
@@ -155,7 +155,7 @@ pytest
 - JIS K 2301:2011 — calorific value, density, SG, Wobbe index from composition.
 - ISO 6578:1991 — LNG density (Klosek-McKinley).
 - API Standard 520 Part I, 9th Ed. (2014) — PRV sizing; API 526 orifice areas D–T.
-- API RP 14E (5th Ed., 1991) — erosional-velocity screening criterion V_e = C/√ρ (ΔP card, v2.4).
+- API RP 14E (5th Ed., 1991) — erosional-velocity screening criterion V_e = C/√ρ (ΔP card, v2.4). SI form V_e = 1.2199033·C/√ρ, an exact unit conversion (0.3048·√16.0184634); corrected in v2.8 from the erroneous √1.5.
 - Papay (1968) with Standing-Katz pseudo-criticals — gas Z-factor (Basic Eng); validity 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0.
 - CODATA 2018 — gas constant.
 - Colebrook & White (1939) — friction factor.
