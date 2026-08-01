@@ -103,6 +103,26 @@
       "volLabel": "체적 유량",
       "rhoNote": "— 유동 조건 기준",
       "footnote": "Q_vol = ṁ / ρ. 가스의 경우 해당 온도·압력에서의 밀도를 사용하십시오 (또는 고급 탭의 조성 기반 ρ_std)."
+    },
+    "gasProps": {
+      "title": "가스 물성 추정기",
+      "screeningChip": "개략 검토",
+      "sgLabel": "가스 비중 (공기 = 1.0)",
+      "pressureLabel": "압력",
+      "tempLabel": "온도",
+      "kLabel": "등엔트로피 지수 k",
+      "zLabel": "압축계수 Z",
+      "zMethod": "Papay 상관식",
+      "viscLabel": "가스 점도 μ",
+      "viscMethod": "Lee-Gonzalez-Eakin 상관식",
+      "sonicLabel": "음속 c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "줄-톰슨 계수 μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Papay Z가 유효 범위를 벗어나 외삽되었습니다 (Pr = {pr}, Tr = {trv}; 유효 범위 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0). 네 가지 출력 모두 Z에 의존합니다.",
+      "warnLge": "점도가 Lee-Gonzalez-Eakin 상관식의 실험 범위를 벗어났습니다 ({tf} °F, {psia} psia; 적용 범위 100–340 °F, 100–8,000 psia).",
+      "warnBelowAbsoluteZero": "온도가 절대영도 이하입니다.",
+      "footnote": "모두 개략 추정값이며 규격값이 아닙니다. Z는 Papay (1968)와 Standing-Katz 의사임계값을 사용하며 Z-Factor Estimator와 동일한 루틴입니다. μ는 Lee, Gonzalez & Eakin (1966) — 스위트 천연가스 4종에 대해 100–340 °F, 100–8,000 psia 범위에서 회귀한 상관식 (평균절대오차 약 2.7 %)이며, H₂S/CO₂/N₂ 보정이 없으므로 사워가스나 불활성 성분이 많은 가스에서는 참고용입니다. c = √(k·Z·R·T/M)는 API 520의 임계유동에 쓰이는 실제기체 형태로 (∂Z/∂P)_T 및 (∂Z/∂T)_P 항을 무시합니다. μ_JT는 엄밀한 열역학식에 Papay의 ∂Z/∂T와 이상기체 C_p = kR/(k−1)을 결합한 것으로, 양수는 팽창 시 냉각을 의미합니다. 가스 분자량 = 비중 × 28.9647."
     }
   },
   "advanced": {

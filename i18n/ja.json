@@ -103,6 +103,26 @@
       "volLabel": "体積流量",
       "rhoNote": "— 流動条件における",
       "footnote": "Q_vol = ṁ / ρ。気体の場合は該当する温度・圧力における密度を使用してください(または詳細計算タブの組成から求めた ρ_std)。"
+    },
+    "gasProps": {
+      "title": "ガス物性推算",
+      "screeningChip": "概算",
+      "sgLabel": "ガス比重 (空気 = 1.0)",
+      "pressureLabel": "圧力",
+      "tempLabel": "温度",
+      "kLabel": "比熱比 k",
+      "zLabel": "圧縮係数 Z",
+      "zMethod": "Papay 式",
+      "viscLabel": "ガス粘度 μ",
+      "viscMethod": "Lee-Gonzalez-Eakin 式",
+      "sonicLabel": "音速 c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "ジュール・トムソン係数 μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Papay 式の適用範囲外で外挿しています (Pr = {pr}, Tr = {trv}; 適用範囲 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0)。4 つの出力はすべて Z に依存します。",
+      "warnLge": "粘度が Lee-Gonzalez-Eakin 式の実験範囲外です ({tf} °F, {psia} psia; 適用範囲 100–340 °F, 100–8,000 psia)。",
+      "warnBelowAbsoluteZero": "温度が絶対零度以下です。",
+      "footnote": "いずれも概算であり規格値ではありません。Z は Papay (1968) と Standing-Katz 疑似臨界値を用い、Z-Factor Estimator と同一のルーチンです。μ は Lee, Gonzalez & Eakin (1966) — 4 種のスイート天然ガスについて 100–340 °F・100–8,000 psia で回帰した相関式 (平均絶対誤差 約 2.7 %)。H₂S/CO₂/N₂ 補正はないため、サワーガスや不活性成分の多いガスでは目安としてください。c = √(k·Z·R·T/M) は API 520 の臨界流れで用いられる実在気体形で、(∂Z/∂P)_T および (∂Z/∂T)_P 項を無視しています。μ_JT は厳密な熱力学式に Papay の ∂Z/∂T と理想気体 C_p = kR/(k−1) を組み合わせたもので、正値は膨張時の冷却を意味します。ガス分子量 = 比重 × 28.9647。"
     }
   },
   "advanced": {

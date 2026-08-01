@@ -103,6 +103,26 @@
       "volLabel": "LAJU ALIR VOLUMETRIK",
       "rhoNote": "— pada kondisi alir",
       "footnote": "Q_vol = ṁ / ρ. Untuk gas, gunakan densitas pada T & P yang bersangkutan (atau ρ_std komposisional dari tab Lanjutan)."
+    },
+    "gasProps": {
+      "title": "Estimator Properti Gas",
+      "screeningChip": "PENYARINGAN",
+      "sgLabel": "GRAVITASI GAS (Udara = 1,0)",
+      "pressureLabel": "TEKANAN",
+      "tempLabel": "SUHU",
+      "kLabel": "k ISENTROPIK",
+      "zLabel": "KOMPRESIBILITAS Z",
+      "zMethod": "Papay",
+      "viscLabel": "VISKOSITAS GAS μ",
+      "viscMethod": "Lee-Gonzalez-Eakin",
+      "sonicLabel": "KECEPATAN SUARA c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "JOULE-THOMSON μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Z Papay diekstrapolasi di luar rentang validitasnya (Pr = {pr}, Tr = {trv}; valid 0 < Pr ≤ 15, 1,05 ≤ Tr ≤ 3,0). Keempat keluaran bergantung pada Z.",
+      "warnLge": "Viskositas di luar basis eksperimental Lee-Gonzalez-Eakin ({tf} °F, {psia} psia; dicocokkan pada 100–340 °F dan 100–8.000 psia).",
+      "warnBelowAbsoluteZero": "Suhu berada pada atau di bawah nol mutlak.",
+      "footnote": "Semuanya estimasi penyaringan, bukan nilai standar. Z memakai Papay (1968) dengan pseudo-kritis Standing-Katz — rutin yang sama dengan Z-Factor Estimator. μ memakai Lee, Gonzalez & Eakin (1966), korelasi terbitan yang dicocokkan pada empat gas alam manis di rentang 100–340 °F dan 100–8.000 psia (AAE ≈ 2,7 %); tanpa koreksi H₂S/CO₂/N₂, sehingga gas asam atau berinert tinggi hanya bersifat indikatif. c = √(k·Z·R·T/M) adalah bentuk gas nyata yang dipakai API 520 untuk aliran kritis; suku (∂Z/∂P)_T dan (∂Z/∂T)_P diabaikan. μ_JT adalah termodinamika eksak yang dibungkus ∂Z/∂T dari Papay dan C_p gas ideal = kR/(k−1) — positif berarti pendinginan saat ekspansi. BM gas = SG × 28,9647."
     }
   },
   "advanced": {
