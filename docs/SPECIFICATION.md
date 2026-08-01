@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.1 (describes app v2.6)
+**Document version:** 1.2 (describes app v2.7)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -191,7 +191,7 @@ plus mode-specific intermediates — gas: `C`, `Pcf`, `critical_ratio`; steam: `
 - **State shape** (v1): `{ "v": 1, "inputs": { "<element-id>": "<value>", … }, "hv": "hhv|lhv", "fa": "vol|mol", "fb": "mass|mol", "p1": "abs|gau", "p2": "abs|gau", "tab": "<tab-name>", "lang": "<language-code>" }` — `inputs` covers every `input`/`select`/`textarea` with an id inside `<main>`. `lang` was added in v2.6 (purely additive; older encoded links with no `lang` key still decode fine and default to English).
 - **Share link:** `copyShareLink()` base64-encodes the same state object into `<origin><path>#s=<base64>`; entirely client-side.
 - **Restore precedence on load:** share-link hash → localStorage → defaults. Restore reapplies inputs, the five toggle modes, and recomputes client-side cards. **Only share links** additionally open on their saved tab (so a shared PSV case lands on Safety); normal visits always land on the General tab (v2.5.1 — localStorage tab restore was removed as a landing-page annoyance, though `tab` is still recorded in the state object for share links). **Language follows a different policy** (v2.6): a returning visitor's saved `og_lang` auto-restores on a normal visit (unlike `tab`), and a share link's `lang` field takes priority over even that saved preference — see §12.
-- **Custom modules** persist separately in `localStorage['og_custom_modules']` and are **not** part of the share-link payload (documented limitation; roadmap v2.6).
+- **Custom modules** persist separately in `localStorage['og_custom_modules']` and are **not** part of the share-link payload (documented limitation; roadmap v2.8).
 
 ## 7. Export Report
 
@@ -249,27 +249,28 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 | 4 | PRV gas mode: k ≤ 1 raises a division error that surfaces as a raw Python message; generic `str(e)` leaks internals | `api/psv_calculator.py` | Fix proposed, awaiting approval |
 | 5 | PRV two-phase: omitted back-pressure defaults to 0, silently forcing the critical branch | `api/psv_calculator.py` | Behavior decision needed (default to atmospheric vs. require input) |
 | 6 | Error-response schemas differ across the three endpoints (dp: badge without message; psv: message without badge; flowregime: both) | all three endpoints | Harmonization to the superset `{error, message, badge, badgeClass}` proposed |
-| 7 | Custom modules are not encoded in Share links | `index.html` state system | Roadmap v2.7 (state format v:2) |
-| 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.7 |
+| 7 | Custom modules are not encoded in Share links | `index.html` state system | Roadmap v2.8 (state format v:2) |
+| 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.8 |
 
 ## 12. Internationalization (i18n)
 
-Added in v2.6 as **Milestone 1** of a multi-milestone program (roadmap and decision points in DEVELOPMENT_PLAN.md §6 "Internationalization Program"). Default language is English; the app is fully usable in Japanese today; 8 more languages are scaffolded but not yet translated.
+Added in v2.6 as **Milestone 1** of a multi-milestone program (roadmap and decision points in DEVELOPMENT_PLAN.md §6 "Internationalization Program"); **Milestones 2 and 3 shipped in v2.7** — all 10 menu languages (en, ja, zh, ko, th, id, ru, es, fr, de) are fully live, covering the working tool and all four documentation tabs. Default language is English.
 
 ### 12.1 Dictionaries
 
-- `i18n/en.json` — canonical dictionary and the runtime fallback for any key missing in another language.
-- `i18n/ja.json` — Japanese, Milestone-1 scope (below).
-- One flat/nested, dot-path-keyed JSON file per language (e.g. `advanced.deltaP.pipeIdLabel`, `safety.psv.gasHeading`, `js.export.section1Title`), namespaced roughly by tab/card. Fetched lazily at runtime via `fetch('i18n/<code>.json')` — not bundled into `index.html` — so the no-build-step principle holds and a visitor never downloads a language they don't select. English is always fetched too, as the fallback source.
+- `i18n/en.json` — canonical working-tool dictionary and the runtime fallback for any working-tool key missing in another language. It deliberately contains **no `docs.*` keys** — English documentation content lives inline in `index.html` (see 12.6).
+- `i18n/ja.json`, `zh.json`, `ko.json`, `th.json`, `id.json`, `ru.json`, `es.json`, `fr.json`, `de.json` — each carries the full 303-key working-tool set **plus** the 125 `docs.*` documentation keys (v2.7).
+- One flat/nested, dot-path-keyed JSON file per language (e.g. `advanced.deltaP.pipeIdLabel`, `safety.psv.gasHeading`, `docs.theory.b005`), namespaced roughly by tab/card. Fetched lazily at runtime via `fetch('i18n/<code>.json')` — not bundled into `index.html` — so the no-build-step principle holds and a visitor never downloads a language they don't select. English is always fetched too, as the fallback source.
+- **Number formatting is en-US in every language** (decimal point, comma grouping) — a deliberate anti-ambiguity rule (see 12.5), enforced editorially in the dictionaries as well as in code.
 
 ### 12.2 Engine (inline in `index.html`'s existing `<script>` block — no second script file)
 
 | Function | Role |
 |---|---|
-| `LANGUAGES` | Config array of all 10 target languages, `{code, native, enabled}`. Only `en`/`ja` are `enabled: true`; the other 8 render in the settings menu as disabled "coming soon" rows — enabling one is a one-line flag flip plus its dictionary file. |
+| `LANGUAGES` | Config array of all 10 target languages, `{code, native, enabled}`. As of v2.7 all 10 are `enabled: true`; a future language would be added as a new row plus its dictionary file. |
 | `loadLanguage(code)` | Fetches and caches a dictionary in `translationsCache`. |
 | `tr(key, params)` | Dynamic-string helper for JS-generated text (calc warnings/badges, toasts, the `exportReport()` document, mailto body). Does `{param}` template substitution and falls back to English, then to the raw key, if a key is missing. **Named `tr()`, not `t()`** — `t` already shadows a local variable in several existing functions (`exportReport()`'s id-lookup helper, `calcZFactor()`'s temperature local; the latter's *reduced-temperature-ratio* local was also renamed `pr`/`trr` to avoid colliding with `tr()` itself — a pure rename, zero calculation change). |
-| `applyTranslations()` | Walks `[data-i18n]` (textContent), `[data-i18n-title]`, `[data-i18n-aria]`, `[data-i18n-placeholder]` and sets the matching text/attribute. No `data-i18n-html` variant exists by design — translation files stay plain text with no injection surface; labels mixing a translatable word with a literal symbol (e.g. "MASS FLOW W", "DYNAMIC VISCOSITY (μ)") split the literal symbol into its own sibling `<span>` instead. |
+| `applyTranslations()` | Walks `[data-i18n]` (textContent), `[data-i18n-title]`, `[data-i18n-aria]`, `[data-i18n-placeholder]` and sets the matching text/attribute. Working-tool labels mixing a translatable word with a literal symbol (e.g. "MASS FLOW W", "DYNAMIC VISCOSITY (μ)") split the literal symbol into its own sibling `<span>`. **v2.7:** additionally walks `[data-i18n-html]` for the documentation tabs, swapping block-level `innerHTML` from `docs.*` keys (see 12.6). The v2.6 "no `data-i18n-html` by design" stance was superseded when the doc tabs were translated: block-level rich prose (tables, lists, inline emphasis, jump-link navs) cannot reasonably be expressed as plain-text keys, and the dictionaries remain first-party, version-controlled files — no user-supplied content ever enters them, so the innerHTML path introduces no practical injection surface. |
 | `setLanguage(code)` | Persists `localStorage['og_lang']`, syncs `<html lang>`, re-runs `applyTranslations()` + `enhanceAccessibility()` (see 12.4), refreshes client-side calculator output via the existing `recomputeAll()`, and marks server-backed results (ΔP/PSV/Flow Regime badges) stale via the existing `markResultStale()` convention rather than re-firing an API call. |
 | `applyAwaitingBadgeDefaults()` | Re-translates the idle-state badge text ("Awaiting Calc...", "Run calculation to see intermediate values…", etc.) without stomping a live result already showing in a different language. |
 
@@ -277,7 +278,7 @@ Added in v2.6 as **Milestone 1** of a multi-milestone program (roadmap and decis
 
 Two-part control in the header (`.flex.items-center.justify-between.mb-4` row), not in the horizontally-scrolling tab `<nav>`:
 - **Quick toggle** — `EN` / `日本語` segmented buttons, visually matching the app's existing Abs/Gauge-style toggle-button pattern.
-- **Settings menu** — a gear-icon button opens a dropdown listing all 10 `LANGUAGES` entries; enabled ones are clickable, pending ones show a muted "coming soon" tag.
+- **Settings menu** — a gear-icon button opens a dropdown listing all 10 `LANGUAGES` entries; as of v2.7 every entry is clickable (the "coming soon" rendering path remains in `buildLangMenu()` for any future `enabled: false` row).
 
 ### 12.4 Bundled fixes (each was necessary for correct language switching, not scope creep)
 
@@ -286,14 +287,22 @@ Two-part control in the header (`.flex.items-center.justify-between.mb-4` row), 
 - `calcPSV()`'s "Enter required input(s)" message previously baked in English pluralization (`'input' + (n > 1 ? 's' : '')`); replaced with distinct singular/plural translation keys, since Japanese (and several of the pending 8 languages) has no plural marking.
 - `markResultStale()`'s appended suffix (previously the hardcoded literal `' · inputs changed — recalculate'`) is now translated via `tr()`.
 
-### 12.5 Translation scope — Milestone 1
+### 12.5 Translation scope — Milestones 1–3 (complete as of v2.7)
 
-**Translated (EN ⇄ JA):** General, Basic Eng, Advanced, Safety tabs (§4.1–4.4); the floating action bar; the Report form; the module-config modal; every JS-generated dynamic string across `calcGHV()`, `calcDeltaPressure()`, `calcFlowRegime()`, `calcPSV()`, `showToast()`, and `exportReport()`'s full standalone document (which also now sets its own `<html lang>`).
+**Translated in all 10 languages:** General, Basic Eng, Advanced, Safety tabs (§4.1–4.4); the floating action bar; the Report form; the module-config modal; every JS-generated dynamic string across `calcGHV()`, `calcDeltaPressure()`, `calcFlowRegime()`, `calcPSV()`, `showToast()`, and `exportReport()`'s full standalone document (which also now sets its own `<html lang>`); and (v2.7, Milestones 2+3) the four documentation tabs — How To Use, Theory, Terms of Use, Privacy Policy — via the `data-i18n-html` mechanism in 12.6.
 
-**Out of scope for Milestone 1** (§4.5 tabs; ~4,300 words, deferred to Milestone 3): How To Use, Theory, Terms of Use, Privacy Policy.
+**Legal pages carry a governing-language note** (`docs.terms.langNote` / `docs.privacy.langNote`): translations are provided for convenience; the English version governs. Non-English Terms/Privacy texts are machine-assisted translations pending the maintainer's legal review.
 
 **Never translated, by design, in any language:** chemical formulas, SI/imperial unit symbols, standard/code citations (JIS K 2301, API 520/526, ISO 6578, ASTM D1250, CODATA, API RP 14E), engineering variable symbols (W, P1, Kd, θ, ω, Re, …), version strings, the §9 reference test-vector values (byte-identical across languages by requirement), proper nouns, the developer's email.
 
 **Not yet localized (server side):** the three Python endpoints (§5) still return English prose for status/error text. `flowregime.py` already returns a machine-readable `regime_key` alongside its English `regime` label (§5.3) — the ~10+ other message/error branches across the three files are unkeyed. See DEVELOPMENT_PLAN.md §6 Milestone 4 (optional).
 
 **Number formatting is unchanged and language-independent:** `toLocaleString('en-US', …)` applies regardless of UI language — a deliberate decision (avoids decimal-comma ambiguity on values that get copy/pasted or shared cross-language), not a gap.
+
+### 12.6 Documentation-tab translation mechanism (v2.7, Milestones 2+3)
+
+- **`data-i18n-html` attributes** mark 125 block-level elements across the four documentation tabs (`docs.howto.b001`–`b068`, `docs.theory.b001`–`b033`, `docs.terms.b001`–`b010` + `langNote`, `docs.privacy.b001`–`b012` + `langNote`). Blocks were chosen so that **no element containing an `id` (section anchors, jump-link targets) is ever inside a swapped region** — anchors, the back-to-top behaviour, and wireframe structure are untouched by language switches.
+- **English lives inline, once.** On the first `applyTranslations()` pass each block's original English `innerHTML` is cached in `i18nHtmlOriginals`; switching back to English (or hitting a missing key in any language) restores from that cache. `en.json` therefore carries no `docs.*` keys and English users download no documentation text twice.
+- **Translation integrity is machine-checked** (build-side, not runtime): each translated value must have a byte-identical HTML tag/attribute sequence to its English source, identical `{placeholder}` sets, and digit-for-digit identical numeric tokens (the Theory tab's worked examples and Table 1.1 constants are regulatory reference values). The checker lives with the maintainer tooling; re-run it whenever a `docs.*` key changes.
+- **Sync rule:** any edit to the inline English documentation HTML must update the corresponding `docs.*` key in all 9 non-English dictionaries in the same commit (see CLAUDE.md Documentation Sync Rule).
+
