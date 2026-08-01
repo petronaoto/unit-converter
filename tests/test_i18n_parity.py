@@ -259,6 +259,40 @@ def test_interpolation_placeholders_survive_translation(code, dictionaries, flat
     assert not mismatches, f"placeholder drift in {code}.json:\n  " + "\n  ".join(mismatches)
 
 
+# ── Number formatting (SPECIFICATION.md §12: en-US in every language) ────────────
+
+NUMERIC_TOKEN = re.compile(r"\d+[.,]\d+")
+
+
+@pytest.mark.parametrize("code", NON_ENGLISH)
+def test_numeric_tokens_are_en_us_in_every_language(code, dictionaries, flat_keys):
+    """Numbers stay en-US (decimal point, comma thousands) in all 10 dictionaries.
+
+    This is not cosmetic. `fmtN` and `toFixed()` emit en-US regardless of UI language, so
+    a dictionary written with locale separators puts two conventions in one sentence. The
+    v2.8 `basic.gasProps.warnPapay` string did exactly that: the live Pr/Tr values arrive
+    as "16.20" from `toFixed(2)` while the literal envelope read "1,05 ≤ Tr ≤ 3,0" — and
+    the Z-Factor card beside it stated the same envelope with dots.
+
+    Any numeric token appearing in a translation must also appear in the English source
+    for that key. Translations may drop a number, but may not invent a differently
+    formatted one.
+    """
+    english = dictionaries["en"]
+    other = dictionaries[code]
+
+    offenders = []
+    for key in sorted(flat_keys["en"]):
+        en_tokens = set(NUMERIC_TOKEN.findall(str(_leaf(english, key))))
+        tokens = set(NUMERIC_TOKEN.findall(str(_leaf(other, key))))
+        invented = tokens - en_tokens
+        if invented:
+            offenders.append(f"{key}: {sorted(invented)} not in en {sorted(en_tokens)}")
+
+    assert not offenders, (
+        f"{code}.json uses non-en-US number formatting:\n  " + "\n  ".join(offenders))
+
+
 # ── Version-string consistency (CLAUDE.md version-bump checklist) ────────────────
 
 VERSION = re.compile(r"[Vv](\d+\.\d+(?:\.\d+)?)")

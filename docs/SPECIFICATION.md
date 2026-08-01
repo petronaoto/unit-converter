@@ -123,7 +123,7 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 
 ### 4.5 Documentation & Support Tabs
 
-- **How To Use** — Operations manual: "What's New" + 12 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors.
+- **How To Use** — Operations manual: "What's New" blocks (v2.8, v2.5, v2.4) + 15 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report, and — added v2.8 — Gas Property Estimator, fittings & line sizing, mobile navigation & shared modules) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors (`howto-new28`, `howto-new25`, `howto-new`, `howto-1`…`howto-15`).
 - **Theory** — Constants and formulas: Part I gas compositional (JIS K 2301 with worked examples), Part II density/flow, Part III LNG Klosek-McKinley (Tables B.2/C), Part IV hydraulics (Papay Z-factor §4.1, Darcy-Weisbach + Colebrook §4.2, flow-regime maps §4.3, erosional velocity §4.4), Part VI PRV sizing (§6.1–§6.7 incl. API 526 orifice table), Part V data sources. Worked-example numbers must match actual calculator output exactly.
 - **Terms of Use** — 8 clauses (reference-only nature, warranty disclaimer, liability, user responsibility, IP, updates, governing law).
 - **Privacy Policy** — 10 clauses (zero collection, localStorage-only state, stateless APIs, hosting, report feature, no cookies/tracking, children, rights, contact).
@@ -283,7 +283,7 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 
 **Vector 3 — Flow Regime default case** (same inputs): **Churn / Slug Flow**, θ = **+45.0°**, vertical map, j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s.
 
-**Vector 4 — PRV sizing (added and approved in v2.8).** Five USC cases, one per API 520 Part I sizing mode. Inputs are the Safety card's own placeholder values, so every case is reproducible directly from the UI. Enforced by `tests/test_psv_calculator.py`.
+**Vector 4 — PRV sizing (added and approved in v2.8).** Five USC cases, one per API 520 Part I sizing mode. Inputs are the Safety card's own placeholder values — with one deliberate exception: the §5.10 two-phase case uses **W = 238,715 lb/h, half the card's 477,430 placeholder**, chosen during review so the required area lands on a real API 526 orifice (T) instead of over-ranging to `T+`. The over-range path is covered separately by `test_oversized_requirement_is_flagged_not_silently_capped`. Enforced by `tests/test_psv_calculator.py`.
 
 | Mode | Inputs | Required area | Orifice | Intermediates |
 |---|---|---|---|---|
@@ -357,7 +357,7 @@ All four vectors are enforced automatically on every push and pull request, exce
 |---|---|---|---|
 | 1 | ~~Two-phase PRV result line displays Pc computed from back-pressure `Pa` instead of relieving pressure `Po`~~ | `api/psv_calculator.py` | **FIXED v2.8.** `Pc_display` now uses `Po_input × η_c`, matching the internal `Pc` that drives the critical/subcritical decision. Sizing was never affected — only the displayed value, which read exactly `0.0` whenever `Pa` was left at its default (the default). On Vector 4's two-phase case it now reads **52.971 psia** instead of 0.0. Guarded by `test_twophase_reports_pc_from_relieving_pressure` and `test_twophase_pc_is_independent_of_back_pressure` |
 | 2 | ΔP API: zero viscosity/density inputs can raise an uncaught exception → HTTP 500 without CORS/JSON, surfacing as a generic "API Connection Failed" badge | `api/dp_calculator.py` | Fix proposed, awaiting approval |
-| 3 | ΔP API accepts a negative erosion C-factor (produces a negative V_e with a green WITHIN LIMIT badge); `cfactor: 0` silently becomes 100 | `api/dp_calculator.py:107` | Fix proposed, awaiting approval |
+| 3 | ΔP API accepts a negative erosion C-factor (produces a negative V_e with a green WITHIN LIMIT badge); `cfactor: 0` silently becomes 100 | `api/dp_calculator.py` (the `C_ero` line; was :107 pre-v2.8, moved by the fittings block) | Fix proposed, awaiting approval |
 | 4 | PRV gas mode: k ≤ 1 raises a division error that surfaces as a raw Python message; generic `str(e)` leaks internals | `api/psv_calculator.py` | Fix proposed, awaiting approval |
 | 5 | PRV two-phase: omitted back-pressure defaults to 0, silently forcing the critical branch | `api/psv_calculator.py` | Behavior decision needed (default to atmospheric vs. require input) |
 | 6 | Error-response schemas differ across the three endpoints (dp: badge without message; psv: message without badge; flowregime: both) | all three endpoints | Harmonization to the superset `{error, message, badge, badgeClass}` proposed |
@@ -422,7 +422,7 @@ The exemption is **frozen, not general**. `tests/test_i18n_parity.py` names all 
 
 ### 12.6 Documentation-tab translation mechanism (v2.7, Milestones 2+3)
 
-- **`data-i18n-html` attributes** mark 125 block-level elements across the four documentation tabs (`docs.howto.b001`–`b068`, `docs.theory.b001`–`b033`, `docs.terms.b001`–`b010` + `langNote`, `docs.privacy.b001`–`b012` + `langNote`). Blocks were chosen so that **no element containing an `id` (section anchors, jump-link targets) is ever inside a swapped region** — anchors, the back-to-top behaviour, and wireframe structure are untouched by language switches.
+- **`data-i18n-html` attributes** mark 139 block-level elements across the four documentation tabs (`docs.howto.b001`–`b076`, `docs.theory.b001`–`b039`, `docs.terms.b001`–`b010` + `langNote`, `docs.privacy.b001`–`b012` + `langNote`). v2.8 added 14 (howto `b069`–`b076`, theory `b034`–`b039`); those 14 are English-only pending v2.8.1 — see §12.5.1. New keys are appended numerically even when the section sits near the top of the DOM, because the number is only an identifier and renumbering would touch every dictionary. Blocks were chosen so that **no element containing an `id` (section anchors, jump-link targets) is ever inside a swapped region** — anchors, the back-to-top behaviour, and wireframe structure are untouched by language switches.
 - **English lives inline, once.** On the first `applyTranslations()` pass each block's original English `innerHTML` is cached in `i18nHtmlOriginals`; switching back to English (or hitting a missing key in any language) restores from that cache. `en.json` therefore carries no `docs.*` keys and English users download no documentation text twice.
 - **Translation integrity is machine-checked** (build-side, not runtime): each translated value must have a byte-identical HTML tag/attribute sequence to its English source, identical `{placeholder}` sets, and digit-for-digit identical numeric tokens (the Theory tab's worked examples and Table 1.1 constants are regulatory reference values). The checker lives with the maintainer tooling; re-run it whenever a `docs.*` key changes.
 - **Sync rule:** any edit to the inline English documentation HTML must update the corresponding `docs.*` key in all 9 non-English dictionaries in the same commit (see CLAUDE.md Documentation Sync Rule).

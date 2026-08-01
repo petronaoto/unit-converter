@@ -79,6 +79,38 @@ def test_requirements_dev_exists_and_is_separate():
     assert "pytest" in dev.read_text(encoding="utf-8").lower()
 
 
+def test_ci_runs_every_test_file():
+    """Every tests/test_*.py must be reachable from .github/workflows/ci.yml.
+
+    This exists because it already went wrong. ci.yml originally passed an explicit list
+    of test files; test_js_constants.py (v2.8 PR-B) and test_share_state.py (PR-E) were
+    added later and never joined it, so CI silently ran 128 of 173 tests for the whole
+    release — including none of the guards on the share-link import sanitizer. Local runs
+    were green, the badge was green, and 45 tests were dead weight.
+
+    The workflow now runs the whole directory minus the one dependency-heavy file, so new
+    files are picked up automatically. This test fails if anyone reintroduces an allowlist
+    that misses a file.
+    """
+    workflow = (REPO_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    test_files = sorted(p.name for p in (REPO_ROOT / "tests").glob("test_*.py"))
+    assert test_files, "no test files found"
+
+    # A file is covered if it is named explicitly, or swept up by a directory-wide run
+    # that does not --ignore it.
+    sweeps = "pytest -v --ignore=tests/test_flowregime.py" in workflow
+    uncovered = []
+    for name in test_files:
+        named = f"tests/{name}" in workflow
+        swept = sweeps and name != "test_flowregime.py"
+        if not (named or swept):
+            uncovered.append(name)
+
+    assert not uncovered, (
+        f"these test files are never executed by CI: {uncovered}. "
+        "Add them to .github/workflows/ci.yml, or prefer a directory-wide run.")
+
+
 def test_frontend_has_no_build_step():
     """CLAUDE.md architecture principle 2: index.html contains all markup, styling and
     JavaScript. No bundler, no framework, no node_modules."""
