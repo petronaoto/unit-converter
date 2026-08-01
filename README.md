@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v2.6
+# O&G Engineering Converter — v2.7
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -70,11 +70,12 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Out-of-range guards** — LNG density (ISO 6578 108–120 K), composition, and Papay Z-factor flag extrapolated inputs instead of silently clamping.
 - **UX & accessibility polish** *(new in v2.5)* — Enter-to-calculate, instant input-validation hints and stale-result flags on the server-backed cards; jump links + back-to-top on the long documentation tabs; ARIA tab semantics; Export falls back to an HTML download when pop-ups are blocked.
 
-### 5. Internationalization *(new in v2.6)*
+### 5. Internationalization *(v2.6–v2.7)*
 
-- **English / Japanese switch** — a quick EN/日本語 toggle in the header, plus a settings menu listing all 10 planned languages (8 more shown as "coming soon"). General, Basic Eng, Advanced, Safety, the action bar, Report form, module modal, and every dynamic calculator message are fully translated in both languages today.
+- **10 UI languages, fully live** *(v2.7)* — English, 日本語, 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, and Deutsch, selectable from the header's quick toggle and settings menu. Every language covers the complete working tool (General, Basic Eng, Advanced, Safety, action bar, Report form, module modal, all dynamic calculator messages) **and** all four documentation tabs (How To Use, Theory, Terms of Use, Privacy Policy).
 - **Default English, persistent choice** — first-time visitors always land in English; a returning visitor's language choice is remembered; a Share link can carry an explicit language so a shared case opens the way the sender configured it.
-- Calculation logic and reference values are unaffected — see `docs/DEVELOPMENT_PLAN.md` for the remaining i18n roadmap (more languages, the documentation tabs, server-side message localization).
+- **English is authoritative** — numbers keep en-US point-decimal formatting in every language (a deliberate anti-ambiguity decision), and the Terms/Privacy pages in every language carry a governing-language note stating the English version prevails.
+- Calculation logic and reference values are unaffected and reproduce byte-identically in all 10 languages — see `docs/DEVELOPMENT_PLAN.md` for the remaining i18n roadmap item (server-side message localization, Milestone 4).
 
 ---
 
@@ -96,7 +97,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 
 | Document | Contents |
 |---|---|
-| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, the i18n program milestones, and the v2.7/v3.0 roadmap |
+| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, the i18n program milestones, and the v2.8/v3.0 roadmap |
 | [docs/SPECIFICATION.md](docs/SPECIFICATION.md) | Detailed engineering spec of every module, the three API contracts, state/share-link format, calculation rules, reference test vectors, and the known-issues register |
 | [docs/MARKETING.md](docs/MARKETING.md) | Positioning, target segments, SEO/content plan, channels, and privacy-compatible analytics options |
 

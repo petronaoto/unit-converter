@@ -1,6 +1,6 @@
 # Development Plan — O&G Engineering Converter
 
-**Document version:** 1.1 (accompanies app v2.6)
+**Document version:** 1.2 (accompanies app v2.7)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Repository:** <https://github.com/petronaoto/unit-converter>
 **Companion documents:** [SPECIFICATION.md](SPECIFICATION.md) (feature-level detail) · [MARKETING.md](MARKETING.md) (promotion strategy)
@@ -57,8 +57,9 @@ Reconstructed from the git log and tags (all dates 2026).
 | v2.4 | Jun 28 | **API RP 14E erosional velocity** on the ΔP card; three new Basic Eng converters (Petroleum Gravity, Viscosity, Mass↔Vol Flow); Export PDF, Share links, session auto-restore; out-of-range guards; Darcy-Weisbach rename; unit-selector consistency fixes |
 | v2.5 | Jul 2026 | **Documentation & UX release** — `docs/` folder (this document, SPECIFICATION.md, MARKETING.md); Theory §4.1 corrected to Papay; tab-navigation accessibility (scroll-into-view, ARIA tablist); back-to-top + section anchors in doc tabs; Enter-to-calculate and client-side validation hints on ΔP/PSV; export pop-up fallback; distinct viscosity unit values; stale-input indicator on server-backed cards |
 | **v2.6** | Jul 2026 (PR #3) | **Internationalization Milestone 1** — full i18n mechanism (`i18n/en.json`/`ja.json` dictionaries, `tr()`/`applyTranslations()`/`setLanguage()`, two-part header switcher); complete English↔Japanese translation of the working tool (General, Basic Eng, Advanced, Safety, floating action bar, Report form, module modal, every JS-generated dynamic string); settings menu lists 8 more languages as "coming soon". See §5 and SPECIFICATION.md §12 for full detail. |
+| **v2.7** | Aug 2026 | **Internationalization Milestones 2+3** — all 10 menu languages live (adds 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, Deutsch); the four documentation tabs (How To Use, Theory, Terms, Privacy) translated in all 9 non-English languages via the new `data-i18n-html` block-swap mechanism (125 `docs.*` keys/language, English cached inline); governing-language notes on Terms/Privacy; CLAUDE.md split into root + `api/` scoped files. SPECIFICATION.md §12.6. |
 
-## 5. Current State (v2.6)
+## 5. Current State (v2.7)
 
 ### Feature inventory
 
@@ -72,13 +73,12 @@ Reconstructed from the git log and tags (all dates 2026).
 
 ### Internationalization (i18n) status
 
-Shipped in v2.6 as **Milestone 1** of a multi-milestone program (full technical detail in SPECIFICATION.md §12):
+Milestone 1 shipped in v2.6; **Milestones 2 and 3 shipped in v2.7** (full technical detail in SPECIFICATION.md §12):
 
-- **Translated (EN ⇄ JA), fully working today:** General, Basic Eng, Advanced, Safety tabs; floating action bar; Report form; module-config modal; every JS-generated dynamic string (calc warnings/badges, toasts, PSV results, the PDF export document, mailto body). Default language is English; a returning visitor's language choice persists; share links can carry an explicit language.
-- **English-only for now:** the How To Use, Theory, Terms of Use, and Privacy Policy tabs (~4,300 words of documentation/legal prose) — deliberately deferred, see Milestone 3 below.
-- **Scaffolded but not yet translated:** Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German. The settings menu already lists all 10 languages; the 8 pending ones show as disabled "coming soon" entries — enabling each is a matter of adding its dictionary file, not further engineering.
+- **Fully translated and live in all 10 languages** (en, ja, zh, ko, th, id, ru, es, fr, de): the working tool (General, Basic Eng, Advanced, Safety tabs; floating action bar; Report form; module-config modal; every JS-generated dynamic string) **and** the four documentation tabs (How To Use, Theory, Terms of Use, Privacy Policy) via the `data-i18n-html` block-swap mechanism (SPECIFICATION.md §12.6). Default language is English; a returning visitor's language choice persists; share links can carry an explicit language.
+- **Legal caveat:** the non-English Terms of Use / Privacy Policy texts carry a governing-language note (English version governs) and are machine-assisted translations **pending the maintainer's legal review**.
 - **Not yet localized:** the three Python API endpoints still return English prose for server-generated status/error text (see Milestone 4 below).
-- Calculation logic was not touched by this work — the JIS K2301 reference vectors (§9 in SPECIFICATION.md) reproduce byte-identically in both languages.
+- Calculation logic was not touched by this work — the JIS K2301 reference vectors (§9 in SPECIFICATION.md) reproduce byte-identically in every language.
 
 See "Internationalization Program — next milestones" under §6 Roadmap for the decision points on what to do next.
 
@@ -86,23 +86,23 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 
 | Limitation | Status |
 |---|---|
-| No dedicated mobile navigation (tab bar scrolls horizontally) | Roadmap v2.6 |
-| Custom modules are not encoded in Share links (localStorage only) | Roadmap v2.6 |
+| No dedicated mobile navigation (tab bar scrolls horizontally) | Roadmap v2.8 |
+| Custom modules are not encoded in Share links (localStorage only) | Roadmap v2.8 |
 | Mixed interaction model: converters update live, server cards need a button click | Mitigated in v2.5 (stale-input indicator, Enter-to-calculate) |
 | Very small label typography in dense cards may fall below WCAG contrast targets | Backlog (needs a careful, sweeping pass) |
 | API error responses are not yet schema-harmonized across the three endpoints | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
 | dp_calculator input edge cases (zero viscosity/density) can produce an unstructured 500 | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
-| No automated test suite; regression relies on the manual reference-vector checklist | Roadmap v2.7 (pytest + CI) |
-| How To Use / Theory / Terms of Use / Privacy Policy tabs, and 8 of the 10 planned UI languages, are English-only | Roadmap — i18n Milestones 2 & 3, see §6 |
+| No automated test suite; regression relies on the manual reference-vector checklist | Roadmap v2.8 (pytest + CI) |
+| Non-English Terms of Use / Privacy Policy translations await the maintainer's legal review (governing-language note mitigates) | Open — review before promoting non-EN legal pages |
 | Server-generated status/error text (ΔP/PSV/Flow Regime badges) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6 |
 
 ## 6. Roadmap
 
 Each item enters a release only after explicit approval by the maintainer. Effort: L < 1 day · M = 1–3 days · H > 3 days.
 
-### v2.7 — "Junior engineer value pack" (proposed)
+### v2.8 — "Junior engineer value pack" (proposed)
 
-(Renumbered from the originally-proposed "v2.6" — that version number was taken by the i18n Milestone 1 release instead; see §4 and §5.)
+(Renumbered twice: originally proposed as "v2.6", then "v2.7" — both numbers were taken by i18n releases instead; see §4 and §5.)
 
 | Feature | Value | Effort | Notes |
 |---|---|---|---|
@@ -116,16 +116,14 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 
 ### Internationalization Program — next milestones
 
-Milestone 1 (English ⇄ Japanese for the working tool) shipped in **v2.6** (PR #3, merged). The remaining program is independent of the v2.7/v3.0 feature roadmap above and can be sequenced whenever it makes sense:
+Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in **v2.7**. Only M4 remains:
 
 | Milestone | Scope | Effort | Notes |
 |---|---|---|---|
 | **M1 — shipped (v2.6)** | i18n mechanism + full EN/JA translation of General, Basic Eng, Advanced, Safety tabs, action bar, Report form, module modal, and all JS-generated strings | — | Merged; see SPECIFICATION.md §12 |
-| **M2** | Same scope as M1, remaining 8 languages (Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German) | M | Mechanically identical to M1 — no new engineering. The settings menu already lists all 10 languages; each pending one just needs an `i18n/<code>.json` dictionary and its `enabled` flag flipped in `LANGUAGES` |
-| **M3** | How To Use, Theory, Terms of Use, Privacy Policy tabs — ~4,300 words, up to 9 languages | H | Largest remaining content volume. **Terms of Use and Privacy Policy translations need the maintainer's own legal review before publishing** — mistranslated jurisdiction/liability clauses carry real risk |
+| **M2 — shipped (v2.7)** | Same scope as M1, remaining 8 languages (Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German) | — | All 10 `LANGUAGES` rows now `enabled: true`, each with a full `i18n/<code>.json` |
+| **M3 — shipped (v2.7)** | How To Use, Theory, Terms of Use, Privacy Policy tabs in all 9 non-English languages | — | Via the `data-i18n-html` mechanism (SPECIFICATION.md §12.6). **Terms/Privacy translations still need the maintainer's legal review** — a governing-language note (English prevails) is in place in every language as mitigation |
 | **M4 (optional)** | `api/dp_calculator.py`, `api/psv_calculator.py`, `api/flowregime.py` return machine-readable status/error keys instead of English prose, so server-driven text (flow-regime classification, validation errors) can localize too | M | Backend-only, stdlib-safe additive payload change. `flowregime.py` already returns `regime_key` alongside its English `regime` label (SPECIFICATION.md §5.3) — the other ~10+ message/error branches across the three files remain unkeyed |
-
-**Decision points:** M2 and M3 are independent — either can go first. M2 carries essentially zero engineering risk (pure translation volume against an already-proven mechanism). M3 needs legal-review time budgeted in before publishing. M4 improves consistency for the server-backed cards but isn't a prerequisite for M2 or M3.
 
 ### v3.0 — "Professional pack" (proposed)
 

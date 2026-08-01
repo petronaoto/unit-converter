@@ -1,6 +1,6 @@
 # Advertisement & Promotion Strategy — O&G Engineering Converter
 
-**Document version:** 1.1 (accompanies app v2.6)
+**Document version:** 1.2 (accompanies app v2.7)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [SPECIFICATION.md](SPECIFICATION.md)
 
@@ -23,7 +23,7 @@ A pragmatic promotion plan for a solo-maintained, free, zero-tracking engineerin
 
 ## 2. Target Segments
 
-1. **Japanese LNG terminal / city-gas utility engineers** — the JIS K 2301:2011 compositional chain with exact Excel-matching rounding is a unique hook; almost no free web tool offers it. **Update (v2.6):** the working calculators (General, Basic Eng, Advanced, Safety, plus Export/Share/Report) now have a full Japanese UI — the EN/日本語 switch is live and can be promoted today. The *content-marketing* angle in §3 below (turning Theory-tab sections into Qiita/Zenn articles) still leans on the Theory tab, which remains English-only until i18n Milestone 3 (see DEVELOPMENT_PLAN.md §6) — so a worked-example post can link to a genuinely bilingual calculator right now, but a fully Japanese-language *article* explaining the theory isn't ready to source directly from the app yet.
+1. **Japanese LNG terminal / city-gas utility engineers** — the JIS K 2301:2011 compositional chain with exact Excel-matching rounding is a unique hook; almost no free web tool offers it. **Update (v2.7):** the entire app — working calculators AND the How To Use / Theory manuals — is now fully available in Japanese (and 8 further languages: 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, Deutsch). The content-marketing angle in §3 below (turning Theory-tab sections into Qiita/Zenn articles) can now source fully Japanese-language theory text directly from the app, and the multilingual coverage opens the same play for Chinese-, Korean-, and Southeast-Asian-market engineering communities.
 2. **Global O&G / LNG process & facilities engineers** — daily ΔP screening, PSV sanity checks, erosional-velocity checks (RP 14E), flow-regime orientation.
 3. **EPC junior engineers & graduates** — the How To Use + Theory tabs make the tool a learning aid; juniors who adopt a tool keep it for a career.
 4. **Chemical/petroleum engineering students & instructors** — free, browser-based, theory-documented; instructors can link it in coursework.
