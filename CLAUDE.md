@@ -70,6 +70,22 @@ Composition: CH₄=89, C₂H₆=7, C₃H₈=2.5, iC₄=0.7, nC₄=0.5, N₂=0.3 
 
 After ANY change touching `calcGHV()`, `gasComps`, or related logic, re-verify these values (a quick Python check is acceptable) before committing.
 
+### Basic Eng real-gas vectors (v2.8) — SG 0.65, 2,000 psi, 150 °F, k = 1.3
+
+Shared by the Z-Factor Estimator and the Gas Property Estimator through `papayZ()`. Re-verify after ANY change to `papayZ()`, `toPsia()`, `toRankine()`, `calcZFactor()` or `calcGasProps()`. Full derivation in `docs/SPECIFICATION.md` §9 Vectors 5–6.
+
+| Quantity | Expected |
+|---|---|
+| P_pc / T_pc | 670.1290 psia / 365.1100 °R |
+| P_r / T_r | 2.984500 / 1.669826 |
+| **Z** | **0.8646** (0.864584 exact) — both cards must show this |
+| ρ (Papay) | 0.1066271 g/cm³ |
+| **μ_g** (Lee-Gonzalez-Eakin) | **0.016663 cP** |
+| **c** (sonic) | **410.0269 m/s** |
+| **μ_JT** | **0.3279 K/bar** |
+
+**Use the ORIGINAL LGE coefficients** — 9.379 / 0.01607 / 209.2 / 19.26, X = 3.448 + 986.4/T + 0.01009M, Y = 2.447 − 0.2224X. The widely-copied *rounded* set (9.4 / 0.02 / 209 / 19) shifts μ by ≈ −2.1 %, and two corrupted variants circulate on wiki sites (`X = 3.488`, and `0.001·M` for `0.01·M`). `tests/test_js_constants.py` pins all of these.
+
 ## Documentation Sync Rule
 
 `index.html` contains embedded documentation (How To Use tab, Theory tab). Whenever a feature, constant, or calculation changes, check and update:

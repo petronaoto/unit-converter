@@ -103,6 +103,26 @@
       "volLabel": "体积流量",
       "rhoNote": "— 流动工况下",
       "footnote": "Q_vol = ṁ / ρ。气体请使用指定温度和压力下的密度（或高级计算选项卡中按组成求得的 ρ_std）。"
+    },
+    "gasProps": {
+      "title": "气体物性估算器",
+      "screeningChip": "初步筛选",
+      "sgLabel": "气体相对密度 (空气 = 1.0)",
+      "pressureLabel": "压力",
+      "tempLabel": "温度",
+      "kLabel": "等熵指数 k",
+      "zLabel": "压缩因子 Z",
+      "zMethod": "Papay 关联式",
+      "viscLabel": "气体黏度 μ",
+      "viscMethod": "Lee-Gonzalez-Eakin 关联式",
+      "sonicLabel": "声速 c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "焦耳-汤姆逊系数 μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Papay 压缩因子已在有效范围外外推 (Pr = {pr}, Tr = {trv}; 有效范围 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0)。四项输出均依赖于 Z。",
+      "warnLge": "黏度超出 Lee-Gonzalez-Eakin 关联式的实验范围 ({tf} °F, {psia} psia; 拟合范围 100–340 °F, 100–8,000 psia)。",
+      "warnBelowAbsoluteZero": "温度等于或低于绝对零度。",
+      "footnote": "均为初步估算值，非规范值。Z 采用 Papay (1968) 与 Standing-Katz 拟临界参数，与 Z-Factor Estimator 使用同一程序。μ 采用 Lee, Gonzalez & Eakin (1966)，该关联式基于四种甜性天然气在 100–340 °F、100–8,000 psia 范围内拟合 (平均绝对误差约 2.7 %)；不含 H₂S/CO₂/N₂ 修正，故含硫或高惰性组分气体仅供参考。c = √(k·Z·R·T/M) 为 API 520 临界流所用的实际气体形式，忽略了 (∂Z/∂P)_T 与 (∂Z/∂T)_P 项。μ_JT 为严格热力学式，配合 Papay 的 ∂Z/∂T 与理想气体 C_p = kR/(k−1)；正值表示膨胀时冷却。气体分子量 = 相对密度 × 28.9647。"
     }
   },
   "advanced": {

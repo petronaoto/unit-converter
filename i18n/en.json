@@ -103,6 +103,26 @@
       "volLabel": "VOLUMETRIC FLOW",
       "rhoNote": "— at flowing conditions",
       "footnote": "Q_vol = ṁ / ρ. For gases, use the density at the stated T & P (or the compositional ρ_std from the Advanced tab)."
+    },
+    "gasProps": {
+      "title": "Gas Property Estimator",
+      "screeningChip": "SCREENING",
+      "sgLabel": "GAS GRAVITY (Air = 1.0)",
+      "pressureLabel": "PRESSURE",
+      "tempLabel": "TEMPERATURE",
+      "kLabel": "ISENTROPIC k",
+      "zLabel": "COMPRESSIBILITY Z",
+      "zMethod": "Papay",
+      "viscLabel": "GAS VISCOSITY μ",
+      "viscMethod": "Lee-Gonzalez-Eakin",
+      "sonicLabel": "SONIC VELOCITY c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "JOULE-THOMSON μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Papay Z is extrapolated outside its validity envelope (Pr = {pr}, Tr = {trv}; valid 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0). All four outputs depend on Z.",
+      "warnLge": "Viscosity is outside the Lee-Gonzalez-Eakin experimental basis ({tf} °F, {psia} psia; fitted over 100–340 °F and 100–8,000 psia).",
+      "warnBelowAbsoluteZero": "Temperature is at or below absolute zero.",
+      "footnote": "Screening estimates, not standards. Z uses Papay (1968) with Standing-Katz pseudo-criticals — the same routine as the Z-Factor Estimator. μ uses Lee, Gonzalez & Eakin (1966), a published correlation fitted to four sweet natural gases over 100–340 °F and 100–8,000 psia (≈2.7 % AAE); it carries no H₂S/CO₂/N₂ correction, so treat sour or high-inert gas as indicative only. c = √(k·Z·R·T/M) is the real-gas form used in API 520 for critical flow; it neglects the (∂Z/∂P)_T and (∂Z/∂T)_P terms. μ_JT is exact thermodynamics wrapped around Papay's ∂Z/∂T and an ideal-gas C_p = kR/(k−1) — positive means cooling on expansion. Gas MW = SG × 28.9647."
     }
   },
   "advanced": {

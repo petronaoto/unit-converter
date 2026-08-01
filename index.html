@@ -400,6 +400,81 @@
           </div>
         </div>
 
+        <!-- B4 (v2.8) — Gas Property Estimator: LGE viscosity, sonic velocity, Joule-Thomson.
+             All three chain off the same Papay Z as the Z-Factor Estimator above, via the
+             shared papayZ() helper — the two cards cannot disagree by construction. -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span data-i18n="basic.gasProps.title">Gas Property Estimator</span></h2>
+            <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.gasProps.screeningChip">SCREENING</span>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.sgLabel">GAS GRAVITY (Air = 1.0)</label>
+                <input type="number" step="any" id="gp-sg" placeholder="0.65" oninput="calcGasProps()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-100 outline-none focus:ring-1 focus:ring-emerald-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.pressureLabel">PRESSURE</label>
+                <div class="flex">
+                  <input type="number" step="any" id="gp-p" placeholder="2000" oninput="calcGasProps()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-emerald-500" />
+                  <select id="gp-p-u" onchange="calcGasProps()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="psi">psi</option><option value="bar">bar</option><option value="Pa">Pa</option><option value="kPa">kPa</option><option value="MPa">MPa</option><option value="atm">atm</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.tempLabel">TEMPERATURE</label>
+                <div class="flex">
+                  <input type="number" step="any" id="gp-t" placeholder="150" oninput="calcGasProps()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-emerald-500" />
+                  <select id="gp-t-u" onchange="calcGasProps()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="F">°F</option><option value="C">°C</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.gasProps.kLabel">ISENTROPIC k</span> (C<sub>p</sub>/C<sub>v</sub>)</label>
+                <input type="number" step="any" id="gp-k" value="1.3" oninput="calcGasProps()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-100 outline-none focus:ring-1 focus:ring-emerald-500" />
+              </div>
+            </div>
+
+            <div id="gp-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
+
+            <div class="pt-4 border-t border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-purple-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.zLabel">COMPRESSIBILITY Z</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="gp-out-z" class="text-xl font-bold font-mono text-white">—</span>
+                  <button onclick="copyText(document.getElementById('gp-out-z').innerText, this)" class="text-slate-400 hover:text-emerald-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.gasProps.zMethod">Papay</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-emerald-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.viscLabel">GAS VISCOSITY μ</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="gp-out-mu" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="gp-out-mu-u" onchange="calcGasProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">cP</option><option value="1000">µPa·s</option><option value="0.001">Pa·s</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.gasProps.viscMethod">Lee-Gonzalez-Eakin</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-cyan-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.sonicLabel">SONIC VELOCITY c</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="gp-out-c" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="gp-out-c-u" onchange="calcGasProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">m/s</option><option value="3.280840">ft/s</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.gasProps.sonicMethod">√(k·Z·R·T/M)</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-fuchsia-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.gasProps.jtLabel">JOULE-THOMSON μ_JT</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="gp-out-jt" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="gp-out-jt-u" onchange="calcGasProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">K/bar</option><option value="10">K/MPa</option><option value="0.124105626">°F/psi</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.gasProps.jtMethod">(RT²/P·Cp)(∂Z/∂T)</div>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.gasProps.footnote">Screening estimates, not standards. Z uses Papay (1968) with Standing-Katz pseudo-criticals — the same routine as the Z-Factor Estimator. μ uses Lee, Gonzalez &amp; Eakin (1966), a published correlation fitted to four sweet natural gases over 100–340 °F and 100–8,000 psia (≈2.7 % AAE); it carries no H₂S/CO₂/N₂ correction, so treat sour or high-inert gas as indicative only. c = √(k·Z·R·T/M) is the real-gas form used in API 520 for critical flow; it neglects the (∂Z/∂P)_T and (∂Z/∂T)_P terms. μ_JT is exact thermodynamics wrapped around Papay's ∂Z/∂T and an ideal-gas C_p = kR/(k−1) — positive means cooling on expansion. Gas MW = SG × 28.9647.</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -2529,35 +2604,161 @@
       document.getElementById('pipe-vol-out').innerText = vOut.toLocaleString('en-US', {maximumFractionDigits: 3}); 
     }
 
-    function calcZFactor() { 
-      const sg = parseFloat(document.getElementById('z-sg').value); 
-      const p = parseFloat(document.getElementById('z-p').value); 
+    // ══════════════════════════════════════════════════════════════════════════
+    //  v2.8 — SHARED REAL-GAS HELPERS
+    //
+    //  The Z-Factor Estimator and the Gas Property Estimator both need Papay Z from
+    //  the same (SG, P, T). These helpers exist so the two cards can never disagree:
+    //  two cards showing different Z for identical inputs would be a credibility
+    //  failure in a tool whose whole claim is standards traceability.
+    //
+    //  The correlation constants below are quoted in THREE places that must stay in
+    //  agreement — here, the Theory tab (§4.1, index.html ~line 1736), and
+    //  docs/SPECIFICATION.md §4.2. tests/test_js_constants.py asserts all three match.
+    //  Reference vector (SPECIFICATION.md §9 Vector 5): SG 0.65, 2000 psi, 150 °F
+    //  → Ppc 670.1290, Tpc 365.1100, Pr 2.9845, Tr 1.6698, Z 0.8646.
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // Pressure → psia. Keys are the option values of z-p-u / gp-p-u; an unknown unit
+    // falls through as psia, matching the original if-ladder's behaviour exactly.
+    const PRESS_TO_PSIA = { psi: 1, bar: 14.5038, Pa: 0.000145038, kPa: 0.145038, MPa: 145.038, atm: 14.6959 };
+    function toPsia(v, unit) {
+      const f = PRESS_TO_PSIA[unit];
+      return v * (f === undefined ? 1 : f);
+    }
+    // Temperature → °R. Anything that is not 'C' is treated as °F, preserving the
+    // original ternary — do not "improve" this into a lookup without adding a K option
+    // to both cards' selects at the same time.
+    function toRankine(v, unit) { return unit === 'C' ? (v * 1.8) + 491.67 : v + 459.67; }
+
+    // Papay (1968) with Standing-Katz pseudo-criticals (psia / °R).
+    // Returns the intermediates too, because the Gas Property card displays Z and
+    // needs Pr/Tr for its own validity warning, and the JT calculation differentiates
+    // this same expression.
+    function papayZ(sg, pPsia, tRankine) {
+      const ppc = 756.8 - 131*sg - 3.6*sg*sg;
+      const tpc = 169.2 + 349.5*sg - 74*sg*sg;
+      const pr = pPsia/ppc, trr = tRankine/tpc;
+      const Z = 1 - 3.52*pr/Math.pow(10, 0.9813*trr) + 0.274*pr*pr/Math.pow(10, 0.8157*trr);
+      // A3 — Papay validity envelope: 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0
+      return { ppc, tpc, pr, trr, Z, oob: pr <= 0 || pr > 15 || trr < 1.05 || trr > 3.0 };
+    }
+
+    function calcZFactor() {
+      const sg = parseFloat(document.getElementById('z-sg').value);
+      const p = parseFloat(document.getElementById('z-p').value);
       const uP = document.getElementById('z-p-u').value;
-      const t = parseFloat(document.getElementById('z-t').value); 
+      const t = parseFloat(document.getElementById('z-t').value);
       const uT = document.getElementById('z-t-u').value;
-      if(!sg || !p || !t) return; 
-      
-      let p_psia = p;
-      if(uP === 'bar') p_psia = p * 14.5038;
-      if(uP === 'Pa') p_psia = p * 0.000145038;
-      if(uP === 'kPa') p_psia = p * 0.145038;
-      if(uP === 'MPa') p_psia = p * 145.038;
-      if(uP === 'atm') p_psia = p * 14.6959;
+      if(!sg || !p || !t) return;
 
-      let t_rankine = uT === 'C' ? (t * 1.8) + 491.67 : t + 459.67;
-
-      const ppc = 756.8 - 131*sg - 3.6*sg*sg; 
-      const tpc = 169.2 + 349.5*sg - 74*sg*sg; 
-      const pr = p_psia/ppc; const trr = t_rankine/tpc;
+      // v2.8 — the unit ladders and the correlation moved into toPsia()/toRankine()/
+      // papayZ() above so the Gas Property Estimator shares them. Behaviour, output
+      // formatting and the warning text are unchanged; verified against Vector 5.
+      const pz = papayZ(sg, toPsia(p, uP), toRankine(t, uT));
       const zr = document.getElementById('z-result');
-      zr.innerText = (1 - 3.52*pr/Math.pow(10, 0.9813*trr) + 0.274*pr*pr/Math.pow(10, 0.8157*trr)).toFixed(4);
-      // A3 — Papay validity envelope (Standing-Katz pseudo-criticals): 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0
+      zr.innerText = pz.Z.toFixed(4);
       const zw = document.getElementById('z-warn');
       if (zw) {
-        const oob = pr <= 0 || pr > 15 || trr < 1.05 || trr > 3.0;
-        zw.classList.toggle('hidden', !oob);
-        if (oob) zw.innerText = '⚠ ' + tr('basic.zFactor.warnOutOfRange', {pr: pr.toFixed(2), trv: trr.toFixed(2)});
+        zw.classList.toggle('hidden', !pz.oob);
+        if (pz.oob) zw.innerText = '⚠ ' + tr('basic.zFactor.warnOutOfRange', {pr: pz.pr.toFixed(2), trv: pz.trr.toFixed(2)});
       }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  B4 (v2.8) — GAS PROPERTY ESTIMATOR
+    //
+    //  Three screening calculations off one (SG, P, T, k) input set, all chained to
+    //  the shared papayZ() above. Reference vector: SPECIFICATION.md §9 Vector 6.
+    // ══════════════════════════════════════════════════════════════════════════
+    const MW_AIR_GP   = 28.9647;        // g/mol. LGE's 1966 paper used 28.97 — a 0.012 %
+                                        // difference, documented rather than silently absorbed.
+    const R_PSIA_GP   = 10.731577;      // psia·ft³/(lbmol·°R) — for ρ = PM/(ZRT) in field units
+    const R_KMOL_GP   = 8314.462618;    // J/(kmol·K) — sonic velocity. NOT the same literal as
+                                        // the 8.31446262 J/(mol·K) used with mw/1000 in calcGHV();
+                                        // kept visually distinct so neither gets "unified" away.
+    const R_MOL_GP    = 8.314462618;    // J/(mol·K)  — Joule-Thomson
+    const LB_FT3_PER_G_CM3 = 62.427960;
+
+    function calcGasProps() {
+      const sg = parseFloat(document.getElementById('gp-sg').value);
+      const p  = parseFloat(document.getElementById('gp-p').value);
+      const uP = document.getElementById('gp-p-u').value;
+      const t  = parseFloat(document.getElementById('gp-t').value);
+      const uT = document.getElementById('gp-t-u').value;
+      const k  = parseFloat(document.getElementById('gp-k').value);
+
+      const blank = ['gp-out-z','gp-out-mu','gp-out-c','gp-out-jt'];
+      // NOTE: t is checked with isNaN, not falsiness — 0 °C is a perfectly valid input.
+      // (The older Z-Factor card uses `if(!sg || !p || !t) return;`, which silently
+      // rejects exactly 0°; logged as a known issue rather than changed here.)
+      if (isNaN(sg) || sg <= 0 || isNaN(p) || p <= 0 || isNaN(t) || isNaN(k) || k <= 1) {
+        blank.forEach(id => { document.getElementById(id).innerText = '—'; });
+        document.getElementById('gp-warn').classList.add('hidden');
+        return;
+      }
+
+      const pPsia = toPsia(p, uP);
+      const tR    = toRankine(t, uT);
+      if (pPsia <= 0 || tR <= 0) {
+        blank.forEach(id => { document.getElementById(id).innerText = '—'; });
+        const w0 = document.getElementById('gp-warn');
+        w0.classList.remove('hidden');
+        w0.innerText = '⚠ ' + tr('basic.gasProps.warnBelowAbsoluteZero');
+        return;
+      }
+
+      const tK = tR / 1.8;
+      const pz = papayZ(sg, pPsia, tR);
+      const M  = sg * MW_AIR_GP;              // lb/lbmol ≡ g/mol ≡ kg/kmol
+
+      // ── Gas viscosity — Lee, Gonzalez & Eakin (1966), SPE 1340 ──────────────
+      // ORIGINAL (unrounded) coefficients. The widely-copied rounded set
+      // (9.4 / 0.02 / 209 / 19, X = 3.5 + 986/T + 0.01M, Y = 2.4 − 0.2X) shifts the
+      // result by ≈ −2.1 %, which is the same order as the correlation's own error —
+      // it destroys reproducibility for no benefit. Do not "tidy" these numbers.
+      // Units are not negotiable: T in °R, M in lb/lbmol, ρ in g/cm³, μ in cP.
+      const rhoGCm3 = (pPsia * M / (pz.Z * R_PSIA_GP * tR)) / LB_FT3_PER_G_CM3;
+      const lgeK = (9.379 + 0.01607 * M) * Math.pow(tR, 1.5) / (209.2 + 19.26 * M + tR);
+      const lgeX = 3.448 + 986.4 / tR + 0.01009 * M;
+      const lgeY = 2.447 - 0.2224 * lgeX;
+      // ρ > 0 is guaranteed above (P, T, Z all positive), but guard anyway: 0^Y = 0
+      // would make exp(0) = 1 and silently return the dilute-gas limit.
+      const muCp = rhoGCm3 > 0 ? 1e-4 * lgeK * Math.exp(lgeX * Math.pow(rhoGCm3, lgeY)) : NaN;
+
+      // ── Sonic velocity — c = √(k·Z·R·T/M) ───────────────────────────────────
+      const cMs = Math.sqrt(k * pz.Z * R_KMOL_GP * tK / M);
+
+      // ── Joule-Thomson — μ_JT = (R·T²/(P·Cp)) · (∂Z/∂T)_P ────────────────────
+      // Substituting V = ZRT/P into μ_JT = (1/Cp)[T(∂V/∂T)_P − V] makes the Z terms
+      // cancel exactly, so no approximation enters at this step; it lives entirely in
+      // Papay's Z and the ideal-gas Cp. ∂Z/∂T by central difference on that same Papay
+      // expression — h is fixed at 0.5 °R and must NOT become a user input: below
+      // ~0.01 K it loses precision to float64 cancellation.
+      const h = 0.5;
+      const dZdT_K = ((papayZ(sg, pPsia, tR + h).Z - papayZ(sg, pPsia, tR - h).Z) / (2 * h)) * 1.8;
+      const cpMolar = k * R_MOL_GP / (k - 1);          // J/(mol·K)
+      const jtKbar = (R_MOL_GP * tK * tK * dZdT_K / (pPsia * 6894.757 * cpMolar)) * 1e5;
+
+      const muF = parseFloat(document.getElementById('gp-out-mu-u').value) || 1;
+      const cF  = parseFloat(document.getElementById('gp-out-c-u').value) || 1;
+      const jtF = parseFloat(document.getElementById('gp-out-jt-u').value) || 1;
+
+      document.getElementById('gp-out-z').innerText  = pz.Z.toFixed(4);
+      document.getElementById('gp-out-mu').innerText = isNaN(muCp) ? '—' : formatValue(muCp * muF);
+      document.getElementById('gp-out-c').innerText  = formatValue(cMs * cF);
+      document.getElementById('gp-out-jt').innerText = formatValue(jtKbar * jtF);
+
+      // ── Validity envelopes — warn, never clamp ──────────────────────────────
+      const notes = [];
+      if (pz.oob) notes.push(tr('basic.gasProps.warnPapay', {pr: pz.pr.toFixed(2), trv: pz.trr.toFixed(2)}));
+      // LGE experimental basis: 100–340 °F (559.67–799.67 °R) and 100–8,000 psia.
+      if (tR < 559.67 || tR > 799.67 || pPsia < 100 || pPsia > 8000) {
+        notes.push(tr('basic.gasProps.warnLge', {tf: (tR - 459.67).toFixed(0), psia: pPsia.toFixed(0)}));
+      }
+      const w = document.getElementById('gp-warn');
+      w.classList.toggle('hidden', notes.length === 0);
+      if (notes.length) w.innerText = '⚠ ' + notes.join('  •  ');
     }
 
     // B2 — Petroleum gravity: °API ↔ SG (60/60°F) ↔ density. Water @ 60°F = 999.016 kg/m³.
@@ -3418,7 +3619,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;

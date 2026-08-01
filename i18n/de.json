@@ -103,6 +103,26 @@
       "volLabel": "VOLUMENSTROM",
       "rhoNote": "— bei Betriebsbedingungen",
       "footnote": "Q_vol = ṁ / ρ. Für Gase die Dichte bei den angegebenen T- und P-Bedingungen verwenden (oder das aus der Zusammensetzung berechnete ρ_std aus dem Tab „Erweitert“)."
+    },
+    "gasProps": {
+      "title": "Gaseigenschaften-Schätzer",
+      "screeningChip": "ÜBERSCHLÄGIG",
+      "sgLabel": "GASDICHTEVERHÄLTNIS (Luft = 1,0)",
+      "pressureLabel": "DRUCK",
+      "tempLabel": "TEMPERATUR",
+      "kLabel": "ISENTROPENEXPONENT k",
+      "zLabel": "KOMPRESSIBILITÄT Z",
+      "zMethod": "Papay",
+      "viscLabel": "GASVISKOSITÄT μ",
+      "viscMethod": "Lee-Gonzalez-Eakin",
+      "sonicLabel": "SCHALLGESCHWINDIGKEIT c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "JOULE-THOMSON μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Papay-Z wird außerhalb seines Gültigkeitsbereichs extrapoliert (Pr = {pr}, Tr = {trv}; gültig 0 < Pr ≤ 15, 1,05 ≤ Tr ≤ 3,0). Alle vier Ausgaben hängen von Z ab.",
+      "warnLge": "Die Viskosität liegt außerhalb der experimentellen Basis von Lee-Gonzalez-Eakin ({tf} °F, {psia} psia; angepasst über 100–340 °F und 100–8.000 psia).",
+      "warnBelowAbsoluteZero": "Die Temperatur liegt beim absoluten Nullpunkt oder darunter.",
+      "footnote": "Sämtlich überschlägige Schätzwerte, keine Normwerte. Z verwendet Papay (1968) mit Standing-Katz-Pseudokritika — dieselbe Routine wie der Z-Faktor-Schätzer. μ verwendet Lee, Gonzalez & Eakin (1966), eine veröffentlichte Korrelation, angepasst an vier süße Erdgase über 100–340 °F und 100–8.000 psia (AAE ≈ 2,7 %); sie enthält keine H₂S/CO₂/N₂-Korrektur, bei Sauergas oder hohem Inertanteil daher nur richtungsweisend. c = √(k·Z·R·T/M) ist die Realgasform, die API 520 für kritische Strömung verwendet; die Terme (∂Z/∂P)_T und (∂Z/∂T)_P werden vernachlässigt. μ_JT ist exakte Thermodynamik um Papays ∂Z/∂T und ein Idealgas-C_p = kR/(k−1) — positiv bedeutet Abkühlung bei Entspannung. Gas-MM = SG × 28,9647."
     }
   },
   "advanced": {
