@@ -326,7 +326,12 @@ def size_twophase(data, units):
         A_in2 = A / 645.16
 
     letter, oa_in2, oa_mm2 = select_orifice(A_in2)
-    Pc_display = round(Pa_input * eta_c, 3)   # in original input units (kPa or psia)
+    # v2.8 — was Pa_input * eta_c, i.e. the BACK-pressure, which made the reported Pc
+    # meaningless (and exactly 0.0 whenever Pa was left at its default). The critical
+    # pressure is eta_c times the RELIEVING pressure Po, matching the internal `Pc`
+    # on line 298 that drives the critical/subcritical decision. Sizing was never
+    # affected — only this displayed value. Closes SPECIFICATION.md §11 issue #1.
+    Pc_display = round(Po_input * eta_c, 3)   # in original input units (kPa or psia)
 
     return {
         'error': False,

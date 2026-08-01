@@ -1,0 +1,17 @@
+# Python bytecode and test caches (introduced with the v2.8 test suite).
+#
+# Worth knowing: a stale __pycache__ can serve bytecode compiled from a source file that
+# has since been reverted, because a restored file may carry an mtime OLDER than the .pyc
+# built from the modified version. If a test result ever looks impossible, delete these.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local virtual environments
+.venv/
+venv/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -118,6 +118,22 @@ Grep for the outgoing version number across the whole repo (`grep -rn "v2\.5\|V2
 - `vercel dev` is required to test the two Python API endpoints locally (opening index.html directly breaks the Advanced ΔP and Safety PSV calculators).
 - API-side rules — stdlib-only dependency constraints, curl test procedure, the multiply-to-SI unit-factor convention, and the mandatory dp_calculator / Flow Regime reference cases — are maintained in [`api/CLAUDE.md`](api/CLAUDE.md). Re-verify those reference cases after touching any file in `api/`.
 
+### Automated test suite (v2.8) — run it, don't just trust the checklist
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+pytest
+```
+
+99 tests. Full detail in `docs/SPECIFICATION.md` §13; the essentials:
+
+- **What it covers:** Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity across all 10 dictionaries (including `{placeholder}` drift and version-string consistency), and the architectural rules — stdlib-only endpoints, no frontend build step, `pytest` never in `requirements.txt`.
+- **What it does NOT cover:** **Vector 1, the JIS K 2301 chain.** It lives in JavaScript (`calcGHV()`), so pytest cannot reach it. **After any change touching `calcGHV()`, `gasComps`, or `calcLNGDensity()`, the reference values above still have to be verified by hand** — a green CI run does not mean the JIS chain is safe.
+- **`requirements-dev.txt` is separate on purpose.** Vercel installs `requirements.txt` into the production runtime; never put test tooling there. `tests/test_architecture.py` enforces this.
+- **The suite locks CURRENT behavior, including known defects.** Where it pins a defect (RP 14E constant, two-phase `Pc`, the zero-viscosity 500) the test says so and names the `docs/SPECIFICATION.md` §11 entry. Closing one of those issues means updating the test and the register together — that coupling is deliberate, not an obstacle to route around.
+- **If a test result looks impossible, delete `__pycache__`.** A restored source file can carry an mtime older than the `.pyc` compiled from a modified version, and Python will keep serving the stale bytecode. This bit during development of the suite itself.
+- Adding user-visible strings? The i18n parity test is what stops a dictionary being silently skipped — run `pytest tests/test_i18n_parity.py` after touching any `i18n/*.json`.
+
 ## Engineering Standards References
 
 - JIS K 2301:2011 — calorific value, density, SG, Wobbe index from composition.
