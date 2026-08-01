@@ -87,7 +87,7 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 | Limitation | Status |
 |---|---|
 | ~~No dedicated mobile navigation (tab bar scrolls horizontally)~~ | **Shipped v2.8** — dropdown navigation below the `md` breakpoint; desktop bar untouched |
-| Custom modules are not encoded in Share links (localStorage only) | Roadmap v2.8 |
+| ~~Custom modules are not encoded in Share links (localStorage only)~~ | **Shipped v2.8** — state format v:2, with a sanitizing import boundary (SPECIFICATION.md §6.1) |
 | Mixed interaction model: converters update live, server cards need a button click | Mitigated in v2.5 (stale-input indicator, Enter-to-calculate) |
 | Very small label typography in dense cards may fall below WCAG contrast targets | Backlog (needs a careful, sweeping pass) |
 | API error responses are not yet schema-harmonized across the three endpoints | Proposed fix awaiting approval (see SPECIFICATION.md §11) |
@@ -113,7 +113,7 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 | ~~Fittings / K-factor equivalent length in the ΔP card~~ | High | M | **Shipped.** Crane TP-410, 12 fitting types, table client-side so dp_calculator stays stdlib-only. `k_total` defaults to 0 so every pre-v2.8 payload reproduces Vector 2 bit-for-bit. Vector 7 added |
 | ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 99 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |
 | ~~Mobile navigation affordance (hamburger or wrap)~~ | Med | M | **Shipped.** Dropdown rather than a wrapping grid — nine tabs would wrap to three rows and push the content below the fold on a phone. Menu is generated from the existing tab buttons, so no second list to maintain. SPECIFICATION.md §3 |
-| Custom modules in Share links (state format v:2) | Med | M | Deferred from v2.5 (state versioning required) |
+| ~~Custom modules in Share links (state format v:2)~~ | Med | M | **Shipped.** The real work turned out to be security, not versioning: `createCard()` interpolates module text into `innerHTML` and the id into inline `onclick` attributes, so letting a URL supply them would have been stored XSS. Sanitizing import boundary + id regeneration; verified against hostile payloads in a browser. Bundled: guarded `og_custom_modules` parse (a corrupt value previously killed every function below it), `report-*` excluded from state, over-long share-link warning |
 
 ### Internationalization Program — next milestones
 

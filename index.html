@@ -2204,6 +2204,8 @@
               <li>Contains only your custom module definitions and the numerical inputs / unit selections you typed into the calculators</li>
             </ul>
             <p class="mt-2"><strong>Share links (v2.4).</strong> The "Share" button encodes your current inputs into the page URL (after the <span class="font-mono">#</span> fragment) and copies it to your clipboard. This is performed entirely in your browser; the fragment is never sent to the server. Anyone you give the link to can reconstruct those inputs, so avoid sharing links containing data you consider sensitive.</p>
+            <p class="mt-2"><strong>Share links now carry custom modules (v2.8).</strong> A share link also encodes the <em>definitions</em> of any custom converter modules you have created — their title, unit labels and conversion factor. When someone opens such a link, those modules are added to their browser's local storage and <strong>persist after reload</strong>, so they remain usable. A short on-screen notice states how many were added. Imported module text is sanitised on arrival and their internal identifiers are regenerated, so a link cannot overwrite or delete modules the recipient already had. Anyone can remove an imported module with its TERMINATE button, or by clearing site data.</p>
+            <p class="mt-2"><strong>The bug-report form is excluded (v2.8).</strong> Anything typed into the Report tab — your name, the description, the report type — is <strong>no longer</strong> written to local storage or encoded into share links. Previously those fields were captured along with the calculator inputs. That text is now used only when you choose to open your email client to send the report.</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b006">
@@ -3566,8 +3568,92 @@
     hvIn1.addEventListener('input', () => { const val = parseValue(hvIn1.value); hvIn2.value = isNaN(val) ? '' : formatValue(val / HV_FACTOR); });
     hvIn2.addEventListener('input', () => { const val = parseValue(hvIn2.value); hvIn1.value = isNaN(val) ? '' : formatValue(val * HV_FACTOR); }); hvIn1.addEventListener('blur', formatOnBlur); hvIn2.addEventListener('blur', formatOnBlur);
 
-    let savedModules = JSON.parse(localStorage.getItem('og_custom_modules')) || [];
+    // v2.8 — guarded. This sits at the top level of the script, so an unparseable
+    // og_custom_modules value used to throw here and leave EVERY function declared
+    // below it undefined — collectState, copyShareLink, exportReport, calcPSV, the lot.
+    // A corrupt value now degrades to "no custom modules" instead of a dead page.
+    let savedModules = [];
+    try {
+      const raw = JSON.parse(localStorage.getItem('og_custom_modules'));
+      if (Array.isArray(raw)) savedModules = raw;
+    } catch (e) { savedModules = []; }
     function saveModules() { localStorage.setItem('og_custom_modules', JSON.stringify(savedModules)); }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  v2.8 — CUSTOM MODULES IN SHARE LINKS (state format v:2)
+    //
+    //  SECURITY: createCard() interpolates m.t / m.u1 / m.u2 straight into innerHTML,
+    //  and m.id into two inline onclick attributes. While those values could only ever
+    //  come from the user's own modal that was self-XSS at worst. The moment a SHARE
+    //  LINK can supply them it becomes stored XSS via URL — an attacker-crafted #s=
+    //  payload executing in the recipient's page. Everything arriving from a link is
+    //  therefore sanitized here, at the single import boundary, before it can reach
+    //  createCard(). Do not bypass sanitizeSharedModule() for any new import path.
+    //
+    //  Escaping at import (rather than at render) is correct AND safe: innerHTML
+    //  decodes the entities, so a legitimate "A & B" still displays as "A & B".
+    // ══════════════════════════════════════════════════════════════════════════
+    const MOD_MAX_SHARED   = 20;   // cap imports from a single link
+    const MOD_MAX_TEXT_LEN = 40;   // titles/units are chips in a card, not prose
+
+    // Trim BEFORE slicing and escaping: a whitespace-only title is otherwise truthy and
+    // slips past the check below, producing a blank, unidentifiable card. Escaping last
+    // means the slice can never cut an entity in half.
+    function escModText(v) {
+      return (v == null ? '' : String(v))
+        .trim()
+        .slice(0, MOD_MAX_TEXT_LEN)
+        .replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    // Returns a safe module object, or null if the entry is unusable.
+    // NOTE: the id is ALWAYS regenerated. Ids are `mod-${Date.now()}`, unique per user
+    // but not globally — a shared module can collide with one the recipient already has,
+    // which would give duplicate DOM ids, make getElementById inside createCard grab the
+    // wrong node, and make TERMINATE delete both cards at once.
+    function sanitizeSharedModule(raw, index) {
+      if (!raw || typeof raw !== 'object') return null;
+      const factor = parseFloat(raw.f);
+      if (!isFinite(factor) || factor === 0) return null;      // 0 would make i2->i1 divide by zero
+      const title = escModText(raw.t);
+      if (!title) return null;
+      return {
+        id: `mod-${Date.now()}-s${index}`,                     // regenerated, never trusted
+        t:  title,
+        u1: escModText(raw.u1),
+        u2: escModText(raw.u2),
+        f:  factor
+      };
+    }
+
+    // Materializes shared modules and returns how many were added. Called from the boot
+    // sequence AFTER decodeShareState() but BEFORE applyState(), because applyInputs()
+    // can only fill inputs that already exist in the DOM.
+    function importSharedModules(shared) {
+      if (!shared || !Array.isArray(shared.mods)) return 0;    // Array.isArray, not truthiness:
+      let added = 0;                                           // applyState has no try/catch, so a
+      shared.mods.slice(0, MOD_MAX_SHARED).forEach((raw, i) => {  // bad .forEach would kill restore
+        const m = sanitizeSharedModule(raw, i);
+        if (!m) return;
+        // Remap the sender's value keys onto the regenerated id, or the imported card's
+        // numbers would land nowhere. v1 links carry these as orphans already.
+        if (shared.inputs && raw.id) {
+          ['in1', 'in2'].forEach(slot => {
+            const from = `${raw.id}-${slot}`;
+            if (Object.prototype.hasOwnProperty.call(shared.inputs, from)) {
+              shared.inputs[`${m.id}-${slot}`] = shared.inputs[from];
+              delete shared.inputs[from];
+            }
+          });
+        }
+        savedModules.push(m);
+        createCard(m);
+        added++;
+      });
+      // Persistence policy (maintainer's decision, v2.8): imported modules are KEPT, so a
+      // recipient can carry on using them after a reload. Disclosed in the Privacy Policy.
+      if (added) { try { saveModules(); } catch (e) {} }
+      return added;
+    }
     function openModal() { document.getElementById('module-modal').classList.remove('hidden'); setTimeout(() => { document.getElementById('modal-content').classList.replace('scale-95', 'scale-100'); }, 10); }
     function closeModal() { document.getElementById('modal-content').classList.replace('scale-100', 'scale-95'); setTimeout(() => { document.getElementById('module-modal').classList.add('hidden'); document.getElementById('custom-module-form').reset(); }, 200); }
     document.getElementById('custom-module-form').addEventListener('submit', (e) => { e.preventDefault(); const m = { id: `mod-${Date.now()}`, t: document.getElementById('mod-title').value, u1: document.getElementById('mod-unit1').value, u2: document.getElementById('mod-unit2').value, f: parseFloat(document.getElementById('mod-factor').value) }; savedModules.push(m); saveModules(); createCard(m); closeModal(); });
@@ -3597,6 +3683,11 @@
     window.addEventListener('DOMContentLoaded', async () => {
       savedModules.forEach(createCard);
       const shared = decodeShareState();
+      // v2.8 — shared modules must be materialized AFTER the link is decoded but BEFORE
+      // applyState() runs, because applyInputs() can only fill inputs that already exist
+      // in the DOM. Only share links import modules; a returning visitor's own modules
+      // came from localStorage on the line above.
+      const importedModules = importSharedModules(shared);
       const stored = shared || loadStoredState();
       // v2.6 — resolve initial language: share link > saved preference > English default
       const initialLang = (shared && shared.lang) || localStorage.getItem('og_lang') || 'en';
@@ -3611,6 +3702,15 @@
       if (stored) { applyState(stored, !!shared); }
       else { calcGHV(); updatePSVMode(); }
       enhanceAccessibility();
+      // v2.8 — tell the recipient their workspace changed. Imported modules are kept
+      // (they persist to og_custom_modules), so this is a state change worth announcing
+      // rather than a silent one. Deferred so the toast is not immediately overwritten
+      // by anything else firing during boot.
+      if (importedModules > 0) {
+        setTimeout(() => showToast(tr(importedModules === 1
+          ? 'common.sharedModuleAdded' : 'common.sharedModulesAdded',
+          {n: String(importedModules)})), 400);
+      }
       document.addEventListener('input',  scheduleSave);
       document.addEventListener('change', scheduleSave);
     });
@@ -3944,6 +4044,11 @@
       const data = {};
       document.querySelectorAll('main input[id], main select[id], main textarea[id]').forEach(el => {
         if (el.type === 'button' || el.type === 'submit') return;
+        // v2.8 — the bug-report form lives inside <main>, so a free-text description and
+        // the reporter's name were being base64'd into every share link and written to
+        // localStorage. Nothing here is engineering state; excluding it keeps personal
+        // text out of URLs that get pasted into chats and tickets.
+        if (el.id.indexOf('report-') === 0) return;
         data[el.id] = el.value;
       });
       return data;
@@ -3955,7 +4060,14 @@
       });
     }
     function collectState() {
-      return { v: 1, inputs: collectInputs(),
+      // v2.8 — format 2 adds `mods`, the custom-module DEFINITIONS. Their VALUES were
+      // already captured by collectInputs() (the cards live inside <main> and carry ids),
+      // so v1 links have always shipped orphan `mod-<ts>-in1` keys with nothing to fill.
+      //
+      // `v` was emitted as 1 since v2.4 but never read by anything. v:2 is the first
+      // version that means something — see applyState().
+      return { v: 2, inputs: collectInputs(),
+               mods: savedModules.map(m => ({id: m.id, t: m.t, u1: m.u1, u2: m.u2, f: m.f})),
                hv: hvMode, fa: flowAMode, fb: flowBMode,
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
@@ -4000,12 +4112,23 @@
       clearTimeout(showToast._t);
       showToast._t = setTimeout(() => t.classList.add('hidden'), 2500);
     }
+    // v2.8 — a stock share link is already ~3.4 kB (139 input keys → ~2,500 JSON bytes →
+    // 3,336 base64 chars), and custom modules add ~60–120 bytes each. Browsers cope fine
+    // (the fragment is never sent to the server), but QR generators, Outlook/Teams link
+    // rewriting and several chat clients truncate around 2,000 characters — producing a
+    // link that looks fine and silently restores nothing. Warn rather than block: the
+    // link is still valid, and the user is the one who knows where it is going.
+    const SHARE_URL_WARN_LEN = 2000;
+
     function copyShareLink() {
       try {
         const enc = btoa(unescape(encodeURIComponent(JSON.stringify(collectState()))));
         const url = location.origin + location.pathname + '#s=' + enc;
+        const long = url.length > SHARE_URL_WARN_LEN;
         navigator.clipboard.writeText(url).then(
-          () => showToast(tr('common.shareLinkCopied')),
+          () => showToast(long
+            ? tr('common.shareLinkCopiedLong', {n: String(url.length)})
+            : tr('common.shareLinkCopied'), !long),
           () => showToast(tr('common.copyFailed'), false));
       } catch (e) { showToast(tr('common.shareLinkFailed'), false); }
     }
