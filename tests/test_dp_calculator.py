@@ -48,8 +48,11 @@ def test_response_schema_is_stable(dp_module, post_to_handler, dp_reference_payl
     """The frontend reads these keys by name; dropping one breaks the ΔP card silently."""
     _, data = post_to_handler(dp_module, dp_reference_payload)
     expected = {
+        # v2.7 and earlier — removing any of these breaks the shipped ΔP card
         "error", "dpPa", "dpFric", "dpStatic", "vel", "Re", "re_regime", "f",
         "rho_mix", "v_ero", "ero_ratio", "cfactor", "badge", "badgeClass", "L",
+        # v2.8 additions — all additive; nothing above was renamed or removed
+        "dpFittings", "k_total", "L_eq", "L_eff", "phase_key", "re_regime_key",
     }
     assert expected <= set(data), f"missing response keys: {expected - set(data)}"
 
@@ -305,9 +308,127 @@ def test_zero_viscosity_still_raises(dp_module, post_to_handler, dp_reference_pa
 def test_unknown_payload_keys_are_ignored(dp_module, post_to_handler,
                                           dp_reference_payload):
     """Every field is read via data.get(key, default), so forward-compatible payloads
-    (e.g. a future fittings k_total) cannot break an older deployment, and old share
-    links cannot break a newer one."""
+    cannot break an older deployment, and old share links cannot break a newer one.
+
+    (This test originally used `k_total` as its example of an unknown key. v2.8 gave
+    that key meaning, so it now uses one that is genuinely undefined — the failure when
+    k_total became real was the test doing its job.)
+    """
     _, base = post_to_handler(dp_module, dp_reference_payload)
-    payload = dict(dp_reference_payload, k_total=5.376, some_future_key="ignored")
+    payload = dict(dp_reference_payload,
+                   some_future_key="ignored", another_unknown=42)
     _, extended = post_to_handler(dp_module, payload)
     assert extended["dpPa"] == pytest.approx(base["dpPa"], rel=1e-12)
+
+
+# ── v2.8 Crane fittings (SPECIFICATION.md §9 Vector 7) ───────────────────────────
+
+def test_omitted_k_total_reproduces_the_pre_v28_result_exactly(dp_module,
+                                                               post_to_handler,
+                                                               dp_reference_payload):
+    """THE backward-compatibility guarantee. A pre-v2.8 payload has no k_total at all;
+    the default of 0 must make dpFittings exactly zero and leave dpPa untouched, so
+    every share link and bookmark predating v2.8 still reproduces Vector 2."""
+    _, data = post_to_handler(dp_module, dp_reference_payload)
+
+    assert "k_total" not in dp_reference_payload
+    assert data["dpFittings"] == 0.0
+    assert data["L_eq"] == 0.0
+    assert data["k_total"] == 0.0
+    assert data["dpPa"] / 1000 == pytest.approx(176.93, abs=0.05)
+    assert data["dpPa"] == pytest.approx(data["dpFric"] + data["dpStatic"], rel=1e-12)
+    # L must remain the STRAIGHT-pipe length — the client divides by it for ΔP/length.
+    assert data["L"] == pytest.approx(100.0)
+    assert data["L_eff"] == pytest.approx(100.0)
+
+
+def test_fit1_reference_case(dp_module, post_to_handler, dp_reference_payload):
+    """Vector 7: ΣK = 5.3760 (4× 90° std elbow + gate + swing check + entrance + exit)
+    on the Vector 2 hydraulics."""
+    _, data = post_to_handler(dp_module, dict(dp_reference_payload, k_total=5.3760))
+
+    assert data["k_total"] == pytest.approx(5.3760)
+    assert data["dpFittings"] == pytest.approx(695.8532, abs=5e-3)      # Pa
+    assert data["L_eq"] == pytest.approx(29.75863, abs=5e-4)            # m
+    assert data["L_eff"] == pytest.approx(129.75863, abs=5e-4)
+    assert data["dpPa"] / 1000 == pytest.approx(177.6247, abs=5e-3)     # kPa
+
+
+def test_fittings_do_not_disturb_the_other_terms(dp_module, post_to_handler,
+                                                 dp_reference_payload):
+    """dpFric, dpStatic, vel, Re, f, rho_mix and the erosion check are all properties of
+    the pipe and fluid, not of the fittings. Only dpFittings and dpPa may move."""
+    _, base = post_to_handler(dp_module, dp_reference_payload)
+    _, fitted = post_to_handler(dp_module, dict(dp_reference_payload, k_total=5.3760))
+
+    for key in ("dpFric", "dpStatic", "vel", "Re", "f", "rho_mix", "v_ero",
+                "ero_ratio", "L"):
+        assert fitted[key] == pytest.approx(base[key], rel=1e-12), f"{key} moved"
+
+
+def test_k_method_agrees_with_the_equivalent_length_method(dp_module, post_to_handler,
+                                                           dp_reference_payload):
+    """ΔP = ΣK·ρv²/2 and 'add L_eq to the run, then apply Darcy' are the same number by
+    construction, since L_eq = ΣK·D/f. If they ever diverge, one of the two has been
+    reimplemented incorrectly."""
+    k_total = 5.3760
+    _, base = post_to_handler(dp_module, dp_reference_payload)
+    _, fitted = post_to_handler(dp_module, dict(dp_reference_payload, k_total=k_total))
+
+    # Re-run with the straight length extended by L_eq and no fittings.
+    lengthened = dict(dp_reference_payload, len=100.0 + fitted["L_eq"])
+    _, viaLength = post_to_handler(dp_module, lengthened)
+
+    assert viaLength["dpFric"] - base["dpFric"] == pytest.approx(
+        fitted["dpFittings"], rel=1e-9)
+
+
+@pytest.mark.parametrize("k_total", [0, 0.0, -5, None])
+def test_non_positive_k_total_contributes_nothing(dp_module, post_to_handler,
+                                                  dp_reference_payload, k_total):
+    """Zero, absent and negative ΣK all collapse to no fittings. A negative K would
+    otherwise subtract pressure drop, which is physically meaningless."""
+    payload = dict(dp_reference_payload)
+    if k_total is not None:
+        payload["k_total"] = k_total
+    _, data = post_to_handler(dp_module, payload)
+    assert data["dpFittings"] == 0.0
+    assert data["dpPa"] / 1000 == pytest.approx(176.93, abs=0.05)
+
+
+def test_fittings_scale_linearly_with_sigma_k(dp_module, post_to_handler,
+                                              dp_reference_payload):
+    """ΔP_fittings = ΣK·ρv²/2 is linear in ΣK — doubling the fittings doubles their loss."""
+    _, one = post_to_handler(dp_module, dict(dp_reference_payload, k_total=2.0))
+    _, two = post_to_handler(dp_module, dict(dp_reference_payload, k_total=4.0))
+    assert two["dpFittings"] == pytest.approx(2 * one["dpFittings"], rel=1e-12)
+    assert two["L_eq"] == pytest.approx(2 * one["L_eq"], rel=1e-12)
+
+
+# ── v2.8 machine-readable keys (i18n Milestone 4 pattern) ────────────────────────
+
+@pytest.mark.parametrize("override, expected_key, expected_badge", [
+    ({}, "twophase", "Two-Phase (HEM)"),
+    ({"l_flow": 0}, "vapor", "Single Phase (Vapor)"),
+    ({"v_flow": 0}, "liquid", "Single Phase (Liquid)"),
+])
+def test_phase_key_accompanies_every_badge(dp_module, post_to_handler,
+                                           dp_reference_payload, override,
+                                           expected_key, expected_badge):
+    """The frontend branches on phase_key, not on the English badge text. Before v2.8 it
+    tested `badge.indexOf('Two-Phase')`, which would silently stop firing in all 10
+    languages the moment the badge is localized."""
+    _, data = post_to_handler(dp_module, dict(dp_reference_payload, **override))
+    assert data["phase_key"] == expected_key
+    assert data["badge"] == expected_badge
+
+
+@pytest.mark.parametrize("l_visc_cp, expected_key", [
+    (0.12, "turbulent"), (8.00, "transitional"), (15.00, "laminar"),
+])
+def test_re_regime_key_matches_the_english_label(dp_module, post_to_handler,
+                                                 dp_reference_payload,
+                                                 l_visc_cp, expected_key):
+    _, data = post_to_handler(dp_module, dict(dp_reference_payload, l_visc=l_visc_cp))
+    assert data["re_regime_key"] == expected_key
+    assert data["re_regime"].lower() == expected_key

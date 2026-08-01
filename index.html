@@ -719,8 +719,11 @@
                 <div>
                   <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n="advanced.deltaP.pipeIdLabel">PIPE ID</label>
                   <div class="flex">
-                    <input type="number" step="any" id="dp-id" value="4" placeholder="0" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
-                    <select id="dp-id-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.0254">in</option><option value="0.001">mm</option><option value="0.3048">ft</option><option value="1">m</option></select>
+                    <!-- v2.8 — pipe size drives the Crane f_T lookup, so a size change must
+                         refresh the ΣK readout in the fittings block. Does NOT trigger a
+                         recalculation; this card stays button-driven by design. -->
+                    <input type="number" step="any" id="dp-id" value="4" placeholder="0" oninput="updateFittingSum()" class="w-2/3 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-1 focus:ring-fuchsia-500 text-slate-200 outline-none" />
+                    <select id="dp-id-unit" onchange="updateFittingSum()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.0254">in</option><option value="0.001">mm</option><option value="0.3048">ft</option><option value="1">m</option></select>
                   </div>
                 </div>
                 <div>
@@ -810,6 +813,39 @@
               </div>
             </div>
 
+            <!-- 2C (v2.8) — Crane TP-410 fittings & valves. Collapsed by default, and every
+                 count defaults to 0, so an untouched card sends k_total = 0 and reproduces
+                 the pinned v2.7 result exactly. -->
+            <details id="dp-fit-details" class="bg-slate-950/40 rounded-lg border border-slate-800">
+              <summary class="px-4 py-3 cursor-pointer text-xs font-bold tracking-widest text-slate-400 hover:text-slate-200 select-none flex items-center justify-between">
+                <span data-i18n="advanced.deltaP.fittingsHeading">2C. FITTINGS &amp; VALVES (OPTIONAL)</span>
+                <span class="font-mono text-[10px] text-amber-500">ΣK = <span id="dp-fit-ksum">0.00</span></span>
+              </summary>
+              <div class="px-4 pb-4 space-y-3">
+                <p class="text-[10px] text-slate-500 leading-relaxed" data-i18n="advanced.deltaP.fittingsNote">Crane TP-410 resistance coefficients, K = n·f_T, where f_T is the fully-turbulent friction factor for the nearest nominal size. Entrance and exit are direct K values with no n. Leave all counts at 0 to exclude fittings entirely.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-elbow90" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitElbow90">90° elbow, standard</label><input type="number" min="0" step="1" id="dp-fit-elbow90" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-elbow90lr" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitElbow90lr">90° elbow, long radius</label><input type="number" min="0" step="1" id="dp-fit-elbow90lr" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-elbow45" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitElbow45">45° elbow, standard</label><input type="number" min="0" step="1" id="dp-fit-elbow45" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-return180" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitReturn180">180° return bend</label><input type="number" min="0" step="1" id="dp-fit-return180" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-teerun" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitTeeRun">Tee, flow through run</label><input type="number" min="0" step="1" id="dp-fit-teerun" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-teebranch" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitTeeBranch">Tee, flow through branch</label><input type="number" min="0" step="1" id="dp-fit-teebranch" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-gate" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitGate">Gate valve, full open</label><input type="number" min="0" step="1" id="dp-fit-gate" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-globe" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitGlobe">Globe valve, straightway</label><input type="number" min="0" step="1" id="dp-fit-globe" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-ball" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitBall">Ball valve, full bore</label><input type="number" min="0" step="1" id="dp-fit-ball" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-checkswing" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitCheckSwing">Swing check valve</label><input type="number" min="0" step="1" id="dp-fit-checkswing" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-entrance" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitEntrance">Entrance, sharp-edged</label><input type="number" min="0" step="1" id="dp-fit-entrance" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                  <div class="flex items-center justify-between gap-2"><label for="dp-fit-exit" class="text-[10px] text-slate-400 leading-tight" data-i18n="advanced.deltaP.fitExit">Pipe exit</label><input type="number" min="0" step="1" id="dp-fit-exit" value="0" oninput="updateFittingSum()" class="w-14 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-amber-500" /></div>
+                </div>
+                <div class="text-[10px] text-slate-500 pt-2 border-t border-slate-800">
+                  <span data-i18n="advanced.deltaP.fittingsBasis">Sized from</span>
+                  <span class="font-mono text-amber-500"><span id="dp-fit-nominal">—</span>"</span>
+                  <span data-i18n="advanced.deltaP.fittingsNominal">nominal</span>,
+                  f<sub>T</sub> = <span class="font-mono text-amber-500" id="dp-fit-ft">—</span>
+                </div>
+              </div>
+            </details>
+
             <button onclick="calcDeltaPressure()" class="w-full py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(217,70,239,0.3)] transition-all" data-i18n="advanced.deltaP.calculateButton">
               CALCULATE PRESSURE DROP
             </button>
@@ -868,7 +904,49 @@
                 </div>
               </div>
 
+              <!-- 3B (v2.8) — fittings ΔP and the NORSOK P-001 line-sizing screen.
+                   The sizing verdict judges FRICTIONAL ΔP only: the headline ΔP/length
+                   figure above includes static head, which on this card's own default
+                   (Δz = 70.7 m) is 98 % of the total and would flag almost every
+                   elevated line as oversized. -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5 pt-4 border-t border-slate-800">
+              </div>
+
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider"><span data-i18n="advanced.deltaP.fittingsDpLabel">ΔP Fittings</span></label>
+                  <div class="font-mono text-sm text-slate-200"><span id="dp-out-dpfit">—</span> <span class="text-[10px] text-slate-500">kPa</span></div>
+                  <div class="text-[10px] text-slate-500">L<sub>eq</sub> = <span id="dp-out-leq">—</span> m</div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" data-i18n="advanced.deltaP.serviceLabel">Service</label>
+                  <select id="dp-service" onchange="renderLineSizing()" class="w-full bg-slate-900 border border-slate-700 rounded text-[11px] text-amber-500 px-1 py-1 outline-none cursor-pointer">
+                    <option value="auto" data-i18n="advanced.deltaP.svcAuto">Auto (match phase)</option>
+                    <option value="gas" data-i18n="advanced.deltaP.svcGas">Gas / vapour</option>
+                    <option value="liquid-cs" data-i18n="advanced.deltaP.svcLiquidCs">Liquid — carbon steel</option>
+                    <option value="liquid-ss" data-i18n="advanced.deltaP.svcLiquidSs">Liquid — SS / Ti</option>
+                    <option value="liquid-cuni" data-i18n="advanced.deltaP.svcLiquidCuni">Liquid — Cu-Ni</option>
+                    <option value="liquid-grp" data-i18n="advanced.deltaP.svcLiquidGrp">Liquid — GRP</option>
+                    <option value="pump-suction-sub" data-i18n="advanced.deltaP.svcPumpSuctionSub">Pump suction — sub-cooled</option>
+                    <option value="pump-suction-boil" data-i18n="advanced.deltaP.svcPumpSuctionBoil">Pump suction — boiling</option>
+                    <option value="pump-discharge" data-i18n="advanced.deltaP.svcPumpDischarge">Pump discharge</option>
+                    <option value="twophase-nc" data-i18n="advanced.deltaP.svcTwophaseNc">Two-phase — non-corrosive</option>
+                    <option value="twophase-c" data-i18n="advanced.deltaP.svcTwophaseC">Two-phase — corrosive</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider"><span data-i18n="advanced.deltaP.fricPerLengthLabel">Friction ΔP</span> /100 m</label>
+                  <div class="font-mono text-sm text-slate-200"><span id="dp-out-dpfric100">—</span> <span class="text-[10px] text-slate-500">bar</span></div>
+                  <div class="text-[10px] text-slate-500">v<sub>max</sub> = <span id="dp-out-vmax">—</span></div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider" data-i18n-title="advanced.deltaP.lineSizingTooltip" title="NORSOK P-001 sizing criteria — screening only" data-i18n="advanced.deltaP.lineSizingLabel">Line Sizing</label>
+                  <span id="dp-out-sizing-badge" class="inline-block px-2 py-1 text-[10px] rounded bg-slate-800 text-slate-400">—</span>
+                  <div class="text-[10px] text-slate-500 mt-1" id="dp-out-vratio">—</div>
+                </div>
+              </div>
+
               <div id="dp-out-regime-note" class="hidden mt-4 text-[11px] text-cyan-300/80 bg-cyan-500/5 border border-cyan-500/20 rounded p-2 leading-relaxed"></div>
+              <p class="mt-3 text-[10px] text-slate-600 leading-relaxed" data-i18n="advanced.deltaP.lineSizingFootnote">Line-sizing limits are NORSOK P-001 §6.3.2/§6.4 and Tables 3–4, applied to the frictional ΔP only (static head is excluded — it is not a sizing criterion). Gas: v_max = min(175·ρ^−0.43, 60) m/s. Two-phase: v_max = min(183·ρ_mix^−0.5, 25) m/s non-corrosive, 10 m/s corrosive. Liquid velocity bands are material-dependent; Cu-Ni is the lowest at 3 m/s because of seawater erosion. Pump-circuit limits are ΔP-based. Screening guidance for line sizing — not a substitute for a full hydraulic study, and independent of the API RP 14E erosional check above.</p>
             </div>
           </div>
         </div>
@@ -2820,6 +2898,157 @@
       }
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    //  2C (v2.8) — CRANE TP-410 FITTINGS
+    //
+    //  Crane expresses each fitting as K = n·f_T, where n is a fixed L/D ratio for the
+    //  fitting TYPE and f_T is the fully-turbulent friction factor for that NOMINAL
+    //  SIZE — f_T is NOT the flowing friction factor. Entrance and exit are direct K
+    //  values with no n.
+    //
+    //  The table lives client-side and only ΣK crosses the wire, which keeps
+    //  api/dp_calculator.py stdlib-only (its dependency rule) and the payload to one
+    //  extra number. The server computes ΔP = ΣK·ρv²/2 from the mixture density and
+    //  velocity it already has.
+    //
+    //  Crane TP-410 is an industry technical paper, not an ISO/API standard — the UI
+    //  says so. Gradual reducers are deliberately ABSENT: their Formula 1–4
+    //  coefficients could not be verified against a primary source, and publishing an
+    //  unverified constant is the exact failure mode this project's traceability rules
+    //  exist to prevent.
+    // ══════════════════════════════════════════════════════════════════════════
+    const CRANE_FITTINGS = [
+      {id: 'dp-fit-elbow90',    n: 30},
+      {id: 'dp-fit-elbow90lr',  n: 16},
+      {id: 'dp-fit-elbow45',    n: 16},
+      {id: 'dp-fit-return180',  n: 50},
+      {id: 'dp-fit-teerun',     n: 20},
+      {id: 'dp-fit-teebranch',  n: 60},
+      {id: 'dp-fit-gate',       n: 8},
+      {id: 'dp-fit-globe',      n: 340},
+      {id: 'dp-fit-ball',       n: 3},
+      {id: 'dp-fit-checkswing', n: 100},
+      {id: 'dp-fit-entrance',   k: 0.50},   // direct K — sharp-edged
+      {id: 'dp-fit-exit',       k: 1.00}    // direct K
+    ];
+    // Crane App. A-26, clean commercial steel. Tabulated in SIZE BANDS — do NOT
+    // interpolate; interpolation is not part of the method. Nearest nominal wins.
+    const CRANE_FT = [
+      [0.5,0.027],[0.75,0.025],[1,0.023],[1.25,0.022],[1.5,0.021],[2,0.019],
+      [2.5,0.018],[3,0.018],[4,0.017],[5,0.016],[6,0.015],[8,0.014],[10,0.014],
+      [12,0.013],[14,0.013],[16,0.013],[18,0.012],[20,0.012],[24,0.012]
+    ];
+    function craneFT(dMetres) {
+      const nomIn = dMetres / 0.0254;
+      let best = CRANE_FT[0];
+      for (const row of CRANE_FT) {
+        if (Math.abs(row[0] - nomIn) < Math.abs(best[0] - nomIn)) best = row;
+      }
+      return {nominal: best[0], fT: best[1]};
+    }
+    // Returns ΣK and refreshes the summary readouts. Called on every fitting input and
+    // from calcDeltaPressure() so the payload and the display can never disagree.
+    function updateFittingSum() {
+      const dMetres = (parseFloat(document.getElementById('dp-id').value) || 0)
+                    * (parseFloat(document.getElementById('dp-id-unit').value) || 1);
+      const {nominal, fT} = craneFT(dMetres > 0 ? dMetres : 0.1016);
+      let sumK = 0;
+      CRANE_FITTINGS.forEach(f => {
+        const qty = parseFloat(document.getElementById(f.id).value) || 0;
+        if (qty <= 0) return;
+        sumK += qty * (f.k !== undefined ? f.k : f.n * fT);
+      });
+      const s = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = v; };
+      s('dp-fit-ksum', sumK.toFixed(2));
+      s('dp-fit-nominal', dMetres > 0 ? String(nominal) : '—');
+      s('dp-fit-ft', dMetres > 0 ? fT.toFixed(3) : '—');
+      return sumK;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  3B (v2.8) — NORSOK P-001 LINE-SIZING SCREEN
+    //
+    //  Deliberately NORSOK-only. GPSA-attributed velocity/ΔP tables that circulate
+    //  widely could not be verified against primary text — only secondary aggregators —
+    //  so they are omitted rather than cited falsely. API RP 14E erosional velocity is
+    //  already covered by the separate check above and is not duplicated here.
+    //
+    //  `vmax` takes SI density; `dpMax` is bar per 100 m of FRICTIONAL drop.
+    // ══════════════════════════════════════════════════════════════════════════
+    const NORSOK_SERVICES = {
+      'gas':               {phase: 'vapor',    vmax: rho => Math.min(175 * Math.pow(rho, -0.43), 60)},
+      'liquid-cs':         {phase: 'liquid',   vmax: () => 6,  vmin: 1},
+      'liquid-ss':         {phase: 'liquid',   vmax: () => 7,  vmin: 1},
+      'liquid-cuni':       {phase: 'liquid',   vmax: () => 3,  vmin: 1},   // seawater erosion
+      'liquid-grp':        {phase: 'liquid',   vmax: () => 6,  vmin: 1},
+      'pump-suction-sub':  {phase: 'liquid',   dpMax: 0.25},
+      'pump-suction-boil': {phase: 'liquid',   dpMax: 0.05},
+      'pump-discharge':    {phase: 'liquid',   dpMax: 0.9},
+      'twophase-nc':       {phase: 'twophase', vmax: rho => Math.min(183 * Math.pow(rho, -0.5), 25)},
+      'twophase-c':        {phase: 'twophase', vmax: rho => Math.min(183 * Math.pow(rho, -0.5), 10)}
+    };
+    const AUTO_SERVICE = {vapor: 'gas', liquid: 'liquid-cs', twophase: 'twophase-nc'};
+
+    // v2.8 — dp_calculator's re_regime_key → dictionary key. Written out in full rather
+    // than assembled from the key so every path stays greppable and testable.
+    const RE_REGIME_I18N = {
+      laminar:      'advanced.deltaP.reLaminar',
+      transitional: 'advanced.deltaP.reTransitional',
+      turbulent:    'advanced.deltaP.reTurbulent'
+    };
+
+    let lastDpResult = null;   // cached so the service selector re-renders without a round-trip
+
+    function renderLineSizing() {
+      const badge = document.getElementById('dp-out-sizing-badge');
+      const ratioEl = document.getElementById('dp-out-vratio');
+      const vmaxEl = document.getElementById('dp-out-vmax');
+      const dpfEl = document.getElementById('dp-out-dpfric100');
+      if (!badge) return;
+      const d = lastDpResult;
+      if (!d) { badge.innerText = '—'; badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-slate-800 text-slate-400'; ratioEl.innerText = '—'; vmaxEl.innerText = '—'; dpfEl.innerText = '—'; return; }
+
+      // FRICTIONAL ΔP per 100 m, in bar. Static head is excluded on purpose — it is not
+      // a line-sizing criterion, and on this card's default it dominates the total.
+      const dpFric100Bar = d.L > 0 ? (d.dpFric / d.L) * 100 / 1e5 : 0;
+      dpfEl.innerText = dpFric100Bar < 0.001 ? dpFric100Bar.toExponential(2) : dpFric100Bar.toFixed(4);
+
+      let sel = document.getElementById('dp-service').value;
+      if (sel === 'auto') sel = AUTO_SERVICE[d.phase_key] || 'gas';
+      const svc = NORSOK_SERVICES[sel];
+      if (!svc) { badge.innerText = '—'; return; }
+
+      let ratio, detail;
+      if (svc.dpMax !== undefined) {
+        ratio = dpFric100Bar / svc.dpMax;
+        vmaxEl.innerText = '≤ ' + svc.dpMax + ' bar/100 m';
+        detail = tr('advanced.deltaP.sizingDpDetail', {dp: dpFric100Bar.toFixed(4), lim: String(svc.dpMax)});
+      } else {
+        const vmax = svc.vmax(d.rho_mix);
+        ratio = d.vel / vmax;
+        vmaxEl.innerText = vmax.toFixed(2) + ' m/s';
+        detail = 'v / v_max = ' + ratio.toFixed(2);
+        if (svc.vmin !== undefined && d.vel < svc.vmin) {
+          badge.innerText = tr('advanced.deltaP.sizingBelowMin');
+          badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+          ratioEl.innerText = detail + '  ·  ' + tr('advanced.deltaP.sizingVminNote', {vmin: String(svc.vmin)});
+          return;
+        }
+      }
+      ratioEl.innerText = detail;
+
+      // Phase mismatch is a louder problem than a marginal ratio: judging a two-phase
+      // mixture velocity against a single-phase criterion gives a confident wrong answer.
+      if (svc.phase !== d.phase_key) {
+        badge.innerText = tr('advanced.deltaP.sizingPhaseMismatch');
+        badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        return;
+      }
+      if (ratio >= 1.0)      { badge.innerText = tr('advanced.deltaP.sizingExceeds');    badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400 border border-red-500/30'; }
+      else if (ratio >= 0.8) { badge.innerText = tr('advanced.deltaP.sizingNearLimit');  badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-amber-500/20 text-amber-400 border border-amber-500/30'; }
+      else                   { badge.innerText = tr('advanced.deltaP.sizingWithin');     badge.className = 'inline-block px-2 py-1 text-[10px] rounded bg-green-500/20 text-green-400 border border-green-500/30'; }
+    }
+
 	// --- SERVER-SIDE HYDRAULICS (Python API Call) ---
     async function calcDeltaPressure() {
       const badge = document.getElementById('dp-regime-badge');
@@ -2849,7 +3078,10 @@
         l_den_m: parseFloat(document.getElementById('dp-l-den-u').value) || 1,
         l_visc: parseFloat(document.getElementById('dp-l-visc').value) || 1,
         l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1,
-        cfactor: parseFloat(document.getElementById('dp-cfactor').value) || 100
+        cfactor: parseFloat(document.getElementById('dp-cfactor').value) || 100,
+        // v2.8 — ΣK from the Crane fittings block. 0 when the block is untouched, which
+        // makes the server's dpFittings exactly 0 and preserves the pinned reference case.
+        k_total: updateFittingSum()
       };
 
       // v2.5 — client-side pre-check: skip the API round-trip on obviously incomplete input
@@ -2897,7 +3129,18 @@
         if (data.Re !== undefined) {
           document.getElementById('dp-out-re').innerText = data.Re >= 1e5
             ? data.Re.toExponential(2) : Math.round(data.Re).toLocaleString('en-US');
-          document.getElementById('dp-out-re-regime').innerText = data.re_regime || '';
+          // v2.8 — prefer the machine-readable re_regime_key so the label localizes;
+          // fall back to the server's English prose for pre-v2.8 responses.
+          // An explicit map rather than string concatenation: it keeps every key a
+          // literal in the source, which is what the i18n key-coverage tests scan for.
+          const reKey = RE_REGIME_I18N[data.re_regime_key];
+          document.getElementById('dp-out-re-regime').innerText = reKey
+            ? tr(reKey) : (data.re_regime || '');
+        }
+        // v2.8 — fittings ΔP and equivalent length
+        if (data.dpFittings !== undefined) {
+          document.getElementById('dp-out-dpfit').innerText = formatValue(data.dpFittings / 1000);
+          document.getElementById('dp-out-leq').innerText = formatValue(data.L_eq || 0);
         }
         if (data.f !== undefined) document.getElementById('dp-out-f').innerText = data.f.toFixed(5);
         if (data.v_ero !== undefined) {
@@ -2914,12 +3157,20 @@
         if (lastFlowRegime) {
           note.innerHTML = '▶ ' + tr('advanced.deltaP.regimeNoteWithResult', {regime: lastFlowRegime.regime, theta: lastFlowRegime.theta_deg.toFixed(1)});
           note.classList.remove('hidden');
-        } else if (data.badge && data.badge.indexOf('Two-Phase') !== -1) {
+        } else if (data.phase_key === 'twophase' || (data.phase_key === undefined && data.badge && data.badge.indexOf('Two-Phase') !== -1)) {
+          // v2.8 — branch on phase_key, not the English badge text. The old substring
+          // test would stop firing the moment the badge is localized, silently dropping
+          // this cross-link in all 10 languages. The badge fallback covers a stale
+          // pre-v2.8 response only.
           note.innerHTML = '▶ ' + tr('advanced.deltaP.regimeNoteNoResult');
           note.classList.remove('hidden');
         } else {
           note.classList.add('hidden');
         }
+        // v2.8 — cache the result so the service selector can re-render the sizing
+        // verdict without another API round-trip.
+        lastDpResult = data;
+        renderLineSizing();
         dpResultFresh = true;
 
       } catch (err) {

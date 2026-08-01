@@ -66,7 +66,7 @@ Reconstructed from the git log and tags (all dates 2026).
 - **9 tabs:** General · Basic Eng · Advanced · Safety · How To Use · Theory · Terms of Use · Privacy Policy · Report.
 - **General:** Gas Volume (Nm³↔scf), Pressure ×2 with Abs/Gauge toggles, Temperature, Heating Value (MJ/Nm³↔Btu/scf), user-defined Custom Modules with presets.
 - **Basic Eng:** Pipe Volume (canonical card layout), Z-Factor (Papay + Standing-Katz), Petroleum Gravity (°API↔SG↔ρ), Viscosity (dynamic↔kinematic), Mass↔Volumetric Flow, **Gas Property Estimator** (v2.8 — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson coefficient, all sharing the Z-Factor card's Papay routine via `papayZ()`).
-- **Advanced:** Compositional GHV & Flow (JIS K 2301, 14 components, HHV/LHV/SG/WI/MCP/MW, ISO 6578 LNG density, mass↔vol↔mol flow), Pipe ΔP (Darcy-Weisbach + Colebrook-White + HEM two-phase + RP 14E erosion check), Flow Regime (Hewitt & Roberts / Baker maps + 3D animation).
+- **Advanced:** Compositional GHV & Flow (JIS K 2301, 14 components, HHV/LHV/SG/WI/MCP/MW, ISO 6578 LNG density, mass↔vol↔mol flow), Pipe ΔP (Darcy-Weisbach + Colebrook-White + HEM two-phase + RP 14E erosion check + **v2.8 Crane TP-410 fittings and NORSOK P-001 line-sizing screen**), Flow Regime (Hewitt & Roberts / Baker maps + 3D animation).
 - **Safety:** API 520 Part I PRV sizing, five modes, API 526 orifice letters.
 - **Productivity:** copy buttons, Export PDF report, Share links, session auto-restore, out-of-range warnings.
 - **Serverless:** `/api/dp_calculator`, `/api/psv_calculator` (stdlib only), `/api/flowregime` (numpy/matplotlib/seaborn).
@@ -95,7 +95,7 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 | ~~No automated test suite; regression relies on the manual reference-vector checklist~~ | **Shipped v2.8** — pytest + GitHub Actions run Vectors 2 and 3, i18n key parity across all 10 dictionaries, and the architectural constraints on every push/PR (SPECIFICATION.md §13). **Vector 1 (JIS) is still uncovered** — it lives in JavaScript; see §13.4 |
 | API RP 14E SI constant is √1.5 rather than the exact 1.21990 (V_e +0.42 %, marginally non-conservative) | Logged v2.8 as Known Issue #9; fix deferred to a separately-tagged change because it moves a documented reference value |
 | Non-English Terms of Use / Privacy Policy translations await the maintainer's legal review (governing-language note mitigates) | Open — review before promoting non-EN legal pages |
-| Server-generated status/error text (ΔP/PSV/Flow Regime badges) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6 |
+| Server-generated status/error text (PSV / Flow Regime badges, and all three endpoints' error messages) is English regardless of UI language | Roadmap — i18n Milestone 4 (optional), see §6. **Partially addressed in v2.8:** `dp_calculator` now returns `phase_key` and `re_regime_key`, and the ΔP card's phase/Reynolds labels localize. PSV and Flow Regime remain unkeyed |
 
 ## 6. Roadmap
 
@@ -109,8 +109,8 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 |---|---|---|---|
 | ~~Gas viscosity (Lee-Gonzalez-Eakin)~~ | High | L | **Shipped.** Original SPE 1340 coefficients; warns outside the 100–340 °F / 100–8,000 psia experimental basis |
 | ~~Sonic velocity & Joule-Thomson coefficient~~ | Med | L | **Shipped.** Delivered together with viscosity as one **Gas Property Estimator** card rather than three cards — all three share the same (SG, P, T, k) input set and the same Papay Z, so separate cards would have triplicated the inputs. SPECIFICATION.md §4.2, Vector 6 |
-| Line sizing helper (velocity + ΔP/100 m vs. typical service criteria) | High | M | Reuses ΔP outputs; large value for juniors sizing lines |
-| Fittings / K-factor equivalent length in the ΔP card | High | M | Backward-compatible payload extension to dp_calculator |
+| ~~Line sizing helper (velocity + ΔP/100 m vs. typical service criteria)~~ | High | M | **Shipped.** NORSOK P-001 §6.3.2/§6.4 + Tables 3–4, client-side, judging **frictional** ΔP only. GPSA-attributed rows were dropped — unverifiable against primary text. SPECIFICATION.md §4.3.2 |
+| ~~Fittings / K-factor equivalent length in the ΔP card~~ | High | M | **Shipped.** Crane TP-410, 12 fitting types, table client-side so dp_calculator stays stdlib-only. `k_total` defaults to 0 so every pre-v2.8 payload reproduces Vector 2 bit-for-bit. Vector 7 added |
 | ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 99 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |
 | Mobile navigation affordance (hamburger or wrap) | Med | M | Deferred from v2.5 (layout restructure, needs design care) |
 | Custom modules in Share links (state format v:2) | Med | M | Deferred from v2.5 (state versioning required) |
