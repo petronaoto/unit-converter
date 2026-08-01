@@ -62,6 +62,9 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 | **Petroleum Gravity** | `api-grav`, `api-sg`, `api-den`/`api-den-u` | Three-way °API ↔ SG(60/60°F) ↔ density; °API = 141.5/SG − 131.5; water at 60 °F = 999.016 kg/m³ (`RHO_WATER_60F`). |
 | **Viscosity** | `visc-dyn`(+unit), `visc-kin`(+unit), `visc-rho` | ν = μ/ρ; dynamic (cP, mPa·s, Pa·s) ↔ kinematic (cSt, mm²/s, m²/s) via density. Since v2.5, mPa·s and mm²/s use the distinct option values `0.0010`/`0.0000010` so restored state keeps the selected label (numerically identical to cP/cSt). |
 | **Mass↔Vol Flow** | `mf-mass`(+unit), `mf-vol`(+unit), `mf-rho` | Q_m = Q_v · ρ bidirectional (`calcMassVol`). |
+| **Gas Property Estimator** (v2.8) | `gp-sg`, `gp-p`/`gp-p-u`, `gp-t`/`gp-t-u`, `gp-k` → `gp-out-z`, `gp-out-mu`/`-u`, `gp-out-c`/`-u`, `gp-out-jt`/`-u`, warning `gp-warn` (`calcGasProps`) | Four screening outputs from one (SG, P, T, k) set, all chained to the **shared `papayZ()` helper** — see below. **μ:** Lee, Gonzalez & Eakin (1966), SPE 1340, **original unrounded coefficients** (K = (9.379 + 0.01607M)T^1.5/(209.2 + 19.26M + T), X = 3.448 + 986.4/T + 0.01009M, Y = 2.447 − 0.2224X, μ[cP] = 10⁻⁴·K·exp(X·ρ^Y); T in °R, M in lb/lbmol, ρ in g/cm³). ρ = PM/(ZRT) with R = 10.731577. **c:** √(k·Z·R_u·T/M), R_u = 8314.462618 J/(kmol·K). **μ_JT:** (R·T²/(P·C_p))·(∂Z/∂T)_P, with ∂Z/∂T by central difference on the same Papay expression (h = 0.5 °R, hard-coded) and C_p = kR/(k−1). MW = SG × 28.9647. Validity: warns (never clamps) outside the Papay envelope and outside LGE's 100–340 °F / 100–8,000 psia experimental basis. Labelled **SCREENING** in the UI — only Papay and LGE are published correlations; the sonic-velocity form is an engineering approximation and μ_JT has no single governing document. |
+
+**Shared real-gas helpers (v2.8).** `papayZ(sg, pPsia, tRankine)` returns `{ppc, tpc, pr, trr, Z, oob}`; `toPsia(v, unit)` and `toRankine(v, unit)` carry the unit ladders. The Z-Factor Estimator and the Gas Property Estimator both route through them, so the two cards cannot report different Z for identical inputs. Before v2.8 the correlation was inline in `calcZFactor()`; the extraction was verified by differential-testing the new helper against a verbatim copy of the original arithmetic over **7,203 input combinations in a real browser engine — zero mismatches, bit-for-bit** (`Object.is`). `tests/test_js_constants.py` asserts the correlation appears exactly once in executable JS and that its constants agree across the code, the Theory tab and this document.
 
 ### 4.3 Advanced
 
@@ -245,6 +248,32 @@ The JIS K 2301 rounding chain in §4.3.1 is **normative** and matches CLAUDE.md 
 
 Hand-checks recorded in the test module's docstring: the gas case reproduces from C = 520·√(k(2/(k+1))^((k+1)/(k−1))) and the two-phase case from ω = 9(v₉/v_o − 1), both to 4 d.p.
 
+**Vector 5 — Papay Z-Factor (added v2.8).** The Z-Factor Estimator had no documented vector before v2.8, which made the `papayZ()` extraction unverifiable. Inputs are the card's own placeholders: **SG 0.65, P 2,000 psi, T 150 °F**.
+
+| Quantity | Expected |
+|---|---|
+| P_pc / T_pc | 670.1290 psia / 365.1100 °R |
+| P_r / T_r | 2.984500 / 1.669826 |
+| **Z (displayed, 4 d.p.)** | **0.8646** (0.864584 exact) |
+| `z-warn` | hidden (inside the validity envelope) |
+
+**Vector 6 — Gas Property Estimator (added v2.8).** Same state as Vector 5 plus **k = 1.3** (the card default, matching the PRV card's isentropic-exponent default). Every value below was reproduced independently in Python and in a real browser engine.
+
+| Quantity | Expected |
+|---|---|
+| M = SG × 28.9647 | 18.827055 g/mol |
+| T_R / T_K | 609.67 °R / 338.7056 K |
+| Z | 0.864584 → displayed **0.8646** |
+| ρ = PM/(ZRT) | 6.656512 lb/ft³ = **0.1066271 g/cm³** |
+| LGE K / X / Y | 123.356242 / 5.255889 / 1.278090 |
+| **μ_g** | **0.016663 cP** = 16.6635 µPa·s |
+| **c** | **410.0269 m/s** = 1,345.23 ft/s |
+| ∂Z/∂T (central difference, h = 0.5 °R) | 1.707785 × 10⁻³ K⁻¹ |
+| C_p,molar = kR/(k−1) | 36.0293 J/(mol·K) |
+| **μ_JT** | **0.3279 K/bar** = 0.04069 °F/psi |
+
+Cross-check worth keeping: at Z = 1 the sonic velocity would be 441.0 m/s, **7.5 % higher** — that gap is why the card shows Z alongside c.
+
 All four vectors are enforced automatically on every push and pull request, except Vector 1 — see §13.
 
 ## 10. Deployment
@@ -267,6 +296,7 @@ All four vectors are enforced automatically on every push and pull request, exce
 | 8 | No dedicated mobile navigation; tab bar relies on horizontal scroll | `index.html` header | Roadmap v2.8 |
 | 9 | API RP 14E SI constant is `1.2247448714` (= √1.5); the exact conversion is **1.21990** (= 0.3048·√16.018463). V_e is over-predicted by **+0.42 %**, so the erosional-velocity screen is marginally *non-conservative* (7.7222 vs 7.6899 m/s on Vector 2) | `api/dp_calculator.py:108` | Logged v2.8. Fix deferred to a deliberate, separately-tagged change — correcting it moves the documented V_e ≈ 7.72 m/s in CLAUDE.md, api/CLAUDE.md, this document and the Theory tab, so it must not happen as a side effect. `tests/test_dp_calculator.py` pins the shipped constant and names this entry |
 | 10 | `index.html:2182` loads `/cdn-cgi/scripts/…/email-decode.min.js`, a Cloudflare email-obfuscation script baked into the file. The app deploys to Vercel, where `/cdn-cgi/` does not exist, and no `__cf_email__` element remains for it to decode — so it is most likely a dead 404 on every page load. Disclosed in the Privacy Policy tab (`index.html:2045`), which would also need updating if it is removed | `index.html:2182` | Logged v2.8; removal not yet approved |
+| 11 | ~~Z-Factor Estimator silently ignores a temperature of exactly **0**~~ (`0` is falsy, so `if(!sg \|\| !p \|\| !t) return;` aborted and left the *previous* result on screen with no indication it was stale — and 0 °C is an ordinary process temperature) | `index.html` `calcZFactor()` | **FIXED v2.8.** Guard is now `if(!sg \|\| !p \|\| isNaN(t)) return;`. `sg` and `p` keep the falsy check deliberately — zero gas gravity or zero absolute pressure are genuinely invalid, not merely unusual. Verified in a browser: 0 °C → Z = 0.6934 on **both** cards (they disagreed before), 0 °F → 0.6185, blank/`sg = 0`/`p = 0` still rejected, Vector 5 unchanged at 0.8646. Pinned by `test_zero_temperature_is_not_treated_as_missing_input` |
 
 ## 12. Internationalization (i18n)
 

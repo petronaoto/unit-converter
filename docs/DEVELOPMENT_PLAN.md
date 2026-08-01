@@ -65,7 +65,7 @@ Reconstructed from the git log and tags (all dates 2026).
 
 - **9 tabs:** General · Basic Eng · Advanced · Safety · How To Use · Theory · Terms of Use · Privacy Policy · Report.
 - **General:** Gas Volume (Nm³↔scf), Pressure ×2 with Abs/Gauge toggles, Temperature, Heating Value (MJ/Nm³↔Btu/scf), user-defined Custom Modules with presets.
-- **Basic Eng:** Pipe Volume (canonical card layout), Z-Factor (Papay + Standing-Katz), Petroleum Gravity (°API↔SG↔ρ), Viscosity (dynamic↔kinematic), Mass↔Volumetric Flow.
+- **Basic Eng:** Pipe Volume (canonical card layout), Z-Factor (Papay + Standing-Katz), Petroleum Gravity (°API↔SG↔ρ), Viscosity (dynamic↔kinematic), Mass↔Volumetric Flow, **Gas Property Estimator** (v2.8 — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson coefficient, all sharing the Z-Factor card's Papay routine via `papayZ()`).
 - **Advanced:** Compositional GHV & Flow (JIS K 2301, 14 components, HHV/LHV/SG/WI/MCP/MW, ISO 6578 LNG density, mass↔vol↔mol flow), Pipe ΔP (Darcy-Weisbach + Colebrook-White + HEM two-phase + RP 14E erosion check), Flow Regime (Hewitt & Roberts / Baker maps + 3D animation).
 - **Safety:** API 520 Part I PRV sizing, five modes, API 526 orifice letters.
 - **Productivity:** copy buttons, Export PDF report, Share links, session auto-restore, out-of-range warnings.
@@ -107,8 +107,8 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 
 | Feature | Value | Effort | Notes |
 |---|---|---|---|
-| Gas viscosity (Lee-Gonzalez-Eakin) | High | L | Client-side; pairs naturally with the Z-Factor card inputs |
-| Sonic velocity & Joule-Thomson coefficient | Med | L | Client-side; same input set (SG, P, T, k) |
+| ~~Gas viscosity (Lee-Gonzalez-Eakin)~~ | High | L | **Shipped.** Original SPE 1340 coefficients; warns outside the 100–340 °F / 100–8,000 psia experimental basis |
+| ~~Sonic velocity & Joule-Thomson coefficient~~ | Med | L | **Shipped.** Delivered together with viscosity as one **Gas Property Estimator** card rather than three cards — all three share the same (SG, P, T, k) input set and the same Papay Z, so separate cards would have triplicated the inputs. SPECIFICATION.md §4.2, Vector 6 |
 | Line sizing helper (velocity + ΔP/100 m vs. typical service criteria) | High | M | Reuses ΔP outputs; large value for juniors sizing lines |
 | Fittings / K-factor equivalent length in the ΔP card | High | M | Backward-compatible payload extension to dp_calculator |
 | ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 99 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |

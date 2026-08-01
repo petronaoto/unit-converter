@@ -103,6 +103,26 @@
       "volLabel": "DÉBIT VOLUMIQUE",
       "rhoNote": "— aux conditions d'écoulement",
       "footnote": "Q_vol = ṁ / ρ. Pour les gaz, utilisez la masse volumique aux T et P indiquées (ou la ρ_std compositionnelle de l'onglet Avancé)."
+    },
+    "gasProps": {
+      "title": "Estimateur de Propriétés du Gaz",
+      "screeningChip": "PRÉLIMINAIRE",
+      "sgLabel": "DENSITÉ DU GAZ (Air = 1,0)",
+      "pressureLabel": "PRESSION",
+      "tempLabel": "TEMPÉRATURE",
+      "kLabel": "k ISENTROPIQUE",
+      "zLabel": "COMPRESSIBILITÉ Z",
+      "zMethod": "Papay",
+      "viscLabel": "VISCOSITÉ DU GAZ μ",
+      "viscMethod": "Lee-Gonzalez-Eakin",
+      "sonicLabel": "VITESSE DU SON c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "JOULE-THOMSON μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "Le Z de Papay est extrapolé hors de son domaine de validité (Pr = {pr}, Tr = {trv} ; valide 0 < Pr ≤ 15, 1,05 ≤ Tr ≤ 3,0). Les quatre résultats dépendent de Z.",
+      "warnLge": "La viscosité est hors de la base expérimentale de Lee-Gonzalez-Eakin ({tf} °F, {psia} psia ; ajustée sur 100–340 °F et 100–8 000 psia).",
+      "warnBelowAbsoluteZero": "La température est au zéro absolu ou en dessous.",
+      "footnote": "Toutes ces valeurs sont des estimations préliminaires, non des valeurs normatives. Z utilise Papay (1968) avec les pseudo-critiques de Standing-Katz — la même routine que l'Estimateur de Facteur Z. μ utilise Lee, Gonzalez et Eakin (1966), une corrélation publiée ajustée sur quatre gaz naturels doux entre 100–340 °F et 100–8 000 psia (EAM ≈ 2,7 %) ; elle ne comporte aucune correction H₂S/CO₂/N₂, donc pour un gaz acide ou riche en inertes elle n'est qu'indicative. c = √(k·Z·R·T/M) est la forme gaz réel utilisée dans l'API 520 pour l'écoulement critique ; elle néglige les termes (∂Z/∂P)_T et (∂Z/∂T)_P. μ_JT est de la thermodynamique exacte associée au ∂Z/∂T de Papay et à un C_p de gaz parfait = kR/(k−1) ; positif signifie refroidissement à la détente. MM du gaz = densité × 28,9647."
     }
   },
   "advanced": {

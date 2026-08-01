@@ -143,6 +143,28 @@ def test_every_data_i18n_html_key_resolves_in_the_translated_dictionaries(html_s
         assert not unresolved, f"{code}.json missing doc blocks: {unresolved[:12]}"
 
 
+TR_CALL_PATTERN = re.compile(r"""\btr\(\s*['"]([A-Za-z0-9_.]+)['"]""")
+
+
+def test_every_tr_call_resolves_in_english(html_source, flat_keys):
+    """Every literal key passed to tr() must exist in en.json.
+
+    This is the direction that matters when ADDING code: a typo'd or forgotten key in a
+    new tr() call renders its own raw dot-path in the UI (e.g. "basic.gasProps.warnLge"),
+    in every language at once, and nothing errors. The reverse direction is covered by
+    test_no_english_key_is_dead.
+
+    Keys assembled dynamically (tr('advanced.deltaP.re' + suffix)) are not matched by
+    this regex and are not expected to be — those are covered by the dead-key test from
+    the other side.
+    """
+    called = set(TR_CALL_PATTERN.findall(html_source))
+    assert called, "expected tr() calls in index.html; found none — has tr() been renamed?"
+
+    unresolved = sorted(called - flat_keys["en"])
+    assert not unresolved, f"tr() keys absent from en.json: {unresolved}"
+
+
 def test_no_english_key_is_dead(html_source, flat_keys):
     """Every key in en.json should be reachable — either from a data-i18n attribute or
     from a tr('...') call. Keys reached only through a ternary are matched by the

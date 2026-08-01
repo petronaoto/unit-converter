@@ -103,6 +103,26 @@
       "volLabel": "FLUJO VOLUMÉTRICO",
       "rhoNote": "— en condiciones de flujo",
       "footnote": "Q_vol = ṁ / ρ. Para gases, use la densidad a la T y P indicadas (o la ρ_std composicional de la pestaña Avanzado)."
+    },
+    "gasProps": {
+      "title": "Estimador de Propiedades del Gas",
+      "screeningChip": "PRELIMINAR",
+      "sgLabel": "GRAVEDAD DEL GAS (Aire = 1,0)",
+      "pressureLabel": "PRESIÓN",
+      "tempLabel": "TEMPERATURA",
+      "kLabel": "k ISENTRÓPICO",
+      "zLabel": "COMPRESIBILIDAD Z",
+      "zMethod": "Papay",
+      "viscLabel": "VISCOSIDAD DEL GAS μ",
+      "viscMethod": "Lee-Gonzalez-Eakin",
+      "sonicLabel": "VELOCIDAD SÓNICA c",
+      "sonicMethod": "√(k·Z·R·T/M)",
+      "jtLabel": "JOULE-THOMSON μ_JT",
+      "jtMethod": "(RT²/P·Cp)(∂Z/∂T)",
+      "warnPapay": "La Z de Papay está extrapolada fuera de su rango de validez (Pr = {pr}, Tr = {trv}; válido 0 < Pr ≤ 15, 1,05 ≤ Tr ≤ 3,0). Las cuatro salidas dependen de Z.",
+      "warnLge": "La viscosidad está fuera de la base experimental de Lee-Gonzalez-Eakin ({tf} °F, {psia} psia; ajustada entre 100–340 °F y 100–8.000 psia).",
+      "warnBelowAbsoluteZero": "La temperatura está en el cero absoluto o por debajo.",
+      "footnote": "Todas son estimaciones preliminares, no valores normativos. Z usa Papay (1968) con pseudocríticos de Standing-Katz — la misma rutina que el Z-Factor Estimator. μ usa Lee, Gonzalez y Eakin (1966), una correlación publicada ajustada a cuatro gases naturales dulces entre 100–340 °F y 100–8.000 psia (EAM ≈ 2,7 %); no incluye corrección por H₂S/CO₂/N₂, por lo que en gas amargo o con alto contenido de inertes es solo indicativa. c = √(k·Z·R·T/M) es la forma de gas real usada en API 520 para flujo crítico; desprecia los términos (∂Z/∂P)_T y (∂Z/∂T)_P. μ_JT es termodinámica exacta envuelta en el ∂Z/∂T de Papay y un C_p de gas ideal = kR/(k−1); positivo significa enfriamiento en la expansión. PM del gas = SG × 28,9647."
     }
   },
   "advanced": {
