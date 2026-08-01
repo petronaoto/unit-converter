@@ -35,13 +35,14 @@ jobs:
       - name: Install pytest only
         run: pip install -r requirements-dev.txt
 
+      # Runs EVERYTHING except the one file that needs numpy/matplotlib, rather than an
+      # explicit allowlist. The allowlist this replaced silently orphaned two whole test
+      # files (test_js_constants.py, test_share_state.py — 45 tests, including every guard
+      # on the share-link import sanitizer) because they were added in later PRs and nobody
+      # remembered to extend the list. tests/test_architecture.py now also asserts that
+      # every test file is reachable from this workflow.
       - name: Run the dependency-free suite
-        run: >
-          pytest -v
-          tests/test_dp_calculator.py
-          tests/test_psv_calculator.py
-          tests/test_i18n_parity.py
-          tests/test_architecture.py
+        run: pytest -v --ignore=tests/test_flowregime.py
 
   # flowregime.py is the one endpoint permitted dependencies, so its tests get the
   # production requirements.txt installed. compute() is a pure function — no PNG is
