@@ -593,6 +593,91 @@
           </div>
         </div>
 
+        <!-- B6 (v3.0) — NPSHa (pump suction screening). First-principles head balance;
+             the optional water helper fills Pv and rho from the SAME IF97 functions
+             as the steam card (if97PsatMPa / if97Region1), so the two cards cannot
+             disagree about water. Deliberately NO margin verdict: NPSHr comes from
+             the pump vendor and the HI/API margin tables are paywalled — this card
+             reports the physical number and stops. -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span><span data-i18n="basic.npsh.title">Pump Suction — NPSHa</span></h2>
+            <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.npsh.chip">SCREENING</span>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.psurfLabel">SURFACE PRESS (abs)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-p" placeholder="101.325" oninput="calcNPSH()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-p-u" onchange="calcNPSH()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kPa</option><option value="1000">MPa</option><option value="100">bar</option><option value="6.894757">psia</option><option value="101.325">atm</option><option value="98.0665">kg/cm²</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.pvLabel">VAPOR PRESS Pv (abs)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-pv" placeholder="47.41472" oninput="calcNPSH()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-pv-u" onchange="calcNPSH()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kPa</option><option value="1000">MPa</option><option value="100">bar</option><option value="6.894757">psia</option><option value="101.325">atm</option><option value="98.0665">kg/cm²</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.rhoLabel">LIQUID DENSITY ρ</label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-rho" placeholder="971.77879" oninput="calcNPSH()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-rho-u" onchange="calcNPSH()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="1000">g/cm³</option><option value="16.0184634">lb/ft³</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.npsh.zLabel">STATIC HEAD z</span> <span class="text-slate-600 font-normal" data-i18n="basic.npsh.zHint">[− = lift]</span></label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-z" placeholder="3" oninput="calcNPSH()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-z-u" onchange="calcNPSH()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">m</option><option value="0.3048">ft</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.hfLabel">SUCTION FRICTION h_f</label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-hf" placeholder="1.2" oninput="calcNPSH()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-hf-u" onchange="calcNPSH()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">m</option><option value="0.3048">ft</option></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-end">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.twLabel">WATER TEMP (optional)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="npsh-tw" placeholder="80" class="w-24 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-teal-500" />
+                  <select id="npsh-tw-u" class="bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="C">°C</option><option value="F">°F</option></select>
+                </div>
+              </div>
+              <button id="npsh-fill" onclick="fillNPSHWater()" class="px-4 py-2.5 bg-teal-600/20 border border-teal-500/40 rounded-lg text-teal-300 text-xs font-semibold hover:bg-teal-600/30 transition-colors" data-i18n="basic.npsh.fillBtn">FILL Pv &amp; ρ FROM IF97 (WATER)</button>
+              <span class="text-[10px] text-slate-600 leading-relaxed sm:pb-2" data-i18n="basic.npsh.fillHint">Writes saturated-water Pv and ρ_f at T into the two fields (overwrite freely for other liquids).</span>
+            </div>
+
+            <div id="npsh-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
+
+            <div class="pt-4 border-t border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-teal-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.outLabel">NPSH AVAILABLE</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="npsh-out" class="text-3xl font-bold font-mono text-white">—</span>
+                  <button onclick="copyText(document.getElementById('npsh-out').innerText, this)" class="text-slate-400 hover:text-teal-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <select id="npsh-out-u" onchange="calcNPSH()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">m</option><option value="3.280840">ft</option></select>
+                </div>
+                <div id="npsh-out-note" class="text-[10px] text-slate-600 mt-1" data-i18n="basic.npsh.outMethod">(P − Pv)/ρg + z − h_f</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.breakdownLabel">TERM BREAKDOWN</div>
+                <div id="npsh-breakdown" class="text-sm font-mono text-slate-300">—</div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.npsh.breakdownNote">pressure head + static − friction, in the output unit</div>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.npsh.footnote">NPSHa = (P_surface − P_v)/(ρ·g) + z − h_f with g = 9.80665 m/s² exactly — a first-principles head balance at the impeller centerline, not a standard's method. z is the liquid level above the centerline (negative for a suction lift); h_f is the suction-line friction head (the ΔP card's frictional term is a good source). The water helper uses IAPWS-IF97: Pv = p_sat(T) (Region 4) and ρ = ρ_f(T), the saturated-liquid density (Region 1 on the saturation line), valid 0–350 °C. This card deliberately renders NO verdict: the required margin over NPSHr belongs to the pump vendor's curve and the Hydraulic Institute / API 610 margin guidance, which are licensed documents this application does not reproduce.</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1282,6 +1367,7 @@
             <a href="#howto-14" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">14 Fittings</a>
             <a href="#howto-15" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">15 Mobile</a>
             <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 Steam</a>
+            <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 NPSHa</a>
           </nav>
         </div>
 
@@ -1785,6 +1871,15 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3">Valid from 0 to 800 °C and up to 100 MPa (Regions 1 and 2). All 259 coefficients are transcribed verbatim from the IAPWS Release and re-verified in CI against the Release's own verification tables to 9 significant figures — see Theory Part VIII for the equations and the verification contract.</p></div>
         </section>
 
+        <!-- 17. NPSHa (v3.0) -->
+        <section>
+          <h3 id="howto-17" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b079">17. Basic Eng — Pump Suction NPSHa</h3>
+          <div data-i18n-html="docs.howto.b080"><p class="text-sm text-slate-400 leading-relaxed">Five inputs build the classic suction head balance: <strong class="text-slate-200">surface pressure</strong> (absolute — 101.325 kPa for an open tank), <strong class="text-slate-200">vapor pressure</strong> of the liquid at pumping temperature, <strong class="text-slate-200">density</strong>, <strong class="text-slate-200">static head z</strong> (liquid level above the impeller centerline — enter it negative for a suction lift), and <strong class="text-slate-200">suction friction h_f</strong> (the ΔP card's frictional term is a good source). The result is NPSHa in metres or feet, with the three terms shown separately so the balance can be audited at a glance.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">Pumping water?</strong> Type the temperature and press <strong class="text-teal-400">FILL Pv &amp; ρ FROM IF97 (WATER)</strong> — the card writes the saturated-water vapor pressure and density from the same IAPWS-IF97 functions as the Steam Properties card, then recalculates. The two fields stay ordinary inputs: overwrite them freely for any other liquid.</p>
+          <div class="bg-teal-500/10 border border-teal-500/30 rounded-lg p-3 text-xs text-teal-300 mt-3"><strong>ℹ Worked example</strong> — water at 80 °C in an open tank (101.325 kPa), level 3 m above the pump, 1.2 m of suction friction. The helper fills P<sub>v</sub> = 47.41472 kPa and ρ = 971.77879 kg/m³, and the card returns <strong>NPSHa = 7.45697 m</strong> (24.46511 ft), broken down as 5.65697 + 3 − 1.2. Raise the water to 95 °C on a 2 m suction lift with 0.8 m friction and it returns <strong>−1.0279 m</strong> with a flashing warning — that pump will not run.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">No verdict, on purpose.</strong> The card reports the physical number and stops. How much NPSHa you need above the pump's NPSHr — and the margin on top of that — comes from the vendor's tested curve and the Hydraulic Institute / API 610 guidance, which are licensed documents this application does not reproduce. A big positive number is not automatically safe; hot water near saturation erodes the margin quickly, which is exactly what the two warnings watch for.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -1802,6 +1897,7 @@
             <a href="#theory-p5" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">V Data Sources</a>
             <a href="#theory-p7" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VII Real Gas</a>
             <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII Steam</a>
+            <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX NPSHa</a>
           </nav>
         </div>
 
@@ -2361,6 +2457,25 @@
             <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.5 Unit conversions and the PRV advisory</h4>
           <p class="text-sm leading-relaxed">Imperial outputs use the International Table definitions, which are exact by construction: 1 Btu/lb = 2.326 kJ/kg and 1 Btu/(lb·°R) = 4.1868 kJ/(kg·K); density uses 1 lb/ft³ = 16.0184634 kg/m³, the same factor as the RP 14E erosional-velocity constant. In the Safety tab, the PRV steam mode shows T<sub>sat</sub>(P1) from Region 4 and — if the optional advisory temperature is filled in — the degrees of superheat, which is the entry key into API 520's Table 9 for KSH. The advisory is display-only: the sizing payload sent to the API is unchanged, and KSH remains a manual input precisely because Table 9 is API-copyrighted material this application will not reproduce.</p>
           <p class="text-xs text-slate-500 leading-relaxed mt-3">Reference: <em>Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam</em>, IAPWS, August 2007 — freely available at iapws.org. Region/table numbers above refer to that document.</p></div>
+          </div></div>
+        </section>
+
+        <!-- PART IX: NPSHa (v3.0) -->
+        <section>
+          <h3 id="theory-p9" class="text-lg font-bold text-teal-400 uppercase tracking-widest border-b border-teal-900 pb-2 mb-6" data-i18n-html="docs.theory.b042">Part IX — Pump Suction: NPSHa (v3.0)</h3>
+          <div data-i18n-html="docs.theory.b043"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-teal-400 mb-2">9.1 The head balance</h4>
+          <p class="text-sm leading-relaxed">Net Positive Suction Head available is the absolute head at the impeller centerline in excess of the liquid's vapor head — the budget that keeps the liquid liquid as it accelerates into the eye. It is plain hydrostatics, not the property of any standard:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>NPSHa = (P_surface − P_v)/(ρ·g) + z − h_f</div>
+            <div class="text-slate-500">P absolute, Pa · ρ kg/m³ · g = 9.80665 m/s² exactly · z, h_f m of liquid</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Each term has a physical reading: the pressure head is what the vessel pushes with, beyond what the vapor pressure claws back; z is geometry (negative when the pump sits above the liquid — a suction lift); h_f is what the suction line wastes. The card shows all three so a low result can be traced to its cause. Two warnings mark the physical cliff edges: P<sub>surface</sub> ≤ P<sub>v</sub> (the vessel itself is boiling) and NPSHa ≤ 0 (the liquid flashes before the impeller — cavitation is certain, operation impossible).</p></div>
+            <div><h4 class="text-base font-semibold text-teal-400 mb-2">9.2 The water helper — IF97 again</h4>
+          <p class="text-sm leading-relaxed">For water, the two hardest inputs come free from the formulation already in this application: P<sub>v</sub> = p<sub>sat</sub>(T) from Region 4 (Eq. 30, exact closed form) and ρ = ρ<sub>f</sub>(T), the saturated-liquid density, from Region 1 evaluated on the saturation line. Saturated-liquid density is the right choice for suction screening: the liquid at the free surface of a vessel at its bubble point <em>is</em> saturated, and for subcooled or pressurized cases the difference is far below the accuracy any NPSH calculation needs (water is nearly incompressible). Values are written into the fields at 8 significant figures — visible, auditable, and overridable — rather than hidden inside the calculation. Valid 0–350 °C; the helper refuses beyond, like every IF97 surface in this app.</p></div>
+            <div><h4 class="text-base font-semibold text-teal-400 mb-2">9.3 Why there is no verdict badge</h4>
+          <p class="text-sm leading-relaxed">Other cards here judge their result against a published criterion (RP 14E, NORSOK P-001). NPSH cannot be judged that way from the suction side alone: the requirement, NPSHr, is a tested property of the specific pump at the specific flow — it exists on the vendor's curve, nowhere else — and the margin to apply on top of it (commonly 0.6–1.5 m or a 1.1–1.35 ratio, rising steeply for hot water and hydrocarbons near their bubble point) is codified in Hydraulic Institute 9.6.1 and API 610, both licensed documents. Reprinting half-remembered margin rules would manufacture false authority; this application cites what it can verify and stops at the physics.</p>
+          <div class="bg-teal-500/10 border border-teal-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 9)</strong> — water, 80 °C, open tank (101.325 kPa), z = +3 m, h_f = 1.2 m. Helper fills P<sub>v</sub> = 47.41472 kPa, ρ = 971.77879 kg/m³. Pressure head = (101,325 − 47,414.72)/(971.77879 × 9.80665) = 5.65697 m → <strong>NPSHa = 5.65697 + 3 − 1.2 = 7.45697 m = 24.46511 ft</strong>. At 95 °C with z = −2 m, h_f = 0.8 m: P<sub>v</sub> = 84.608938 kPa, ρ = 961.88733 kg/m³, head = 1.7721 m → <strong>NPSHa = −1.0279 m</strong>: flashing, and the card says so.</div></div>
           </div></div>
         </section>
 </div>
@@ -3417,6 +3532,67 @@
                              : tr('safety.psv.advisorySaturated'));
       }
       el.innerText = msg;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  B6 (v3.0) — NPSHa (PUMP SUCTION SCREENING)
+    //
+    //  NPSHa = (P_surf − P_v)/(ρ·g) + z − h_f, all terms as head at the impeller
+    //  centerline. First principles — deliberately NOT a standard's method and
+    //  deliberately NO margin verdict (HI/API 610 margin tables are licensed).
+    //  Reference vector: SPECIFICATION.md §9 Vector 9.
+    // ══════════════════════════════════════════════════════════════════════════
+    const NPSH_G = 9.80665;  // m/s², standard gravity — exact by definition
+
+    function calcNPSH() {
+      const outEl = document.getElementById('npsh-out');
+      const bdEl = document.getElementById('npsh-breakdown');
+      const warnEl = document.getElementById('npsh-warn');
+      const p   = parseFloat(document.getElementById('npsh-p').value)   * (parseFloat(document.getElementById('npsh-p-u').value) || 1);
+      const pv  = parseFloat(document.getElementById('npsh-pv').value)  * (parseFloat(document.getElementById('npsh-pv-u').value) || 1);
+      const rho = parseFloat(document.getElementById('npsh-rho').value) * (parseFloat(document.getElementById('npsh-rho-u').value) || 1);
+      const z   = parseFloat(document.getElementById('npsh-z').value)   * (parseFloat(document.getElementById('npsh-z-u').value) || 1);
+      const hf  = parseFloat(document.getElementById('npsh-hf').value)  * (parseFloat(document.getElementById('npsh-hf-u').value) || 1);
+      // NaN-safe positive assertions (PR-1 polarity). z may be any finite number
+      // (negative = suction lift); Pv ≥ 0 (a cold, low-volatility liquid rounds to 0);
+      // h_f ≥ 0 (negative friction is always an input error).
+      if (!(p > 0) || !(pv >= 0) || !(rho > 0) || !isFinite(z) || !(hf >= 0)) {
+        outEl.innerText = '—'; bdEl.innerText = '—';
+        warnEl.classList.add('hidden');
+        return;
+      }
+      const hp = (p - pv) * 1000.0 / (rho * NPSH_G);   // kPa → Pa → m of liquid
+      const npsha = hp + z - hf;
+      const f = parseFloat(document.getElementById('npsh-out-u').value) || 1;
+      outEl.innerText = formatValue(npsha * f);
+      bdEl.innerText = formatValue(hp * f) + ' + ' + formatValue(z * f) + ' − ' + formatValue(hf * f);
+      const notes = [];
+      if (pv >= p) notes.push(tr('basic.npsh.warnSurfaceFlash'));
+      if (npsha <= 0) notes.push(tr('basic.npsh.warnFlashing'));
+      warnEl.classList.toggle('hidden', notes.length === 0);
+      if (notes.length) warnEl.innerText = '⚠ ' + notes.join('  •  ');
+    }
+
+    // Water helper — fills Pv = p_sat(T) (IF97 Region 4) and ρ = ρ_f(T) (Region 1 on
+    // the saturation line) into the two input fields IN THEIR CURRENT UNITS, then
+    // recalculates. toPrecision(8) keeps the fields readable while staying below the
+    // 5-decimal display rounding — Vector 9 is defined through this exact path.
+    function fillNPSHWater() {
+      const warnEl = document.getElementById('npsh-warn');
+      const t = parseFloat(document.getElementById('npsh-tw').value);
+      const TK = steamTtoK(t, document.getElementById('npsh-tw-u').value);
+      if (!(TK >= 273.15) || !(TK <= 623.15)) {
+        warnEl.classList.remove('hidden');
+        warnEl.innerText = '⚠ ' + tr('basic.npsh.warnTwRange');
+        return;
+      }
+      const pvKpa = if97PsatMPa(TK) * 1000.0;
+      const rho = 1.0 / if97Region1(if97PsatMPa(TK), TK).v;
+      const pvF = parseFloat(document.getElementById('npsh-pv-u').value) || 1;
+      const rhoF = parseFloat(document.getElementById('npsh-rho-u').value) || 1;
+      document.getElementById('npsh-pv').value = String(parseFloat((pvKpa / pvF).toPrecision(8)));
+      document.getElementById('npsh-rho').value = String(parseFloat((rho / rhoF).toPrecision(8)));
+      calcNPSH();
     }
 
     // B2 — Petroleum gravity: °API ↔ SG (60/60°F) ↔ density. Water @ 60°F = 999.016 kg/m³.
@@ -4627,7 +4803,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;
