@@ -8,7 +8,7 @@ commit stays broken until a user in that language notices.
 
 The asymmetry these tests encode, which is deliberate and documented in CLAUDE.md:
 
-  * `en.json` carries the 303 working-tool keys and NO `docs` key at all — English
+  * `en.json` carries the 368 working-tool keys and NO `docs` key at all — English
     documentation prose lives inline in index.html and is cached at runtime.
   * The 9 non-English files carry those same working-tool keys PLUS the `docs.*` block.
 
@@ -131,64 +131,20 @@ def test_every_data_i18n_attribute_resolves_in_english(html_source, flat_keys):
     assert not unresolved, f"data-i18n keys absent from en.json: {unresolved}"
 
 
-# ── Awaiting translation (v2.8) ──────────────────────────────────────────────────
-#
-# The v2.8 documentation sections shipped in English ahead of their translations: they
-# are ~13,200 characters of technical prose, and a rushed rendering of terms like
-# "fully-turbulent friction factor" or "erosion-corrosion in seawater" would be worse
-# than the honest English fallback. A missing docs.* key degrades to the inline English
-# at runtime (SPECIFICATION.md §12.6) — no error, just an untranslated section.
-#
-# This allowlist is deliberately EXHAUSTIVE and frozen. It is not a general relaxation:
-# test_pending_translations_do_not_grow below fails if anything is added to it, and
-# every other key in every other block is still enforced. Scheduled for v2.8.1; delete
-# this list and that test together when the translations land.
-PENDING_TRANSLATION = {
-    "docs.howto.b069", "docs.howto.b070",   # ★ New in Version 2.8
-    "docs.howto.b071", "docs.howto.b072",   # 13. Gas Property Estimator
-    "docs.howto.b073", "docs.howto.b074",   # 14. Fittings, valves & line sizing
-    "docs.howto.b075", "docs.howto.b076",   # 15. Mobile nav & shared modules
-    "docs.theory.b034",                     # Part VII heading
-    "docs.theory.b035", "docs.theory.b036", # 7.1 LGE viscosity, 7.2 sonic velocity
-    "docs.theory.b037", "docs.theory.b038", # 7.3 Joule-Thomson, 7.4 Crane K-factors
-    "docs.theory.b039",                     # 7.5 NORSOK line-sizing criteria
-}
-
-
 def test_every_data_i18n_html_key_resolves_in_the_translated_dictionaries(html_source,
                                                                           flat_keys):
-    """Every data-i18n-html block key must exist in all 9 non-English dictionaries,
-    except the explicitly frozen PENDING_TRANSLATION set.
-    (Keys must NOT exist in en.json — English is the inline HTML itself.)"""
-    referenced = set(HTML_ATTR_PATTERN.findall(html_source)) - PENDING_TRANSLATION
+    """Every data-i18n-html block key must exist in all 9 non-English dictionaries.
+    (Keys must NOT exist in en.json — English is the inline HTML itself.)
+
+    v2.8.1 closed the temporary PENDING_TRANSLATION exemption that covered the 14
+    v2.8 doc blocks; there is no allowlist any more — new documentation ships
+    translated in the same commit, or this test fails."""
+    referenced = set(HTML_ATTR_PATTERN.findall(html_source))
     assert referenced, "expected data-i18n-html blocks in index.html; found none"
 
     for code in NON_ENGLISH:
         unresolved = sorted(referenced - flat_keys[code])
         assert not unresolved, f"{code}.json missing doc blocks: {unresolved[:12]}"
-
-
-def test_pending_translations_do_not_grow(html_source):
-    """The allowlist is frozen at the v2.8 sections. Adding a new untranslated block
-    must fail here rather than quietly joining the backlog — that is the whole point of
-    naming them individually instead of pattern-matching a range."""
-    assert len(PENDING_TRANSLATION) == 14, (
-        "PENDING_TRANSLATION changed size. New documentation must ship translated; "
-        "if you are CLEARING the backlog, delete the set and this test together.")
-    referenced = set(HTML_ATTR_PATTERN.findall(html_source))
-    stale = sorted(PENDING_TRANSLATION - referenced)
-    assert not stale, (
-        f"allowlisted keys no longer referenced by index.html: {stale} — remove them")
-
-
-@pytest.mark.parametrize("code", NON_ENGLISH)
-def test_pending_translations_are_genuinely_absent(code, flat_keys):
-    """If a translation HAS landed, it must leave the allowlist. This catches the case
-    where someone translates a block but forgets to shrink the exemption, which would
-    leave a real gap unguarded for the next block that reuses the key."""
-    present = sorted(PENDING_TRANSLATION & flat_keys[code])
-    assert not present, (
-        f"{code}.json now has {present} — remove them from PENDING_TRANSLATION")
 
 
 TR_CALL_PATTERN = re.compile(r"""\btr\(\s*['"]([A-Za-z0-9_.]+)['"]""")
