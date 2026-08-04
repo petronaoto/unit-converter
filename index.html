@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V2.8.1</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.0</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -1471,10 +1471,10 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v2.8.1</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.0</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
-            <a href="#howto-new28" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
+            <a href="#howto-new30" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
             <a href="#howto-2" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">2 General</a>
             <a href="#howto-3" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">3 Custom</a>
@@ -1496,6 +1496,18 @@
             <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-lime-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Copy</a>
           </nav>
         </div>
+
+        <!-- 0. WHAT'S NEW IN v3.0 -->
+        <section>
+          <h3 id="howto-new30" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b085">★ New in Version 3.0</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b086"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Steam Properties (IAPWS-IF97)</strong> — a new Basic Eng card computing density, enthalpy, entropy, heat capacity, sonic velocity and saturation data from the industrial steam-table formulation (Regions 1, 2 and 4). All 259 coefficients are re-verified in CI against the Release's own check tables, and the PRV steam mode gains a saturation-temperature / superheat advisory on the same physics.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Pump Suction — NPSHa</strong> — a first-principles suction-head balance with the three terms shown separately. For water, one button fills vapor pressure and density from the same IF97 functions as the steam card. Deliberately no margin verdict: NPSHr belongs to the pump vendor's tested curve.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Compressor — Head &amp; Power</strong> — isentropic and polytropic head, discharge temperature, implied isentropic efficiency and gas power from first principles, with a one-pass Papay Z_avg correction shared with the Z-Factor card. A screening estimate, not a test-code procedure.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Unit-aware copy</strong> — a plain click still copies the bare number (spreadsheet-safe, unchanged); Ctrl/⌘/Shift+click — or a long press on touch — copies value + unit, confirmed by a toast. Works on every copy button, custom modules included.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Basic Eng quick links</strong> — the tab now holds nine calculation cards, so a jump-link strip sits directly under the tab bar: one pill per card, for feature awareness and one-click navigation.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">API hardening &amp; corrections</strong> — invalid inputs to the ΔP and PRV endpoints now return structured, translatable errors instead of raw failures, and a long-standing two-phase PRV flux-term error (which under-sized valves on one subcritical branch) is fixed. The automated test suite grew from 183 to 242 checks.</div>
+          </div>
+        </section>
 
         <!-- 0. WHAT'S NEW IN v2.8 -->
         <section>
@@ -2029,7 +2041,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v2.8.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.0. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Compositional</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Density &amp; Flow</a>
@@ -2849,7 +2861,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 2.8.1</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.0</div>
     </div>
   </footer>
 
@@ -5351,7 +5363,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '2.8.1', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.0', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
