@@ -127,6 +127,38 @@
       "warnLge": "Viscosity is outside the Lee-Gonzalez-Eakin experimental basis ({tf} °F, {psia} psia; fitted over 100–340 °F and 100–8,000 psia).",
       "warnBelowAbsoluteZero": "Temperature is at or below absolute zero.",
       "footnote": "Screening estimates, not standards. Z uses Papay (1968) with Standing-Katz pseudo-criticals — the same routine as the Z-Factor Estimator. μ uses Lee, Gonzalez & Eakin (1966), a published correlation fitted to four sweet natural gases over 100–340 °F and 100–8,000 psia (≈2.7 % AAE); it carries no H₂S/CO₂/N₂ correction, so treat sour or high-inert gas as indicative only. c = √(k·Z·R·T/M) is the real-gas form used in API 520 for critical flow; it neglects the (∂Z/∂P)_T and (∂Z/∂T)_P terms. μ_JT is exact thermodynamics wrapped around Papay's ∂Z/∂T and an ideal-gas C_p = kR/(k−1) — positive means cooling on expansion. Gas MW = SG × 28.9647."
+    },
+    "steam": {
+      "title": "Steam Properties (IAPWS-IF97)",
+      "chip": "REGIONS 1·2·4",
+      "pressureLabel": "PRESSURE (abs)",
+      "tempLabel": "TEMPERATURE",
+      "stateLabel": "STATE",
+      "rhoLabel": "DENSITY ρ",
+      "hLabel": "ENTHALPY h",
+      "sLabel": "ENTROPY s",
+      "cpLabel": "HEAT CAPACITY c_p",
+      "wLabel": "SONIC VELOCITY w",
+      "tsatLabel": "SAT. TEMP T_sat @ P",
+      "hfgLabel": "LATENT HEAT h_fg @ P",
+      "rhoMethod": "1/v, IF97 Gibbs γ_π",
+      "hMethod": "RT·τ·γ_τ",
+      "sMethod": "R(τγ_τ − γ)",
+      "cpMethod": "−Rτ²γ_ττ",
+      "wMethod": "isentropic, Gibbs derivatives",
+      "tsatMethod": "IF97 Eq. 31 (exact)",
+      "stateSubcooled": "Compressed liquid — Region 1",
+      "stateSuperheated": "Superheated steam — Region 2",
+      "stateSteamR2": "Steam — Region 2",
+      "subcoolNote": "{dt} K below saturation at this pressure",
+      "superheatNote": "{dt} K of superheat above T_sat",
+      "nearSatNote": "within 0.1 % of the saturation line — a real stream here is almost certainly two-phase; single-phase values shown",
+      "satNote": "h_f {hf} · h_g {hg}",
+      "satR3Note": "h_f/h_g above 16.529 MPa lie in Region 3 — not computed",
+      "satSupercritNote": "supercritical — no saturation line above 22.064 MPa",
+      "warnRange": "Outside IF97 Regions 1/2 — valid 0–800 °C (273.15–1073.15 K), 0 < P ≤ 100 MPa",
+      "warnRegion3": "Region 3 (dense/near-critical) not covered — use full IF97 or vendor steam tables",
+      "footnote": "IAPWS-IF97 (Revised Release, 2007), Regions 1 (compressed liquid), 2 (steam) and 4 (saturation line) — the same industrial formulation behind commercial steam tables. All 259 coefficients are carried verbatim from the Release and re-verified in CI against its own computer-program verification tables (Tables 5, 15, 35, 36) to 9 significant figures. Valid 0–800 °C and up to 100 MPa; Region 3 (dense/near-critical, roughly 350–590 °C above 16.5 MPa) is out of scope — the card says so rather than extrapolating. Saturation enthalpies h_f/h_g are Region 1/2 values at T_sat(P), available up to 16.529 MPa. Btu(IT) conversions: 1 Btu/lb = 2.326 kJ/kg exactly; 1 Btu/(lb·°R) = 4.1868 kJ/(kg·K) exactly."
     }
   },
   "advanced": {
@@ -317,7 +349,13 @@
       "detailsPlaceholder": "Run calculation to see intermediate values (C, Pcf, KN, ω, η_c, G, Kv, Re…)",
       "calculating": "Calculating...",
       "missingInputsSingular": "Enter required input: {list}",
-      "missingInputsPlural": "Enter required inputs: {list}"
+      "missingInputsPlural": "Enter required inputs: {list}",
+      "steamTempLabel": "STEAM TEMP",
+      "hintAdvisoryOnly": "[optional — advisory only]",
+      "advisoryTsat": "T_sat at P1 = {tsat} {u} (IAPWS-IF97).",
+      "advisorySuperheated": "Entered T is {dt} {u} above saturation — superheated steam: take KSH from API 520 Table 9.",
+      "advisorySaturated": "Entered T is at/below saturation — saturated steam: KSH = 1.0.",
+      "advisorySupercritical": "P1 exceeds the critical pressure (22.064 MPa / 3,200.1 psia) — no saturation temperature exists."
     }
   },
   "report": {

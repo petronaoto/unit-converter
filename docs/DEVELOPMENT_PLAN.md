@@ -129,20 +129,25 @@ Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in 
 | **M3 — shipped (v2.7)** | How To Use, Theory, Terms of Use, Privacy Policy tabs in all 9 non-English languages | — | Via the `data-i18n-html` mechanism (SPECIFICATION.md §12.6). **Terms/Privacy translations still need the maintainer's legal review** — a governing-language note (English prevails) is in place in every language as mitigation |
 | **M4 (optional)** | `api/dp_calculator.py`, `api/psv_calculator.py`, `api/flowregime.py` return machine-readable status/error keys instead of English prose, so server-driven text (flow-regime classification, validation errors) can localize too | M | Backend-only, stdlib-safe additive payload change. `flowregime.py` already returns `regime_key` alongside its English `regime` label (SPECIFICATION.md §5.3) — the other ~10+ message/error branches across the three files remain unkeyed |
 
-### v3.0 — "Professional pack" (proposed)
+### v3.0 — "Professional pack" (scope approved by maintainer 2026-08-04)
 
-| Feature | Value | Effort | Notes |
+Scoping rule applied: a candidate ships only if its governing text is legally accessible
+for verification ("ship a coherent half rather than an incoherent whole"). Approved
+scope = steam + NPSHa + compressor + unit-aware clipboard, zero new endpoints, preceded
+by the PR-1 API-hardening pass (shipped — see §11 notes above).
+
+| Feature | Value | Effort | Status |
 |---|---|---|---|
-| Calculation notebook (save/load named scenarios) | High | M | Natural extension of the existing state system |
-| PWA / offline mode for client-side tabs | Med | M | Service worker; API cards must degrade gracefully |
-| Control valve Cv sizing (IEC 60534 lite, liquid/gas) | Med | M | Client-side |
-| Orifice / venturi metering (ISO 5167 lite) | Med | M–H | Iterative; candidate for a fourth API endpoint |
-| Steam tables (IAPWS-IF97 lite, regions 1/2/4) | Med | H | Would also feed the PSV steam mode |
-| Tank volume / strapping (vertical & horizontal, heads) | Med | M | Client-side |
-| NPSH / pump hydraulics screening | Med | M | Client-side |
-| Compressor power estimate (adiabatic/polytropic) | Med | M | Uses k and Z already available |
-| Unit-aware clipboard (copy value + unit) | Low | L | Copy-button enhancement |
-| Dark/light theme toggle | Low | M | App identity is dark; low priority |
+| Steam tables (IAPWS-IF97, regions 1/2/4 + B23) | Med | H | **Shipped in the v3.0 cycle (PR-2)** — client-side Basic Eng card + PSV steam-mode T_sat/superheat advisory; coefficients CI-verified against the Release's own tables (SPECIFICATION.md §4.2, §9 Vector 8) |
+| NPSH / pump hydraulics screening | Med | M | Approved — planned PR-3 (NPSHa only; HI/API margin tables are paywalled and stay out) |
+| Compressor power estimate (isentropic/polytropic) | Med | M | Approved — planned PR-4 (first-principles; PTC 10 is paywalled and is not cited) |
+| Unit-aware clipboard (copy value + unit) | Low | L | Approved — planned PR-5 |
+| Calculation notebook (save/load named scenarios) | High | M | Deferred to v3.1 (headliner; needs its own security review of stored state) |
+| Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred to v3.1 "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) |
+| Orifice metering (ISO 5167-2 lite) | Med | M–H | Deferred to v3.1 — iterative, takes the fourth-endpoint slot; primary content verified accessible (IS 15675:2006 + Reader-Harris NSFMW papers). Venturi (ISO 5167-4) rejected outright: no accessible primary text |
+| PWA / offline mode | Med | M | Rejected — a stale cached calculator is silently wrong physics; no benign fallback exists |
+| Tank volume / strapping | Med | M | Rejected — accessible sources for torispherical heads proved unreliable (a published example contains its own arithmetic error); fails the traceability bar |
+| Dark/light theme toggle | Low | M | Rejected for v3.0 — ~1,900 dark-theme utility classes make this structural, not cosmetic |
 
 ### Explicitly out of scope
 
