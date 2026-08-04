@@ -70,6 +70,18 @@
     "addModuleCta": "เพิ่มโมดูลใหม่"
   },
   "basic": {
+    "nav": {
+      "aria": "สารบัญ Basic Eng",
+      "pipe": "ปริมาตรท่อ",
+      "z": "Z-Factor",
+      "api": "°API/SG",
+      "visc": "ความหนืด",
+      "mf": "มวล↔ปริมาตร",
+      "gp": "สมบัติก๊าซ",
+      "steam": "ไอน้ำ",
+      "npsh": "NPSHa",
+      "cmp": "คอมเพรสเซอร์"
+    },
     "pipeVolume": {
       "title": "เครื่องคำนวณปริมาตรท่อ",
       "diameterLabel": "เส้นผ่านศูนย์กลางภายใน",

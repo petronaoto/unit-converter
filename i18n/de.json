@@ -70,6 +70,18 @@
     "addModuleCta": "NEUES MODUL ANLEGEN"
   },
   "basic": {
+    "nav": {
+      "aria": "Inhalt Basic Eng",
+      "pipe": "Rohrvolumen",
+      "z": "Z-Faktor",
+      "api": "°API/SG",
+      "visc": "Viskosität",
+      "mf": "Masse↔Vol.",
+      "gp": "Gaseigenschaften",
+      "steam": "Dampf",
+      "npsh": "NPSHa",
+      "cmp": "Verdichter"
+    },
     "pipeVolume": {
       "title": "Rohrvolumen-Rechner",
       "diameterLabel": "INNENDURCHMESSER",

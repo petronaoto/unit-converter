@@ -70,6 +70,18 @@
     "addModuleCta": "添加新模块"
   },
   "basic": {
+    "nav": {
+      "aria": "Basic Eng 目录",
+      "pipe": "管道容积",
+      "z": "Z因子",
+      "api": "°API/SG",
+      "visc": "粘度",
+      "mf": "质量↔体积",
+      "gp": "气体物性",
+      "steam": "蒸汽",
+      "npsh": "NPSHa",
+      "cmp": "压缩机"
+    },
     "pipeVolume": {
       "title": "管道容积计算",
       "diameterLabel": "内径",

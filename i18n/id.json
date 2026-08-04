@@ -70,6 +70,18 @@
     "addModuleCta": "INISIALISASI MODUL BARU"
   },
   "basic": {
+    "nav": {
+      "aria": "Daftar isi Basic Eng",
+      "pipe": "Volume Pipa",
+      "z": "Faktor Z",
+      "api": "°API/SG",
+      "visc": "Viskositas",
+      "mf": "Massa↔Volume",
+      "gp": "Properti Gas",
+      "steam": "Uap",
+      "npsh": "NPSHa",
+      "cmp": "Kompresor"
+    },
     "pipeVolume": {
       "title": "Kalkulator Volume Pipa",
       "diameterLabel": "DIAMETER DALAM",

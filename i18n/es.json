@@ -70,6 +70,18 @@
     "addModuleCta": "INICIALIZAR NUEVO MÓDULO"
   },
   "basic": {
+    "nav": {
+      "aria": "Contenido de Basic Eng",
+      "pipe": "Vol. tubería",
+      "z": "Factor Z",
+      "api": "°API/SG",
+      "visc": "Viscosidad",
+      "mf": "Masa↔Vol",
+      "gp": "Prop. del gas",
+      "steam": "Vapor",
+      "npsh": "NPSHa",
+      "cmp": "Compresor"
+    },
     "pipeVolume": {
       "title": "Calculadora de Volumen de Tubería",
       "diameterLabel": "DIÁMETRO INTERNO",
