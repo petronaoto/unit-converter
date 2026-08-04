@@ -494,6 +494,105 @@
           </div>
         </div>
 
+        <!-- B5 (v3.0) — Steam Properties (IAPWS-IF97). Regions 1, 2 and 4 of the
+             Industrial Formulation, evaluated client-side from the IF97 coefficient
+             literal below (const IF97) — the SAME literal tests/test_steam_if97.py
+             extracts and re-runs against the release's own verification tables.
+             Region 3 (dense/near-critical) is deliberately out of scope. -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span><span data-i18n="basic.steam.title">Steam Properties (IAPWS-IF97)</span></h2>
+            <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.steam.chip">REGIONS 1·2·4</span>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.pressureLabel">PRESSURE (abs)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="sp-p" placeholder="4.0" oninput="calcSteamProps()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-sky-500" />
+                  <select id="sp-p-u" onchange="calcSteamProps()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">MPa</option><option value="0.001">kPa</option><option value="0.1">bar</option><option value="0.006894757">psia</option><option value="0.0980665">kg/cm²</option><option value="0.101325">atm</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.tempLabel">TEMPERATURE</label>
+                <div class="flex">
+                  <input type="number" step="any" id="sp-t" placeholder="300" oninput="calcSteamProps()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-sky-500" />
+                  <select id="sp-t-u" onchange="calcSteamProps()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="C">°C</option><option value="K">K</option><option value="F">°F</option></select>
+                </div>
+              </div>
+              <div class="col-span-2 bg-slate-950/80 p-3 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-1" data-i18n="basic.steam.stateLabel">STATE</div>
+                <div id="sp-out-state" class="text-sm font-bold font-mono text-white">—</div>
+                <div id="sp-out-statenote" class="text-[10px] text-slate-500 mt-0.5"></div>
+              </div>
+            </div>
+
+            <div id="sp-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
+
+            <div class="pt-4 border-t border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.rhoLabel">DENSITY ρ</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-rho" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="sp-out-rho-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kg/m³</option><option value="0.062427960">lb/ft³</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.rhoMethod">1/v, IF97 Gibbs γ_π</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.hLabel">ENTHALPY h</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-h" class="text-xl font-bold font-mono text-white">—</span>
+                  <button onclick="copyText(document.getElementById('sp-out-h').innerText, this)" class="text-slate-400 hover:text-sky-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <select id="sp-out-h-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="0.42992261">Btu/lb</option><option value="0.23884590">kcal/kg</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.hMethod">RT·τ·γ_τ</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.sLabel">ENTROPY s</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-s" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="sp-out-s-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/(kg·K)</option><option value="0.23884590">Btu/(lb·°R)</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.sMethod">R(τγ_τ − γ)</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.cpLabel">HEAT CAPACITY c_p</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-cp" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="sp-out-cp-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/(kg·K)</option><option value="0.23884590">Btu/(lb·°R)</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.cpMethod">−Rτ²γ_ττ</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-sky-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.wLabel">SONIC VELOCITY w</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-w" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="sp-out-w-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">m/s</option><option value="3.280840">ft/s</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.wMethod">isentropic, Gibbs derivatives</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-cyan-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.tsatLabel">SAT. TEMP T_sat @ P</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-tsat" class="text-xl font-bold font-mono text-white">—</span>
+                  <span id="sp-out-tsat-u" class="text-xs font-semibold text-amber-500">°C</span>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.tsatMethod">IF97 Eq. 31 (exact)</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-cyan-500/20 md:col-span-2">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.hfgLabel">LATENT HEAT h_fg @ P</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="sp-out-hfg" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="sp-out-hfg-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="0.42992261">Btu/lb</option></select>
+                </div>
+                <div id="sp-out-satnote" class="text-[10px] text-slate-600 mt-1">h_g − h_f</div>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.steam.footnote">IAPWS-IF97 (Revised Release, 2007), Regions 1 (compressed liquid), 2 (steam) and 4 (saturation line) — the same industrial formulation behind commercial steam tables. All 259 coefficients are carried verbatim from the Release and re-verified in CI against its own computer-program verification tables (Tables 5, 15, 35, 36) to 9 significant figures. Valid 0–800 °C and up to 100 MPa; Region 3 (dense/near-critical, roughly 350–590 °C above 16.5 MPa) is out of scope — the card says so rather than extrapolating. Saturation enthalpies h_f/h_g are Region 1/2 values at T_sat(P), available up to 16.529 MPa. Btu(IT) conversions: 1 Btu/lb = 2.326 kJ/kg exactly; 1 Btu/(lb·°R) = 4.1868 kJ/(kg·K) exactly.</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1060,14 +1159,21 @@
               <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.steamHeading">Steam Inputs</span> (§5.7)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" placeholder="e.g. 153500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex"><input type="number" step="any" id="psv-P1-steam" placeholder="e.g. 1774.7" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex"><input type="number" step="any" id="psv-P1-steam" placeholder="e.g. 1774.7" oninput="updateSteamAdvisory()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-P1-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">psia</span></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">KSH <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKshSaturated">[1.0 = saturated]</span></label><div class="flex"><input type="number" step="any" id="psv-KSH" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">Table 9</span></div></div>
+                <!-- v3.0 — advisory-only steam temperature. NOT part of the sizing payload:
+                     calcPSV() never reads it. It exists so the IF97 Tsat advisory below can
+                     tell the user whether their steam is superheated and KSH needs Table 9. -->
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.steamTempLabel">STEAM TEMP</span> T <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAdvisoryOnly">[optional — advisory only]</span></label><div class="flex"><input type="number" step="any" id="psv-T-steam" placeholder="e.g. 680" oninput="updateSteamAdvisory()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°F</span></div></div>
               </div>
               <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-steam" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kb</label><input type="number" step="any" id="psv-Kb-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-steam" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
+              <!-- v3.0 — IF97 Region 4 saturation advisory, recomputed on every P1/T keystroke
+                   and on units toggle. Pure client-side; the sizing payload is untouched. -->
+              <div id="psv-steam-advisory" class="hidden bg-sky-500/10 border border-sky-500/30 rounded p-2 text-[10px] text-sky-300 leading-relaxed"></div>
               <div class="bg-slate-800/50 border border-slate-700 rounded p-2 text-[10px] text-slate-400" data-i18n="safety.psv.steamInfoBox">KN (Napier correction) is computed automatically. KSH = 1.0 for saturated steam; use Table 9 in API 520 for superheated values.</div>
             </div>
 
@@ -1175,6 +1281,7 @@
             <a href="#howto-13" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">13 Gas Props</a>
             <a href="#howto-14" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">14 Fittings</a>
             <a href="#howto-15" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">15 Mobile</a>
+            <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 Steam</a>
           </nav>
         </div>
 
@@ -1664,6 +1771,20 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3">Share links encode state after the <span class="font-mono">#</span> in the URL, so nothing is ever sent to a server. They can get long — a full session with several custom modules easily exceeds 2,000 characters, and some chat and mail clients silently truncate at about that length. When a copied link passes that threshold the confirmation says so; the link is still valid, but check that it pasted whole.</p></div>
         </section>
 
+        <!-- 16. STEAM PROPERTIES (v3.0) -->
+        <section>
+          <h3 id="howto-16" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b077">16. Basic Eng — Steam Properties (IAPWS-IF97)</h3>
+          <div data-i18n-html="docs.howto.b078"><p class="text-sm text-slate-400 leading-relaxed">Enter <strong class="text-slate-200">absolute pressure</strong> and <strong class="text-slate-200">temperature</strong> and the card classifies the state on the IAPWS-IF97 industrial formulation — the same one behind commercial steam tables — then returns the full property set: <strong class="text-slate-200">density, enthalpy, entropy, heat capacity and sonic velocity</strong>, plus the saturation line at your pressure (T<sub>sat</sub>, h<sub>f</sub>, h<sub>g</sub>, h<sub>fg</sub>). Everything runs in your browser; nothing is sent to a server.</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-300 mt-3">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-sky-400">Compressed liquid — Region 1</strong><br>Pressure above the saturation pressure at your temperature: boiler feedwater, condensate, BFW pump suction. The state box shows how many kelvin of subcooling you have in hand.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-sky-400">Superheated steam — Region 2</strong><br>Pressure below saturation: superheater outlets, turbine inlets, relief flows. The state box shows the degrees of superheat — the number API 520's KSH table wants.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-sky-400">Region 3 — refused, not fudged</strong><br>Dense/near-critical water (roughly 350–590 °C above 16.5 MPa) uses a different, iterative formulation. The card says "not covered" rather than extrapolating into it.</div>
+          </div>
+          <div class="bg-sky-500/10 border border-sky-500/30 rounded-lg p-3 text-xs text-sky-300 mt-3"><strong>ℹ Worked example</strong> — 4 MPa and 300 °C is superheated steam (Region 2) with <strong>49.64248 K</strong> of superheat: <strong>ρ = 16.98717 kg/m³</strong>, <strong>h = 2,961.65148 kJ/kg</strong>, <strong>s = 6.36383 kJ/(kg·K)</strong>, <strong>c<sub>p</sub> = 2.81995 kJ/(kg·K)</strong>, <strong>w = 550.23169 m/s</strong>. The saturation row reads <strong>T<sub>sat</sub> = 250.35752 °C</strong> and <strong>h<sub>fg</sub> = 1,713.4713 kJ/kg</strong> (h<sub>f</sub> 1,087.42602 · h<sub>g</sub> 2,800.89732). Change the temperature to 150 °C and the same pressure gives compressed liquid: ρ = 918.99612 kg/m³, h = 634.43339 kJ/kg.</div>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">PRV steam mode gets the same physics.</strong> In the Safety tab, entering a relieving pressure in steam mode now shows the IF97 saturation temperature right under the inputs, and an optional advisory-only steam temperature tells you whether your steam is superheated and KSH needs to come from API 520 Table 9 — or saturated, where KSH stays 1.0. The advisory never touches the sizing calculation itself.</p>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Valid from 0 to 800 °C and up to 100 MPa (Regions 1 and 2). All 259 coefficients are transcribed verbatim from the IAPWS Release and re-verified in CI against the Release's own verification tables to 9 significant figures — see Theory Part VIII for the equations and the verification contract.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -1680,6 +1801,7 @@
             <a href="#theory-p6" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VI PRV Sizing</a>
             <a href="#theory-p5" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">V Data Sources</a>
             <a href="#theory-p7" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VII Real Gas</a>
+            <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII Steam</a>
           </nav>
         </div>
 
@@ -2210,6 +2332,36 @@
           <div class="bg-blue-500/10 border border-blue-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — the default two-phase case (ρ<sub>m</sub> = 251.7 kg/m³, v = 1.014 m/s): 183 × 251.7<sup>−0.5</sup> = <strong>11.54 m/s</strong>, so v/v<sub>max</sub> = 0.09 in non-corrosive service. In corrosive service the 10 m/s cap governs instead. For a gas line at ρ = 10 kg/m³, 175 × 10<sup>−0.43</sup> = 65.0 m/s, so the 60 m/s ceiling is what actually applies.</div>
           <p class="text-xs text-slate-500 leading-relaxed mt-3">Only NORSOK P-001 criteria are implemented. Velocity and ΔP tables attributed to other sources circulate widely but could not be verified against primary text, and this application does not cite a standard it has not checked. These limits screen a line size; they do not replace a hydraulic study, a surge analysis, or a vibration assessment.</p></div>
           </div>
+        </section>
+
+        <!-- PART VIII: STEAM — IAPWS-IF97 (v3.0) -->
+        <section>
+          <h3 id="theory-p8" class="text-lg font-bold text-sky-400 uppercase tracking-widest border-b border-sky-900 pb-2 mb-6" data-i18n-html="docs.theory.b040">Part VIII — Steam Properties: IAPWS-IF97 (v3.0)</h3>
+          <div data-i18n-html="docs.theory.b041"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.1 What IF97 is, and which slice is implemented</h4>
+          <p class="text-sm leading-relaxed">The <strong>IAPWS Industrial Formulation 1997</strong> (Revised Release, 2007) is the international standard property formulation for water and steam — the equations behind essentially every commercial steam table and heat-balance program. It divides the p–T plane into five regions. This application implements the three that cover everyday plant conditions: <strong>Region 1</strong> (compressed liquid), <strong>Region 2</strong> (superheated and supercritical-pressure steam up to 800 °C), and <strong>Region 4</strong> (the saturation line), plus the <strong>B23 boundary equation</strong> that separates Region 2 from Region 3. Region 3 (dense/near-critical) is a Helmholtz formulation requiring density iteration, and Region 5 (&gt; 800 °C flue-gas territory) has no business in a process tool — both are declared out of scope rather than approximated. R = 0.461526 kJ/(kg·K) throughout.</p></div>
+            <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.2 Regions 1 and 2 — dimensionless Gibbs energy</h4>
+          <p class="text-sm leading-relaxed">Both regions express the specific Gibbs free energy in dimensionless form γ = g/(RT) and obtain every property from its partial derivatives — one consistent equation per region, no auxiliary correlations:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>Region 1:  γ(π,τ) = Σ n<sub>i</sub>·(7.1−π)<sup>I<sub>i</sub></sup>·(τ−1.222)<sup>J<sub>i</sub></sup>,  π = p/16.53 MPa, τ = 1386/T   (34 terms)</div>
+            <div>Region 2:  γ = ln π + Σ n<sub>i</sub>°·τ<sup>J<sub>i</sub>°</sup>  +  Σ n<sub>i</sub>·π<sup>I<sub>i</sub></sup>·(τ−0.5)<sup>J<sub>i</sub></sup>,  π = p/1 MPa, τ = 540/T   (9 + 43 terms)</div>
+            <div class="text-slate-500 pt-1">v = (RT/p)·πγ_π   h = RT·τγ_τ   s = R(τγ_τ − γ)   c_p = −Rτ²γ_ττ   w² from γ_π, γ_ππ, γ_πτ, γ_ττ</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Region 1 is valid 273.15–623.15 K up to 100 MPa; Region 2 covers 273.15–1073.15 K up to 100 MPa on the steam side of the saturation line and B23. Classification: below 623.15 K the input pressure is compared with p<sub>sat</sub>(T) — above it is liquid, below it is steam; from 623.15 to 863.15 K the quadratic B23 equation p = n₁ + n₂T + n₃T² decides between Region 2 and the unsupported Region 3.</p></div>
+            <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.3 Region 4 — the saturation line, exactly</h4>
+          <p class="text-sm leading-relaxed">The saturation equation is an implicit quadratic in both β = (p<sub>sat</sub>/1 MPa)<sup>1/4</sup> and ϑ ≈ T<sub>sat</sub>, which is why it solves in <em>closed form in both directions</em> — no iteration, no lookup error:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>β²ϑ² + n₁β²ϑ + n₂β² + n₃βϑ² + n₄βϑ + n₅β + n₆ϑ² + n₇ϑ + n₈ = 0</div>
+            <div class="text-slate-500">p_sat(T): Eq. 30 (quartic of a quadratic root) · T_sat(p): Eq. 31 (the same surface solved for ϑ)</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Valid from the triple point (611.657 Pa) to the critical point (647.096 K, 22.064 MPa). Saturated-liquid and saturated-vapor enthalpies are obtained as h<sub>f</sub> = h<sup>R1</sup>(p, T<sub>sat</sub>) and h<sub>g</sub> = h<sup>R2</sup>(p, T<sub>sat</sub>) — the industrial formulation is constructed so Regions 1 and 2 meet the saturation line consistently. Above p<sub>sat</sub>(623.15 K) = 16.529 MPa the liquid side of the line belongs to Region 3, so h<sub>f</sub>/h<sub>g</sub> are shown only up to that pressure.</p></div>
+            <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.4 The verification contract — how 259 coefficients stay honest</h4>
+          <p class="text-sm leading-relaxed">The coefficients live in <span class="font-mono">index.html</span> as a single JSON literal, and the test suite extracts <em>that exact literal</em> — not a copy — re-implements the equations independently in Python, and reproduces the Release's own computer-program verification tables: Table 5 (Region 1), Table 15 (Region 2), Tables 35/36 (saturation) and the B23 check point, every value to <strong>9 significant figures</strong>. A single mistyped digit anywhere in the 259 coefficients fails CI. The browser implementation is then verified by hand against the same tables. This two-sided check is the same discipline the JIS K 2301 chain uses, applied to a much larger constant set.</p>
+          <div class="bg-sky-500/10 border border-sky-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 8)</strong> — 4 MPa, 300 °C → Region 2: ρ = 16.98717 kg/m³, h = 2,961.65148 kJ/kg, s = 6.36383 kJ/(kg·K), c<sub>p</sub> = 2.81995 kJ/(kg·K), w = 550.23169 m/s; T<sub>sat</sub> = 250.35752 °C, h<sub>f</sub> = 1,087.42602, h<sub>g</sub> = 2,800.89732, h<sub>fg</sub> = 1,713.4713 kJ/kg. Same pressure at 150 °C → Region 1: ρ = 918.99612 kg/m³, h = 634.43339 kJ/kg, s = 1.83804 kJ/(kg·K).</div></div>
+            <div><h4 class="text-base font-semibold text-sky-400 mb-2">8.5 Unit conversions and the PRV advisory</h4>
+          <p class="text-sm leading-relaxed">Imperial outputs use the International Table definitions, which are exact by construction: 1 Btu/lb = 2.326 kJ/kg and 1 Btu/(lb·°R) = 4.1868 kJ/(kg·K); density uses 1 lb/ft³ = 16.0184634 kg/m³, the same factor as the RP 14E erosional-velocity constant. In the Safety tab, the PRV steam mode shows T<sub>sat</sub>(P1) from Region 4 and — if the optional advisory temperature is filled in — the degrees of superheat, which is the entry key into API 520's Table 9 for KSH. The advisory is display-only: the sizing payload sent to the API is unchanged, and KSH remains a manual input precisely because Table 9 is API-copyrighted material this application will not reproduce.</p>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Reference: <em>Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam</em>, IAPWS, August 2007 — freely available at iapws.org. Region/table numbers above refer to that document.</p></div>
+          </div></div>
         </section>
 </div>
     </div>
@@ -2982,6 +3134,289 @@
       const w = document.getElementById('gp-warn');
       w.classList.toggle('hidden', notes.length === 0);
       if (notes.length) w.innerText = '⚠ ' + notes.join('  •  ');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  B5 (v3.0) — STEAM PROPERTIES: IAPWS-IF97 Regions 1, 2, 4 + B23 boundary
+    //
+    //  Coefficients are carried verbatim from the Revised Release on IAPWS-IF97
+    //  (August 2007): Table 1 (B23), Table 2 (Region 1), Tables 10/11 (Region 2),
+    //  Table 34 (Region 4). R = 0.461526 kJ/(kg·K), Eq. (1).
+    //
+    //  The literal below is deliberately JSON inside JSON.parse(): the pytest
+    //  companion (tests/test_steam_if97.py) extracts THIS EXACT STRING from
+    //  index.html, json.loads() it, and re-evaluates the Release's own
+    //  computer-program verification tables (Tables 5, 15, 35, 36 and the B23
+    //  point) to 9 significant figures. Any edit to a digit here fails CI.
+    //  Do not convert it to a plain JS object literal — that breaks extraction.
+    //  Reference vector: SPECIFICATION.md §9 Vector 8.
+    // ══════════════════════════════════════════════════════════════════════════
+    const IF97 = JSON.parse(`{
+      "R": 0.461526,
+      "B23": { "n": [0.34805185628969e3, -0.11671859879975e1, 0.10192970039326e-2,
+                     0.57254459862746e3, 0.13918839778870e2] },
+      "R4":  { "n": [0.11670521452767e4, -0.72421316703206e6, -0.17073846940092e2,
+                     0.12020824702470e5, -0.32325550322333e7, 0.14915108613530e2,
+                     -0.48232657361591e4, 0.40511340542057e6, -0.23855557567849,
+                     0.65017534844798e3] },
+      "R1": {
+        "I": [0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2,3,3,3,4,4,4,5,8,8,21,23,29,30,31,32],
+        "J": [-2,-1,0,1,2,3,4,5,-9,-7,-1,0,1,3,-3,0,1,3,17,-4,0,6,-5,-2,10,-8,-11,-6,-29,-31,-38,-39,-40,-41],
+        "n": [0.14632971213167, -0.84548187169114, -0.37563603672040e1,
+              0.33855169168385e1, -0.95791963387872, 0.15772038513228,
+              -0.16616417199501e-1, 0.81214629983568e-3, 0.28319080123804e-3,
+              -0.60706301565874e-3, -0.18990068218419e-1, -0.32529748770505e-1,
+              -0.21841717175414e-1, -0.52838357969930e-4, -0.47184321073267e-3,
+              -0.30001780793026e-3, 0.47661393906987e-4, -0.44141845330846e-5,
+              -0.72694996297594e-15, -0.31679644845054e-4, -0.28270797985312e-5,
+              -0.85205128120103e-9, -0.22425281908000e-5, -0.65171222895601e-6,
+              -0.14341729937924e-12, -0.40516996860117e-6, -0.12734301741641e-8,
+              -0.17424871230634e-9, -0.68762131295531e-18, 0.14478307828521e-19,
+              0.26335781662795e-22, -0.11947622640071e-22, 0.18228094581404e-23,
+              -0.93537087292458e-25]
+      },
+      "R2": {
+        "J0": [0, 1, -5, -4, -3, -2, -1, 2, 3],
+        "n0": [-0.96927686500217e1, 0.10086655968018e2, -0.56087911283020e-2,
+               0.71452738081455e-1, -0.40710498223928, 0.14240819171444e1,
+               -0.43839511319450e1, -0.28408632460772, 0.21268463753307e-1],
+        "I": [1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,5,6,6,6,7,7,7,8,8,9,10,10,10,16,16,18,20,20,20,21,22,23,24,24,24],
+        "J": [0,1,2,3,6,1,2,4,7,36,0,1,3,6,35,1,2,3,7,3,16,35,0,11,25,8,36,13,4,10,14,29,50,57,20,35,48,21,53,39,26,40,58],
+        "n": [-0.17731742473213e-2, -0.17834862292358e-1, -0.45996013696365e-1,
+              -0.57581259083432e-1, -0.50325278727930e-1, -0.33032641670203e-4,
+              -0.18948987516315e-3, -0.39392777243355e-2, -0.43797295650573e-1,
+              -0.26674547914087e-4, 0.20481737692309e-7, 0.43870667284435e-6,
+              -0.32277677238570e-4, -0.15033924542148e-2, -0.40668253562649e-1,
+              -0.78847309559367e-9, 0.12790717852285e-7, 0.48225372718507e-6,
+              0.22922076337661e-5, -0.16714766451061e-10, -0.21171472321355e-2,
+              -0.23895741934104e2, -0.59059564324270e-17, -0.12621808899101e-5,
+              -0.38946842435739e-1, 0.11256211360459e-10, -0.82311340897998e1,
+              0.19809712802088e-7, 0.10406965210174e-18, -0.10234747095929e-12,
+              -0.10018179379511e-8, -0.80882908646985e-10, 0.10693031879409,
+              -0.33662250574171, 0.89185845355421e-24, 0.30629316876232e-12,
+              -0.42002467698208e-5, -0.59056029685639e-25, 0.37826947613457e-5,
+              -0.12768608934681e-14, 0.73087610595061e-28, 0.55414715350778e-16,
+              -0.94369707241210e-6]
+      }
+    }`);
+
+    // IF97 range/boundary constants (Release §2-§3). Critical point 647.096 K / 22.064 MPa.
+    const IF97_P_CRIT = 22.064, IF97_T_B13 = 623.15, IF97_T_B23_MAX = 863.15;
+    const IF97_T_MIN = 273.15, IF97_T_MAX = 1073.15, IF97_P_MAX = 100.0;
+
+    function if97B23pMPa(TK) {  // Eq. (5) — Region 2/3 boundary, MPa
+      const n = IF97.B23.n;
+      return n[0] + n[1]*TK + n[2]*TK*TK;
+    }
+
+    function if97PsatMPa(TK) {  // Eq. (30) — saturation pressure, MPa (273.15–647.096 K)
+      const n = IF97.R4.n;
+      const th = TK + n[8] / (TK - n[9]);
+      const A = th*th + n[0]*th + n[1];
+      const B = n[2]*th*th + n[3]*th + n[4];
+      const C = n[5]*th*th + n[6]*th + n[7];
+      return Math.pow(2.0*C / (-B + Math.sqrt(B*B - 4.0*A*C)), 4);
+    }
+
+    function if97TsatK(pMPa) {  // Eq. (31) — saturation temperature, K (611.213 Pa–22.064 MPa)
+      const n = IF97.R4.n;
+      const beta = Math.pow(pMPa, 0.25);
+      const E = beta*beta + n[2]*beta + n[5];
+      const F = n[0]*beta*beta + n[3]*beta + n[6];
+      const G = n[1]*beta*beta + n[4]*beta + n[7];
+      const D = 2.0*G / (-F - Math.sqrt(F*F - 4.0*E*G));
+      return (n[9] + D - Math.sqrt((n[9] + D)*(n[9] + D) - 4.0*(n[8] + n[9]*D))) / 2.0;
+    }
+
+    // Region 1 basic equation, Eq. (7): gamma(pi, tau) with pi = p/16.53 MPa,
+    // tau = 1386/T. Property relations per Table 3. Returns SI: v m³/kg, h/u kJ/kg,
+    // s/cp kJ/(kg·K), w m/s.
+    function if97Region1(pMPa, TK) {
+      const pi = pMPa / 16.53, tau = 1386.0 / TK;
+      const A = 7.1 - pi, B = tau - 1.222;
+      let g = 0, gp = 0, gpp = 0, gt = 0, gtt = 0, gpt = 0;
+      const R1 = IF97.R1;
+      for (let i = 0; i < R1.n.length; i++) {
+        const I = R1.I[i], J = R1.J[i], n = R1.n[i];
+        const AI = Math.pow(A, I), BJ = Math.pow(B, J);
+        g   += n * AI * BJ;
+        gp  -= n * I * Math.pow(A, I-1) * BJ;
+        gpp += n * I * (I-1) * Math.pow(A, I-2) * BJ;
+        gt  += n * AI * J * Math.pow(B, J-1);
+        gtt += n * AI * J * (J-1) * Math.pow(B, J-2);
+        gpt -= n * I * Math.pow(A, I-1) * J * Math.pow(B, J-1);
+      }
+      const RT = IF97.R * TK;
+      return {
+        v:  pi * gp * RT / (pMPa * 1000.0),
+        h:  RT * tau * gt,
+        u:  RT * (tau*gt - pi*gp),
+        s:  IF97.R * (tau*gt - g),
+        cp: -IF97.R * tau*tau * gtt,
+        w:  Math.sqrt(RT * 1000.0 * gp*gp / ((gp - tau*gpt)*(gp - tau*gpt) / (tau*tau*gtt) - gpp))
+      };
+    }
+
+    // Region 2 basic equation, Eqs. (15)-(17): gamma = gamma0 + gammaR with
+    // pi = p/1 MPa, tau = 540/T. Property relations per Table 12.
+    function if97Region2(pMPa, TK) {
+      const pi = pMPa, tau = 540.0 / TK;
+      let g0 = Math.log(pi), g0t = 0, g0tt = 0;
+      const R2 = IF97.R2;
+      for (let i = 0; i < R2.n0.length; i++) {
+        const J = R2.J0[i], n = R2.n0[i];
+        g0   += n * Math.pow(tau, J);
+        g0t  += n * J * Math.pow(tau, J-1);
+        g0tt += n * J * (J-1) * Math.pow(tau, J-2);
+      }
+      const B0 = tau - 0.5;
+      let gr = 0, grp = 0, grpp = 0, grt = 0, grtt = 0, grpt = 0;
+      for (let i = 0; i < R2.n.length; i++) {
+        const I = R2.I[i], J = R2.J[i], n = R2.n[i];
+        const PI = Math.pow(pi, I), BJ = Math.pow(B0, J);
+        gr   += n * PI * BJ;
+        grp  += n * I * Math.pow(pi, I-1) * BJ;
+        grpp += n * I * (I-1) * Math.pow(pi, I-2) * BJ;
+        grt  += n * PI * J * Math.pow(B0, J-1);
+        grtt += n * PI * J * (J-1) * Math.pow(B0, J-2);
+        grpt += n * I * Math.pow(pi, I-1) * J * Math.pow(B0, J-1);
+      }
+      const RT = IF97.R * TK;
+      const num = 1.0 + 2.0*pi*grp + pi*pi*grp*grp;
+      const den = (1.0 - pi*pi*grpp) + Math.pow(1.0 + pi*grp - tau*pi*grpt, 2) / (tau*tau*(g0tt + grtt));
+      return {
+        v:  pi * (1.0/pi + grp) * RT / (pMPa * 1000.0),
+        h:  RT * tau * (g0t + grt),
+        u:  RT * (tau*(g0t + grt) - pi*(1.0/pi + grp)),
+        s:  IF97.R * (tau*(g0t + grt) - (g0 + gr)),
+        cp: -IF97.R * tau*tau * (g0tt + grtt),
+        w:  Math.sqrt(RT * 1000.0 * num / den)
+      };
+    }
+
+    // Region classification. NaN-safe by the PR-1 polarity discipline: every guard is
+    // a positive assertion, so NaN falls through to region 0 (= out of range/invalid).
+    function if97Classify(pMPa, TK) {
+      if (!(pMPa > 0) || !(pMPa <= IF97_P_MAX) || !(TK >= IF97_T_MIN) || !(TK <= IF97_T_MAX)) return 0;
+      if (TK <= IF97_T_B13) return pMPa > if97PsatMPa(TK) ? 1 : 2;
+      if (TK <= IF97_T_B23_MAX && pMPa > if97B23pMPa(TK)) return 3;
+      return 2;
+    }
+
+    function steamTtoK(v, u) { return u === 'C' ? v + 273.15 : (u === 'F' ? (v - 32) / 1.8 + 273.15 : v); }
+    function steamKtoUnit(TK, u) { return u === 'C' ? TK - 273.15 : (u === 'F' ? TK * 1.8 - 459.67 : TK); }
+
+    function calcSteamProps() {
+      const p = parseFloat(document.getElementById('sp-p').value);
+      const uP = parseFloat(document.getElementById('sp-p-u').value) || 1;
+      const t = parseFloat(document.getElementById('sp-t').value);
+      const uT = document.getElementById('sp-t-u').value;
+
+      const outIds = ['sp-out-rho','sp-out-h','sp-out-s','sp-out-cp','sp-out-w','sp-out-tsat','sp-out-hfg'];
+      const stateEl = document.getElementById('sp-out-state');
+      const stateNoteEl = document.getElementById('sp-out-statenote');
+      const satNoteEl = document.getElementById('sp-out-satnote');
+      const warnEl = document.getElementById('sp-warn');
+      const blank = () => { outIds.forEach(id => { document.getElementById(id).innerText = '—'; });
+                            stateEl.innerText = '—'; stateNoteEl.innerText = '';
+                            satNoteEl.innerText = 'h_g − h_f'; };
+
+      // NOTE: t via isNaN — 0 °C is the bottom of the IF97 range and perfectly valid
+      // (same falsy-zero lesson as SPECIFICATION.md §11 issue #11).
+      if (!(p > 0) || isNaN(t)) { blank(); warnEl.classList.add('hidden'); return; }
+
+      const pMPa = p * uP;
+      const TK = steamTtoK(t, uT);
+      const region = if97Classify(pMPa, TK);
+
+      if (region === 0 || region === 3) {
+        blank();
+        warnEl.classList.remove('hidden');
+        warnEl.innerText = '⚠ ' + tr(region === 3 ? 'basic.steam.warnRegion3' : 'basic.steam.warnRange');
+        return;
+      }
+      warnEl.classList.add('hidden');
+
+      const props = region === 1 ? if97Region1(pMPa, TK) : if97Region2(pMPa, TK);
+      const rhoF = parseFloat(document.getElementById('sp-out-rho-u').value) || 1;
+      const hF   = parseFloat(document.getElementById('sp-out-h-u').value) || 1;
+      const sF   = parseFloat(document.getElementById('sp-out-s-u').value) || 1;
+      const cpF  = parseFloat(document.getElementById('sp-out-cp-u').value) || 1;
+      const wF   = parseFloat(document.getElementById('sp-out-w-u').value) || 1;
+      const hfgF = parseFloat(document.getElementById('sp-out-hfg-u').value) || 1;
+
+      document.getElementById('sp-out-rho').innerText = formatValue((1.0 / props.v) * rhoF);
+      document.getElementById('sp-out-h').innerText   = formatValue(props.h * hF);
+      document.getElementById('sp-out-s').innerText   = formatValue(props.s * sF);
+      document.getElementById('sp-out-cp').innerText  = formatValue(props.cp * cpF);
+      document.getElementById('sp-out-w').innerText   = formatValue(props.w * wF);
+
+      // ── State badge + distance to saturation ────────────────────────────────
+      stateEl.innerText = region === 1
+        ? tr('basic.steam.stateSubcooled')
+        : (TK > IF97_T_B13 ? tr('basic.steam.stateSteamR2') : tr('basic.steam.stateSuperheated'));
+      stateNoteEl.innerText = '';
+      let TsK = NaN;
+      if (pMPa <= IF97_P_CRIT) {
+        TsK = if97TsatK(pMPa);
+        const dt = TK - TsK;
+        if (region === 1 && dt < 0) stateNoteEl.innerText = tr('basic.steam.subcoolNote', {dt: formatValue(-dt)});
+        if (region === 2 && dt > 0) stateNoteEl.innerText = tr('basic.steam.superheatNote', {dt: formatValue(dt)});
+      }
+      // Near the line, a real stream is almost certainly two-phase; say so.
+      if (TK <= IF97_T_B13) {
+        const ps = if97PsatMPa(TK);
+        if (Math.abs(pMPa / ps - 1.0) < 0.001) {
+          warnEl.classList.remove('hidden');
+          warnEl.innerText = '⚠ ' + tr('basic.steam.nearSatNote');
+        }
+      }
+
+      // ── Saturation row @ P: Tsat always below the critical point; hf/hg only
+      //    while Tsat ≤ 623.15 K (above that the liquid side is Region 3). ──────
+      const tsatEl = document.getElementById('sp-out-tsat');
+      const hfgEl  = document.getElementById('sp-out-hfg');
+      document.getElementById('sp-out-tsat-u').innerText = uT === 'C' ? '°C' : (uT === 'F' ? '°F' : 'K');
+      if (!isNaN(TsK)) {
+        tsatEl.innerText = formatValue(steamKtoUnit(TsK, uT));
+        if (TsK <= IF97_T_B13) {
+          const hf = if97Region1(pMPa, TsK).h, hg = if97Region2(pMPa, TsK).h;
+          hfgEl.innerText = formatValue((hg - hf) * hfgF);
+          satNoteEl.innerText = tr('basic.steam.satNote', {hf: formatValue(hf * hfgF), hg: formatValue(hg * hfgF)});
+        } else {
+          hfgEl.innerText = '—';
+          satNoteEl.innerText = tr('basic.steam.satR3Note');
+        }
+      } else {
+        tsatEl.innerText = '—';
+        hfgEl.innerText = '—';
+        satNoteEl.innerText = tr('basic.steam.satSupercritNote');
+      }
+    }
+
+    // ── v3.0 — PSV steam-mode saturation advisory (client-side only) ──────────
+    // Reads psv-P1-steam + the advisory-only psv-T-steam; never touches the
+    // sizing payload. USC pressures are psia, SI are kPa abs (matching calcPSV).
+    function updateSteamAdvisory() {
+      const el = document.getElementById('psv-steam-advisory');
+      if (!el) return;
+      const usc = document.getElementById('psv-units').value === 'USC';
+      const p1 = parseFloat(document.getElementById('psv-P1-steam').value);
+      const t  = parseFloat(document.getElementById('psv-T-steam').value);
+      if (!(p1 > 0)) { el.classList.add('hidden'); return; }
+      const pMPa = p1 * (usc ? 0.006894757 : 0.001);
+      if (!(pMPa >= 0.000611213)) { el.classList.add('hidden'); return; }
+      el.classList.remove('hidden');
+      if (pMPa > IF97_P_CRIT) { el.innerText = tr('safety.psv.advisorySupercritical'); return; }
+      const u = usc ? '°F' : '°C';
+      const tsat = steamKtoUnit(if97TsatK(pMPa), usc ? 'F' : 'C');
+      let msg = tr('safety.psv.advisoryTsat', {tsat: formatValue(tsat), u: u});
+      if (!isNaN(t)) {
+        const dt = t - tsat;
+        msg += ' ' + (dt > 0 ? tr('safety.psv.advisorySuperheated', {dt: formatValue(dt), u: u})
+                             : tr('safety.psv.advisorySaturated'));
+      }
+      el.innerText = msg;
     }
 
     // B2 — Petroleum gravity: °API ↔ SG (60/60°F) ↔ density. Water @ 60°F = 999.016 kg/m³.
@@ -3852,6 +4287,9 @@
       if (hdg)   hdg.innerText = tr('safety.psv.liquidHeading') + ' (' + (nc ? '\u00a75.9 ' + tr('safety.psv.nonCertified') : '\u00a75.8 ' + tr('safety.psv.certified')) + ')';
       if (KdLiq) KdLiq.value   = nc ? '0.62' : '0.65';
       _psvUnitLabels(units);
+      // v3.0 — a USC↔SI toggle changes what the P1/T figures MEAN, so the IF97
+      // saturation advisory must be re-evaluated, not just relabelled.
+      updateSteamAdvisory();
     }
 
     function _psvUnitLabels(u) {
@@ -3859,6 +4297,9 @@
       const usc = u === 'USC';
       s('psv-W-unit',        usc ? 'lb/h'    : 'kg/h');
       s('psv-W-steam-unit',  usc ? 'lb/h'    : 'kg/h');
+      // v3.0 — advisory-only steam temp uses °F/°C (API 520 Table 9 is tabulated in °F),
+      // deliberately NOT the °R/K convention of the gas-mode relieving temperature.
+      s('psv-T-steam-unit',  usc ? '°F' : '°C');
       s('psv-W-tp-unit',     usc ? 'lb/h'    : 'kg/h');
       s('psv-T-unit',        usc ? '\u00b0R' : 'K');
       s('psv-P1-unit',       usc ? 'psia'    : 'kPa abs');
@@ -4186,7 +4627,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;
