@@ -180,6 +180,33 @@
       "warnFlashing": "NPSHa ≤ 0 — the liquid flashes before reaching the impeller; a pump cannot operate here",
       "warnTwRange": "Water helper range is 0–350 °C (IF97 Regions 1/4)",
       "footnote": "NPSHa = (P_surface − P_v)/(ρ·g) + z − h_f with g = 9.80665 m/s² exactly — a first-principles head balance at the impeller centerline, not a standard's method. z is the liquid level above the centerline (negative for a suction lift); h_f is the suction-line friction head (the ΔP card's frictional term is a good source). The water helper uses IAPWS-IF97: Pv = p_sat(T) (Region 4) and ρ = ρ_f(T), the saturated-liquid density (Region 1 on the saturation line), valid 0–350 °C. This card deliberately renders NO verdict: the required margin over NPSHr belongs to the pump vendor's curve and the Hydraulic Institute / API 610 margin guidance, which are licensed documents this application does not reproduce."
+    },
+    "cmp": {
+      "title": "Compressor — Head & Power",
+      "chip": "ISENTROPIC · POLYTROPIC",
+      "sgLabel": "GAS SG (air = 1)",
+      "p1Label": "SUCTION P₁ (abs)",
+      "t1Label": "SUCTION T₁",
+      "p2Label": "DISCHARGE P₂ (abs)",
+      "kLabel": "k = Cp/Cv",
+      "etaLabel": "POLYTROPIC EFF η_p %",
+      "flowLabel": "MASS FLOW (optional)",
+      "zLabel": "Z (PAPAY)",
+      "zNote": "Z₁ / Z₂ / Z_avg — Z₂ at the one-pass T₂ estimate",
+      "hpLabel": "POLYTROPIC HEAD H_p",
+      "hpMethod": "Z_avg·(R/M)·T₁·(r^m−1)/m, m = (k−1)/(k·η_p)",
+      "hisLabel": "ISENTROPIC HEAD H_is",
+      "hisMethod": "same with m_s = (k−1)/k",
+      "t2Label": "DISCHARGE TEMP T₂",
+      "t2Method": "T₁·r^m — perfect-gas path",
+      "powerLabel": "GAS POWER",
+      "powerMethod": "ṁ·H_p/η_p — no mechanical losses",
+      "pathLabel": "COMPRESSION PATH",
+      "pathNote": "pressure ratio · polytropic exponent n · implied isentropic efficiency",
+      "warnNoCompression": "P₂ must exceed P₁ — this card screens compression only.",
+      "warnPapaySuction": "Suction state outside Papay validity (Pr = {pr}, Tr = {trv}; valid 0 < Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0) — Z₁ is an extrapolation.",
+      "warnPapayDischarge": "Discharge state outside Papay validity (Pr = {pr}, Tr = {trv}) — Z₂ is an extrapolation.",
+      "footnote": "First-principles screening: H_poly = Z_avg·(R/M)·T₁·(r^m − 1)/m with m = (k−1)/(k·η_p), and H_is with m_s = (k−1)/k — the textbook isentropic and perfect-gas polytropic relations, not a performance-test procedure (ASME PTC 10 is a licensed test code and is not used here). Real-gas correction enters through Z_avg = (Z₁ + Z₂)/2 from the same Papay correlation as the Z-Factor card; Z₂ is evaluated once at the perfect-gas discharge estimate T₂ = T₁·r^m, a deterministic single pass. T₂ is the perfect-gas polytropic path temperature — real-gas and cooling effects will shift the actual value. Gas power = ṁ·H_poly/η_p, the enthalpy rise rate only: add mechanical losses (bearings, seals, gearbox) per the vendor. Unit factors are exact by definition: 1 ft·lbf/lbm = 9.80665 × 0.3048 = 2.98906692 J/kg; 1 hp = 550 ft·lbf/s = 745.69987 W. Typical polytropic efficiencies run ≈ 70–85 % for centrifugal machines — use the vendor's number when you have it."
     }
   },
   "advanced": {
