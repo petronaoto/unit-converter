@@ -678,6 +678,114 @@
           </div>
         </div>
 
+        <!-- B7 (v3.0) — Compressor head & power (screening). First-principles
+             isentropic and perfect-gas polytropic relations, with real-gas
+             correction through the SAME papayZ() as the Z-Factor and Gas Property
+             cards (Z_avg of suction and a one-pass discharge estimate). This is a
+             screening estimate, not an ASME PTC 10 performance test — that
+             standard is licensed and is deliberately not cited or reproduced. -->
+        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span><span data-i18n="basic.cmp.title">Compressor — Head &amp; Power</span></h2>
+            <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.cmp.chip">ISENTROPIC · POLYTROPIC</span>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.sgLabel">GAS SG (air = 1)</label>
+                <input type="number" step="any" id="cmp-sg" placeholder="0.65" oninput="calcCompressor()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.p1Label">SUCTION P₁ (abs)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="cmp-p1" placeholder="40" oninput="calcCompressor()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+                  <select id="cmp-p1-u" onchange="calcCompressor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="bar">bar</option><option value="psi">psi</option><option value="kPa">kPa</option><option value="MPa">MPa</option><option value="atm">atm</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.t1Label">SUCTION T₁</label>
+                <div class="flex">
+                  <input type="number" step="any" id="cmp-t1" placeholder="30" oninput="calcCompressor()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+                  <select id="cmp-t1-u" onchange="calcCompressor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="C">°C</option><option value="F">°F</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.p2Label">DISCHARGE P₂ (abs)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="cmp-p2" placeholder="80" oninput="calcCompressor()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+                  <select id="cmp-p2-u" onchange="calcCompressor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="bar">bar</option><option value="psi">psi</option><option value="kPa">kPa</option><option value="MPa">MPa</option><option value="atm">atm</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.kLabel">k = Cp/Cv</label>
+                <input type="number" step="any" id="cmp-k" value="1.3" oninput="calcCompressor()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.etaLabel">POLYTROPIC EFF η_p %</label>
+                <input type="number" step="any" id="cmp-eta" value="75" oninput="calcCompressor()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.flowLabel">MASS FLOW (optional)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="cmp-flow" placeholder="100" oninput="calcCompressor()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l text-slate-100 outline-none focus:ring-1 focus:ring-violet-500" />
+                  <select id="cmp-flow-u" onchange="calcCompressor()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1000">t/h</option><option value="1">kg/h</option><option value="3600">kg/s</option><option value="0.45359237">lb/h</option></select>
+                </div>
+              </div>
+              <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-700 ring-1 ring-violet-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-1" data-i18n="basic.cmp.zLabel">Z (PAPAY)</div>
+                <div id="cmp-out-z" class="text-sm font-bold font-mono text-white">—</div>
+                <div class="text-[10px] text-slate-500 mt-0.5" data-i18n="basic.cmp.zNote">Z₁ / Z₂ / Z_avg — Z₂ at the one-pass T₂ estimate</div>
+              </div>
+            </div>
+
+            <div id="cmp-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
+
+            <div class="pt-4 border-t border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-violet-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.hpLabel">POLYTROPIC HEAD H_p</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="cmp-out-hp" class="text-xl font-bold font-mono text-white">—</span>
+                  <button onclick="copyText(document.getElementById('cmp-out-hp').innerText, this)" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <select id="cmp-out-hp-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="334.55256">ft·lbf/lbm</option><option value="0.42992261">Btu/lb</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.hpMethod">Z_avg·(R/M)·T₁·(r^m−1)/m, m = (k−1)/(k·η_p)</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-violet-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.hisLabel">ISENTROPIC HEAD H_is</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="cmp-out-his" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="cmp-out-his-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="334.55256">ft·lbf/lbm</option><option value="0.42992261">Btu/lb</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.hisMethod">same with m_s = (k−1)/k</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-violet-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.t2Label">DISCHARGE TEMP T₂</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="cmp-out-t2" class="text-xl font-bold font-mono text-white">—</span>
+                  <select id="cmp-out-t2-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="C">°C</option><option value="K">K</option><option value="F">°F</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.t2Method">T₁·r^m — perfect-gas path</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-violet-500/20">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.powerLabel">GAS POWER</div>
+                <div class="flex items-center justify-between gap-2">
+                  <span id="cmp-out-power" class="text-xl font-bold font-mono text-white">—</span>
+                  <button onclick="copyText(document.getElementById('cmp-out-power').innerText, this)" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <select id="cmp-out-power-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kW</option><option value="0.001">MW</option><option value="1.3410221">hp</option></select>
+                </div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.powerMethod">ṁ·H_p/η_p — no mechanical losses</div>
+              </div>
+              <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-700 md:col-span-4">
+                <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.pathLabel">COMPRESSION PATH</div>
+                <div id="cmp-out-path" class="text-sm font-mono text-slate-300">—</div>
+                <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.pathNote">pressure ratio · polytropic exponent n · implied isentropic efficiency</div>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="basic.cmp.footnote">First-principles screening: H_poly = Z_avg·(R/M)·T₁·(r^m − 1)/m with m = (k−1)/(k·η_p), and H_is with m_s = (k−1)/k — the textbook isentropic and perfect-gas polytropic relations, not a performance-test procedure (ASME PTC 10 is a licensed test code and is not used here). Real-gas correction enters through Z_avg = (Z₁ + Z₂)/2 from the same Papay correlation as the Z-Factor card; Z₂ is evaluated once at the perfect-gas discharge estimate T₂ = T₁·r^m, a deterministic single pass. T₂ is the perfect-gas polytropic path temperature — real-gas and cooling effects will shift the actual value. Gas power = ṁ·H_poly/η_p, the enthalpy rise rate only: add mechanical losses (bearings, seals, gearbox) per the vendor. Unit factors are exact by definition: 1 ft·lbf/lbm = 9.80665 × 0.3048 = 2.98906692 J/kg; 1 hp = 550 ft·lbf/s = 745.69987 W. Typical polytropic efficiencies run ≈ 70–85 % for centrifugal machines — use the vendor's number when you have it.</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1368,6 +1476,7 @@
             <a href="#howto-15" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">15 Mobile</a>
             <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 Steam</a>
             <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 NPSHa</a>
+            <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Compressor</a>
           </nav>
         </div>
 
@@ -1880,6 +1989,15 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">No verdict, on purpose.</strong> The card reports the physical number and stops. How much NPSHa you need above the pump's NPSHr — and the margin on top of that — comes from the vendor's tested curve and the Hydraulic Institute / API 610 guidance, which are licensed documents this application does not reproduce. A big positive number is not automatically safe; hot water near saturation erodes the margin quickly, which is exactly what the two warnings watch for.</p></div>
         </section>
 
+        <!-- 18. Compressor (v3.0) -->
+        <section>
+          <h3 id="howto-18" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b081">18. Basic Eng — Compressor Head &amp; Power</h3>
+          <div data-i18n-html="docs.howto.b082"><p class="text-sm text-slate-400 leading-relaxed">Six inputs describe the duty: <strong class="text-slate-200">gas SG</strong> (air = 1), <strong class="text-slate-200">suction pressure and temperature</strong>, <strong class="text-slate-200">discharge pressure</strong> (both pressures absolute), <strong class="text-slate-200">k = Cp/Cv</strong>, and the <strong class="text-slate-200">polytropic efficiency η_p</strong> in percent — vendors quote it; 70–85 % is typical for centrifugal machines. Add a <strong class="text-slate-200">mass flow</strong> if you want power: without it the head results still appear and the power box stays blank.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3">The card returns the <strong class="text-slate-200">polytropic head</strong> (what the vendor's curve is drawn in), the <strong class="text-slate-200">isentropic head</strong> (the ideal-path benchmark), the <strong class="text-slate-200">discharge temperature</strong> along the polytropic path, and the <strong class="text-slate-200">gas power</strong> ṁ·H_p/η_p — the enthalpy rise rate, before bearings, seals and gearbox. The Z box shows the real-gas correction at work: Z₁ at suction, Z₂ at the estimated discharge state, and the Z_avg the heads actually use, all from the same Papay correlation as the Z-Factor card. The path line reads back the pressure ratio, the polytropic exponent n, and the isentropic efficiency implied by your η_p.</p>
+          <div class="bg-violet-500/10 border border-violet-500/30 rounded-lg p-3 text-xs text-violet-300 mt-3"><strong>ℹ Worked example</strong> — SG 0.65 gas at 40 bar a / 30 °C compressed to 80 bar a with k = 1.3 and η_p = 75 %: the Z box shows 0.9083 / 0.9322 / 0.9203, polytropic head <strong>95.18714 kJ/kg</strong>, isentropic head 92.60625 kJ/kg, discharge temperature <strong>102.06672 °C</strong>, and at 100 t/h the gas power is <strong>3,525.44967 kW</strong> (≈ 3.5 MW). The path line reads r = 2.000 · n = 1.4444 · η_s = 72.97 % — the implied isentropic efficiency always sits below the polytropic one in compression.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Screening, not a performance test.</strong> These are the textbook isentropic and perfect-gas polytropic relations with a one-pass Papay Z correction — first principles, deliberately not a test-code procedure (ASME PTC 10 is a licensed standard and is not reproduced here). The discharge temperature is the perfect-gas path value; real-gas behaviour and any cooling shift the actual number. For a machine selection or an acceptance test, use the vendor's tools and the vendor's efficiency.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -1898,6 +2016,7 @@
             <a href="#theory-p7" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VII Real Gas</a>
             <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII Steam</a>
             <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX NPSHa</a>
+            <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X Compressor</a>
           </nav>
         </div>
 
@@ -2476,6 +2595,27 @@
             <div><h4 class="text-base font-semibold text-teal-400 mb-2">9.3 Why there is no verdict badge</h4>
           <p class="text-sm leading-relaxed">Other cards here judge their result against a published criterion (RP 14E, NORSOK P-001). NPSH cannot be judged that way from the suction side alone: the requirement, NPSHr, is a tested property of the specific pump at the specific flow — it exists on the vendor's curve, nowhere else — and the margin to apply on top of it (commonly 0.6–1.5 m or a 1.1–1.35 ratio, rising steeply for hot water and hydrocarbons near their bubble point) is codified in Hydraulic Institute 9.6.1 and API 610, both licensed documents. Reprinting half-remembered margin rules would manufacture false authority; this application cites what it can verify and stops at the physics.</p>
           <div class="bg-teal-500/10 border border-teal-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 9)</strong> — water, 80 °C, open tank (101.325 kPa), z = +3 m, h_f = 1.2 m. Helper fills P<sub>v</sub> = 47.41472 kPa, ρ = 971.77879 kg/m³. Pressure head = (101,325 − 47,414.72)/(971.77879 × 9.80665) = 5.65697 m → <strong>NPSHa = 5.65697 + 3 − 1.2 = 7.45697 m = 24.46511 ft</strong>. At 95 °C with z = −2 m, h_f = 0.8 m: P<sub>v</sub> = 84.608938 kPa, ρ = 961.88733 kg/m³, head = 1.7721 m → <strong>NPSHa = −1.0279 m</strong>: flashing, and the card says so.</div></div>
+          </div></div>
+        </section>
+
+        <!-- PART X: Compressor (v3.0) -->
+        <section>
+          <h3 id="theory-p10" class="text-lg font-bold text-violet-400 uppercase tracking-widest border-b border-violet-900 pb-2 mb-6" data-i18n-html="docs.theory.b044">Part X — Compressor Head &amp; Power (v3.0)</h3>
+          <div data-i18n-html="docs.theory.b045"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-violet-400 mb-2">10.1 The two ideal paths</h4>
+          <p class="text-sm leading-relaxed">Compression work per unit mass is ∫v·dP along the machine's thermodynamic path. For a perfect gas on an <strong class="text-slate-200">isentropic</strong> path (P·v<sup>k</sup> constant) the integral closes to the textbook result; a real machine follows a steeper path, modeled as <strong class="text-slate-200">polytropic</strong> (P·v<sup>n</sup> constant), where the polytropic efficiency η<sub>p</sub> is defined as the differential efficiency held constant along the path — which fixes the exponent:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>H_is&nbsp;&nbsp; = Z_avg·(R/M)·T₁·(r^ms − 1)/ms&nbsp;&nbsp;&nbsp;ms = (k−1)/k</div>
+            <div>H_poly = Z_avg·(R/M)·T₁·(r^m − 1)/m&nbsp;&nbsp;&nbsp;&nbsp;m&nbsp; = (k−1)/(k·η_p) = (n−1)/n</div>
+            <div>T₂&nbsp;&nbsp;&nbsp;&nbsp; = T₁·r^m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r = P₂/P₁, T absolute</div>
+            <div class="text-slate-500">R = 8,314.462618 J/(kmol·K) · M = SG × 28.9647 kg/kmol — the same literals as the Gas Property card</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Head is path work only — it is what the impeller must impart per kilogram, which is why vendor curves are drawn in polytropic head: unlike the isentropic value it is (to first order) independent of what the gas happens to be. Both formulas are first-principles results found in any thermodynamics text and in the free Turbomachinery Laboratory tutorials; no test-code material is used or needed for them.</p></div>
+            <div><h4 class="text-base font-semibold text-violet-400 mb-2">10.2 Real-gas correction — Papay again, one pass</h4>
+          <p class="text-sm leading-relaxed">The perfect-gas integral acquires a real-gas correction through Z: this card uses <strong class="text-slate-200">Z_avg = (Z₁ + Z₂)/2</strong>, the standard screening treatment, with both values from the same Papay/Standing-Katz correlation as the Z-Factor and Gas Property cards (validity 0 &lt; Pr ≤ 15, 1.05 ≤ Tr ≤ 3.0 — the card warns per state when either end is outside). Z₂ needs a discharge temperature before the head is known, so it is evaluated once at the perfect-gas estimate T₂ = T₁·r<sup>m</sup> — a deterministic single pass, deliberately not an iteration loop: the residual error in Z_avg from that estimate is second-order and far inside the correlation's own tolerance. The displayed T₂ is that same perfect-gas path value. The full real-gas polytropic machinery (Schultz-type corrections, test-code analysis per ASME PTC 10) belongs to vendor software and acceptance tests; it is licensed material and this card neither uses nor reproduces it.</p></div>
+            <div><h4 class="text-base font-semibold text-violet-400 mb-2">10.3 Efficiencies, power, and units</h4>
+          <p class="text-sm leading-relaxed">The two heads imply each other's efficiency: actual work is w = H_poly/η<sub>p</sub>, so the isentropic efficiency the same machine exhibits is <strong class="text-slate-200">η_s = η_p · H_is/H_poly</strong> — always below η<sub>p</sub> in compression, because the polytropic path reheats the gas and makes each successive pressure slice more expensive. Gas power is <strong class="text-slate-200">W = ṁ·H_poly/η_p</strong>, the enthalpy rise rate of the gas; bearings, seals and gearbox losses add on top, per the vendor. Unit factors are exact by definition: 1 ft·lbf/lbm = 9.80665 × 0.3048 = 2.98906692 J/kg (display literal 334.55256 per kJ/kg), and 1 hp = 550 ft·lbf/s = 745.69987 W (display literal 1.3410221 per kW).</p>
+          <div class="bg-violet-500/10 border border-violet-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 10)</strong> — SG 0.65, 40 → 80 bar a (r = 2), T₁ = 30 °C = 545.67 °R, k = 1.3, η<sub>p</sub> = 75 %. m = (k−1)/(k·η_p) = 0.30769 → n = 1.4444, and T₂ = 545.67 × 2<sup>0.30769</sup> = 675.39010 °R = <strong>102.06672 °C</strong>. Papay gives Z₁ = 0.9083 (Pr 0.86573, Tr 1.49454) and Z₂ = 0.9322 at the discharge estimate (Pr 1.73146, Tr 1.84983), so Z_avg = 0.9203. With R·T₁/M = 8,314.462618 × 303.15 / 18.827055 = 133,878.05 J/kg the card returns <strong>H_poly = 95.18714 kJ/kg</strong> and H_is = 92.60625 kJ/kg, hence η_s = 0.75 × 92.60625 / 95.18714 = <strong>72.97 %</strong>. At 100 t/h (27.77778 kg/s): W = ṁ·H_poly/η_p = <strong>3,525.44967 kW</strong> ≈ 3.5 MW.</div></div>
           </div></div>
         </section>
 </div>
@@ -3593,6 +3733,79 @@
       document.getElementById('npsh-pv').value = String(parseFloat((pvKpa / pvF).toPrecision(8)));
       document.getElementById('npsh-rho').value = String(parseFloat((rho / rhoF).toPrecision(8)));
       calcNPSH();
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  B7 (v3.0) — COMPRESSOR HEAD & POWER (screening)
+    //
+    //  First-principles isentropic and perfect-gas polytropic relations:
+    //    H_poly = Z_avg·(R/M)·T₁·(r^m − 1)/m      m  = (k−1)/(k·η_p) = (n−1)/n
+    //    H_is   = Z_avg·(R/M)·T₁·(r^ms − 1)/ms    ms = (k−1)/k
+    //    T₂     = T₁·r^m                          (perfect-gas temperature path)
+    //    W_gas  = ṁ·H_poly/η_p                    (enthalpy rise rate; no mech. losses)
+    //  Real-gas correction is Z_avg = (Z₁ + Z₂)/2 through the SAME papayZ() as the
+    //  Z-Factor and Gas Property cards; Z₂ is evaluated once at (P₂, T₂) — a
+    //  deterministic single pass, deliberately NOT an iteration loop. This is a
+    //  screening estimate, not an ASME PTC 10 test procedure (licensed; not cited).
+    //  Reference vector: SPECIFICATION.md §9 Vector 10.
+    // ══════════════════════════════════════════════════════════════════════════
+    function calcCompressor() {
+      const sg   = parseFloat(document.getElementById('cmp-sg').value);
+      const p1   = toPsia(parseFloat(document.getElementById('cmp-p1').value), document.getElementById('cmp-p1-u').value);
+      const t1R  = toRankine(parseFloat(document.getElementById('cmp-t1').value), document.getElementById('cmp-t1-u').value);
+      const p2   = toPsia(parseFloat(document.getElementById('cmp-p2').value), document.getElementById('cmp-p2-u').value);
+      const k    = parseFloat(document.getElementById('cmp-k').value);
+      const etaP = parseFloat(document.getElementById('cmp-eta').value) / 100.0;
+      const warnEl = document.getElementById('cmp-warn');
+      const blank = ['cmp-out-z','cmp-out-hp','cmp-out-his','cmp-out-t2','cmp-out-power','cmp-out-path'];
+      // NaN-safe positive assertions (PR-1 polarity) — every rejected branch blanks
+      // the outputs rather than leaving a stale result on screen. η_p is entered in
+      // percent; >100 % is rejected, not clamped.
+      if (!(sg > 0) || !(p1 > 0) || !(t1R > 0) || !(p2 > 0) || !(k > 1) || !(etaP > 0) || !(etaP <= 1)) {
+        blank.forEach(id => { document.getElementById(id).innerText = '—'; });
+        warnEl.classList.add('hidden');
+        return;
+      }
+      if (!(p2 > p1)) {
+        blank.forEach(id => { document.getElementById(id).innerText = '—'; });
+        warnEl.classList.remove('hidden');
+        warnEl.innerText = '⚠ ' + tr('basic.cmp.warnNoCompression');
+        return;
+      }
+      const r  = p2 / p1;
+      const z1 = papayZ(sg, p1, t1R);
+      const mP = (k - 1) / (k * etaP);          // (n−1)/n
+      const nPoly = 1 / (1 - mP);               // display only; heads use mP directly
+      const t2R = t1R * Math.pow(r, mP);
+      const z2 = papayZ(sg, p2, t2R);
+      const zAvg = (z1.Z + z2.Z) / 2;
+      const M = sg * MW_AIR_GP;                 // lb/lbmol ≡ kg/kmol
+      const rtm = R_KMOL_GP * (t1R / 1.8) / M;  // R·T₁/M, J/kg
+      const mS = (k - 1) / k;
+      const hPoly = zAvg * rtm * (Math.pow(r, mP) - 1) / mP;   // J/kg
+      const hIsen = zAvg * rtm * (Math.pow(r, mS) - 1) / mS;   // J/kg
+      const etaIs = etaP * hIsen / hPoly;       // implied isentropic efficiency
+      // Gas power is optional: it stays blank unless a positive mass flow is entered.
+      // Flow factors are multiply-to-kg/h (all exact literals), then /3600 → kg/s.
+      const mdot = parseFloat(document.getElementById('cmp-flow').value)
+                 * (parseFloat(document.getElementById('cmp-flow-u').value) || 1) / 3600.0;
+      const hF   = parseFloat(document.getElementById('cmp-out-hp-u').value) || 1;
+      const hisF = parseFloat(document.getElementById('cmp-out-his-u').value) || 1;
+      const pwF  = parseFloat(document.getElementById('cmp-out-power-u').value) || 1;
+      document.getElementById('cmp-out-z').innerText  = z1.Z.toFixed(4) + ' / ' + z2.Z.toFixed(4) + ' / ' + zAvg.toFixed(4);
+      document.getElementById('cmp-out-hp').innerText  = formatValue((hPoly / 1000.0) * hF);
+      document.getElementById('cmp-out-his').innerText = formatValue((hIsen / 1000.0) * hisF);
+      document.getElementById('cmp-out-t2').innerText  = formatValue(steamKtoUnit(t2R / 1.8, document.getElementById('cmp-out-t2-u').value));
+      document.getElementById('cmp-out-power').innerText = !(mdot > 0) ? '—' : formatValue((mdot * hPoly / etaP / 1000.0) * pwF);
+      // n is undefined (→ ∞/negative) when η_p ≤ (k−1)/k — heads stay valid, n shows '—'
+      document.getElementById('cmp-out-path').innerText = 'r = ' + r.toFixed(3)
+        + '  ·  n = ' + (isFinite(nPoly) && nPoly > 0 ? nPoly.toFixed(4) : '—')
+        + '  ·  η_s = ' + (etaIs * 100).toFixed(2) + ' %';
+      const notes = [];
+      if (z1.oob) notes.push(tr('basic.cmp.warnPapaySuction', {pr: z1.pr.toFixed(2), trv: z1.trr.toFixed(2)}));
+      if (z2.oob) notes.push(tr('basic.cmp.warnPapayDischarge', {pr: z2.pr.toFixed(2), trv: z2.trr.toFixed(2)}));
+      warnEl.classList.toggle('hidden', notes.length === 0);
+      if (notes.length) warnEl.innerText = '⚠ ' + notes.join('  •  ');
     }
 
     // B2 — Petroleum gravity: °API ↔ SG (60/60°F) ↔ density. Water @ 60°F = 999.016 kg/m³.
@@ -4803,7 +5016,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;

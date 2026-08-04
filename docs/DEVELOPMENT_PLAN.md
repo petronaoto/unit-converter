@@ -140,7 +140,7 @@ by the PR-1 API-hardening pass (shipped — see §11 notes above).
 |---|---|---|---|
 | Steam tables (IAPWS-IF97, regions 1/2/4 + B23) | Med | H | **Shipped in the v3.0 cycle (PR-2)** — client-side Basic Eng card + PSV steam-mode T_sat/superheat advisory; coefficients CI-verified against the Release's own tables (SPECIFICATION.md §4.2, §9 Vector 8) |
 | NPSH / pump hydraulics screening | Med | M | **Shipped in the v3.0 cycle (PR-3)** — NPSHa card with IF97 water helper (Region 4 Pv + Region 1 ρ_f autofill); deliberately no margin verdict, HI/API margin tables are paywalled and stay out (SPECIFICATION.md §4.2, §9 Vector 9) |
-| Compressor power estimate (isentropic/polytropic) | Med | M | Approved — planned PR-4 (first-principles; PTC 10 is paywalled and is not cited) |
+| Compressor power estimate (isentropic/polytropic) | Med | M | **Shipped in the v3.0 cycle (PR-4)** — head & power card: isentropic + perfect-gas polytropic from first principles, one-pass Papay Z_avg via the shared `papayZ()`, zero new physics constants; PTC 10 remains uncited (SPECIFICATION.md §4.2, §9 Vector 10) |
 | Unit-aware clipboard (copy value + unit) | Low | L | Approved — planned PR-5 |
 | Calculation notebook (save/load named scenarios) | High | M | Deferred to v3.1 (headliner; needs its own security review of stored state) |
 | Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred to v3.1 "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) |
