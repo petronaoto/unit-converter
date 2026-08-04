@@ -159,6 +159,27 @@
       "warnRange": "Outside IF97 Regions 1/2 — valid 0–800 °C (273.15–1073.15 K), 0 < P ≤ 100 MPa",
       "warnRegion3": "Region 3 (dense/near-critical) not covered — use full IF97 or vendor steam tables",
       "footnote": "IAPWS-IF97 (Revised Release, 2007), Regions 1 (compressed liquid), 2 (steam) and 4 (saturation line) — the same industrial formulation behind commercial steam tables. All 259 coefficients are carried verbatim from the Release and re-verified in CI against its own computer-program verification tables (Tables 5, 15, 35, 36) to 9 significant figures. Valid 0–800 °C and up to 100 MPa; Region 3 (dense/near-critical, roughly 350–590 °C above 16.5 MPa) is out of scope — the card says so rather than extrapolating. Saturation enthalpies h_f/h_g are Region 1/2 values at T_sat(P), available up to 16.529 MPa. Btu(IT) conversions: 1 Btu/lb = 2.326 kJ/kg exactly; 1 Btu/(lb·°R) = 4.1868 kJ/(kg·K) exactly."
+    },
+    "npsh": {
+      "title": "Pump Suction — NPSHa",
+      "chip": "SCREENING",
+      "psurfLabel": "SURFACE PRESS (abs)",
+      "pvLabel": "VAPOR PRESS Pv (abs)",
+      "rhoLabel": "LIQUID DENSITY ρ",
+      "zLabel": "STATIC HEAD z",
+      "zHint": "[− = lift]",
+      "hfLabel": "SUCTION FRICTION h_f",
+      "twLabel": "WATER TEMP (optional)",
+      "fillBtn": "FILL Pv & ρ FROM IF97 (WATER)",
+      "fillHint": "Writes saturated-water Pv and ρ_f at T into the two fields (overwrite freely for other liquids).",
+      "outLabel": "NPSH AVAILABLE",
+      "outMethod": "(P − Pv)/ρg + z − h_f",
+      "breakdownLabel": "TERM BREAKDOWN",
+      "breakdownNote": "pressure head + static − friction, in the output unit",
+      "warnSurfaceFlash": "P_surface ≤ Pv — the liquid is boiling at the surface; fix the vessel condition first",
+      "warnFlashing": "NPSHa ≤ 0 — the liquid flashes before reaching the impeller; a pump cannot operate here",
+      "warnTwRange": "Water helper range is 0–350 °C (IF97 Regions 1/4)",
+      "footnote": "NPSHa = (P_surface − P_v)/(ρ·g) + z − h_f with g = 9.80665 m/s² exactly — a first-principles head balance at the impeller centerline, not a standard's method. z is the liquid level above the centerline (negative for a suction lift); h_f is the suction-line friction head (the ΔP card's frictional term is a good source). The water helper uses IAPWS-IF97: Pv = p_sat(T) (Region 4) and ρ = ρ_f(T), the saturated-liquid density (Region 1 on the saturation line), valid 0–350 °C. This card deliberately renders NO verdict: the required margin over NPSHr belongs to the pump vendor's curve and the Hydraulic Institute / API 610 margin guidance, which are licensed documents this application does not reproduce."
     }
   },
   "advanced": {

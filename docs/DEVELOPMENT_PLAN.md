@@ -139,7 +139,7 @@ by the PR-1 API-hardening pass (shipped — see §11 notes above).
 | Feature | Value | Effort | Status |
 |---|---|---|---|
 | Steam tables (IAPWS-IF97, regions 1/2/4 + B23) | Med | H | **Shipped in the v3.0 cycle (PR-2)** — client-side Basic Eng card + PSV steam-mode T_sat/superheat advisory; coefficients CI-verified against the Release's own tables (SPECIFICATION.md §4.2, §9 Vector 8) |
-| NPSH / pump hydraulics screening | Med | M | Approved — planned PR-3 (NPSHa only; HI/API margin tables are paywalled and stay out) |
+| NPSH / pump hydraulics screening | Med | M | **Shipped in the v3.0 cycle (PR-3)** — NPSHa card with IF97 water helper (Region 4 Pv + Region 1 ρ_f autofill); deliberately no margin verdict, HI/API margin tables are paywalled and stay out (SPECIFICATION.md §4.2, §9 Vector 9) |
 | Compressor power estimate (isentropic/polytropic) | Med | M | Approved — planned PR-4 (first-principles; PTC 10 is paywalled and is not cited) |
 | Unit-aware clipboard (copy value + unit) | Low | L | Approved — planned PR-5 |
 | Calculation notebook (save/load named scenarios) | High | M | Deferred to v3.1 (headliner; needs its own security review of stored state) |
