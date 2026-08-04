@@ -317,18 +317,87 @@ def test_zero_pipe_id_returns_a_structured_error(dp_module, post_to_handler,
     assert data["badge"] == "No Flow"
 
 
-def test_zero_viscosity_still_raises(dp_module, post_to_handler, dp_reference_payload):
-    """KNOWN ISSUE (docs/SPECIFICATION.md §11 #2): zero viscosity raises inside do_POST
-    and escapes as a bare HTTP 500 without CORS/JSON, surfacing in the UI as a generic
-    "API Connection Failed" badge.
-
-    This test asserts the CURRENT behavior so the suite is honest about it. The fix is
-    proposed and awaiting approval; when it lands, this test becomes an assertion that a
-    structured error object is returned instead.
-    """
+def test_zero_viscosity_returns_structured_error(dp_module, post_to_handler,
+                                                 dp_reference_payload):
+    """FIXED (closes docs/SPECIFICATION.md §11 #2): zero viscosity used to raise inside
+    do_POST and escape as a bare HTTP 500 without CORS/JSON, surfacing in the UI as a
+    generic "API Connection Failed" badge. It is now a structured 200 error carrying
+    the harmonized {error, message, badge, badgeClass} superset."""
     payload = dict(dp_reference_payload, v_visc=0, l_visc=0)
-    with pytest.raises(ZeroDivisionError):
-        post_to_handler(dp_module, payload)
+    status, data = post_to_handler(dp_module, payload)
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+    assert "message" in data and "badgeClass" in data
+
+
+def test_zero_density_returns_structured_error(dp_module, post_to_handler,
+                                               dp_reference_payload):
+    """Same §11 #2 family: a zero density on a flowing phase divided by zero in the
+    HEM mixture (or velocity) expression. Now a structured error."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload, v_den=0))
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+
+
+def test_vapor_only_payload_does_not_require_liquid_properties(dp_module,
+                                                               post_to_handler,
+                                                               dp_reference_payload):
+    """The §11 #2 guard must check only phases that actually FLOW: a vapor-only run
+    with zeroed liquid density/viscosity fields is legitimate and must still compute."""
+    payload = dict(dp_reference_payload, l_flow=0, l_den=0, l_visc=0)
+    status, data = post_to_handler(dp_module, payload)
+    assert status == 200
+    assert data["error"] is False
+    assert data["phase_key"] == "vapor"
+
+
+def test_zero_cfactor_is_rejected_not_defaulted(dp_module, post_to_handler,
+                                                dp_reference_payload):
+    """FIXED (closes §11 #3): cfactor 0 was silently mapped to 100 by an `or 100.0`.
+    A present-but-non-positive C-factor is now a structured error; only an ABSENT
+    cfactor still defaults to 100 (pre-v2.4 payload compatibility, checked by
+    test_cfactor_default_when_absent below)."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload, cfactor=0))
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+
+
+def test_negative_cfactor_is_rejected(dp_module, post_to_handler, dp_reference_payload):
+    """FIXED (closes §11 #3): a negative C-factor produced a negative Ve, which made
+    ero_ratio read 0.0 and the UI show a green WITHIN LIMIT badge — a non-conservative
+    lie. Now a structured error."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload, cfactor=-50))
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+
+
+def test_cfactor_default_when_absent(dp_module, post_to_handler, dp_reference_payload):
+    """An omitted cfactor (every pre-v2.4 payload and share link) must still default
+    to 100 and reproduce Vector 2's erosional velocity."""
+    payload = dict(dp_reference_payload)
+    payload.pop("cfactor", None)
+    status, data = post_to_handler(dp_module, payload)
+    assert status == 200
+    assert data["error"] is False
+    assert data["cfactor"] == 100.0
+    assert data["v_ero"] == pytest.approx(7.689, abs=5e-3)
+
+
+def test_dp_error_responses_carry_the_harmonized_superset(dp_module, post_to_handler,
+                                                          dp_reference_payload):
+    """§11 #6: dp error responses used to carry badge but no message. Every error
+    shape must now include the full {error, message, badge, badgeClass} superset."""
+    no_flow = post_to_handler(dp_module, dict(dp_reference_payload, v_flow=0,
+                                              l_flow=0))[1]
+    bad_prop = post_to_handler(dp_module, dict(dp_reference_payload, v_den=0))[1]
+    for data in (no_flow, bad_prop):
+        assert data["error"] is True
+        for field in ("message", "badge", "badgeClass"):
+            assert field in data, f"missing {field}"
 
 
 def test_unknown_payload_keys_are_ignored(dp_module, post_to_handler,
@@ -458,3 +527,64 @@ def test_re_regime_key_matches_the_english_label(dp_module, post_to_handler,
     _, data = post_to_handler(dp_module, dict(dp_reference_payload, l_visc=l_visc_cp))
     assert data["re_regime_key"] == expected_key
     assert data["re_regime"].lower() == expected_key
+
+
+def test_negative_phase_flow_is_rejected(dp_module, post_to_handler,
+                                         dp_reference_payload):
+    """A negative flow on ONE phase slipped every pre-existing guard (Wt stayed
+    positive) and could zero the HEM mixture-density denominator EXACTLY -> bare 500
+    (x/rho_v + (1-x)/rho_l = -0.1 + 0.1 for v_flow=-10/l_flow=20 at 10/20 kg/m³), or
+    nearly -> dpPa ~ 1e21 presented as a normal result. The UI's number inputs carry
+    no min attribute, so this was user-reachable."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload,
+                                                   v_flow=-10, l_flow=20,
+                                                   v_den=10, l_den=20))
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+
+
+def test_negative_roughness_is_rejected(dp_module, post_to_handler,
+                                        dp_reference_payload):
+    """Negative roughness drove the Colebrook argument negative -> math domain error
+    -> bare 500, and was typeable in the UI. Zero (hydraulically smooth) stays valid."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload, rough=-0.045))
+    assert status == 200
+    assert data["error"] is True
+    smooth = post_to_handler(dp_module, dict(dp_reference_payload, rough=0))[1]
+    assert smooth["error"] is False
+
+
+def test_non_numeric_field_is_a_structured_error(dp_module, post_to_handler,
+                                                 dp_reference_payload):
+    """float('abc') / float(None) raised outside any try -> bare 500. The extraction
+    block (and the cfactor/k_total coercions) are now guarded."""
+    for corrupt in (dict(dp_reference_payload, cfactor="abc"),
+                    dict(dp_reference_payload, v_flow=None),
+                    dict(dp_reference_payload, k_total="abc")):
+        status, data = post_to_handler(dp_module, corrupt)
+        assert status == 200
+        assert data["error"] is True
+        assert data["badge"] == "Invalid Input"
+
+
+def test_nan_input_is_a_structured_error(dp_module, post_to_handler,
+                                         dp_reference_payload):
+    """NaN passes every ordered comparison and ends up as a bare NaN token in the
+    response — invalid RFC 8259 JSON that a browser's res.json() rejects. An isfinite
+    sweep now rejects NaN/Infinity in any extracted field."""
+    for corrupt in (dict(dp_reference_payload, v_den=float("nan")),
+                    dict(dp_reference_payload, id=float("inf"))):
+        status, data = post_to_handler(dp_module, corrupt)
+        assert status == 200
+        assert data["error"] is True
+        assert data["badge"] == "Invalid Input"
+
+
+def test_dp_non_object_json_body_is_a_structured_400(dp_module, post_to_handler):
+    """A valid-JSON non-object body ([1,2,3]) used to crash at data.get() -> bare
+    500. Now the structured 400 branch."""
+    status, data = post_to_handler(dp_module, [1, 2, 3])
+    assert status == 400
+    assert data["error"] is True
+    assert data["badge"] == "Bad Request"

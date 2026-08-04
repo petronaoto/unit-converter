@@ -234,3 +234,167 @@ def test_oversized_requirement_is_flagged_not_silently_capped(psv_module):
     """Above the largest API 526 orifice (T = 26.0 in²) the result must be marked."""
     letter, _, _ = psv_module.select_orifice(100.0)
     assert letter.endswith("+"), f"expected an over-range marker, got {letter!r}"
+
+
+# ── v3.0 PR-1 hardening (closes docs/SPECIFICATION.md §11 #4, #5, #6) ──────────
+
+
+def test_gas_k_of_exactly_one_is_a_structured_error(psv_module):
+    """FIXED (closes §11 #4): k = 1 raised ZeroDivisionError inside calc_C's
+    (k+1)/(k-1) exponent and reached the UI as the literal Python message
+    "float division by zero"."""
+    res = psv_module.size_gas({"W": 53500, "M": 51, "k": 1.0, "T": 627,
+                               "P1": 97.2}, "USC")
+    assert res["error"] is True
+    assert "k must be > 1" in res["message"]
+    assert "division" not in res["message"].lower()
+
+
+def test_gas_k_below_one_is_rejected_not_silently_computed(psv_module):
+    """Same §11 #4 family: k < 1 raised nothing and silently produced a physically
+    meaningless area (ideal-gas k = Cp/Cv is > 1 by definition)."""
+    res = psv_module.size_gas({"W": 53500, "M": 51, "k": 0.9, "T": 627,
+                               "P1": 97.2}, "USC")
+    assert res["error"] is True
+    assert "k must be > 1" in res["message"]
+
+
+def test_unexpected_exceptions_no_longer_leak_python_internals(psv_module,
+                                                               post_to_handler):
+    """FIXED (closes §11 #4): the handler's generic except returned str(e), leaking
+    interpreter internals into the UI. A negative absolute temperature still raises
+    (math domain error in sqrt) — the response must be the fixed generic message."""
+    status, data = post_to_handler(psv_module, {"mode": "gas", "units": "USC",
+                                                "W": 53500, "M": 51, "k": 1.3,
+                                                "T": -100, "P1": 97.2})
+    assert status == 200
+    assert data["error"] is True
+    assert data["message"] == "Internal calculation error — check the input values."
+    assert "domain" not in data["message"] and "division" not in data["message"]
+
+
+def test_psv_error_responses_carry_the_harmonized_superset(psv_module,
+                                                           post_to_handler):
+    """§11 #6: psv errors used to carry message but no badge fields. Every error
+    shape must now include the full {error, message, badge, badgeClass} superset,
+    matching flowregime.py's established schema."""
+    cases = [
+        {"mode": "gas", "units": "USC", "W": 0, "M": 51, "k": 1.3, "T": 627,
+         "P1": 97.2},                                       # validation message
+        {"mode": "gas", "units": "USC", "W": 53500, "M": 51, "k": 1.0, "T": 627,
+         "P1": 97.2},                                       # k guard
+        {"mode": "does-not-exist", "units": "USC"},         # unknown mode
+    ]
+    for payload in cases:
+        status, data = post_to_handler(psv_module, payload)
+        assert status == 200
+        assert data["error"] is True
+        for field in ("message", "badge", "badgeClass"):
+            assert field in data, f"missing {field} for {payload.get('mode')}"
+
+
+def test_twophase_omitted_pa_defaults_to_atmospheric_reference_case_unchanged(psv_module):
+    """FIXED (closes §11 #5, maintainer decision 2026-08-04): omitted/zero Pa now
+    defaults to atmospheric instead of a perfect vacuum. Vector 4's case has
+    Pc = 52.971 psia > 14.696, so it stays on the critical branch bit-for-bit."""
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE), "USC")
+    assert res["error"] is False
+    assert res["flow_regime"] == "Two-Phase Critical (Omega)"
+    assert res["area"] == pytest.approx(19.0114, abs=5e-4)
+
+
+def test_twophase_low_po_with_omitted_pa_is_now_subcritical(psv_module):
+    """The behavioral point of §11 #5: with Pa = 0 treated as vacuum, the critical
+    branch was unconditional and UNDER-sized whenever the real operating point was
+    subcritical. At Po = 20 psia the critical pressure is 0.6564 x 20 = 13.13 psia,
+    BELOW atmospheric — a vented system physically cannot be choked there, and the
+    subcritical equation must now be used."""
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE, Po=20), "USC")
+    assert res["error"] is False
+    assert res["flow_regime"] == "Two-Phase Subcritical (Omega)"
+    assert res["Pc"] == pytest.approx(0.6564 * 20, abs=5e-3)
+    # Pinned under the CORRECTED Leung bracket (§11 #12): the pre-fix formula gave
+    # G = 362.6 / area = 30.978 in² — a ~21 % under-size on this branch.
+    assert res["G"] == pytest.approx(288.25, abs=5e-2)
+    assert res["area"] == pytest.approx(38.9718, abs=5e-3)
+
+
+def test_twophase_si_omitted_pa_uses_atmospheric_in_kpa(psv_module):
+    """The SI branch must default to 101.325 kPa, not 14.696 (unit mix-up guard).
+    Po = 130 kPa (above atmospheric, so flow is possible) gives Pc = eta_c * 130
+    ~ 91 kPa, below the 101.325 kPa default back-pressure -> subcritical."""
+    res = psv_module.size_twophase({"W": 10000, "vo": 0.019, "v9": 0.023,
+                                    "Po": 130, "Pa": 0, "Kd": 0.85}, "SI")
+    assert res["error"] is False
+    assert res["flow_regime"] == "Two-Phase Subcritical (Omega)"
+    assert res["Pc"] < 101.325 < 130
+    # Corrected Leung bracket (§11 #12); the pre-fix formula selected orifice L here.
+    assert res["area"] == pytest.approx(2589.0238, abs=5e-2)
+    assert res["orifice"] == "N"
+
+
+def test_twophase_explicit_pa_is_still_honored(psv_module):
+    """An explicit positive Pa must be used as given — the atmospheric default only
+    replaces omitted/zero values. Pa = 60 psia > Pc = 52.97 forces subcritical."""
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE, Pa=60), "USC")
+    assert res["error"] is False
+    assert res["flow_regime"] == "Two-Phase Subcritical (Omega)"
+
+
+def test_subcritical_flux_is_continuous_with_the_critical_branch(psv_module):
+    """FIXED (closes §11 #12): the subcritical mass-flux bracket was coded as
+    -2·ω·ln(η) + (ω-1)(1-η) instead of Leung's -2·[ω·ln(η) + (ω-1)(1-η)] — the -2
+    multiplied only the log term. That form produced subcritical flux ABOVE choked
+    flux (impossible — choked flow is maximal) and was discontinuous at η_c.
+
+    η_c is DEFINED as the point where the flux expression peaks, so the subcritical
+    G evaluated just below η_c must reproduce the critical-branch G. The residual
+    tolerance reflects omega_eta_c's quadratic approximation of the transcendental
+    η_c equation, not the flux formula itself. Before the §11 #5 atmospheric default
+    this branch was unreachable at the UI's Pa default of 0; the two ship together."""
+    import math as _math
+    for vo, v9 in ((0.3116, 0.3629), (0.019, 0.023), (0.05, 0.10)):
+        omega = 9.0 * (v9 / vo - 1.0)
+        eta_c = psv_module.omega_eta_c(omega)
+        Po = 100.0
+        G_crit = eta_c * _math.sqrt(Po / (vo * omega))
+        eta = eta_c * 0.999999
+        inner = -2.0 * (omega * _math.log(eta) + (omega - 1.0) * (1.0 - eta))
+        denom = omega * (1.0 / eta - 1.0) + 1.0
+        G_sub = _math.sqrt(inner) * _math.sqrt(Po / vo) / denom
+        assert G_sub == pytest.approx(G_crit, rel=2e-3), f"discontinuous at omega={omega}"
+        # And further below eta_c the flux must FALL — never exceed choked flow.
+        eta_low = eta_c * 0.7
+        inner_l = -2.0 * (omega * _math.log(eta_low) + (omega - 1.0) * (1.0 - eta_low))
+        denom_l = omega * (1.0 / eta_low - 1.0) + 1.0
+        G_low = _math.sqrt(inner_l) * _math.sqrt(Po / vo) / denom_l
+        assert G_low < G_crit, f"subcritical flux exceeds choked flux at omega={omega}"
+
+
+def test_twophase_po_at_or_below_default_backpressure_is_a_specific_error(psv_module):
+    """With the atmospheric Pa default, Po ≤ 14.696 psia and an omitted Pa cannot
+    relieve — the error must say exactly that (and name the vacuum-discharge escape
+    hatch), not fall through to the generic subcritical-flux message."""
+    res = psv_module.size_twophase(dict(TWOPHASE_CASE, Po=10), "USC")
+    assert res["error"] is True
+    assert "must exceed the back-pressure" in res["message"]
+    assert "vacuum" in res["message"]
+
+
+def test_gas_nan_mass_flow_is_rejected(psv_module):
+    """NaN fails every ordered comparison, so the old `W <= 0` guard admitted it and
+    returned error:false with area NaN — a body a browser cannot even parse. The
+    guards now use not-(x > 0) polarity."""
+    res = psv_module.size_gas({"W": float("nan"), "M": 51, "k": 1.3, "T": 627,
+                               "P1": 97.2}, "USC")
+    assert res["error"] is True
+
+
+def test_psv_non_object_json_body_is_a_structured_400(psv_module, post_to_handler):
+    """A valid-JSON body that is not an object ([1,2,3]) used to crash at data.get()
+    -> bare 500. Now the 400 branch with the full superset."""
+    status, data = post_to_handler(psv_module, [1, 2, 3])
+    assert status == 400
+    assert data["error"] is True
+    for field in ("message", "badge", "badgeClass"):
+        assert field in data
