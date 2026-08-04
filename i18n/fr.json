@@ -70,6 +70,18 @@
     "addModuleCta": "INITIALISER UN NOUVEAU MODULE"
   },
   "basic": {
+    "nav": {
+      "aria": "Sommaire Basic Eng",
+      "pipe": "Vol. conduite",
+      "z": "Facteur Z",
+      "api": "°API/SG",
+      "visc": "Viscosité",
+      "mf": "Masse↔Vol",
+      "gp": "Prop. du gaz",
+      "steam": "Vapeur",
+      "npsh": "NPSHa",
+      "cmp": "Compresseur"
+    },
     "pipeVolume": {
       "title": "Calculateur de volume de conduite",
       "diameterLabel": "DIAMÈTRE INTÉRIEUR",

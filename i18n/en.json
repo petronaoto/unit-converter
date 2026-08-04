@@ -70,6 +70,18 @@
     "addModuleCta": "INITIALIZE NEW MODULE"
   },
   "basic": {
+    "nav": {
+      "aria": "Basic Eng contents",
+      "pipe": "Pipe Vol",
+      "z": "Z-Factor",
+      "api": "°API/SG",
+      "visc": "Viscosity",
+      "mf": "Mass↔Vol",
+      "gp": "Gas Props",
+      "steam": "Steam",
+      "npsh": "NPSHa",
+      "cmp": "Compressor"
+    },
     "pipeVolume": {
       "title": "Pipe Volume Calculator",
       "diameterLabel": "INNER DIAMETER",

@@ -249,9 +249,25 @@
     </div>
 
     <div id="tab-basic" class="hidden">
+      <!-- v3.0 — Basic Eng quick links: the tab now holds nine cards, so this strip
+           mirrors the How To Use / Theory jump-link idiom (same pill styling, each
+           pill in its card's accent color) for feature awareness and navigation.
+           Card divs carry scroll-mt-64 md:scroll-mt-40 to clear the sticky header,
+           measured live: 226 px tall at 375 px width, 134 px at 1280 px. -->
+      <nav data-i18n-aria="basic.nav.aria" aria-label="Basic Eng contents" class="flex flex-wrap gap-2 mb-4 text-[10px] font-mono">
+        <a href="#basic-pipe" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.pipe">Pipe Vol</a>
+        <a href="#basic-z" class="px-2 py-1 rounded bg-slate-800 text-purple-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.z">Z-Factor</a>
+        <a href="#basic-api" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.api">°API/SG</a>
+        <a href="#basic-visc" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.visc">Viscosity</a>
+        <a href="#basic-mf" class="px-2 py-1 rounded bg-slate-800 text-blue-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.mf">Mass↔Vol</a>
+        <a href="#basic-gp" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.gp">Gas Props</a>
+        <a href="#basic-steam" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.steam">Steam</a>
+        <a href="#basic-npsh" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.npsh">NPSHa</a>
+        <a href="#basic-cmp" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.cmp">Compressor</a>
+      </nav>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        <div id="basic-pipe" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span><span data-i18n="basic.pipeVolume.title">Pipe Volume Calculator</span></h2>
           </div>
@@ -286,7 +302,7 @@
           </div>
         </div>
 
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        <div id="basic-z" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span><span data-i18n="basic.zFactor.title">Z-Factor Estimator</span> (Papay)</h2>
           </div>
@@ -327,7 +343,7 @@
         </div>
 
         <!-- B2 — Petroleum Liquid Gravity (°API ↔ SG ↔ Density) -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        <div id="basic-api" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span data-i18n="basic.gravity.title">Petroleum Gravity (°API ↔ SG ↔ Density)</span></h2>
           </div>
@@ -358,7 +374,7 @@
         </div>
 
         <!-- B3a — Viscosity (Dynamic ↔ Kinematic) -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        <div id="basic-visc" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span><span data-i18n="basic.viscosity.title">Viscosity (Dynamic ↔ Kinematic)</span></h2>
           </div>
@@ -389,7 +405,7 @@
         </div>
 
         <!-- B3b — Mass ↔ Volumetric Flow (by density) -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+        <div id="basic-mf" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span><span data-i18n="basic.massVolFlow.title">Mass ↔ Volumetric Flow (by density)</span></h2>
           </div>
@@ -422,7 +438,7 @@
         <!-- B4 (v2.8) — Gas Property Estimator: LGE viscosity, sonic velocity, Joule-Thomson.
              All three chain off the same Papay Z as the Z-Factor Estimator above, via the
              shared papayZ() helper — the two cards cannot disagree by construction. -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+        <div id="basic-gp" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span data-i18n="basic.gasProps.title">Gas Property Estimator</span></h2>
             <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.gasProps.screeningChip">SCREENING</span>
@@ -499,7 +515,7 @@
              literal below (const IF97) — the SAME literal tests/test_steam_if97.py
              extracts and re-runs against the release's own verification tables.
              Region 3 (dense/near-critical) is deliberately out of scope. -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+        <div id="basic-steam" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span><span data-i18n="basic.steam.title">Steam Properties (IAPWS-IF97)</span></h2>
             <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.steam.chip">REGIONS 1·2·4</span>
@@ -599,7 +615,7 @@
              disagree about water. Deliberately NO margin verdict: NPSHr comes from
              the pump vendor and the HI/API margin tables are paywalled — this card
              reports the physical number and stops. -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+        <div id="basic-npsh" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span><span data-i18n="basic.npsh.title">Pump Suction — NPSHa</span></h2>
             <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.npsh.chip">SCREENING</span>
@@ -684,7 +700,7 @@
              cards (Z_avg of suction and a one-pass discharge estimate). This is a
              screening estimate, not an ASME PTC 10 performance test — that
              standard is licensed and is deliberately not cited or reproduced. -->
-        <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
+        <div id="basic-cmp" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden md:col-span-2">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span><span data-i18n="basic.cmp.title">Compressor — Head &amp; Power</span></h2>
             <span class="text-[10px] font-mono text-slate-500" data-i18n="basic.cmp.chip">ISENTROPIC · POLYTROPIC</span>

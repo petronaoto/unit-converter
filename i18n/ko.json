@@ -70,6 +70,18 @@
     "addModuleCta": "새 모듈 생성"
   },
   "basic": {
+    "nav": {
+      "aria": "Basic Eng 목차",
+      "pipe": "배관 용적",
+      "z": "Z 팩터",
+      "api": "°API/SG",
+      "visc": "점도",
+      "mf": "질량↔부피",
+      "gp": "가스 물성",
+      "steam": "증기",
+      "npsh": "NPSHa",
+      "cmp": "압축기"
+    },
     "pipeVolume": {
       "title": "배관 체적 계산기",
       "diameterLabel": "내경",

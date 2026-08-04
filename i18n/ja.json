@@ -70,6 +70,18 @@
     "addModuleCta": "新規モジュールを追加"
   },
   "basic": {
+    "nav": {
+      "aria": "Basic Eng 目次",
+      "pipe": "配管容量",
+      "z": "Zファクター",
+      "api": "°API/SG",
+      "visc": "粘度",
+      "mf": "質量↔体積",
+      "gp": "ガス物性",
+      "steam": "蒸気",
+      "npsh": "NPSHa",
+      "cmp": "圧縮機"
+    },
     "pipeVolume": {
       "title": "配管容積計算",
       "diameterLabel": "内径",
