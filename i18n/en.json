@@ -27,7 +27,8 @@
     "openNavigation": "Open section navigation",
     "sharedModuleAdded": "1 shared module added",
     "sharedModulesAdded": "{n} shared modules added",
-    "shareLinkCopiedLong": "Link copied ({n} chars) — may be truncated by some chat/mail clients"
+    "shareLinkCopiedLong": "Link copied ({n} chars) — may be truncated by some chat/mail clients",
+    "copiedWithUnit": "Copied: {text}"
   },
   "nav": {
     "general": "General",

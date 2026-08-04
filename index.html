@@ -120,7 +120,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="nm3-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('nm3-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('nm3-input', this)" data-unit-src="nm3-select" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="nm3-select" onchange="if(nm3Input.value) nm3Input.dispatchEvent(new Event('input'))" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="1">Nm³</option><option value="1000">kNm³</option><option value="1000000">mNm³</option><option value="1000000000">bNm³</option></select>
               </div>
@@ -131,7 +131,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="scf-input" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('scf-input', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('scf-input', this)" data-unit-src="scf-select" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="scf-select" onchange="if(scfInput.value) scfInput.dispatchEvent(new Event('input'))" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="1">scf</option><option value="1000000">mscf</option><option value="1000000000">bscf</option><option value="1000000000000">tscf</option></select>
               </div>
@@ -155,7 +155,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="press-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('press-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('press-input1', this)" data-unit-src="press-select1" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="press-select1" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="100000" selected>bar</option><option value="6894.75729">psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
               </div>
@@ -172,7 +172,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="press-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('press-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('press-input2', this)" data-unit-src="press-select2" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="press-select2" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="100000">bar</option><option value="6894.75729" selected>psi</option><option value="1">Pa</option><option value="1000">kPa</option><option value="1000000">MPa</option><option value="101325">atm</option></select>
               </div>
@@ -191,7 +191,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="temp-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('temp-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('temp-input1', this)" data-unit-src="temp-select1" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="temp-select1" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="C" selected>°C</option><option value="F">°F</option><option value="K">K</option></select>
               </div>
@@ -202,7 +202,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="temp-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('temp-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('temp-input2', this)" data-unit-src="temp-select2" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <select id="temp-select2" class="bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-3 text-amber-500 font-semibold text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="C">°C</option><option value="F" selected>°F</option><option value="K">K</option></select>
               </div>
@@ -220,7 +220,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="hv-input1" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('hv-input1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('hv-input1', this)" data-copy-unit="MJ/Nm³" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <div class="flex items-center bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-4"><span class="text-amber-500 font-semibold text-sm">MJ/Nm³</span></div>
               </div>
@@ -231,7 +231,7 @@
               <div class="flex rounded-lg shadow-inner">
                 <div class="flex-1 flex items-center bg-slate-950/70 border border-slate-700 rounded-l-lg focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                   <input type="text" inputmode="decimal" id="hv-input2" placeholder="0" class="w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" />
-                  <button onclick="copyToClipboard('hv-input2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyToClipboard('hv-input2', this)" data-copy-unit="Btu/scf" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
                 <div class="flex items-center bg-slate-800 border-y border-r border-slate-700 rounded-r-lg px-4"><span class="text-amber-500 font-semibold text-sm">Btu/scf</span></div>
               </div>
@@ -279,7 +279,7 @@
                 <select id="pipe-out-u" onchange="calcPipeVolume()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="m3">m³</option><option value="bbl">Barrels (bbl)</option><option value="gal">gallon</option></select>
                 <div class="flex items-center gap-3">
                   <span id="pipe-vol-out" class="text-2xl font-bold font-mono text-white">0.000</span>
-                  <button onclick="copyText(document.getElementById('pipe-vol-out').innerText, this)" class="text-slate-400 hover:text-cyan-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyText(document.getElementById('pipe-vol-out').innerText, this)" data-unit-src="pipe-out-u" class="text-slate-400 hover:text-cyan-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                 </div>
               </div>
             </div>
@@ -336,7 +336,7 @@
               <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="basic.gravity.apiLabel">API GRAVITY</span> <span class="text-slate-600 font-normal">(°API, 60/60 °F)</span></label>
               <div class="relative rounded-lg flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500">
                 <input type="number" step="any" id="api-grav" placeholder="e.g. 35" oninput="calcAPI('api')" class="w-full pl-4 py-2.5 bg-transparent text-slate-100 outline-none" />
-                <button onclick="copyText(document.getElementById('api-grav').value, this)" data-i18n-aria="basic.gravity.copyApiAria" aria-label="Copy API gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                <button onclick="copyText(document.getElementById('api-grav').value, this)" data-copy-unit="°API" data-i18n-aria="basic.gravity.copyApiAria" aria-label="Copy API gravity" class="px-3 text-slate-500 hover:text-amber-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
               </div>
             </div>
             <div>
@@ -542,7 +542,7 @@
                 <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.steam.hLabel">ENTHALPY h</div>
                 <div class="flex items-center justify-between gap-2">
                   <span id="sp-out-h" class="text-xl font-bold font-mono text-white">—</span>
-                  <button onclick="copyText(document.getElementById('sp-out-h').innerText, this)" class="text-slate-400 hover:text-sky-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyText(document.getElementById('sp-out-h').innerText, this)" data-unit-src="sp-out-h-u" class="text-slate-400 hover:text-sky-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   <select id="sp-out-h-u" onchange="calcSteamProps()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="0.42992261">Btu/lb</option><option value="0.23884590">kcal/kg</option></select>
                 </div>
                 <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.steam.hMethod">RT·τ·γ_τ</div>
@@ -662,7 +662,7 @@
                 <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.npsh.outLabel">NPSH AVAILABLE</div>
                 <div class="flex items-center justify-between gap-2">
                   <span id="npsh-out" class="text-3xl font-bold font-mono text-white">—</span>
-                  <button onclick="copyText(document.getElementById('npsh-out').innerText, this)" class="text-slate-400 hover:text-teal-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyText(document.getElementById('npsh-out').innerText, this)" data-unit-src="npsh-out-u" class="text-slate-400 hover:text-teal-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   <select id="npsh-out-u" onchange="calcNPSH()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">m</option><option value="3.280840">ft</option></select>
                 </div>
                 <div id="npsh-out-note" class="text-[10px] text-slate-600 mt-1" data-i18n="basic.npsh.outMethod">(P − Pv)/ρg + z − h_f</div>
@@ -745,7 +745,7 @@
                 <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.hpLabel">POLYTROPIC HEAD H_p</div>
                 <div class="flex items-center justify-between gap-2">
                   <span id="cmp-out-hp" class="text-xl font-bold font-mono text-white">—</span>
-                  <button onclick="copyText(document.getElementById('cmp-out-hp').innerText, this)" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyText(document.getElementById('cmp-out-hp').innerText, this)" data-unit-src="cmp-out-hp-u" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   <select id="cmp-out-hp-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kJ/kg</option><option value="334.55256">ft·lbf/lbm</option><option value="0.42992261">Btu/lb</option></select>
                 </div>
                 <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.hpMethod">Z_avg·(R/M)·T₁·(r^m−1)/m, m = (k−1)/(k·η_p)</div>
@@ -770,7 +770,7 @@
                 <div class="text-[10px] font-semibold tracking-wider text-slate-400 mb-2" data-i18n="basic.cmp.powerLabel">GAS POWER</div>
                 <div class="flex items-center justify-between gap-2">
                   <span id="cmp-out-power" class="text-xl font-bold font-mono text-white">—</span>
-                  <button onclick="copyText(document.getElementById('cmp-out-power').innerText, this)" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  <button onclick="copyText(document.getElementById('cmp-out-power').innerText, this)" data-unit-src="cmp-out-power-u" class="text-slate-400 hover:text-violet-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   <select id="cmp-out-power-u" onchange="calcCompressor()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="1">kW</option><option value="0.001">MW</option><option value="1.3410221">hp</option></select>
                 </div>
                 <div class="text-[10px] text-slate-600 mt-1" data-i18n="basic.cmp.powerMethod">ṁ·H_p/η_p — no mechanical losses</div>
@@ -891,7 +891,7 @@
                   <div class="flex items-center gap-2">
                     <span id="out-ghv" class="font-mono font-bold text-lg text-white">0.00</span>
                     <select id="ghv-unit" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer"><option value="mj">MJ/Nm³</option><option value="btu">btu/scf</option></select>
-                    <button onclick="copyText(document.getElementById('out-ghv').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('out-ghv').innerText, this)" data-unit-src="ghv-unit" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
 
@@ -900,7 +900,7 @@
                   <div class="flex items-center gap-2">
                     <span id="out-mw" class="font-mono font-bold text-lg text-white">0.000</span>
                     <span class="text-xs text-orange-500 font-bold">g/mol</span>
-                    <button onclick="copyText(document.getElementById('out-mw').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('out-mw').innerText, this)" data-copy-unit="g/mol" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
 
@@ -933,7 +933,7 @@
                   <div class="flex items-center gap-2">
                     <span id="out-liq-den" class="font-mono font-bold text-lg text-white">0.00</span>
                     <select id="out-liq-den-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer"><option value="kg/m3">kg/m³</option><option value="lb/ft3">lb/ft³</option></select>
-                    <button onclick="copyText(document.getElementById('out-liq-den').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('out-liq-den').innerText, this)" data-unit-src="out-liq-den-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
                 <div id="out-liq-warn" class="hidden text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-relaxed"></div>
@@ -966,7 +966,7 @@
                       <div class="flex items-center gap-2">
                         <select id="flow-vol-out-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="1" class="vf-label" data-val="h">kNm³/h</option><option value="2" class="vf-label" data-val="d">kNm³/d</option><option value="3" class="vf-label" data-val="scf">mscfd</option></select>
                         <select id="flow-mol-out-u" onchange="calcGHV()" class="hidden bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="kmol_h">kmol/h</option><option value="mol_s">mol/s</option></select>
-                        <button onclick="copyText(document.getElementById('out-vol-flow').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                        <button onclick="copyText(document.getElementById('out-vol-flow').innerText, this)" data-unit-src="flow-vol-out-u flow-mol-out-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                       </div>
                     </div>
                   </div>
@@ -993,7 +993,7 @@
                       <div class="flex items-center gap-2">
                         <select id="flow-mass-out-u" onchange="calcGHV()" class="bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="3600">kg/s</option><option value="1">kg/h</option><option value="1000" selected>ton/h</option><option value="41.666667">ton/d</option><option value="0.453592">lb/h</option><option value="0.018899">lb/d</option></select>
                         <select id="flow-mol-out2-u" onchange="calcGHV()" class="hidden bg-transparent text-orange-500 text-xs font-bold outline-none cursor-pointer text-right"><option value="kmol_h">kmol/h</option><option value="mol_s">mol/s</option></select>
-                        <button onclick="copyText(document.getElementById('out-mass-flow').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                        <button onclick="copyText(document.getElementById('out-mass-flow').innerText, this)" data-unit-src="flow-mass-out-u flow-mol-out2-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                       </div>
                     </div>
                   </div>
@@ -1171,7 +1171,7 @@
                   <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.totalDpLabel">TOTAL dP</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-total" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-total').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('dp-out-total').innerText, this)" data-unit-src="dp-out-total-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-total-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="100000">bar</option><option value="6894.76">psi</option><option value="1">Pa</option><option value="1000" selected>kPa</option><option value="1000000">MPa</option></select>
                 </div>
@@ -1179,7 +1179,7 @@
                   <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.dpPerLengthLabel">dP / LENGTH</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-len" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-len').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('dp-out-len').innerText, this)" data-unit-src="dp-out-len-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-len-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1000">bar/100m</option><option value="10" selected>kPa/100m</option><option value="22620.59">psi/ft</option></select>
                 </div>
@@ -1187,7 +1187,7 @@
                   <label class="block text-xs text-slate-500 mb-1" data-i18n="advanced.deltaP.velocityLabel">VELOCITY</label>
                   <div class="flex items-center gap-2">
                     <span id="dp-out-vel" class="text-2xl font-mono text-white">0.00</span>
-                    <button onclick="copyText(document.getElementById('dp-out-vel').innerText, this)" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('dp-out-vel').innerText, this)" data-unit-src="dp-out-vel-u" class="text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                   <select id="dp-out-vel-u" onchange="calcDeltaPressure()" class="mt-1 bg-transparent text-amber-500 text-xs outline-none cursor-pointer"><option value="1" selected>m/s</option><option value="3.28084">ft/s</option></select>
                 </div>
@@ -1423,7 +1423,7 @@
                   <div class="flex items-baseline gap-2">
                     <span id="psv-out-area" class="text-3xl font-mono font-bold text-white">—</span>
                     <span id="psv-out-area-unit" class="text-sm text-red-400 font-bold">in²</span>
-                    <button onclick="copyText(document.getElementById('psv-out-area').innerText,this)" class="text-slate-500 hover:text-amber-500 transition-colors ml-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <button onclick="copyText(document.getElementById('psv-out-area').innerText,this)" data-unit-src="psv-out-area-unit" class="text-slate-500 hover:text-amber-500 transition-colors ml-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
                 <div>
@@ -1477,6 +1477,7 @@
             <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 Steam</a>
             <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 NPSHa</a>
             <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Compressor</a>
+            <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-lime-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Copy</a>
           </nav>
         </div>
 
@@ -1996,6 +1997,13 @@
           <p class="text-sm text-slate-400 leading-relaxed mt-3">The card returns the <strong class="text-slate-200">polytropic head</strong> (what the vendor's curve is drawn in), the <strong class="text-slate-200">isentropic head</strong> (the ideal-path benchmark), the <strong class="text-slate-200">discharge temperature</strong> along the polytropic path, and the <strong class="text-slate-200">gas power</strong> ṁ·H_p/η_p — the enthalpy rise rate, before bearings, seals and gearbox. The Z box shows the real-gas correction at work: Z₁ at suction, Z₂ at the estimated discharge state, and the Z_avg the heads actually use, all from the same Papay correlation as the Z-Factor card. The path line reads back the pressure ratio, the polytropic exponent n, and the isentropic efficiency implied by your η_p.</p>
           <div class="bg-violet-500/10 border border-violet-500/30 rounded-lg p-3 text-xs text-violet-300 mt-3"><strong>ℹ Worked example</strong> — SG 0.65 gas at 40 bar a / 30 °C compressed to 80 bar a with k = 1.3 and η_p = 75 %: the Z box shows 0.9083 / 0.9322 / 0.9203, polytropic head <strong>95.18714 kJ/kg</strong>, isentropic head 92.60625 kJ/kg, discharge temperature <strong>102.06672 °C</strong>, and at 100 t/h the gas power is <strong>3,525.44967 kW</strong> (≈ 3.5 MW). The path line reads r = 2.000 · n = 1.4444 · η_s = 72.97 % — the implied isentropic efficiency always sits below the polytropic one in compression.</div>
           <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Screening, not a performance test.</strong> These are the textbook isentropic and perfect-gas polytropic relations with a one-pass Papay Z correction — first principles, deliberately not a test-code procedure (ASME PTC 10 is a licensed standard and is not reproduced here). The discharge temperature is the perfect-gas path value; real-gas behaviour and any cooling shift the actual number. For a machine selection or an acceptance test, use the vendor's tools and the vendor's efficiency.</p></div>
+        </section>
+
+        <!-- 19. Unit-aware copy (v3.0) -->
+        <section>
+          <h3 id="howto-19" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b083">19. Unit-Aware Copy</h3>
+          <div data-i18n-html="docs.howto.b084"><p class="text-sm text-slate-400 leading-relaxed">Every copy button in the application copies the <strong class="text-slate-200">bare number</strong> on a plain click — exactly as before, so a value pasted into a spreadsheet cell stays a number. To copy the value <strong class="text-slate-200">with its unit</strong> (for a report, an email, a datasheet), hold <strong class="text-lime-400">Ctrl</strong> (Windows) or <strong class="text-lime-400">⌘</strong> (Mac) — Shift works too — while clicking. On a phone or tablet, <strong class="text-lime-400">press and hold</strong> the copy button for ≈ 0.5 s. A toast confirms what landed on the clipboard, e.g. <span class="font-mono text-slate-300">95.18714 kJ/kg</span>.</p>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">The unit is read live from the control next to the value — change a unit selector and the next copy carries the new unit, including the VOL/MOL flow outputs, which follow whichever selector is currently visible. Dimensionless results (Z-factor, SG, Wobbe Index, the API 526 orifice letter) never gain a suffix, and the PSV orifice area keeps embedding its unit in the displayed text as it always has. Custom-module cards get the same treatment with their own unit labels.</p></div>
         </section>
 
       </div>
@@ -2908,12 +2916,56 @@
       document.getElementById('flow-mol-out2-u').classList.toggle('hidden', mode==='mass');
       calcGHV();
     }
+	// ── v3.0 PR-5 — unit-aware clipboard ─────────────────────────────────────
+    // Plain click copies the BARE value (spreadsheet-safe — unchanged since v1).
+    // Ctrl/Cmd/Shift+click, or a ~500 ms long-press on touch, appends the unit:
+    //   data-unit-src  (space-separated element ids) — first non-hidden wins;
+    //                                <select> → selected option's label text
+    //   data-copy-unit (literal string) — fixed chips with no addressable element
+    // Buttons with neither attribute behave identically on every path (Z, SG,
+    // WI, orifice letter are dimensionless; the PSV orifice area already embeds
+    // its unit in the displayed text). SECURITY: only element IDS may appear in
+    // data-unit-src — never user-supplied unit text, which stays in element
+    // text content (see createCard()).
+    function copyUnitOf(btn) {
+      if (!btn) return '';
+      const lit = btn.getAttribute('data-copy-unit');
+      if (lit) return lit;
+      const src = btn.getAttribute('data-unit-src');
+      if (!src) return '';
+      for (const id of src.split(' ')) {
+        const el = document.getElementById(id);
+        if (!el || el.classList.contains('hidden')) continue;
+        if (el.tagName === 'SELECT') {
+          const o = el.options[el.selectedIndex];
+          return o ? o.text.trim() : '';
+        }
+        return el.innerText.trim();
+      }
+      return '';
+    }
+    // Modifier state is captured by a capture-phase listener (runs before any
+    // inline onclick), so the 30+ existing onclick attributes stay untouched.
+    let _copyModClick = false;
+    document.addEventListener('click', e => {
+      _copyModClick = !!(e.ctrlKey || e.metaKey || e.shiftKey);
+    }, true);
+
 	function copyText(text, btnElement) {
       if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
+      // long-press already copied with the unit — swallow the click that follows
+      if (btnElement && btnElement._lpDone) { btnElement._lpDone = false; return; }
+      let out = String(text);
+      const wantUnit = !!(btnElement && (btnElement._lpUnit || _copyModClick));
+      if (wantUnit) {
+        const u = copyUnitOf(btnElement);
+        if (u) out = out + ' ' + u;
+      }
+      navigator.clipboard.writeText(out).then(() => {
         const originalHTML = btnElement.innerHTML;
         btnElement.innerHTML = `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
         setTimeout(() => { btnElement.innerHTML = originalHTML; }, 1500);
+        if (wantUnit && out !== String(text)) showToast(tr('common.copiedWithUnit', {text: out}));
       });
     }
 
@@ -2921,6 +2973,38 @@
       const inputEl = document.getElementById(inputId);
       copyText(inputEl.value, btnElement);
     }
+
+    // Long-press (touch/pen only — mouse users have modifier keys). Delegated so
+    // custom-module cards created later are covered without re-wiring. The timer
+    // fires btn.click() with _lpUnit set; _lpDone then swallows the native click
+    // that follows finger-lift (auto-cleared in case the browser never sends it).
+    const COPY_BTN_SEL = 'button[onclick*="copyText"], button[onclick*="copyToClipboard"]';
+    let _lpTimer = null, _lpBtn = null;
+    function _lpCancel() { clearTimeout(_lpTimer); _lpTimer = null; _lpBtn = null; }
+    document.addEventListener('pointerdown', e => {
+      const btn = e.target.closest(COPY_BTN_SEL);
+      if (!btn || e.pointerType === 'mouse') return;
+      _lpBtn = btn;
+      clearTimeout(_lpTimer);
+      _lpTimer = setTimeout(() => {
+        btn._lpUnit = true;
+        try { btn.click(); } finally { btn._lpUnit = false; }
+        btn._lpDone = true;
+        setTimeout(() => { btn._lpDone = false; }, 700);
+        _lpCancel();
+      }, 500);
+    });
+    ['pointerup', 'pointercancel'].forEach(t => document.addEventListener(t, _lpCancel));
+    document.addEventListener('pointermove', e => {
+      // a drag is scrolling, not a long-press
+      if (_lpBtn && e.target.closest(COPY_BTN_SEL) !== _lpBtn) _lpCancel();
+    });
+    document.addEventListener('contextmenu', e => {
+      // Android fires contextmenu at ~500 ms of touch hold — suppress it on copy
+      // buttons only, so the long-press copy can complete (desktop right-click
+      // elsewhere is untouched)
+      if (_lpTimer && e.target.closest(COPY_BTN_SEL)) e.preventDefault();
+    });
 
     let currentTab = 'general';
     function switchTab(tabId) {
@@ -4596,9 +4680,13 @@
     function closeModal() { document.getElementById('modal-content').classList.replace('scale-100', 'scale-95'); setTimeout(() => { document.getElementById('module-modal').classList.add('hidden'); document.getElementById('custom-module-form').reset(); }, 200); }
     document.getElementById('custom-module-form').addEventListener('submit', (e) => { e.preventDefault(); const m = { id: `mod-${Date.now()}`, t: document.getElementById('mod-title').value, u1: document.getElementById('mod-unit1').value, u2: document.getElementById('mod-unit2').value, f: parseFloat(document.getElementById('mod-factor').value) }; savedModules.push(m); saveModules(); createCard(m); closeModal(); });
     function createCard(m) {
-      const h = `<div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300" id="${m.id}"><div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center"><h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span>${m.t}</h2><button class="delete-btn text-slate-500 hover:text-red-500 text-xs font-bold tracking-wider transition-colors" onclick="document.getElementById('${m.id}').remove(); savedModules=savedModules.filter(x=>x.id!=='${m.id}'); saveModules();">TERMINATE</button></div><div class="p-6 space-y-6"><div><label class="block text-sm font-medium text-slate-400 mb-2">${m.u1}</label><div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all"><input type="text" inputmode="decimal" class="i1 w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0"><button onclick="copyToClipboard('${m.id}-in1', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button><div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${m.u1}</span></div></div></div><div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div><div><label class="block text-sm font-medium text-slate-400 mb-2">${m.u2}</label><div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all"><input type="text" inputmode="decimal" class="i2 w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0"><button onclick="copyToClipboard('${m.id}-in2', this)" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button><div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${m.u2}</span></div></div></div></div></div>`;
+      const h = `<div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300" id="${m.id}"><div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center"><h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span>${m.t}</h2><button class="delete-btn text-slate-500 hover:text-red-500 text-xs font-bold tracking-wider transition-colors" onclick="document.getElementById('${m.id}').remove(); savedModules=savedModules.filter(x=>x.id!=='${m.id}'); saveModules();">TERMINATE</button></div><div class="p-6 space-y-6"><div><label class="block text-sm font-medium text-slate-400 mb-2">${m.u1}</label><div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all"><input type="text" inputmode="decimal" class="i1 w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0"><button onclick="copyToClipboard('${m.id}-in1', this)" data-unit-src="${m.id}-u1" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button><div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="u1 text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${m.u1}</span></div></div></div><div class="flex justify-center"><div class="bg-slate-800 p-2 rounded-full border border-slate-700"><svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg></div></div><div><label class="block text-sm font-medium text-slate-400 mb-2">${m.u2}</label><div class="relative rounded-lg shadow-inner flex items-center bg-slate-950/70 border border-slate-700 focus-within:ring-2 focus-within:ring-amber-500 transition-all"><input type="text" inputmode="decimal" class="i2 w-full pl-4 py-3 bg-transparent text-lg text-slate-100 placeholder-slate-600 outline-none" placeholder="0"><button onclick="copyToClipboard('${m.id}-in2', this)" data-unit-src="${m.id}-u2" class="px-2 text-slate-500 hover:text-amber-500 transition-colors"><svg class="w-5 h-5 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button><div class="h-full border-l border-slate-700 flex items-center pr-4 pl-3"><span class="u2 text-amber-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">${m.u2}</span></div></div></div></div></div>`;
       document.getElementById('add-module-btn').insertAdjacentHTML('beforebegin', h);
       const c = document.getElementById(m.id); const i1 = c.querySelector('.i1'); i1.id = `${m.id}-in1`; const i2 = c.querySelector('.i2'); i2.id = `${m.id}-in2`;
+      // v3.0 — unit spans get ids so the copy buttons' data-unit-src can resolve them.
+      // Only the (sanitized) module id ever enters an attribute; the unit TEXT stays
+      // in element text content, preserving the v2.8 sanitizeSharedModule() contract.
+      c.querySelector('.u1').id = `${m.id}-u1`; c.querySelector('.u2').id = `${m.id}-u2`;
       i1.addEventListener('input', () => { const v = parseValue(i1.value); i2.value = isNaN(v) ? '' : formatValue(v * m.f); });
       i2.addEventListener('input', () => { const v = parseValue(i2.value); i1.value = isNaN(v) ? '' : formatValue(v / m.f); });
       i1.addEventListener('blur', formatOnBlur); i2.addEventListener('blur', formatOnBlur);
