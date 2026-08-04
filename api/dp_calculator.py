@@ -18,6 +18,19 @@ def get_darcy_friction_factor(Re, rel_roughness):
     return f
 
 class handler(BaseHTTPRequestHandler):
+    def _error(self, message, badge, code=200):
+        # Structured-error writer for the v3.0 PR-1 validation guards. The harmonized
+        # superset {error, message, badge, badgeClass} — never let an input problem
+        # escape as a bare 500 without CORS/JSON again.
+        self.send_response(code)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write(json.dumps({
+            "error": True, "message": message, "badge": badge,
+            "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
+        }).encode())
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -30,6 +43,8 @@ class handler(BaseHTTPRequestHandler):
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data)
+            if not isinstance(data, dict):
+                raise ValueError('body must be a JSON object')
         except (ValueError, KeyError, json.JSONDecodeError):
             self.send_response(400)
             self.send_header('Content-type', 'application/json')
@@ -37,25 +52,54 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({
                 "error": True,
+                "message": "Bad request — the payload is not valid JSON.",
                 "badge": "Bad Request",
                 "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
             }).encode())
             return
 
-        # Extract frontend payload
-        scale = float(data.get('scale', 1))
-        D = float(data.get('id', 0)) * float(data.get('id_mult', 1))
-        L = float(data.get('len', 0)) * float(data.get('len_mult', 1))
-        eps = float(data.get('rough', 0)) * float(data.get('rough_mult', 1))
-        dz = float(data.get('elev', 0)) * float(data.get('elev_mult', 1))
+        # Extract frontend payload. The float() coercions sit in their own try so a
+        # non-numeric value (string, null) is a structured error, not an uncaught
+        # ValueError/TypeError -> bare 500 (v3.0 PR-1 — same class as §11 #2).
+        try:
+            scale = float(data.get('scale', 1))
+            D = float(data.get('id', 0)) * float(data.get('id_mult', 1))
+            L = float(data.get('len', 0)) * float(data.get('len_mult', 1))
+            eps = float(data.get('rough', 0)) * float(data.get('rough_mult', 1))
+            dz = float(data.get('elev', 0)) * float(data.get('elev_mult', 1))
 
-        Wv = float(data.get('v_flow', 0)) * float(data.get('v_flow_m', 1)) * scale
-        rhov = float(data.get('v_den', 1)) * float(data.get('v_den_m', 1))
-        muv = float(data.get('v_visc', 0.01)) * float(data.get('v_visc_m', 1))
+            Wv = float(data.get('v_flow', 0)) * float(data.get('v_flow_m', 1)) * scale
+            rhov = float(data.get('v_den', 1)) * float(data.get('v_den_m', 1))
+            muv = float(data.get('v_visc', 0.01)) * float(data.get('v_visc_m', 1))
 
-        Wl = float(data.get('l_flow', 0)) * float(data.get('l_flow_m', 1)) * scale
-        rhol = float(data.get('l_den', 1)) * float(data.get('l_den_m', 1))
-        mul = float(data.get('l_visc', 1)) * float(data.get('l_visc_m', 1))
+            Wl = float(data.get('l_flow', 0)) * float(data.get('l_flow_m', 1)) * scale
+            rhol = float(data.get('l_den', 1)) * float(data.get('l_den_m', 1))
+            mul = float(data.get('l_visc', 1)) * float(data.get('l_visc_m', 1))
+        except (TypeError, ValueError):
+            self._error("Invalid numeric input.", "Invalid Input")
+            return
+
+        # NaN passes every ordered comparison below (NaN <= 0 is False) and Infinity
+        # breaks downstream arithmetic; both would end up as bare NaN/Infinity tokens
+        # in the response body, which RFC 8259 JSON cannot carry and browsers refuse
+        # to parse (v3.0 PR-1).
+        if not all(map(math.isfinite, (scale, D, L, eps, dz, Wv, rhov, muv, Wl, rhol, mul))):
+            self._error("Invalid numeric input.", "Invalid Input")
+            return
+
+        # A NEGATIVE flow on one phase slipped every earlier guard and could zero the
+        # HEM mixture-density denominator exactly (x/rho_v + (1-x)/rho_l = 0 -> bare
+        # 500) or nearly (dpPa ~ 1e21 presented as a normal result). Reachable from
+        # the UI — the number inputs carry no min attribute (v3.0 PR-1).
+        if Wv < 0 or Wl < 0:
+            self._error("Phase mass flows must be zero or positive.", "Invalid Input")
+            return
+
+        # Negative roughness makes the Colebrook argument negative -> math domain
+        # error -> bare 500. Zero (hydraulically smooth) remains valid (v3.0 PR-1).
+        if eps < 0:
+            self._error("Pipe roughness must be zero or positive.", "Invalid Input")
+            return
 
         Wt = Wv + Wl
 
@@ -64,7 +108,20 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(json.dumps({"error": True, "badge": "No Flow", "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"}).encode())
+            self.wfile.write(json.dumps({"error": True, "message": "No flow — enter a positive mass flow and pipe ID.", "badge": "No Flow", "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"}).encode())
+            return
+
+        # Zero or negative density/viscosity on a flowing phase previously escaped as a
+        # ZeroDivisionError -> bare HTTP 500 without CORS or a JSON body, which the
+        # frontend could only render as a generic "API Connection Failed" badge. Only
+        # the phases that actually flow are checked, so a vapor-only payload does not
+        # require liquid properties (and vice versa). Closes SPECIFICATION.md §11 #2.
+        if (Wv > 0 and (rhov <= 0 or muv <= 0)) or (Wl > 0 and (rhol <= 0 or mul <= 0)):
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": True, "message": "Phase density and viscosity must be positive values.", "badge": "Invalid Input", "badgeClass": "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"}).encode())
             return
 
         # Determine Phase & Mixture Properties (HEM Model)
@@ -92,6 +149,10 @@ class handler(BaseHTTPRequestHandler):
 
         # Hydraulic Calculations
         area = math.pi * math.pow(D, 2) / 4.0
+        if area <= 0.0:
+            # a subnormal-tiny D (e.g. 1e-300) passes D > 0 but underflows D^2 to 0.0
+            self._error("Invalid numeric input.", "Invalid Input")
+            return
         vel = Wt / (rho * area)
         Re = rho * vel * D / mu
         f_d = get_darcy_friction_factor(Re, eps / D)
@@ -115,8 +176,12 @@ class handler(BaseHTTPRequestHandler):
         # through L_eq. Note `L` in the response deliberately remains the STRAIGHT-pipe
         # length, because the client divides by it to render ΔP per unit length; `L_eff`
         # carries the fittings-inclusive figure.
-        k_total = float(data.get('k_total', 0) or 0)
-        if k_total < 0:
+        try:
+            k_total = float(data.get('k_total', 0) or 0)
+        except (TypeError, ValueError):
+            self._error("Invalid numeric input.", "Invalid Input")
+            return
+        if not math.isfinite(k_total) or k_total < 0:
             k_total = 0.0
         dpFittings = k_total * rho * math.pow(vel, 2) / 2.0
         L_eq = (k_total * D / f_d) if f_d > 0 else 0.0
@@ -149,7 +214,20 @@ class handler(BaseHTTPRequestHandler):
         # making this screening check very slightly NON-conservative. Fixing it moves the
         # documented reference value from Ve ~ 7.72 to ~ 7.69 m/s at C=100; see
         # docs/SPECIFICATION.md §11 issue #9 and Vector 2.
-        C_ero = float(data.get('cfactor', 100)) or 100.0
+        # An ABSENT cfactor still defaults to 100 (pre-v2.4 payloads and share links),
+        # but a PRESENT non-positive or non-finite value is now rejected instead of
+        # being silently mapped to 100 (cfactor: 0) or passed through to produce a
+        # negative Ve under a green WITHIN LIMIT badge (negative cfactor). The UI
+        # cannot send 0 — index.html maps a blank/zero field to 100 client-side — so
+        # this only tightens the contract for direct API callers. Closes §11 #3.
+        try:
+            C_ero = float(data.get('cfactor', 100))
+        except (TypeError, ValueError):
+            self._error("Invalid numeric input.", "Invalid Input")
+            return
+        if not math.isfinite(C_ero) or C_ero <= 0:
+            self._error("Erosion C-factor must be a positive number (API RP 14E; 100 continuous, 125 intermittent).", "Invalid Input")
+            return
         v_ero = 1.2199032517 * C_ero / math.sqrt(rho) if rho > 0 else 0.0
         ero_ratio = (vel / v_ero) if v_ero > 0 else 0.0
 

@@ -91,6 +91,37 @@ pattern with `regime_key`; the other message/error branches across the three fil
   because the reference case sends kg/m³ — whose factor is 1.0, making multiply and divide
   indistinguishable. Any new unit-factor code needs a test with a factor that is not 1.
 
+## v3.0 PR-1 — Error contract hardening (all three endpoints)
+
+- **Every error response carries the superset `{error, message, badge, badgeClass}`**
+  (closed §11 #6). dp's error branches each include all four fields inline;
+  psv adds the badge fields at `do_POST`'s single exit point — do NOT remove that
+  patch-in or add new psv error returns that bypass `_respond` via the handler.
+  New error branches in any endpoint must carry the full superset from birth.
+- **dp_calculator validation (closed §11 #2, #3):** zero/negative density or viscosity
+  on a *flowing* phase → structured `Invalid Input` (a vapor-only payload must NOT
+  require liquid properties); a **present** `cfactor` ≤ 0 or non-finite → structured
+  error, while an **absent** `cfactor` defaults to 100 — that default is load-bearing
+  for pre-v2.4 payloads, like `k_total`'s 0 below.
+- **psv_calculator (closed §11 #4, #5):** gas mode rejects `k ≤ 1` before `calc_C`;
+  the generic `except` returns a fixed message — never reintroduce `str(e)`.
+  Two-phase `Pa ≤ 0` becomes atmospheric (101.325 kPa SI / 14.696 psia USC —
+  maintainer decision 2026-08-04). Vector 4 stays on the critical branch
+  (P_c = 52.971 psia > atmospheric); do not "simplify" the default back to 0.
+- **psv two-phase subcritical mass flux (closed §11 #12):** the Leung bracket is
+  `−2·(ω·ln η + (ω−1)(1−η))` — the −2 multiplies the WHOLE bracket. The pre-fix form
+  (−2 on the log term only) gave subcritical flux above choked flux and under-sized
+  valves ~20–30 % on that branch. The continuity test
+  (`test_subcritical_flux_is_continuous_with_the_critical_branch`) pins it: at
+  η_a = η_c the subcritical G must reproduce the critical-branch G, because that is
+  how η_c is defined. Any future edit that breaks continuity there is wrong.
+- **NaN discipline:** validation guards use `not (x > 0)` polarity, never `x <= 0` —
+  NaN fails every ordered comparison, so the `<=` form silently admits it and emits
+  RFC-8259-invalid `NaN` tokens the browser cannot parse. dp additionally runs an
+  `isfinite` sweep over every extracted field. Keep both patterns in new code.
+- Error `message` strings are deliberately English prose until i18n Milestone 4
+  assigns them keys.
+
 ## v2.8 — Fittings & machine-readable keys (dp_calculator.py)
 
 - **`k_total` (optional, default 0)** is ΣK for the run's fittings, summed CLIENT-side from

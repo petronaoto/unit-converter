@@ -87,8 +87,17 @@ def size_gas(data, units):
     Kb = float(data.get('Kb', 1.0))
     Kc = float(data.get('Kc', 1.0))
 
-    if P1 <= 0 or W <= 0 or M <= 0:
+    # not-(x > 0) rather than x <= 0 throughout the guards: NaN fails every ordered
+    # comparison, so the <= form silently admitted NaN into the arithmetic and the
+    # response body (v3.0 PR-1).
+    if not (P1 > 0 and W > 0 and M > 0):
         return {'error': True, 'message': 'W, M, and P1 must be > 0'}
+    # k = 1 raised ZeroDivisionError inside calc_C's (k+1)/(k-1) exponent and escaped
+    # via the handler's generic except as the literal Python message "float division
+    # by zero" in the UI; k < 1 raised nothing and silently computed a physically
+    # meaningless area. Ideal-gas k = Cp/Cv is > 1 by definition. Closes §11 #4.
+    if not (k > 1.0):
+        return {'error': True, 'message': 'Isentropic exponent k must be > 1'}
 
     pcr = critical_pressure_ratio(k)
     Pcf = pcr * P1
@@ -138,7 +147,7 @@ def size_steam(data, units):
     Kc  = float(data.get('Kc',  1.0))
     KSH = float(data.get('KSH', 1.0))
 
-    if P1 <= 0 or W <= 0:
+    if not (P1 > 0 and W > 0):
         return {'error': True, 'message': 'W and P1 must be > 0'}
 
     if units == 'USC':
@@ -175,9 +184,9 @@ def size_liquid_cert(data, units):
     mu = float(data.get('mu', 0))
 
     dP = P1 - P2
-    if dP <= 0:
+    if not (dP > 0):
         return {'error': True, 'message': 'P1 must be greater than P2'}
-    if Q <= 0:
+    if not (Q > 0):
         return {'error': True, 'message': 'Flow rate Q must be > 0'}
 
     # First pass: Kv = 1.0
@@ -228,9 +237,9 @@ def size_liquid_noncert(data, units):
     mu = float(data.get('mu', 0))
 
     dP_eff = 1.25 * Ps - P2
-    if dP_eff <= 0:
+    if not (dP_eff > 0):
         return {'error': True, 'message': '1.25 × Ps must exceed P2'}
-    if Q <= 0:
+    if not (Q > 0):
         return {'error': True, 'message': 'Flow rate Q must be > 0'}
 
     Kv = 1.0; Re = 1e9
@@ -279,10 +288,28 @@ def size_twophase(data, units):
     Kc        = float(data.get('Kc',  1.0))
     Kv        = float(data.get('Kv',  1.0))
 
-    if vo <= 0 or v9 <= 0:
+    if not (vo > 0 and v9 > 0):
         return {'error': True, 'message': 'vo and v9 must be > 0'}
-    if Po_input <= 0:
+    if not (Po_input > 0):
         return {'error': True, 'message': 'Relieving pressure Po must be > 0'}
+
+    # An omitted (or zero) back-pressure used to stay 0 — a perfect vacuum — which made
+    # the critical branch unconditional and under-sized the valve whenever the true
+    # operating point was subcritical. A vented system's physical minimum is atmospheric,
+    # so that is the default now: 101.325 kPa (1 atm = 101,325 Pa by definition), or the
+    # same pressure in psia at API 520's own 5-figure convention. The reference case
+    # (Pc = 52.971 psia > atmospheric) stays on the critical branch, so Vector 4 is
+    # unchanged. Maintainer decision 2026-08-04. Closes §11 #5.
+    if not (Pa_input > 0):
+        Pa_input = 101.325 if units == 'SI' else 14.696
+
+    # With the atmospheric default in place, a relieving pressure at or below the
+    # back-pressure means no relief flow is possible — say so specifically instead of
+    # letting eta_a > 1 fall through to the generic subcritical-flux error. Genuine
+    # vacuum-discharge cases (true Pa near zero) can enter any small positive Pa
+    # explicitly, which is honored as given (v3.0 PR-1).
+    if Po_input <= Pa_input:
+        return {'error': True, 'message': 'Relieving pressure Po must exceed the back-pressure Pa (an omitted or zero Pa defaults to atmospheric — enter a small positive Pa explicitly for vacuum discharge)'}
 
     # Convert SI inputs from kPa → Pa for flux formula
     Po = Po_input * 1000.0 if units == 'SI' else Po_input
@@ -307,7 +334,15 @@ def size_twophase(data, units):
         regime = 'Two-Phase Critical (Omega)'
     else:
         eta_a = Pa / Po
-        inner = -2.0 * omega * math.log(eta_a) + (omega - 1.0) * (1.0 - eta_a)
+        # v3.0 PR-1 (closes §11 #12): the -2 must multiply the WHOLE Leung bracket.
+        # The previous form, -2·ω·ln(η) + (ω-1)(1-η), had the second term's sign and
+        # factor wrong; it produced a subcritical flux ABOVE the choked flux (choked
+        # flow is maximal — physically impossible) and was discontinuous at η_c. The
+        # corrected expression reproduces the critical-branch G at η_a = η_c exactly,
+        # which is how η_c is defined. Before this PR the branch was unreachable with
+        # the UI's Pa default of 0 (vacuum ⇒ always critical); the §11 #5 atmospheric
+        # default makes it the default path for low-Po cases, so both ship together.
+        inner = -2.0 * (omega * math.log(eta_a) + (omega - 1.0) * (1.0 - eta_a))
         denom = omega * (1.0 / eta_a - 1.0) + 1.0
         if inner <= 0 or denom <= 0:
             return {'error': True, 'message': 'Cannot compute subcritical mass flux — check inputs'}
@@ -362,8 +397,12 @@ class handler(BaseHTTPRequestHandler):
         try:
             n    = int(self.headers.get('Content-Length', 0))
             data = json.loads(self.rfile.read(n))
+            if not isinstance(data, dict):
+                raise ValueError('body must be a JSON object')
         except Exception:
-            self._respond(400, {'error': True, 'message': 'Bad Request'})
+            self._respond(400, {'error': True, 'message': 'Bad Request',
+                                'badge': 'Bad Request',
+                                'badgeClass': 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400'})
             return
 
         mode  = data.get('mode',  'gas')
@@ -381,8 +420,20 @@ class handler(BaseHTTPRequestHandler):
         else:
             try:
                 result = fn(data, units)
-            except Exception as e:
-                result = {'error': True, 'message': str(e)}
+            except Exception:
+                # str(e) leaked Python internals ("float division by zero") straight
+                # into the UI badge area. A fixed message keeps the contract clean;
+                # the sizing functions return specific messages for known cases.
+                result = {'error': True, 'message': 'Internal calculation error — check the input values.'}
+
+        # Error-schema harmonization (§11 #6): every error response now carries the
+        # same superset {error, message, badge, badgeClass} that flowregime.py already
+        # returns. The sizing functions keep returning specific `message` strings;
+        # badge fields are added at this single exit point rather than at all 14
+        # return sites. Purely additive — the frontend already tolerates both shapes.
+        if result.get('error') and 'badge' not in result:
+            result['badge'] = 'Input Error'
+            result['badgeClass'] = 'px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400'
 
         self._respond(200, result)
 
