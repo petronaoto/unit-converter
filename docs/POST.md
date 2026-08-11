@@ -37,9 +37,9 @@ reach, credibility, and genuine affection for the work.
 |---|---|---|
 | B1 | **Production URL** — was recorded nowhere in the repo. | ✅ Supplied by Naoto 2026-08-11; now in `index.html` as `og:url` + `canonical`. |
 | B2 | **Open Graph / Twitter card tags** — absent, so shared links previewed as naked text. | ✅ Added 2026-08-11 (`index.html` `<head>`). Static English by design: unfurlers never run the i18n pass. Verified the language switch does not overwrite them. 242 tests still pass. |
-| B3 | Browser pane displayed, for screenshot capture. | ☐ Open the Browser pane |
+| B3 | **Screenshot capture.** The in-app browser pane never composites frames here, and the Chrome screenshot pipeline does not paint CSS `transform`/`zoom`, so a pixel-exact PNG cannot be produced programmatically. | ⚠️ **Naoto captures the frame** — open the standalone file, DevTools → right-click `#shot` → *Capture node screenshot*. One step per post. |
 | B4 | **Link preview live on production.** | ✅ Verified 2026-08-11 after PR #23 merged: `https://unit-converter-oil-gas.vercel.app/` serves all 10 OG/Twitter tags, and `og:image` returns HTTP 200 `image/jpeg`, 998,659 bytes (inside LinkedIn's 5 MB limit). |
-| B5 | **Force LinkedIn to re-scrape** via [Post Inspector](https://www.linkedin.com/post-inspector/) (needs a logged-in LinkedIn account, so Naoto must run it). | ☐ Before Day 1 |
+| B5 | **Force LinkedIn to re-scrape** via Post Inspector. | ✅ Done 2026-08-11. Inspector reports the correct title, description and canonical URL, and has ingested the image into LinkedIn's own CDN. |
 
 > **Vercel's CDN served a stale copy for ~1 minute after the merge** (`x-vercel-cache: HIT`
 > with a pre-merge `last-modified`). It has since refreshed and now returns the tags on cache
@@ -54,36 +54,45 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · ✅ posted
 
 | Day | Date | Title | Lens | Status | Post URL | Reactions / Comments |
 |---|---|---|---|---|---|---|
-| 1 | Wed 12 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✎ 📷 EN+JP | | |
-| 2 | Thu 13 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ☐ | | |
-| 3 | Fri 14 Aug 2026 | There is no such thing as a tonnes-to-MMBtu factor | pain | ☐ | | |
-| 4 | Mon 17 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
-| 5 | Tue 18 Aug 2026 | The steam spreadsheet nobody owns | story | ☐ | | |
-| 6 | Wed 19 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
-| 7 | Thu 20 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
-| 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
-| 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
-| 10 | Tue 25 Aug 2026 | Which roughness did you use? | story | ☐ | | |
-| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
-| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | ☐ | | |
-| 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | ☐ | | |
-| 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | ☐ | | |
-| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
-| 16 | Wed 2 Sep 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
-| 17 | Thu 3 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
-| 18 | Fri 4 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
-| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
-| 20 | Tue 8 Sep 2026 | Twenty days, ten reference vectors, one question | story | ☐ | | |
+| 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✎ 📷 EN+JP | | |
+| 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✎ EN+JP | | |
+| 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ☐ | | |
+| 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
+| 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
+| 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
+| 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
+| 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
+| 9 | Fri 21 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
+| 10 | Mon 24 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
+| 11 | Tue 25 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
+| 12 | Wed 26 Aug 2026 | The bug that was unreachable until I fixed a default | story | ☐ | | |
+| 13 | Thu 27 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | ☐ | | |
+| 14 | Fri 28 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | ☐ | | |
+| 15 | Mon 31 Aug 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
+| 16 | Tue 1 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
+| 17 | Wed 2 Sep 2026 | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | pain | ☐ | | |
+| 18 | Thu 3 Sep 2026 | The whole toolbox on one page, and ten published vectors | story | ☐ | | |
+| 19 | Fri 4 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
+| 20 | Mon 7 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
 
 **Weekly themes**
 
-- **Week 1 (Days 1–5) — Everyday numbers, quiet failures.** Cold-readable. Every post is useful without the tool.
+- **Week 1 (Days 1–5) — Everyday numbers, and where they come from.** Cold-readable; every post is useful without the tool. Now also carries the trust argument (Day 5), because a skeptic decides about a free solo-built sizing tool in the first week, not the fourth.
 - **Week 2 (Days 6–10) — Hydraulics you can check.** The app's densest territory.
 - **Week 3 (Days 11–15) — Safety-critical numbers: relief, flare, suction.** Specificity buys the most credibility here.
-- **Week 4 (Days 16–20) — Provenance, scope and trust.** Why you would trust a free tool built by one engineer.
+- **Week 4 (Days 16–20) — Scope, trust and the close.** Why you would trust a free tool built by one engineer — ending on the strongest evergreen post in the set.
 
-**Variety rule enforced:** no two consecutive posts share a lens or a format. Engagement
-posts (comment-seeking) sit on Days 3, 10 and 20.
+**Variety rule enforced:** no two consecutive posts share a lens (verified programmatically
+after the 2026-08-11 reflow — zero violations). Engagement posts sit on **Days 10 and 17**.
+
+> **Reflowed 2026-08-11** to carry Naoto's two approved changes without side effects. Moving the
+> coefficient-provenance post into week 1 put it directly after the JIS rounding post — two
+> standards-credibility "where numbers come from" pieces back to back, which reads as repetitive.
+> Closing on "Five things this calculator refuses to do" likewise put two story posts adjacent in
+> week 4. The whole sequence was re-laid rather than patched: provenance now lands **Day 5** (still
+> week 1, still cold-readable), the steam post moves up to Day 3, and week 4 alternates cleanly to
+> the new close. The roadmap poll is cut from the ending entirely — hold it for a standalone post
+> a fortnight after the campaign, when there is something concrete to decide.
 
 ---
 
@@ -223,14 +232,27 @@ corrected in the day sheets below; recorded here so they are not silently reintr
 | C9 | 17 | "183 tests" | **242** today. |
 | C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = 56.0005 → **56.00**. Do not publish an intermediate. |
 
-### Open editorial decisions for Naoto
+### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
-1. **The trust argument is entirely in week 4.** A skeptic decides whether to trust a free,
-   solo-built sizing tool on Day 1–3, not Day 16. *Option:* swap Day 16 (coefficient
-   provenance — works cold, needs no setup) with Day 3.
-2. **Day 20 closes on a roadmap poll.** Asking the audience to write your backlog is a weak
-   ending. *Option:* close on Day 18 material and hold the roadmap question for a standalone
-   post a fortnight later.
+1. ~~The trust argument is entirely in week 4.~~ **Applied: Days 3 and 16 are swapped.**
+   The LGE coefficient-provenance post ("three versions of these coefficients") now runs on
+   **Day 3**, because a skeptic decides whether to trust a free, solo-built sizing tool in the
+   first three days, not in week 4. It works cold and needs no setup. The tonnes-to-MMBtu
+   engagement post moves to **Day 16**.
+   *Knock-on:* the campaign's first engagement post is now Day 10, not Day 3 — so Days 1–5 read
+   as five straight substance posts. That is the right trade for a cold audience, but do reply
+   hard in the comments on Days 1–3 to compensate.
+2. ~~Day 20 closes on a roadmap poll.~~ **Applied: Days 18 and 20 are swapped.**
+   The campaign now closes on **"Five things this calculator refuses to do"** — the strongest
+   evergreen post in the set, and the one most likely to be shared after the campaign ends.
+   The toolbox sweep moves to **Day 18**. The roadmap question is cut from the closing slot
+   entirely; hold it for a standalone post a fortnight later, when there is something concrete
+   to decide.
+
+> Week themes still hold: Day 3's post is standards-credibility (week 1 = "everyday numbers,
+> quiet failures" now reads as "everyday numbers and where they come from"), and Day 16 is
+> pain-workflow inside week 4's provenance-and-trust block. The no-two-consecutive-lenses rule
+> is preserved in both new orderings — verify again if you reorder further.
 3. ~~**Two documentation contradictions the campaign will expose.**~~ ✅ **Both fixed 2026-08-11**
    in the same PR as the OG tags: `SPECIFICATION.md` §4.1 said custom modules were "not included
    in Share links" (they have travelled since v2.8, state v:2, capped at 20 modules / 40-char
@@ -465,40 +487,141 @@ line, which reads as a swipe in Japanese, and leads on the review-passes-anyway 
 
 ---
 
-### Day 2 — Thu 13 Aug 2026
+### Day 2 — Wed 12 Aug 2026 · ✎ drafted EN + JP
 
 **Title:** Why your HHV and the plant's HHV disagree in the second decimal
 **Lens:** standards-credibility · **Format:** mini-tutorial · **Feature:** Advanced → JIS K 2301 engine
 
-**Hook**
-> Your gas analysis gives HHV 44.59 MJ/Nm³. The generic online calculator gives 44.6-something.
+**Why this is Day 2:** it is the single most differentiated calculation in the product, and it
+runs while Day 1's attention is still live. It also sets up the account's core promise — that
+every number it shows can be traced to a rule someone wrote down.
+
+#### English post
+
+> Your gas analysis gives HHV 44.59 MJ/Nm³. A generic online calculator gives 44.6-something.
 > Neither of you is doing the physics wrong.
-> JIS K 2301 rounds five separate times, in a specific order, and that order is the entire answer.
+>
+> JIS K 2301 rounds five separate times, in a specific order — and that order is the entire answer.
+>
+> Walk it with me, on a normal pipeline gas (CH₄ 89, C₂H₆ 7, C₃H₈ 2.5, iC₄ 0.7, nC₄ 0.5, N₂ 0.3 vol%):
+>
+> 1. Volume → mole fractions, rounded to 4 d.p. CH₄ becomes 0.8887. Not 0.888712…
+> 2. Each component's Cm·√b is rounded to 5 d.p. **before** the sum, not after.
+> 3. Z splits in two. Z_exact = 0.996759 drives HHV, LHV and SG. Z_rounded = 0.9968 drives the
+>    standard density — and nothing else.
+> 4. HHV and LHV land at 2 d.p. SG at 3 d.p.
+> 5. Wobbe is built from the **already-rounded** HHV and the **already-rounded** SG.
+>    44.59 / √0.634 = 56.00.
+>
+> Step 5 is the one that catches people. If you carry full precision into Wobbe you will get a
+> defensible number that does not match the worksheet your gas quality is contractually judged
+> against. The "more accurate" calculation is the one that fails traceability.
+>
+> One more that surprises people: Wobbe is always HHV-based per §7, whichever basis you happen to
+> be reporting elsewhere.
+>
+> This is JIS K 2301:2011 specifically. ISO 6976 rounds differently and will correctly disagree —
+> if your plant works to ISO, none of the above is your rule.
+>
+> I built the compositional engine in my converter to follow that cascade exactly, because
+> matching the regulated worksheet digit-for-digit matters more than looking precise. The full
+> reference case is published, so you can check it against your own sheet rather than trust me.
+>
+> If your spreadsheet disagrees in the second decimal, the rounding order is where to look.
 
-**Angle.** Walk the cascade so the reader can audit their own spreadsheet: mole fractions to
-4 d.p.; each component's Cm·√b to 5 d.p. **before** summing; Z_exact = 1 − (ΣCm√b)² driving
-HHV/LHV/SG while Z_rounded (4 d.p.) drives ρ_std **and only** ρ_std; HHV/LHV to 2 d.p.; SG to
-3 d.p.; and the one that catches everybody — **Wobbe is built from the already-rounded HHV and
-the already-rounded SG**, and is always HHV-based per §7 regardless of the reporting basis.
-The counter-intuitive payload: the "more accurate" unrounded calculation is the one that fails
-traceability against the regulated worksheet. Scope it to **JIS K 2301:2011** — ISO 6976 users
-round differently and will correctly get different numbers.
+**Length:** ~1,650 characters. ✓
 
-**Mockup.** Two panels. Left: real screenshot of the Advanced composition column with results in
-frame. Right: a designed five-node cascade — (1) mole fractions → 4 d.p. (CH₄ 0.8887);
-(2) Cm·√b → 5 d.p., *"rounded BEFORE summing"*; (3) the **Z fork** — Z_exact 0.996759 → HHV/LHV/SG
-in amber, Z_rounded 0.9968 → ρ_std **only** in cyan; (4) HHV/LHV → 2 d.p., SG → 3 d.p.;
-(5) WI from the rounded HHV and rounded SG → 56.00, *"rounded inputs, by rule — not by sloppiness"*.
-Show arithmetic structure only; reproduce no JIS table content.
+#### Mockup spec
 
-**Numbers.** §4 JIS table. **C10:** publish WI = 56.00 only — no intermediate.
-**C2:** the composition engine is *one of several* client-side cards that render on open, not the only one.
+Two panels, 1200 × 675.
 
-**CTA.** "The link opens with this exact analysis already computed — swap in your own composition
-and see whether your sheet agrees to the second decimal. If it doesn't, the rounding order is
-where to look."
+- **Left:** real screenshot of the Advanced composition column, the six components entered, results
+  block in frame — HHV 44.59, LHV 40.25, SG 0.634, WI 56.00, MW 18.305, ρ_std 0.81930.
+- **Right:** designed five-node cascade down a spine —
+  (1) mole fractions → 4 d.p., showing `CH₄ 0.8887`;
+  (2) Cm·√b → 5 d.p., annotated *"rounded BEFORE summing"*;
+  (3) **the Z fork** — `Z_exact 0.996759 → HHV / LHV / SG` in amber, `Z_rounded 0.9968 → ρ_std only`
+  in cyan. This is the visual payload of the whole post;
+  (4) HHV/LHV → 2 d.p., SG → 3 d.p.;
+  (5) `WI = 44.59 / √0.634 = 56.00`, annotated *"rounded inputs, by rule — not by sloppiness"*.
+- Reproduce **no JIS table content** — arithmetic structure only.
+- Reuse the Day 1 footer strip (URL + free / no sign-up / no tracking).
+
+#### Verified numbers — *re-confirmed on production 2026-08-11*
+
+Mole fractions 0.8887 / 0.0704 / 0.0254 / 0.0073 / 0.0052 / 0.0030 · Z_exact 0.996759 ·
+Z_rounded 0.9968 · **HHV 44.59** MJ/Nm³ · LHV 40.25 MJ/Nm³ · SG 0.634 · **WI 56.00** ·
+MW 18.305 g/mol · ρ_std 0.81930 kg/Nm³ · MCP 36.9.
+
+⚠️ **C10:** publish **WI = 56.00** and the division that produces it. Do **not** publish an
+intermediate "55.997" — the true value is 44.59/√0.634 = **56.0006**, which rounds to 56.00.
+⚠️ **C2:** do not claim this is the only card that renders on share-link open. `recomputeAll()`
+runs seven client-side calculators.
+
+#### Share link — ✅ built and verified on production
+
+Opens the Advanced tab with this exact analysis already computed (**235 chars**):
+
+```
+https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
+```
+
+Japanese version (adds `"lang":"ja"`, **251 chars**):
+
+```
+https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn0sImxhbmciOiJqYSJ9
+```
+
+*Verified 2026-08-11 on a real load: opens on Advanced, HHV 44.59 / WI 56.00 / SG 0.634 / MW 18.305
+already rendered, zero clicks.*
+
+#### First comment
+
+> The exact case above, already computed — swap in your own composition:
+> https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
+>
+> The published reference values and the test suite that pins them:
+> https://github.com/petronaoto/unit-converter
 
 **Hashtags:** `#LNG #GasQuality #JISK2301 #ProcessEngineering`
+
+#### Japanese version
+
+> ガス分析値から HHV 44.59 MJ/Nm³。汎用のオンライン計算では 44.6 前後。
+> どちらも物理を間違えているわけではありません。
+>
+> JIS K 2301 は**5 か所で、決められた順に丸める**。その順序こそが答えです。
+>
+> 標準的なパイプラインガス（CH₄ 89、C₂H₆ 7、C₃H₈ 2.5、iC₄ 0.7、nC₄ 0.5、N₂ 0.3 vol%）で追ってみます。
+>
+> 1. 体積分率→モル分率は **4 桁**に丸める。CH₄ は 0.8887。0.888712… ではありません。
+> 2. 各成分の Cm·√b は、**合計する前に** 5 桁へ丸める。後ではありません。
+> 3. ここで Z が二手に分かれます。Z_exact = 0.996759 は HHV・LHV・SG に、
+>    Z_rounded = 0.9968 は**標準密度にだけ**使われます。
+> 4. HHV・LHV は 2 桁、SG は 3 桁。
+> 5. ウォッベ指数は、**すでに丸めた** HHV と **すでに丸めた** SG から計算する。
+>    44.59 / √0.634 = 56.00。
+>
+> 引っかかるのは 5 番です。フル桁のまま計算すれば、理屈の通った値は出ます。しかし、
+> ガス品質が契約上照合される元の計算書とは合わなくなる。
+> **「より正確な」計算のほうが、トレーサビリティを失う**わけです。
+>
+> もう一点。ウォッベ指数は §7 により常に HHV 基準です。他所で何基準を報告していても変わりません。
+>
+> これは JIS K 2301:2011 の話です。ISO 6976 は丸め方が異なり、当然違う値になります。
+> ISO 準拠の設備であれば、上のルールはあなたの現場のものではありません。
+>
+> 自作の換算ツールの組成計算は、この丸めの連鎖をそのまま実装しています。
+> 「精度が高そうに見えること」より、**元の計算書と桁まで一致すること**のほうが実務では重要だからです。
+> 参照ケースの数値は公開しているので、私を信用せずに手元のシートと突き合わせて確認できます。
+>
+> 手元の計算が小数第2位で合わないなら、まず丸めの順序を見てください。
+
+*Note: leads on the domestic reality — JIS is their governing standard and the contractual
+worksheet is a real artifact, not an exotic one. The "generic online calculator" framing is kept
+because it is factual, not a swipe at a named competitor.*
+
+**Japanese hashtags:** `#プロセスエンジニアリング #LNG #都市ガス #JIS #ガス品質`
 
 ---
 
