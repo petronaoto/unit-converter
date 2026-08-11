@@ -195,7 +195,7 @@ j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 - Steam IF97 @ 4 MPa abs / 300 °C: Region 2, superheat 49.64248 K · h 2,961.65148 kJ/kg · s 6.36383 kJ/(kg·K) · ρ 16.98717 kg/m³ · T_sat 250.35752 °C
 - Gas properties (SG 0.65, 2,000 psi, 150 °F, k 1.3): Z 0.8646 · μ 0.016663 cP · c 410.0269 m/s · μ_JT 0.3279 K/bar
 - NPSHa (water 80 °C, open tank, z +3 m, h_f 1.2 m): **7.45697 m**; P_v 47.41472 kPa; ρ 971.77879 kg/m³; g = 9.80665 m/s²
-- Test suite: **242 tests**, 13 modules. *(README still cites the v2.8 figure of 183 — update it.)*
+- Test suite: **242 tests** (165 test functions, parametrised) across 13 modules; 434 assertions. *(README corrected 2026-08-11 — it had said "183 pytest assertions", wrong in both number and kind.)*
 
 ---
 
@@ -225,10 +225,10 @@ corrected in the day sheets below; recorded here so they are not silently reintr
 2. **Day 20 closes on a roadmap poll.** Asking the audience to write your backlog is a weak
    ending. *Option:* close on Day 18 material and hold the roadmap question for a standalone
    post a fortnight later.
-3. **Two documentation contradictions the campaign will expose** — worth fixing first:
-   - `SPECIFICATION.md` §4.1 still says custom modules are "not included in Share links"; they
-     have been since v2.8 (state v:2). Day 3 and Day 19 both contradict it.
-   - `README.md` cites 183 tests; there are 242.
+3. ~~**Two documentation contradictions the campaign will expose.**~~ ✅ **Both fixed 2026-08-11**
+   in the same PR as the OG tags: `SPECIFICATION.md` §4.1 said custom modules were "not included
+   in Share links" (they have travelled since v2.8, state v:2, capped at 20 modules / 40-char
+   labels), and `README.md` claimed "183 pytest assertions" (it is 242 tests across 13 modules).
 4. **`exportReport()` coverage** (Day 10) omits Steam, NPSHa, Compressor **and** the Gas
    Property Estimator and the fittings/line-sizing row. Either state the full list in the post
    or add the five rows to the export first.
@@ -499,7 +499,7 @@ shared with the JIS engine two tabs over"*; beside it the Custom Modules builder
 factor field circled — *"build the factor your contract actually uses, then send the card, not the number"*.
 
 **Numbers.** 1 Nm³ = 37.3258 scf. Custom-module import limits: 20 modules per shared link,
-40 characters per label. *(Fix `SPECIFICATION.md` §4.1 first — it still says modules don't travel in share links.)*
+40 characters per label (`MOD_MAX_SHARED` / `MOD_MAX_TEXT_LEN`).
 
 **CTA.** "What's the unit argument your team keeps re-having?"
 

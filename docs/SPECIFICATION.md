@@ -55,7 +55,7 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 | **Pressure** | `press-input1`/`press-select1` + mode buttons `press-mode1-abs`/`-gau`; mirrored `…2` set | Dual-sided converter; each side independently Abs or Gauge (`setPressMode`). Conversion goes through absolute Pa (`pressToAbsPa`/`pressFromAbsPa`, atmosphere = 101.325 kPa). |
 | **Temperature** | `temp-input1`/`temp-select1`, `temp-input2`/`temp-select2` | °C/°F/K bidirectional (`convertTemp`). |
 | **Heating Value** | `hv-input1`, `hv-input2` | Fixed-unit MJ/Nm³ ↔ Btu/scf pair (`HV_FACTOR`). |
-| **Custom Modules** | Builder modal (`openModal()`), presets (flow rate, density, viscosity, …) | User-defined linear-factor converter cards; persist in `localStorage['og_custom_modules']`; created via `createCard`. Not included in Share links (known limitation). |
+| **Custom Modules** | Builder modal (`openModal()`), presets (flow rate, density, viscosity, …) | User-defined linear-factor converter cards; persist in `localStorage['og_custom_modules']`; created via `createCard`. **Since v2.8 they travel in Share links** (state v:2, behind the sanitizing import boundary — see §6.1 and §11 #7); max 20 modules per link, 40 characters per label. |
 
 ### 4.2 Basic Eng
 

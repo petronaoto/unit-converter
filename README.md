@@ -77,7 +77,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **NORSOK P-001 line-sizing screen** — velocity and frictional ΔP/100 m against per-service criteria, with a WITHIN / NEAR / EXCEEDS verdict.
 - **Mobile navigation** — the nine-tab bar becomes a dropdown below tablet width.
 - **Share links carry custom modules** — state format v:2, behind a sanitizing import boundary.
-- **Automated regression suite** — 183 pytest assertions plus GitHub Actions, guarding every documented reference vector on each change.
+- **Automated regression suite** — 242 pytest tests across 13 modules, plus GitHub Actions, guarding every documented reference vector on each change.
 
 ### 6. Internationalization *(v2.6–v2.7)*
 
