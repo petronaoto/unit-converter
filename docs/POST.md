@@ -38,9 +38,9 @@ reach, credibility, and genuine affection for the work.
 | B1 | **Production URL** — was recorded nowhere in the repo. | ✅ Supplied by Naoto 2026-08-11; now in `index.html` as `og:url` + `canonical`. |
 | B2 | **Open Graph / Twitter card tags** — absent, so shared links previewed as naked text. | ✅ Added 2026-08-11 (`index.html` `<head>`). Static English by design: unfurlers never run the i18n pass. Verified the language switch does not overwrite them. 242 tests still pass. |
 | B3 | **Producing the PNG.** | ✅ **Solved.** `PrintWindow` against an isolated `--app` Chrome window captures the graphic without needing focus or touching other windows. See §7 *Producing the image*. `docs/linkedin/day01.png` is a real 1200 × 675 capture. |
-| B6 | **Attaching the image to a LinkedIn post.** | ⚠️ **Manual step — unavoidable.** See §7 *Why the upload is manual*. |
-| B4 | **Link preview on production.** | ⚠️ **Re-verify after the URL fix deploys.** The OG tags are live, but until PR #25 merges they still advertise `og:url` / `canonical` / `og:image` on the old `unit-converter-oil-gas.vercel.app` domain. |
-| B5 | **Force LinkedIn to re-scrape** via Post Inspector. | ⚠️ **Must be re-run.** The 2026-08-11 run was against the old vercel.app domain and is now void. Re-run against `https://engineering-converter.com/` *after* PR #25 deploys. |
+| B6 | **Attaching the image to a LinkedIn post.** | ✅ **Works — paste the image from the OS clipboard.** See §7 *Attaching the image*. |
+| B4 | **Link preview on production.** | ✅ Verified after #25 deployed: `canonical` and `og:url` both read `https://engineering-converter.com/`. |
+| B5 | **Force LinkedIn to re-scrape** via Post Inspector. | ✅ Re-run against the correct domain after #25: Fetched URL and Canonical URL both `https://engineering-converter.com/`, title and description correct, image re-ingested to LinkedIn's CDN. |
 
 > **Vercel's CDN served a stale copy for ~1 minute after the merge** (`x-vercel-cache: HIT`
 > with a pre-merge `last-modified`). It has since refreshed and now returns the tags on cache
@@ -55,7 +55,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · ✅ posted
 
 | Day | Date | Title | Lens | Status | Post URL | Reactions / Comments |
 |---|---|---|---|---|---|---|
-| 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✎ 📷 EN+JP | | |
+| 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7492837311416741888/ | |
 | 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✎ EN+JP | | |
 | 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ☐ | | |
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
@@ -431,21 +431,36 @@ chrome.exe --user-data-dir=$env:TEMP\og_cap_new --no-first-run --disable-extensi
 Then crop: detect the first row/column that is >85 % dark and take 1200 × 675 from there (the
 window border and title bar sit outside it). `docs/linkedin/day01.png` was made this way.
 
-##### Why the upload is manual
+##### Attaching the image — it works, via the OS clipboard
 
-Attaching the PNG to the LinkedIn post could not be automated, and the reasons are structural
-rather than fixable:
+Everything scripted fails, and it is worth knowing why so nobody retries them: synthetic
+drag-and-drop is ignored by LinkedIn's uploader; the `<input type="file">` exists only while the
+media Editor is open and is hidden from the accessibility tree; injecting a `File` via
+`DataTransfer` needs the bytes in the page and LinkedIn's CSP blocks `connect-src` to localhost;
+and a synthetic Ctrl+V does not carry the OS clipboard.
 
-- Synthetic drag-and-drop is ignored by LinkedIn's uploader.
-- The `<input type="file">` exists only while the media Editor is open and is hidden from the
-  accessibility tree, so the upload tool cannot target it.
-- Injecting a `File` via `DataTransfer` needs the bytes in the page, and LinkedIn's CSP blocks
-  `connect-src` to localhost.
-- A synthetic Ctrl+V does not carry the OS clipboard.
+**What does work:** put the PNG on the Windows clipboard, then paste into the composer.
 
-These are LinkedIn's own protections. **Attach the image by hand**: image icon → *Upload from
-computer* → `docs/linkedin/day01.png`. Everything else — text, share link, comment — is ready to
-paste from the day sheet.
+```powershell
+Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+$img = [System.Drawing.Image]::FromFile("docs\linkedin\day01.png")
+[System.Windows.Forms.Clipboard]::SetImage($img)   # needs an STA thread; PowerShell 5.1 is STA
+$img.Dispose()
+```
+
+Then click into the post body and press Ctrl+V. **The attach is not instant and the toolbar
+changes as it lands** — the media icons are replaced by the image preview, which looks like the
+paste failed. It did not. Scroll the composer down and confirm the preview before concluding
+anything.
+
+##### Composing the post
+
+- Type the English body first, then paste the image, then append the Japanese section — appending
+  text after the image is fine, the image stays attached below the text block.
+- **The URL goes in the post body**, not only the first comment (maintainer's decision — a reader
+  who never opens the comments still needs to know where the tool lives). LinkedIn rewrites it to
+  an `lnkd.in` short link automatically; it still resolves.
+- The pre-filled share link goes in the **first comment**, posted immediately after publishing.
 
 ##### Seven traps in this pipeline — read before building Day 2's graphic
 
