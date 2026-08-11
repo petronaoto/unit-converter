@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="meta.pageTitle">O&G Unit Converter V3.0</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
+       these are read by crawlers and by LinkedIn/Slack/Teams unfurlers, which never execute the
+       i18n pass, and English is the project's authoritative language. og:image and og:url must be
+       absolute — relative paths are silently dropped by every major unfurler. -->
+  <meta name="description" content="Free, standards-traceable engineering calculators for gas &amp; LNG: JIS K 2301 heating value, API 520 PRV sizing, pipe pressure drop, steam properties. No sign-up." />
+  <link rel="canonical" href="https://unit-converter-oil-gas.vercel.app/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="O&amp;G Engineering Converter" />
+  <meta property="og:url" content="https://unit-converter-oil-gas.vercel.app/" />
+  <meta property="og:title" content="O&amp;G Engineering Converter — standards-traceable tools for gas &amp; LNG" />
+  <meta property="og:description" content="JIS K 2301 heating value &amp; Wobbe index, API 520 PRV sizing, Darcy-Weisbach ΔP with Colebrook-White, two-phase flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no tracking." />
+  <meta property="og:image" content="https://unit-converter-oil-gas.vercel.app/lng-plant-bg.jpg" />
+  <meta property="og:image:width" content="2752" />
+  <meta property="og:image:height" content="1536" />
+  <meta property="og:image:alt" content="LNG plant at dusk — O&amp;G Engineering Converter" />
+  <meta property="og:locale" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="O&amp;G Engineering Converter — standards-traceable tools for gas &amp; LNG" />
+  <meta name="twitter:description" content="JIS K 2301, API 520 PRV sizing, Colebrook-White ΔP, flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no tracking." />
+  <meta name="twitter:image" content="https://unit-converter-oil-gas.vercel.app/lng-plant-bg.jpg" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     ::-webkit-scrollbar { width: 8px; }
