@@ -14,7 +14,40 @@ Project memory for Claude Code. Read and follow all rules below in every session
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `i18n/*.json` — translation dictionaries, 10 files as of v2.7 (`en`, `ja`, `zh`, `ko`, `th`, `id`, `ru`, `es`, `fr`, `de`). `en.json` is the canonical source and runtime fallback for any working-tool key missing elsewhere; for `docs.*` keys the fallback is the inline English HTML in `index.html` (cached at runtime by `applyTranslations()` — English doc content is deliberately NOT duplicated into `en.json`). Fetched lazily by `index.html`, not bundled — the no-build-step principle holds.
   - `README.md` — project documentation.
-  - `docs/` (v3.0) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy).
+  - `docs/` (v3.0) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy), `POST.md` (the live LinkedIn campaign log — see below).
+
+## Public URL — one domain only
+
+**The app is `https://engineering-converter.com`.** It must appear **in the body** of every
+campaign post, not only in a first comment.
+
+The `unit-converter-oil-gas.vercel.app` address is the underlying Vercel deployment and is **not**
+the public identity. Never put it in copy, a share link, a graphic, or `index.html` head metadata —
+`og:url`, `og:image`, `twitter:image` and `rel=canonical` are all pinned to the real domain, and a
+canonical pointing at the Vercel host tells search engines the wrong site is authoritative.
+
+## LinkedIn campaign
+
+A 20-day daily campaign runs from [`docs/POST.md`](docs/POST.md) — schedule, per-day sheets
+(hook, angle, mockup spec, verified numbers, CTA, EN + JA copy), the verified reference-value
+table, a corrections register, and the tracker where each post URL is recorded once live.
+Assets are in `docs/linkedin/`.
+
+**To prepare or publish a day, use the [`linkedin-daily-post`](.claude/skills/linkedin-daily-post/SKILL.md)
+skill.** It carries the procedure and the hard-won traps — how to hand-author a compact share link
+(the app's own Share output is ~4,600 characters and does not fit a LinkedIn comment), how to
+generate the annotated graphic from the *real* app rather than re-implementing the UI, how to
+capture it as a PNG (`PrintWindow` on an isolated Chrome `--app` window — screenshots via the
+browser tools do not work here, and full-screen capture would expose unrelated private windows),
+and how to attach it (the OS clipboard is the only route that works).
+
+Two rules that outrank convenience:
+
+- **Every figure in a post must be reproduced against the running app before it is written**, never
+  copied from the docs. An adversarial review of the original plan found ten defects, including a
+  wrong headline number.
+- **Look at the rendered graphic before publishing.** Programmatic checks have passed on an image
+  that was visibly broken; they are not verification.
 
 ## CRITICAL Preservation Rules
 

@@ -17,12 +17,12 @@ reach, credibility, and genuine affection for the work.
 
 | Setting | Decision |
 |---|---|
-| **Language** | Every post published as an **English + Japanese pair**. English is the primary post; Japanese is posted as a separate post (see §6 for why, not as a comment). |
+| **Language** | **English and Japanese in the SAME post** (changed 2026-08-11 at Day 1 — combined length ~2,600 chars, inside LinkedIn's 3,000 limit). Japanese is a rewrite, not a translation. §6 retains the separate-post rationale in case the pattern is revisited. |
 | **Visuals** | **Real annotated screenshots** of the live app. No invented UI, no fabricated numbers. |
 | **Voice** | Engineer-to-engineer, tool-forward. Naoto is present as the author; the engineering leads. First person, no "excited to announce". |
 | **Links** | Live app URL + public GitHub repo (`https://github.com/petronaoto/unit-converter`). |
 | **Cadence** | Weekdays only, 5 posts/week, 4 weeks. Weekend posting on LinkedIn costs reach. |
-| **Link placement** | App link in the **first comment**, not the post body (LinkedIn suppresses reach on posts with outbound links in the body). Repo link in the comment too. |
+| **Link placement** | **`https://engineering-converter.com` goes in the post BODY of every post** (maintainer instruction, 2026-08-11) — a reader who never opens the comments still needs to know where the tool lives. LinkedIn rewrites it to an `lnkd.in` short link automatically; it still resolves. The *pre-filled share link* goes in the first comment. |
 
 ### Live URLs
 
