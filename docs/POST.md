@@ -28,7 +28,7 @@ reach, credibility, and genuine affection for the work.
 
 | | |
 |---|---|
-| **App** | <https://unit-converter-oil-gas.vercel.app> |
+| **App** | <https://engineering-converter.com> |
 | **Repo** | <https://github.com/petronaoto/unit-converter> |
 
 ### Pre-launch checklist
@@ -37,9 +37,10 @@ reach, credibility, and genuine affection for the work.
 |---|---|---|
 | B1 | **Production URL** — was recorded nowhere in the repo. | ✅ Supplied by Naoto 2026-08-11; now in `index.html` as `og:url` + `canonical`. |
 | B2 | **Open Graph / Twitter card tags** — absent, so shared links previewed as naked text. | ✅ Added 2026-08-11 (`index.html` `<head>`). Static English by design: unfurlers never run the i18n pass. Verified the language switch does not overwrite them. 242 tests still pass. |
-| B3 | **Screenshot capture.** The in-app browser pane never composites frames here, and the Chrome screenshot pipeline does not paint CSS `transform`/`zoom`, so a pixel-exact PNG cannot be produced programmatically. | ⚠️ **Naoto captures the frame** — open the standalone file, DevTools → right-click `#shot` → *Capture node screenshot*. One step per post. |
-| B4 | **Link preview live on production.** | ✅ Verified 2026-08-11 after PR #23 merged: `https://unit-converter-oil-gas.vercel.app/` serves all 10 OG/Twitter tags, and `og:image` returns HTTP 200 `image/jpeg`, 998,659 bytes (inside LinkedIn's 5 MB limit). |
-| B5 | **Force LinkedIn to re-scrape** via Post Inspector. | ✅ Done 2026-08-11. Inspector reports the correct title, description and canonical URL, and has ingested the image into LinkedIn's own CDN. |
+| B3 | **Producing the PNG.** | ✅ **Solved.** `PrintWindow` against an isolated `--app` Chrome window captures the graphic without needing focus or touching other windows. See §7 *Producing the image*. `docs/linkedin/day01.png` is a real 1200 × 675 capture. |
+| B6 | **Attaching the image to a LinkedIn post.** | ⚠️ **Manual step — unavoidable.** See §7 *Why the upload is manual*. |
+| B4 | **Link preview on production.** | ⚠️ **Re-verify after the URL fix deploys.** The OG tags are live, but until PR #25 merges they still advertise `og:url` / `canonical` / `og:image` on the old `unit-converter-oil-gas.vercel.app` domain. |
+| B5 | **Force LinkedIn to re-scrape** via Post Inspector. | ⚠️ **Must be re-run.** The 2026-08-11 run was against the old vercel.app domain and is now void. Re-run against `https://engineering-converter.com/` *after* PR #25 deploys. |
 
 > **Vercel's CDN served a stale copy for ~1 minute after the merge** (`x-vercel-cache: HIT`
 > with a pre-merge `last-modified`). It has since refreshed and now returns the tags on cache
@@ -377,10 +378,10 @@ typical domain — comfortably inside LinkedIn's 1,250-character comment limit.
 #### CTA & placement
 
 Question in the body (above). **App link in the first comment**, phrased:
-> Free, no sign-up, no tracking: https://unit-converter-oil-gas.vercel.app
+> Free, no sign-up, no tracking: https://engineering-converter.com
 >
 > This exact case, pre-filled — 10 barg on the left, psia on the right:
-> https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJwMSI6ImdhdSIsInAyIjoiYWJzIiwiaW5wdXRzIjp7InByZXNzLWlucHV0MSI6IjEwIiwicHJlc3Mtc2VsZWN0MSI6IjEwMDAwMCIsInByZXNzLXNlbGVjdDIiOiI2ODk0Ljc1NzI5In19
+> https://engineering-converter.com/index.html#s=eyJ2IjoyLCJwMSI6ImdhdSIsInAyIjoiYWJzIiwiaW5wdXRzIjp7InByZXNzLWlucHV0MSI6IjEwIiwicHJlc3Mtc2VsZWN0MSI6IjEwMDAwMCIsInByZXNzLXNlbGVjdDIiOiI2ODk0Ljc1NzI5In19
 >
 > Source and the published reference values: https://github.com/petronaoto/unit-converter
 
@@ -407,11 +408,44 @@ python devserver.py .   # then open:
 Verified: 1200 × 675 exactly · side A **Gauge** active, side B **Abs** active · `10` → `159.73369` ·
 units bar / psi · English · all four copy points visible · card inside the frame.
 
-##### Capturing the PNG
+##### Producing the image — ✅ automated
 
-The in-app browser pane cannot screenshot in this environment (it does not composite frames).
-**Real Chrome can.** Open the standalone file and capture the `#shot` element — DevTools →
-right-click the node → *Capture node screenshot* gives exactly 1200 × 675.
+The browser tooling could not produce a pixel-exact PNG: the in-app pane never composites frames,
+and the Chrome screenshot pipeline does not paint CSS `transform`/`zoom`, so scaled layouts
+captured as stale frames. What works, reliably and without touching any other window:
+
+```powershell
+# 1. Serve the repo (python devserver.py <repo>), then open the graphic in an ISOLATED,
+#    chrome-less window. A fresh --user-data-dir matters: Chrome otherwise restores the
+#    previous window size and silently gives you the wrong client area.
+chrome.exe --user-data-dir=$env:TEMP\og_cap_new --no-first-run --disable-extensions `
+           --force-device-scale-factor=1 --window-position=0,0 --window-size=1530,920 `
+           --app=http://127.0.0.1:8000/docs/linkedin/day01-standalone.html
+
+# 2. Capture THAT window with PrintWindow(hwnd, hdc, 2). It reads the window's own pixels, so it
+#    needs neither focus nor visibility — and cannot capture anything else on screen.
+#    CopyFromScreen is the wrong tool: Windows refuses SetForegroundWindow from a background
+#    process, so it silently grabs whatever is on top.
+```
+
+Then crop: detect the first row/column that is >85 % dark and take 1200 × 675 from there (the
+window border and title bar sit outside it). `docs/linkedin/day01.png` was made this way.
+
+##### Why the upload is manual
+
+Attaching the PNG to the LinkedIn post could not be automated, and the reasons are structural
+rather than fixable:
+
+- Synthetic drag-and-drop is ignored by LinkedIn's uploader.
+- The `<input type="file">` exists only while the media Editor is open and is hidden from the
+  accessibility tree, so the upload tool cannot target it.
+- Injecting a `File` via `DataTransfer` needs the bytes in the page, and LinkedIn's CSP blocks
+  `connect-src` to localhost.
+- A synthetic Ctrl+V does not carry the OS clipboard.
+
+These are LinkedIn's own protections. **Attach the image by hand**: image icon → *Upload from
+computer* → `docs/linkedin/day01.png`. Everything else — text, share link, comment — is ready to
+paste from the day sheet.
 
 ##### Seven traps in this pipeline — read before building Day 2's graphic
 
@@ -563,13 +597,13 @@ runs seven client-side calculators.
 Opens the Advanced tab with this exact analysis already computed (**235 chars**):
 
 ```
-https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
 ```
 
 Japanese version (adds `"lang":"ja"`, **251 chars**):
 
 ```
-https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn0sImxhbmciOiJqYSJ9
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn0sImxhbmciOiJqYSJ9
 ```
 
 *Verified 2026-08-11 on a real load: opens on Advanced, HHV 44.59 / WI 56.00 / SG 0.634 / MW 18.305
@@ -578,7 +612,7 @@ already rendered, zero clicks.*
 #### First comment
 
 > The exact case above, already computed — swap in your own composition:
-> https://unit-converter-oil-gas.vercel.app/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
+> https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
 >
 > The published reference values and the test suite that pins them:
 > https://github.com/petronaoto/unit-converter
