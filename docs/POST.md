@@ -38,7 +38,13 @@ reach, credibility, and genuine affection for the work.
 | B1 | **Production URL** — was recorded nowhere in the repo. | ✅ Supplied by Naoto 2026-08-11; now in `index.html` as `og:url` + `canonical`. |
 | B2 | **Open Graph / Twitter card tags** — absent, so shared links previewed as naked text. | ✅ Added 2026-08-11 (`index.html` `<head>`). Static English by design: unfurlers never run the i18n pass. Verified the language switch does not overwrite them. 242 tests still pass. |
 | B3 | Browser pane displayed, for screenshot capture. | ☐ Open the Browser pane |
-| B4 | **Validate the link preview after deploy** — paste the URL into [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) once `main` is live. LinkedIn caches aggressively; the inspector forces a re-scrape. | ☐ After deploy, before Day 1 |
+| B4 | **Link preview live on production.** | ✅ Verified 2026-08-11 after PR #23 merged: `https://unit-converter-oil-gas.vercel.app/` serves all 10 OG/Twitter tags, and `og:image` returns HTTP 200 `image/jpeg`, 998,659 bytes (inside LinkedIn's 5 MB limit). |
+| B5 | **Force LinkedIn to re-scrape** via [Post Inspector](https://www.linkedin.com/post-inspector/) (needs a logged-in LinkedIn account, so Naoto must run it). | ☐ Before Day 1 |
+
+> **Vercel's CDN served a stale copy for ~1 minute after the merge** (`x-vercel-cache: HIT`
+> with a pre-merge `last-modified`). It has since refreshed and now returns the tags on cache
+> hits too. Worth knowing for future deploys: if a preview looks wrong immediately after a push,
+> re-check with a cache-busting query string before assuming the change failed.
 
 ---
 
