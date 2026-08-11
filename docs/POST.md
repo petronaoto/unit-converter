@@ -38,7 +38,13 @@ reach, credibility, and genuine affection for the work.
 | B1 | **Production URL** — was recorded nowhere in the repo. | ✅ Supplied by Naoto 2026-08-11; now in `index.html` as `og:url` + `canonical`. |
 | B2 | **Open Graph / Twitter card tags** — absent, so shared links previewed as naked text. | ✅ Added 2026-08-11 (`index.html` `<head>`). Static English by design: unfurlers never run the i18n pass. Verified the language switch does not overwrite them. 242 tests still pass. |
 | B3 | Browser pane displayed, for screenshot capture. | ☐ Open the Browser pane |
-| B4 | **Validate the link preview after deploy** — paste the URL into [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) once `main` is live. LinkedIn caches aggressively; the inspector forces a re-scrape. | ☐ After deploy, before Day 1 |
+| B4 | **Link preview live on production.** | ✅ Verified 2026-08-11 after PR #23 merged: `https://unit-converter-oil-gas.vercel.app/` serves all 10 OG/Twitter tags, and `og:image` returns HTTP 200 `image/jpeg`, 998,659 bytes (inside LinkedIn's 5 MB limit). |
+| B5 | **Force LinkedIn to re-scrape** via [Post Inspector](https://www.linkedin.com/post-inspector/) (needs a logged-in LinkedIn account, so Naoto must run it). | ☐ Before Day 1 |
+
+> **Vercel's CDN served a stale copy for ~1 minute after the merge** (`x-vercel-cache: HIT`
+> with a pre-merge `last-modified`). It has since refreshed and now returns the tags on cache
+> hits too. Worth knowing for future deploys: if a preview looks wrong immediately after a push,
+> re-check with a cache-busting query string before assuming the change failed.
 
 ---
 
@@ -379,9 +385,20 @@ python devserver.py .   # then open:
 Verified: 1200 × 675 exactly · side A **Gauge** active, side B **Abs** active · `10` → `159.73369` ·
 units bar / psi · English · all four copy points visible · card inside the frame.
 
-##### Four traps in this pipeline — read before building Day 2's graphic
+##### Capturing the PNG
 
-These cost real debugging time and will recur on every card:
+The in-app browser pane cannot screenshot in this environment (it does not composite frames).
+**Real Chrome can.** Open the standalone file and capture the `#shot` element — DevTools →
+right-click the node → *Capture node screenshot* gives exactly 1200 × 675.
+
+##### Seven traps in this pipeline — read before building Day 2's graphic
+
+**Trap 0, and the one that matters most: programmatic checks are not verification.** Values,
+element sizes, arrow counts and colours all passed while the image was visibly broken — a white
+3 px box around every element, a clipped footer, arrows pointing at nothing. *Look at the
+picture before shipping it.*
+
+The rest cost real debugging time and will recur on every card:
 
 1. **Kill CSS transitions in the iframe first.** The Abs/Gauge buttons carry `transition-colors`.
    A transition is driven by the compositor's frame clock, so in any context that is not painting
@@ -400,6 +417,16 @@ These cost real debugging time and will recur on every card:
    the iframe, where the app's own build is applied — not in the mockup document. And because
    freezing strips `class` attributes, tag anything the annotation layer needs to find (element
    **IDs survive**; class-based selectors do not).
+5. **A zero border width must still be written when freezing styles.** Tailwind's preflight sets
+   `border-style: solid` with `border-width: 0` on every element. Drop the `0px` as "empty" and
+   the browser falls back to `border-width: medium` — a 3 px box around *every node* in the
+   snapshot. Skip zeros everywhere else, never on `border-*-width`.
+6. **Freeze `transform` and `transform-origin` too.** The card carries `scale(1.18)`. Omit them
+   and the frozen copy renders at 1.0 while the arrow coordinates were measured at 1.18, so every
+   connector points at empty space.
+7. **`<svg>` is a replaced element** — `position:absolute; inset:0` does *not* stretch it. It keeps
+   its intrinsic 300 × 150 and silently clips every connector drawn beyond that. Set explicit
+   `width`/`height` and a matching `viewBox`.
 
 #### Japanese version
 

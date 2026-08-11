@@ -12,7 +12,10 @@
         font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
   .callout{background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.45);
            border-radius:.5rem;padding:.6rem .8rem;color:#fbbf24;font-size:13px;line-height:1.35;}
-  #arrows{position:absolute;inset:0;pointer-events:none;z-index:40;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. Size it
+     explicitly and give it a matching viewBox. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
   /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
      mobile form and every computed width collapses — which the snapshot then bakes in. Park it
      off-screen at full size instead of shrinking it. 1280px puts the app in its two-column
@@ -42,22 +45,25 @@
       <span class="text-slate-600">·</span> General <span class="text-slate-600">▸</span> Pressure</span>
   </div>
 
-  <div id="card-slot" class="absolute" style="left:56px;top:74px;">
+  <!-- The card renders at its true 476x435. Left unscaled it fills only the top two-thirds of a
+       675px frame and the image reads as half-empty. Scale up from the top-left; the arrow
+       layer measures getBoundingClientRect(), which already accounts for the transform. -->
+  <div id="card-slot" class="absolute" style="left:52px;top:88px;transform:scale(1.18);transform-origin:top left;">
     <div class="text-slate-600 text-sm p-8">loading the live card…</div>
   </div>
 
-  <div id="c1" class="callout absolute" style="left:648px;top:132px;width:430px;">
+  <div id="c1" class="callout absolute" style="left:672px;top:126px;width:452px;">
     <b class="text-amber-300">Each side carries its own basis.</b><br>
     That is the whole point — <span class="text-amber-200">barg&nbsp;→&nbsp;psia is one step</span>,
     not two and a subtraction.
   </div>
 
-  <div id="c2" class="callout absolute" style="left:648px;top:252px;width:430px;">
+  <div id="c2" class="callout absolute" style="left:672px;top:258px;width:452px;">
     The atmospheric reference is <b class="text-amber-300">shown on the card</b>,
     not assumed: 101,325&nbsp;Pa.
   </div>
 
-  <div class="absolute" style="left:648px;top:360px;width:496px;">
+  <div class="absolute" style="left:672px;top:376px;width:470px;">
     <div class="text-slate-500 text-[11px] uppercase tracking-widest mb-2">10 barg, converted two ways</div>
 
     <div class="rounded-lg overflow-hidden border border-emerald-500/40 mb-2">
@@ -80,7 +86,16 @@
     </div>
   </div>
 
-  <svg id="arrows"></svg>
+  <!-- Footer. The card is portrait-ish and the frame is 16:9, so scaling the card to fill the
+       height would push it into the right column. Use the lower band deliberately instead —
+       and a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">unit-converter-oil-gas.vercel.app</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
 </div>
 
 <script>
@@ -94,7 +109,11 @@ var STYLE_PROPS = ['display','position','top','left','right','bottom','width','h
   'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
   'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
   'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
-  'vertical-align','appearance','text-decoration','backdrop-filter'];
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // transform/transform-origin carry the card's scale(1.18). Omitting them makes the frozen
+  // copy render the card at 1.0 while the arrow coordinates were measured at 1.18 — the
+  // connectors then point at empty space.
+  'transform','transform-origin'];
 
 function buildCard() {
   var doc = document.getElementById('app').contentDocument;
@@ -172,9 +191,13 @@ function snapshotCard(doc, win) {
     var cs = win.getComputedStyle(srcAll[m]), css = 'box-sizing:border-box;';
     for (var n = 0; n < STYLE_PROPS.length; n++) {
       var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
-      if (val && val !== 'none' && val !== 'normal' && val !== 'auto' && val !== '0px' && val !== '0s') {
-        css += prop + ':' + val + ';';
-      }
+      if (!val || val === 'none' || val === 'normal' || val === 'auto' || val === '0s') { continue; }
+      // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+      // with border-width:0 on every element. Freezing the style while dropping the 0px width
+      // makes the browser fall back to border-width:medium — painting a 3px box around every
+      // node in the snapshot. Skip zeros everywhere else, never here.
+      if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+      css += prop + ':' + val + ';';
     }
     dstAll[m].setAttribute('style', css);
     dstAll[m].removeAttribute('class');
@@ -207,9 +230,11 @@ function drawArrows() {
       + ' fill="none" stroke="#f59e0b" stroke-width="1.6" opacity="0.85" marker-end="url(#ah)"/>');
   }
 
+  // One arrow per callout. A second connector from c1 to the side-B toggle landed its arrowhead
+  // directly on the "Gauge" label — the reader's eye went to a collision instead of the point.
+  // Side A's toggle carries the idea; the copy already says "each side".
   var slot = document.getElementById('card-slot');
   draw(document.getElementById('c1'), slot.querySelector('#press-mode1-gau'), -30);
-  draw(document.getElementById('c1'), slot.querySelector('#press-mode2-abs'), -30);
   draw(document.getElementById('c2'), slot.querySelector('[data-role="info"]'), -20);
 }
 
