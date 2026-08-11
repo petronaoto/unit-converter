@@ -56,7 +56,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · ✅ posted
 | Day | Date | Title | Lens | Status | Post URL | Reactions / Comments |
 |---|---|---|---|---|---|---|
 | 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7492837311416741888/ | |
-| 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✎ EN+JP | | |
+| 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/ | |
 | 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ☐ | | |
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
@@ -75,6 +75,22 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · ✅ posted
 | 18 | Thu 3 Sep 2026 | The whole toolbox on one page, and ten published vectors | story | ☐ | | |
 | 19 | Fri 4 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
 | 20 | Mon 7 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
+
+> ⚠️ **The `### Day N` sheets in §7 were never renumbered after the reflow (C12).** The table
+> above is authoritative for *what runs when*; the sheets below are authoritative for *content*.
+> Read the sheet by **title**, not by its number. Mapping:
+>
+> | Tracker day | Title | Lives in sheet |
+> |---|---|---|
+> | 1, 2, 4, 6–15, 19 | *(unchanged)* | same number ✓ |
+> | **3** | The steam spreadsheet nobody owns | `### Day 5` |
+> | **5** | There are three versions of these coefficients on the internet | `### Day 16` |
+> | **16** | A green CI badge is not evidence | `### Day 17` |
+> | **17** | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | `### Day 3` |
+> | **18** | The whole toolbox on one page, and ten published vectors | ⚠️ **no matching sheet** — closest is `### Day 20` ("Twenty days, ten reference vectors, one question"), which was written as the campaign closer. Needs a decision. |
+> | **20** | Five things this calculator refuses to do | `### Day 18` |
+>
+> **Next up (Day 3, Thu 13 Aug): "The steam spreadsheet nobody owns" — draft is in `### Day 5`.**
 
 **Weekly themes**
 
@@ -217,8 +233,9 @@ j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 
 ## 5. Corrections applied during planning
 
-An adversarial fact-check of the draft plan against the codebase found ten defects. All are
-corrected in the day sheets below; recorded here so they are not silently reintroduced.
+An adversarial fact-check of the draft plan against the codebase found ten defects (C1–C10).
+Two more (C11–C12) were caught later, at publish time, by re-verifying against the running app.
+All are corrected in the day sheets below; recorded here so they are not silently reintroduced.
 
 | # | Day | Defect | Correction |
 |---|---|---|---|
@@ -231,7 +248,9 @@ corrected in the day sheets below; recorded here so they are not silently reintr
 | C7 | 14 | "c = √(kZRT/M), the real-gas form API 520 uses" | Misattribution. API 520 sizes on C and the critical pressure ratio. Frame as a first-order real-gas correction. |
 | C8 | 19 | Share-link length guessed at 4,600 | **Measured: 4,627** chars (stock, empty state). Use the compact recipe in §3. |
 | C9 | 17 | "183 tests" | **242** today. |
-| C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = 56.0005 → **56.00**. Do not publish an intermediate. |
+| C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = **56.000621** → **56.00**. Do not publish an intermediate. |
+| C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
+| C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** | Unresolved — needs Naoto's call, see the mapping under §2. Day 2 was unaffected (tracker and sheet agree), so publishing was not blocked. |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -536,7 +555,22 @@ line, which reads as a swipe in Japanese, and leads on the review-passes-anyway 
 
 ---
 
-### Day 2 — Wed 12 Aug 2026 · ✎ drafted EN + JP
+### Day 2 — Wed 12 Aug 2026 · ✅ POSTED
+
+**Live:** https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/
+(published 2026-08-12, one bilingual post + annotated graphic + first comment).
+
+> **Shipped as ONE bilingual post**, not the EN/JA pair this sheet was originally drafted for —
+> Day 1 established that pattern. Combined length **2,318 characters**, inside LinkedIn's 3,000.
+> The Japanese section is a rewrite, not a translation, and carries the URL in its own right so a
+> reader who scrolls straight to it still gets the link.
+>
+> **Defect found and fixed at draft time (C11):** the original draft said CH₄'s unrounded mole
+> fraction was "0.888712…". It is **0.8886584…** (`0.888658452`, verified against the running app).
+> The published post carries the correct figure. This is exactly what rule 2 — reproduce every
+> number against the app, never copy it from the docs — exists to catch.
+
+**Original sheet (as drafted) follows.**
 
 **Title:** Why your HHV and the plant's HHV disagree in the second decimal
 **Lens:** standards-credibility · **Format:** mini-tutorial · **Feature:** Advanced → JIS K 2301 engine
@@ -554,7 +588,7 @@ every number it shows can be traced to a rule someone wrote down.
 >
 > Walk it with me, on a normal pipeline gas (CH₄ 89, C₂H₆ 7, C₃H₈ 2.5, iC₄ 0.7, nC₄ 0.5, N₂ 0.3 vol%):
 >
-> 1. Volume → mole fractions, rounded to 4 d.p. CH₄ becomes 0.8887. Not 0.888712…
+> 1. Volume → mole fractions, rounded to 4 d.p. CH₄ becomes 0.8887. Not 0.8886584…
 > 2. Each component's Cm·√b is rounded to 5 d.p. **before** the sum, not after.
 > 3. Z splits in two. Z_exact = 0.996759 drives HHV, LHV and SG. Z_rounded = 0.9968 drives the
 >    standard density — and nothing else.
@@ -596,11 +630,49 @@ Two panels, 1200 × 675.
 - Reproduce **no JIS table content** — arithmetic structure only.
 - Reuse the Day 1 footer strip (URL + free / no sign-up / no tracking).
 
-#### Verified numbers — *re-confirmed on production 2026-08-11*
+#### Mockup files — ✅ built, captured and published
+
+| File | What it is |
+|---|---|
+| [`linkedin/day02-mockup.html`](linkedin/day02-mockup.html) | **The generator.** Loads `index.html` in an off-screen iframe, clears every composition field, enters the six components through the app's own inputs, and clones the resulting "3. Physical & Combustion Properties" card. Must be served over HTTP. Call `buildStandalone()` once `data-ready` is set to regenerate the deliverable. |
+| [`linkedin/day02-standalone.html`](linkedin/day02-standalone.html) | **The deliverable.** A frozen 1200 × 675 frame, every style inlined — zero scripts, zero external references. |
+| [`linkedin/day02.png`](linkedin/day02.png) | The published 1200 × 675 graphic. |
+
+**As built, it differs from the spec above in two deliberate ways:**
+
+- The left panel is the **properties card only** (HHV / MW / SG / WI / MCP / liquid density).
+  ρ_std has no field on that card, and LHV is behind the HHV/LHV toggle, so both live in the
+  cascade on the right instead of being claimed twice.
+- A **standard caveat block** was added under the card: *"This is JIS K 2301:2011 specifically.
+  ISO 6976 rounds differently and will correctly disagree."* A screenshot travels without its
+  caption, and an image asserting 44.59 with no named standard is a claim the reader cannot check.
+
+Only the sum `Σ = 0.056930` is shown for step 2, never the per-component √bᵢ coefficients —
+that is what keeps "no JIS table content" true.
+
+#### Verified numbers — *re-confirmed against the running app 2026-08-12, at publish time*
 
 Mole fractions 0.8887 / 0.0704 / 0.0254 / 0.0073 / 0.0052 / 0.0030 · Z_exact 0.996759 ·
 Z_rounded 0.9968 · **HHV 44.59** MJ/Nm³ · LHV 40.25 MJ/Nm³ · SG 0.634 · **WI 56.00** ·
 MW 18.305 g/mol · ρ_std 0.81930 kg/Nm³ · MCP 36.9.
+
+Intermediates behind the graphic, all reproduced from the app's own `gasComps` table:
+
+| Quantity | Value |
+|---|---|
+| CH₄ mole fraction, **unrounded** | `0.888658452` → 0.8887 *(not 0.888712… — see C11)* |
+| Σ ROUND(Cmᵢ·√bᵢ, 5) | **0.056930** |
+| Z_exact, full precision | 0.99675898 |
+| MW, full precision | 18.3049839 g/mol |
+| ρ_std, full precision | 0.819299 kg/Nm³ |
+| WI before rounding | 56.000621 → **56.00** |
+
+Two behaviours confirmed live, both of which the post asserts:
+
+- Toggling the card to **LHV** shows 40.25 **and leaves WI at 56.00** — Wobbe stays HHV-based
+  per JIS K 2301 §7, exactly as the post claims.
+- The share link restores on a **genuine page load** with HHV 44.59 / SG 0.634 / WI 56.00 /
+  MW 18.305 / MCP 36.9 already rendered, zero clicks.
 
 ⚠️ **C10:** publish **WI = 56.00** and the division that produces it. Do **not** publish an
 intermediate "55.997" — the true value is 44.59/√0.634 = **56.0006**, which rounds to 56.00.
@@ -609,13 +681,14 @@ runs seven client-side calculators.
 
 #### Share link — ✅ built and verified on production
 
-Opens the Advanced tab with this exact analysis already computed (**235 chars**):
+Opens the Advanced tab with this exact analysis already computed (**227 chars** — the sheet
+previously said 235; re-counted at publish time):
 
 ```
 https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn19
 ```
 
-Japanese version (adds `"lang":"ja"`, **251 chars**):
+Japanese version (adds `"lang":"ja"`, **243 chars**):
 
 ```
 https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJhZHZhbmNlZCIsImlucHV0cyI6eyJjb21wLWNoNCI6Ijg5IiwiY29tcC1jMmg2IjoiNyIsImNvbXAtYzNoOCI6IjIuNSIsImNvbXAtaWM0IjoiMC43IiwiY29tcC1uYzQiOiIwLjUiLCJjb21wLW4yIjoiMC4zIn0sImxhbmciOiJqYSJ9
@@ -643,7 +716,7 @@ already rendered, zero clicks.*
 >
 > 標準的なパイプラインガス（CH₄ 89、C₂H₆ 7、C₃H₈ 2.5、iC₄ 0.7、nC₄ 0.5、N₂ 0.3 vol%）で追ってみます。
 >
-> 1. 体積分率→モル分率は **4 桁**に丸める。CH₄ は 0.8887。0.888712… ではありません。
+> 1. 体積分率→モル分率は **4 桁**に丸める。CH₄ は 0.8887。0.8886584… ではありません。
 > 2. 各成分の Cm·√b は、**合計する前に** 5 桁へ丸める。後ではありません。
 > 3. ここで Z が二手に分かれます。Z_exact = 0.996759 は HHV・LHV・SG に、
 >    Z_rounded = 0.9968 は**標準密度にだけ**使われます。

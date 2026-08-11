@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 2 mockup — the JIS K 2301 rounding cascade</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. Size it
+     explicitly and give it a matching viewBox. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses — which the snapshot then bakes in. Park it
+     off-screen at full size instead of shrinking it. 1280px puts the Advanced tab in its
+     two-column grid, where the properties card computes its natural ~451px width. */
+  #app{position:absolute;width:1280px;height:1000px;left:-20000px;top:0;border:0;pointer-events:none;}
+
+  /* --- cascade primitives ------------------------------------------------- */
+  .step-n{position:absolute;width:24px;height:24px;border-radius:9999px;
+          background:#1e293b;border:1px solid #475569;color:#cbd5e1;
+          font-size:12px;font-weight:700;line-height:22px;text-align:center;z-index:5;}
+  .step-t{color:#e2e8f0;font-size:15px;font-weight:600;line-height:1.2;}
+  .step-r{color:#64748b;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;}
+  .step-v{color:#94a3b8;font-size:13px;line-height:1.45;
+          font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 2 — "Why your HHV and the plant's HHV disagree in the second decimal".
+
+  LEFT  : the REAL "3. Physical & Combustion Properties" card, produced by loading the app in a
+          hidden same-origin iframe, entering the reference composition through the app's own
+          inputs, and cloning the resulting card. Nothing is re-implemented — 44.59 / 0.634 /
+          56.00 / 18.305 are computed by index.html.
+  RIGHT : a DESIGNED diagram of the rounding cascade. This is the post's argument, and it is
+          arithmetic structure only — no JIS table content is reproduced. The per-component
+          sqrt(b) coefficients are deliberately NOT shown; only the sum they produce.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day02-mockup.html
+  Then screenshot the #shot element (1200x675).
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> JIS K 2301:2011</span>
+  </div>
+
+  <!-- ================= LEFT: the real card ================= -->
+  <div class="absolute" style="left:52px;top:96px;">
+    <!-- No `uppercase` here: it would render iC4 as "IC4" and vol% as "VOL%". Component
+         notation is case-significant, so the case must survive into the image. -->
+    <div class="text-slate-500 text-[11px] tracking-widest mb-2">CH&#8324;&nbsp;89 &middot; C&#8322;H&#8326;&nbsp;7 &middot; C&#8323;H&#8328;&nbsp;2.5 &middot; iC&#8324;&nbsp;0.7 &middot; nC&#8324;&nbsp;0.5 &middot; N&#8322;&nbsp;0.3&nbsp;vol%</div>
+  </div>
+  <div id="card-slot" class="absolute" style="left:52px;top:126px;transform:scale(1.02);transform-origin:top left;">
+    <div class="text-slate-600 text-sm p-8">loading the live card…</div>
+  </div>
+
+  <div class="absolute text-slate-500 text-[12px] leading-snug" style="left:52px;top:478px;width:470px;">
+    Computed by the app, not typed into this image.
+  </div>
+
+  <!-- The caveat belongs IN the frame. A screenshot travels without its caption, and an image
+       asserting "44.59" with no named standard is a claim the reader cannot check. -->
+  <div class="absolute rounded-lg px-4 py-3" style="left:52px;top:516px;width:470px;border:1px solid rgba(148,163,184,.25);background:rgba(148,163,184,.06);">
+    <div class="text-slate-400 text-[12.5px] leading-snug">
+      This is <b class="text-slate-200">JIS K 2301:2011</b> specifically.
+      <b class="text-slate-200">ISO 6976</b> rounds differently and will correctly disagree &mdash;
+      if your plant works to ISO, none of this is your rule.
+    </div>
+  </div>
+
+  <!-- ================= RIGHT: the cascade ================= -->
+  <div class="absolute text-slate-500 text-[11px] uppercase tracking-widest" style="left:596px;top:96px;">
+    Five roundings, in this order
+  </div>
+
+  <!-- the spine -->
+  <div class="absolute" style="left:607px;top:132px;width:1px;height:392px;background:rgba(148,163,184,.22);"></div>
+
+  <!-- 1 -->
+  <div class="step-n" style="left:596px;top:126px;">1</div>
+  <div class="absolute" style="left:636px;top:124px;width:520px;">
+    <div class="flex items-baseline justify-between">
+      <span class="step-t">Volume % &rarr; mole fraction</span>
+      <span class="step-r">round 4 d.p.</span>
+    </div>
+    <div class="step-v mt-1">CH&#8324;&nbsp; 0.8886584&hellip; &nbsp;<span class="text-slate-600">&rarr;</span>&nbsp; <span class="text-slate-200">0.8887</span></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="step-n" style="left:596px;top:196px;">2</div>
+  <div class="absolute" style="left:636px;top:194px;width:520px;">
+    <div class="flex items-baseline justify-between">
+      <span class="step-t">Each component&rsquo;s Cm&#7522;&#183;&radic;b&#7522;</span>
+      <span class="step-r">round 5 d.p.</span>
+    </div>
+    <div class="step-v mt-1"><span class="text-amber-400/90">rounded BEFORE summing</span>, not after &nbsp;<span class="text-slate-600">&rarr;</span>&nbsp; <span class="text-slate-200">&Sigma; = 0.056930</span></div>
+  </div>
+
+  <!-- 3 — the fork. This is the payload of the post. -->
+  <div class="step-n" style="left:596px;top:266px;border-color:#f59e0b;color:#fbbf24;">3</div>
+  <div class="absolute" style="left:636px;top:264px;width:520px;">
+    <div class="flex items-baseline justify-between">
+      <span class="step-t">Z = 1 &minus; (&Sigma;)&#178; &nbsp;<span class="text-amber-400 font-normal text-[13px]">&mdash; and here it forks</span></span>
+    </div>
+    <div class="flex gap-2 mt-2">
+      <div class="flex-1 rounded-lg px-3 py-2" style="border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.10);">
+        <div class="text-amber-300 text-[13px] font-semibold" style="font-family:ui-monospace,Menlo,Consolas,monospace;">Z_exact&nbsp; 0.996759</div>
+        <div class="text-amber-200/80 text-[12px] mt-0.5">drives HHV &middot; LHV &middot; SG</div>
+      </div>
+      <div class="flex-1 rounded-lg px-3 py-2" style="border:1px solid rgba(34,211,238,.45);background:rgba(34,211,238,.10);">
+        <div class="text-cyan-300 text-[13px] font-semibold" style="font-family:ui-monospace,Menlo,Consolas,monospace;">Z_rounded&nbsp; 0.9968</div>
+        <div class="text-cyan-200/80 text-[12px] mt-0.5">drives &rho;_std &mdash; and nothing else</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="step-n" style="left:596px;top:392px;">4</div>
+  <div class="absolute" style="left:636px;top:390px;width:520px;">
+    <div class="flex items-baseline justify-between">
+      <span class="step-t">Report the properties</span>
+      <span class="step-r">2 d.p. &middot; 3 d.p.</span>
+    </div>
+    <div class="step-v mt-1"><span class="text-slate-200">HHV 44.59</span> &nbsp;&middot;&nbsp; <span class="text-slate-200">LHV 40.25</span> &nbsp;&middot;&nbsp; <span class="text-slate-200">SG 0.634</span></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="step-n" style="left:596px;top:462px;">5</div>
+  <div class="absolute" style="left:636px;top:460px;width:520px;">
+    <div class="flex items-baseline justify-between">
+      <span class="step-t">Wobbe index</span>
+      <span class="step-r">from rounded inputs</span>
+    </div>
+    <div class="step-v mt-1" style="font-size:14px;"><span id="wi-anchor" class="text-slate-200">44.59 / &radic;0.634 = <span class="text-white font-bold">56.00</span></span></div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-2.5" style="left:636px;top:534px;width:520px;border:1px solid rgba(245,158,11,.40);background:rgba(245,158,11,.08);">
+    <div class="text-amber-300 text-[13px] leading-snug">
+      Step&nbsp;5 uses the <b>already-rounded</b> HHV and SG &mdash; by rule, not by sloppiness.
+      Carry full precision and you get a defensible number that fails traceability.
+    </div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // transform/transform-origin carry the card's scale. Omitting them makes the frozen copy
+  // render at 1.0 while the arrow coordinates were measured at the scaled size — the
+  // connectors then point at empty space.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the card snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it as an empty-ish value while stripping the
+    // class that hid the element makes every hidden node in the card render — the app's
+    // out-liq-warn / comp-warn boxes then paint as two empty amber rectangles under the card.
+    // Every other property is safe to skip when it is none/normal/auto.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0 on every element. Freezing the style while dropping the 0px width
+    // makes the browser fall back to border-width:medium — painting a 3px box around every
+    // node in the snapshot. Skip zeros everywhere else, never here.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+var COMP = {'comp-ch4':'89','comp-c2h6':'7','comp-c3h8':'2.5','comp-ic4':'0.7','comp-nc4':'0.5','comp-n2':'0.3'};
+
+function buildCard() {
+  var doc = document.getElementById('app').contentDocument;
+  var win = document.getElementById('app').contentWindow;
+
+  var set = function (id, v) {
+    var e = doc.getElementById(id);
+    if (!e) return;
+    e.value = v;
+    e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+    e.dispatchEvent(new win.Event('change', { bubbles: true }));
+  };
+
+  // KILL TRANSITIONS FIRST — this is load-bearing, not cosmetic.
+  //
+  // The HHV/LHV toggle swaps button classes carrying Tailwind's `transition-colors`. A CSS
+  // transition is driven by the compositor's frame clock, so in any context that is not painting
+  // frames (a headless capture, a backgrounded tab, an undisplayed pane) it never advances — and
+  // getComputedStyle keeps returning the transition's START value. The snapshot would then bake
+  // in the colours of the state we just navigated AWAY from.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC (it fetches i18n/<lang>.json) and re-renders, so values must be set
+  // AFTER it settles. The app persists language in localStorage, so without forcing it here an
+  // earlier session in another language silently renders this English graphic in that language.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    // Clear every composition field first: the app ships defaults, and a leftover component
+    // would renormalise the analysis and quietly change every number in the image.
+    var all = doc.querySelectorAll('[id^="comp-"]');
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].tagName === 'INPUT') { all[i].value = ''; }
+    }
+    for (var k in COMP) { if (COMP.hasOwnProperty(k)) { set(k, COMP[k]); } }
+    if (typeof win.setHVMode === 'function') { win.setHVMode('hhv'); }
+    if (typeof win.calcGHV === 'function') { win.calcGHV(); }
+    setTimeout(function () { snapshotCard(doc, win); }, 250);
+  }, 800);
+}
+
+function snapshotCard(doc, win) {
+  // Walk up from the HHV output to the "3. Physical & Combustion Properties" card.
+  var node = doc.getElementById('out-ghv');
+  for (var i = 0; i < 3; i++) { node = node.parentElement; }
+
+  // Bake live property values into attributes so the clone renders identically.
+  var clone = node.cloneNode(true);
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // Freeze the card's appearance INSIDE the iframe, where the app's own Tailwind build is fully
+  // applied. Tailwind's CDN JIT only generates rules for markup it has scanned, so a card
+  // injected into this document after load renders unstyled. Inlining here makes the card
+  // independent of any stylesheet downstream. Note this strips every class attribute — anything
+  // the annotation layer must find later has to be tagged by ID, which survives.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  // Static mockup: strip app handlers so a stray click cannot throw.
+  slot.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  drawArrows();
+  // Publish the values the capture step asserts against.
+  document.body.setAttribute('data-ready',
+    doc.getElementById('out-ghv').innerText + '|' + doc.getElementById('out-wi').innerText
+    + '|' + doc.getElementById('out-sg').innerText + '|' + doc.getElementById('out-mw').innerText);
+}
+
+function drawArrows() {
+  var svg = document.getElementById('arrows');
+  svg.innerHTML = '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"'
+                + ' orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/></marker></defs>';
+  var shot = document.getElementById('shot').getBoundingClientRect();
+  var slot = document.getElementById('card-slot');
+
+  // One connector: from the cascade's final Wobbe step back to the WI the app actually printed.
+  // That single link is what makes the diagram evidence rather than decoration.
+  var from = document.getElementById('wi-anchor');
+  var to   = slot.querySelector('#out-wi');
+  if (!from || !to) { return; }
+  var f = from.getBoundingClientRect(), t = to.getBoundingClientRect();
+  var x1 = f.left - shot.left - 10, y1 = f.top - shot.top + f.height / 2;
+  var x2 = t.right - shot.left + 12, y2 = t.top - shot.top + t.height / 2;
+  var mx = (x1 + x2) / 2;
+  svg.insertAdjacentHTML('beforeend',
+    '<path d="M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2 + '"'
+    + ' fill="none" stroke="#f59e0b" stroke-width="1.6" opacity="0.85" marker-end="url(#ah)"/>');
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export.
+//
+// The annotation layer around the card is styled by the Tailwind CDN, which is an external
+// reference and a JIT that only styles markup it has scanned. Freezing every node in #shot the
+// same way the card was frozen makes the frame self-contained: open the result anywhere, with no
+// network and no scripts, and it renders identically.
+//
+// Call buildStandalone() once data-ready is set; it POSTs the file to the dev server's /__save
+// sink. Skip the <svg> subtree — freezing computed styles onto SVG geometry nodes rewrites
+// presentation attributes and silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }   // leave SVG innards alone
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }     // already frozen (the card)
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 2 — the JIS K 2301 rounding cascade</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day02-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>
