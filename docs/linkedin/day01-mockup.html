@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 1 mockup — barg/bara</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .callout{background:rgba(245,158,11,.10);border:1px solid rgba(245,158,11,.45);
+           border-radius:.5rem;padding:.6rem .8rem;color:#fbbf24;font-size:13px;line-height:1.35;}
+  #arrows{position:absolute;inset:0;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses — which the snapshot then bakes in. Park it
+     off-screen at full size instead of shrinking it. 1280px puts the app in its two-column
+     grid, where the Pressure card computes its natural ~476px width. */
+  #app{position:absolute;width:1280px;height:1000px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  This mockup renders the REAL Pressure card by loading the app in a hidden same-origin
+  iframe, driving it with the app's own JavaScript, and cloning the resulting card.
+  Nothing here re-implements the conversion — 159.73369 is produced by index.html.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day01-mockup.html
+  Then screenshot the #shot element (1200x675).
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30">
+    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> General <span class="text-slate-600">▸</span> Pressure</span>
+  </div>
+
+  <div id="card-slot" class="absolute" style="left:56px;top:74px;">
+    <div class="text-slate-600 text-sm p-8">loading the live card…</div>
+  </div>
+
+  <div id="c1" class="callout absolute" style="left:648px;top:132px;width:430px;">
+    <b class="text-amber-300">Each side carries its own basis.</b><br>
+    That is the whole point — <span class="text-amber-200">barg&nbsp;→&nbsp;psia is one step</span>,
+    not two and a subtraction.
+  </div>
+
+  <div id="c2" class="callout absolute" style="left:648px;top:252px;width:430px;">
+    The atmospheric reference is <b class="text-amber-300">shown on the card</b>,
+    not assumed: 101,325&nbsp;Pa.
+  </div>
+
+  <div class="absolute" style="left:648px;top:360px;width:496px;">
+    <div class="text-slate-500 text-[11px] uppercase tracking-widest mb-2">10 barg, converted two ways</div>
+
+    <div class="rounded-lg overflow-hidden border border-emerald-500/40 mb-2">
+      <div class="px-4 py-3 bg-emerald-500/10">
+        <div class="text-emerald-400/70 text-[11px] mb-0.5">basis declared correctly</div>
+        <div class="text-emerald-300 text-[26px] font-semibold leading-none">159.73 <span class="text-[15px] font-normal">psia</span></div>
+      </div>
+    </div>
+
+    <div class="rounded-lg overflow-hidden border border-red-500/40">
+      <div class="px-4 py-3 bg-red-500/10">
+        <div class="text-red-400/70 text-[11px] mb-0.5">both sides assumed absolute</div>
+        <div class="text-red-300 text-[26px] font-semibold leading-none">145.04 <span class="text-[15px] font-normal">psia</span></div>
+      </div>
+    </div>
+
+    <div class="mt-3 flex items-baseline gap-3">
+      <div class="text-slate-200 text-[15px] font-semibold">&minus;14.696 psi</div>
+      <div class="text-slate-500 text-[13px]">exactly one atmosphere &mdash; and it reads as conservative</div>
+    </div>
+  </div>
+
+  <svg id="arrows"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter'];
+
+function buildCard() {
+  var doc = document.getElementById('app').contentDocument;
+  var win = document.getElementById('app').contentWindow;
+
+  var set = function (id, v) {
+    var e = doc.getElementById(id);
+    if (!e) return;
+    e.value = v;
+    e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+    e.dispatchEvent(new win.Event('change', { bubbles: true }));
+  };
+
+  // KILL TRANSITIONS FIRST — this is load-bearing, not cosmetic.
+  //
+  // setPressMode() swaps the Abs/Gauge button classes, and those buttons carry Tailwind's
+  // `transition-colors`. A CSS transition is driven by the compositor's frame clock, so in any
+  // context that is not painting frames (a headless capture, a backgrounded tab, an undisplayed
+  // pane) it never advances — and getComputedStyle keeps returning the transition's START
+  // value. The snapshot then reads the colours of the state we just navigated AWAY from, and
+  // the graphic ships showing Abs/Abs while the copy claims barg -> psia. Removing the
+  // transition makes the computed style resolve synchronously and correctly, everywhere.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC (it fetches i18n/<lang>.json) and re-renders the card when it
+  // resolves, resetting the Abs/Gauge buttons — so the modes must be set AFTER it settles.
+  // The app persists language in localStorage, so without this an earlier session in another
+  // language silently renders this English graphic in that language.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    set('press-select1', '100000');       // bar
+    set('press-select2', '6894.75729');   // psi
+    if (typeof win.setPressMode === 'function') { win.setPressMode(1, 'gau'); win.setPressMode(2, 'abs'); }
+    set('press-input1', '10');
+    snapshotCard(doc, win);
+  }, 700);
+}
+
+function snapshotCard(doc, win) {
+  // Walk up from the input to the card container.
+  var node = doc.getElementById('press-input1');
+  for (var i = 0; i < 5; i++) { node = node.parentElement; }
+
+  // Bake live property values into attributes so the clone renders identically.
+  var clone = node.cloneNode(true);
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // The style pass below strips every class attribute, so anything the annotation layer needs
+  // to find later must be tagged now. Element IDs survive (they are the app's public API);
+  // the atmospheric-reference strip has no ID, so give it a stable hook.
+  var infoEl = clone.querySelector('.bg-blue-500\\/10');
+  if (infoEl) { infoEl.setAttribute('data-role', 'info'); }
+
+  // Freeze the card's appearance INSIDE the iframe, where the app's own Tailwind build is
+  // fully applied. Tailwind's CDN JIT only generates rules for markup it has scanned, so a
+  // card injected into this document after load renders unstyled (the Abs/Gauge toggles lose
+  // their blue). Inlining here makes the card independent of any stylesheet downstream.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) {
+    var cs = win.getComputedStyle(srcAll[m]), css = 'box-sizing:border-box;';
+    for (var n = 0; n < STYLE_PROPS.length; n++) {
+      var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+      if (val && val !== 'none' && val !== 'normal' && val !== 'auto' && val !== '0px' && val !== '0s') {
+        css += prop + ':' + val + ';';
+      }
+    }
+    dstAll[m].setAttribute('style', css);
+    dstAll[m].removeAttribute('class');
+  }
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  // Static mockup: strip app handlers so a stray click cannot throw.
+  slot.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  drawArrows();
+  document.body.setAttribute('data-ready', doc.getElementById('press-input2').value);
+}
+
+function drawArrows() {
+  var svg = document.getElementById('arrows');
+  svg.innerHTML = '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"'
+                + ' orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f59e0b"/></marker></defs>';
+  var shot = document.getElementById('shot').getBoundingClientRect();
+
+  function draw(fromEl, toEl, bend) {
+    if (!fromEl || !toEl) return;
+    var f = fromEl.getBoundingClientRect(), t = toEl.getBoundingClientRect();
+    var x1 = f.left - shot.left - 8,   y1 = f.top - shot.top + f.height / 2;
+    var x2 = t.right - shot.left + 10, y2 = t.top  - shot.top + t.height / 2;
+    var mx = (x1 + x2) / 2 + (bend || 0);
+    svg.insertAdjacentHTML('beforeend',
+      '<path d="M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2 + '"'
+      + ' fill="none" stroke="#f59e0b" stroke-width="1.6" opacity="0.85" marker-end="url(#ah)"/>');
+  }
+
+  var slot = document.getElementById('card-slot');
+  draw(document.getElementById('c1'), slot.querySelector('#press-mode1-gau'), -30);
+  draw(document.getElementById('c1'), slot.querySelector('#press-mode2-abs'), -30);
+  draw(document.getElementById('c2'), slot.querySelector('[data-role="info"]'), -20);
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>
