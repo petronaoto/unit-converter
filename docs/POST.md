@@ -385,9 +385,20 @@ python devserver.py .   # then open:
 Verified: 1200 × 675 exactly · side A **Gauge** active, side B **Abs** active · `10` → `159.73369` ·
 units bar / psi · English · all four copy points visible · card inside the frame.
 
-##### Four traps in this pipeline — read before building Day 2's graphic
+##### Capturing the PNG
 
-These cost real debugging time and will recur on every card:
+The in-app browser pane cannot screenshot in this environment (it does not composite frames).
+**Real Chrome can.** Open the standalone file and capture the `#shot` element — DevTools →
+right-click the node → *Capture node screenshot* gives exactly 1200 × 675.
+
+##### Seven traps in this pipeline — read before building Day 2's graphic
+
+**Trap 0, and the one that matters most: programmatic checks are not verification.** Values,
+element sizes, arrow counts and colours all passed while the image was visibly broken — a white
+3 px box around every element, a clipped footer, arrows pointing at nothing. *Look at the
+picture before shipping it.*
+
+The rest cost real debugging time and will recur on every card:
 
 1. **Kill CSS transitions in the iframe first.** The Abs/Gauge buttons carry `transition-colors`.
    A transition is driven by the compositor's frame clock, so in any context that is not painting
@@ -406,6 +417,16 @@ These cost real debugging time and will recur on every card:
    the iframe, where the app's own build is applied — not in the mockup document. And because
    freezing strips `class` attributes, tag anything the annotation layer needs to find (element
    **IDs survive**; class-based selectors do not).
+5. **A zero border width must still be written when freezing styles.** Tailwind's preflight sets
+   `border-style: solid` with `border-width: 0` on every element. Drop the `0px` as "empty" and
+   the browser falls back to `border-width: medium` — a 3 px box around *every node* in the
+   snapshot. Skip zeros everywhere else, never on `border-*-width`.
+6. **Freeze `transform` and `transform-origin` too.** The card carries `scale(1.18)`. Omit them
+   and the frozen copy renders at 1.0 while the arrow coordinates were measured at 1.18, so every
+   connector points at empty space.
+7. **`<svg>` is a replaced element** — `position:absolute; inset:0` does *not* stretch it. It keeps
+   its intrinsic 300 × 150 and silently clips every connector drawn beyond that. Set explicit
+   `width`/`height` and a matching `viewBox`.
 
 #### Japanese version
 
