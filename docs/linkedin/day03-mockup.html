@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 3 mockup — steam properties (IAPWS-IF97)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. 1280px puts the Basic Eng grid in two
+     columns, where this md:col-span-2 card computes its natural 976px width. */
+  #app{position:absolute;width:1280px;height:1000px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 3 — "The steam spreadsheet nobody owns".
+
+  TOP    : the REAL Steam Properties card at 4 MPa abs / 300 °C, cloned out of a live index.html
+           in a hidden same-origin iframe. h = 2,961.65148 kJ/kg is computed by the app's own
+           IF97 engine, not typed here.
+  BOTTOM : two designed panels. The right-hand one QUOTES the app's Region 3 refusal verbatim —
+           the string is read out of #sp-warn after driving the card to 25 MPa / 380 °C, so it
+           cannot drift from what the app actually says. It is deliberately NOT styled like the
+           app's chrome, because it is a quotation, not a screenshot.
+
+  The card's 10px footnote paragraph is cropped out: it does not survive LinkedIn's downscaling,
+  and the copy carries its content instead.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day03-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> Basic Eng <span class="text-slate-600">▸</span> Steam Properties</span>
+  </div>
+
+  <!-- ================= the real card ================= -->
+  <div id="card-slot" class="absolute" style="left:112px;top:72px;transform:scale(1);transform-origin:top left;">
+    <div class="text-slate-600 text-sm p-8">loading the live card…</div>
+  </div>
+
+  <!-- ================= lower band ================= -->
+  <div class="absolute rounded-lg px-4 py-3" style="left:112px;top:540px;width:476px;border:1px solid rgba(56,189,248,.40);background:rgba(56,189,248,.08);">
+    <div class="text-sky-300 text-[12.5px] leading-snug">
+      <b id="r2-anchor">Region 2, 49.64248 K of superheat.</b> The state classification — plus T_sat and h_fg at
+      the same pressure — is usually the real question behind &ldquo;what&rsquo;s the enthalpy&rdquo;.
+    </div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:612px;top:540px;width:476px;border:1px solid rgba(245,158,11,.40);background:rgba(245,158,11,.08);">
+    <div class="text-amber-300/90 text-[12.5px] leading-snug">
+      <b>25 MPa · 380 °C → every output blank.</b>
+      <span id="r3-quote" class="text-amber-200/80">&ldquo;…&rdquo;</span>
+    </div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID. This card is `grid grid-cols-2 md:grid-cols-4`, and `md:` is a MEDIA QUERY —
+  // freezing without grid-template-columns drops the column definition entirely, every cell
+  // stacks into one column, and the frozen widths/heights then overlap into an unreadable pile.
+  // Days 1 and 2 used flex cards and never hit this. Do not remove these.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  // transform/transform-origin carry any scale on the card. Omitting them makes the frozen copy
+  // render at 1.0 while arrow coordinates were measured at the scaled size.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the card snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it as an empty-ish value while stripping the
+    // class that hid the element makes every hidden node render — on Day 2 that shipped two
+    // empty amber rectangles that every programmatic check passed.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0 on every element; dropping the 0px makes the browser fall back to
+    // border-width:medium and paint a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function setIn(doc, win, id, v) {
+  var e = doc.getElementById(id);
+  if (!e) return;
+  e.value = v;
+  e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function buildCard() {
+  var doc = document.getElementById('app').contentDocument;
+  var win = document.getElementById('app').contentWindow;
+
+  // KILL TRANSITIONS FIRST — load-bearing, not cosmetic. A CSS transition is driven by the
+  // compositor's frame clock, so in a non-painting context it never advances and
+  // getComputedStyle keeps returning the transition's START value.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC and re-renders, and language persists in localStorage — force it, or
+  // an earlier Japanese session silently renders this English graphic in Japanese.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('basic'); }
+    setIn(doc, win, 'sp-p-u', '1');    // MPa
+    setIn(doc, win, 'sp-t-u', 'C');
+    setIn(doc, win, 'sp-p', '4');
+    setIn(doc, win, 'sp-t', '300');
+    if (typeof win.calcSteamProps === 'function') { win.calcSteamProps(); }
+    setTimeout(function () { snapshotCard(doc, win); }, 250);
+  }, 800);
+}
+
+function snapshotCard(doc, win) {
+  var node = doc.getElementById('basic-steam');
+  var clone = node.cloneNode(true);
+
+  // Bake live input/select values into attributes so the clone renders identically.
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // The freeze strips every class, so tag what we need to find afterwards. Attributes survive.
+  var foot = clone.querySelector('[data-i18n="basic.steam.footnote"]');
+  if (foot) {
+    foot.setAttribute('data-role', 'footnote');
+    foot.parentElement.setAttribute('data-role', 'inner');
+  }
+
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is fully applied. The CDN JIT
+  // only styles markup it has scanned, so a card injected into this document after load would
+  // render unstyled.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  // Crop the 10px footnote: it is unreadable once LinkedIn downscales the image, and the copy
+  // carries its content. Heights were frozen above, so both the card and its inner column must
+  // be released to auto or the card keeps the removed paragraph's space.
+  var footFrozen = clone.querySelector('[data-role="footnote"]');
+  var innerFrozen = clone.querySelector('[data-role="inner"]');
+  if (footFrozen) { footFrozen.parentElement.removeChild(footFrozen); }
+  clone.style.height = 'auto';
+  if (innerFrozen) { innerFrozen.style.height = 'auto'; }
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  slot.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  // Now drive the SAME card into Region 3 and quote its refusal verbatim, so the panel below
+  // cannot drift from what the app actually says.
+  setIn(doc, win, 'sp-p', '25');
+  setIn(doc, win, 'sp-t', '380');
+  if (typeof win.calcSteamProps === 'function') { win.calcSteamProps(); }
+  setTimeout(function () {
+    var warn = doc.getElementById('sp-warn');
+    var hidden = warn.classList.contains('hidden');
+    var text = (warn.innerText || '').trim().replace(/^⚠\s*/, '');
+    var hOut = (doc.getElementById('sp-out-h').innerText || '').trim();
+    document.getElementById('r3-quote').textContent = '“' + text + '”';
+    drawArrows();
+    // Publish what the capture step asserts against: the snapshotted values, plus proof that
+    // Region 3 really did refuse (warning shown AND the enthalpy output blanked).
+    document.body.setAttribute('data-ready', [
+      slot.querySelector('#sp-out-h').innerText.trim(),
+      slot.querySelector('#sp-out-s').innerText.trim(),
+      slot.querySelector('#sp-out-tsat').innerText.trim(),
+      slot.querySelector('#sp-out-hfg').innerText.trim(),
+      'r3warn=' + (!hidden), 'r3h=' + hOut
+    ].join('|'));
+  }, 300);
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The obvious connector runs from the "Region 2 / superheat" panel (bottom-left) up to the
+  // STATE chip (top-right), which drags a long diagonal straight across the output grid and over
+  // the enthalpy and entropy values — the two numbers the post is about. Day 1 already learned
+  // that an arrow colliding with a label sends the reader's eye to the collision instead of the
+  // point. The panel quotes the chip's own wording, so the link reads without a line.
+  //
+  // The layer is kept so the standalone export and the frame geometry stay identical to the
+  // other days; if a future edit needs a connector, draw it here.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export. Freezing every node in #shot the same way the card was frozen makes the
+// frame self-contained: no network, no scripts, renders identically anywhere. Skip the <svg>
+// subtree — freezing computed styles onto SVG geometry rewrites presentation attributes and
+// silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 3 — steam properties (IAPWS-IF97)</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day03-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>
