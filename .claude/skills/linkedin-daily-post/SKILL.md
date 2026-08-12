@@ -70,7 +70,7 @@ computed styles. **Never re-implement the UI** — the numbers in the image must
 
 Frame is 1200 × 675. Keep the footer strip carrying `engineering-converter.com`.
 
-### Eight traps, all of which have bitten
+### Nine traps, all of which have bitten
 
 1. **Kill CSS transitions in the iframe first**: `*{transition:none !important;animation:none !important}`.
    Transitions are driven by the compositor's frame clock, so in a non-painting context they never
@@ -98,6 +98,15 @@ Frame is 1200 × 675. Keep the footer strip carrying `engineering-converter.com`
    rectangles under the card and every programmatic check passed. Special-case `display`.
    Keep one shared `freezeStyle()` helper — the card snapshot and the standalone export both need
    the fix, and two copies of the loop will drift.
+
+9. **Freeze the CSS Grid properties.** `grid-template-columns` and friends are NOT optional. Tailwind
+   writes columns via `md:grid-cols-4`, which is a **media query** — freeze without them and the
+   column definition vanishes, every cell stacks into one column, and the frozen widths/heights
+   then overlap into an unreadable pile. Days 1–2 used flex cards and never hit it; Day 3's steam
+   card is grid and collapsed completely. Freeze at least:
+   `grid-template-columns`, `grid-template-rows`, `grid-auto-flow`, `grid-auto-columns`,
+   `grid-auto-rows`, `grid-column`, `grid-row`, `row-gap`, `column-gap`, `align-self`, `justify-self`.
+   `docs/linkedin/day03-mockup.html` has the complete `STYLE_PROPS` list — copy that one.
 
 Also: **`uppercase` destroys chemistry notation.** A Tailwind `uppercase` on a caption turns
 `iC₄`/`nC₄`/`vol%` into `IC₄`/`NC₄`/`VOL%`. Component case is significant; don't uppercase it.
@@ -163,11 +172,22 @@ Attaching the image: **only the OS clipboard works, and only two things make it 
 > receives a paste event with nothing in it. You must `SetForegroundWindow` the Chrome window and
 > `SendKeys("^v")`.
 >
-> **Guard it.** `SetForegroundWindow` can be refused, and focus reverts between PowerShell calls
-> (each call is a new process, and running a tool refocuses the app). Activate, re-read
-> `GetForegroundWindow()`, compare it to the target hWnd, and **abort if they differ** — all in a
-> *single* PowerShell call. Never send a blind Ctrl+V: if focus is elsewhere it pastes the graphic
-> into whatever the maintainer had open.
+> **Guard it, on the window AND the tab.** `SetForegroundWindow` can be refused, and focus reverts
+> between PowerShell calls (each call is a new process, and running a tool refocuses the app).
+> Activate, re-read `GetForegroundWindow()`, compare it to the target hWnd, **and check the window
+> title contains "LinkedIn"** — the title tracks the *active tab*, so it is the only cheap proof
+> that LinkedIn is frontmost and not a background tab. Abort if either check fails. Do it all in a
+> *single* PowerShell call, with the checks immediately before `SendKeys`.
+>
+> This is not theoretical: the browser-tool tab is often **not** the active tab (check with
+> `document.visibilityState` — "hidden" means a real Ctrl+V goes to whatever tab *is* active).
+> On Day 3 the guard caught the maintainer's own PR page in front and refused to paste.
+> `SendKeys("^9")` jumps to the window's last tab, which is the one this session created; send it,
+> then re-verify before pasting.
+>
+> **Check whether the maintainer is actually using the machine** before grabbing focus:
+> `GetLastInputInfo` gives idle seconds. If it is ~0 they are typing right now — make one atomic,
+> fully guarded attempt, and if it fails, stop and hand over rather than fighting for the browser.
 
 ```powershell
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -207,6 +227,27 @@ Composer flow:
    `https://www.linkedin.com/feed/update/urn:li:share:<id>/`.
 6. Add the pre-filled share link as the **first comment**.
 7. Drafts auto-restore if the composer is closed, so a mistake is recoverable.
+
+### Scheduling instead of posting now
+
+LinkedIn schedules natively: the **clock icon** left of Post. Build the post exactly as above
+(image first, then text), then click the clock rather than Post.
+
+- The dialog states the timezone it is using — *"…Japan Standard Time, based on your location"*.
+  Read it; do not assume. Get local now with `Get-Date` so you pick the right date.
+- **Date**: triple-click the field, type `M/D/YYYY`, then click the day in the calendar that pops
+  up — typing alone leaves the old day highlighted.
+- **Time**: triple-click, type e.g. `8:00 AM`. The dropdown offers 15-minute steps but filters to
+  what you type; click the filtered option to commit it.
+- Confirm the summary line re-reads with the new date/time, then **Next** → the button changes from
+  *Post* to **Schedule** → scroll the composer once more to confirm the image survived → Schedule.
+- Verify in **Scheduled posts** ("Posting Thu, Aug 13 at 8:00 AM"). Reachable from the toast, or
+  *View all scheduled posts* in the dialog.
+
+> ⏳ **A scheduled post cannot carry its first comment.** There is nothing to comment on until it
+> publishes. Draft the comment into the day sheet, flag it in the tracker, and post it by hand once
+> the post goes live — or the pre-filled share link never ships. The post URL likewise does not
+> exist until then, so §2's URL cell stays empty until after publication.
 
 ## Step 6 — Record
 

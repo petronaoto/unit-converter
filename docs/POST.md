@@ -51,13 +51,13 @@ reach, credibility, and genuine affection for the work.
 
 ## 2. Master tracker
 
-Status: ☐ planned · ✎ drafted · 📷 visual ready · ✅ posted
+Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅ posted
 
 | Day | Date | Title | Lens | Status | Post URL | Reactions / Comments |
 |---|---|---|---|---|---|---|
 | 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7492837311416741888/ | |
 | 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/ | |
-| 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ☐ | | |
+| 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
@@ -812,7 +812,18 @@ sliver labelled 1.3 %, static 174.59 kPa filling the rest.
 
 ---
 
-### Day 5 — Tue 18 Aug 2026
+### Day 5 — *this sheet runs as tracker **Day 3**, Thu 13 Aug 2026* · 🕗 SCHEDULED
+
+> **Scheduled 2026-08-12 for Thu 13 Aug 08:00 JST** via LinkedIn's own scheduler (the clock icon
+> beside Post). One bilingual post, **2,263 characters**, graphic attached, URL in the body of both
+> language sections. Confirmed in *Scheduled posts* as "Posting Thu, Aug 13 at 8:00 AM".
+>
+> ⚠️ **The first comment still has to be added by hand after it publishes.** A scheduled post does
+> not exist as a post until it goes live, so there is nothing to comment on until 08:00. The
+> pre-filled share links are drafted below — post them as the first comment once the post is up,
+> and record the post URL in §2.
+>
+> Sheet number is pre-reflow (C12); the tracker slot is Day 3.
 
 **Title:** The steam spreadsheet nobody owns
 **Lens:** story-community · **Format:** behind-the-scenes · **Feature:** Basic Eng → Steam Properties (IF97)
@@ -837,7 +848,89 @@ refusal message.
 
 **Numbers.** §4 steam row.
 
-**Hashtags:** `#SteamSystems #Utilities #IAPWS #ChemicalEngineering`
+**Hashtags:** `#SteamSystems #Utilities #IAPWS #ChemicalEngineering #プロセスエンジニアリング`
+
+#### Verified numbers — *reproduced against the running app 2026-08-12, at build time*
+
+Every §4 steam value reproduced exactly. Full output grid at **4 MPa abs / 300 °C**:
+
+| Quantity | Value |
+|---|---|
+| State | Superheated steam — **Region 2** |
+| Superheat above T_sat | **49.64248 K** |
+| Density ρ | 16.98717 kg/m³ |
+| **Enthalpy h** | **2,961.65148 kJ/kg** |
+| Entropy s | 6.36383 kJ/(kg·K) |
+| Heat capacity c_p | 2.81995 kJ/(kg·K) |
+| Sonic velocity w | 550.23169 m/s |
+| **T_sat @ P** | **250.35752 °C** |
+| **h_fg @ P** | **1,713.4713 kJ/kg** (h_f 1,087.42602 · h_g 2,800.89732) |
+
+**Region 3 refusal, confirmed live.** At **25 MPa / 380 °C** (and again at 18 MPa / 360 °C) every
+output blanks to `—` and the card shows, verbatim:
+
+> ⚠ Region 3 (dense/near-critical) not covered — use full IF97 or vendor steam tables
+
+20 MPa / 400 °C is still Region 2 (h 2,816.8362, 34.25409 K of superheat), so the boundary is real,
+not a blanket refusal above some pressure.
+
+**Provenance claim, checked before publishing:** `tests/test_steam_if97.py` (23 tests) extracts the
+`const IF97` literal from `index.html` and re-runs the Release's own verification tables — Table 5
+(Region 1), Table 15 (Region 2), Tables 35/36 (Region 4, both directions) and the B23 boundary —
+at `REL_TOL = 5e-9`, i.e. the 9 significant figures the tables print. A separate test asserts the
+"259 coefficients" claim is arithmetically true (34×3 + 9×2 + 43×3 + 10). Full suite: 242 passed.
+
+#### Share link — ✅ built and verified on a real page load
+
+Opens Basic Eng with the steam card already computed (**159 chars** — the shortest of the campaign
+so far, because the card needs only four keys):
+
+```
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJzcC1wIjoiNCIsInNwLXAtdSI6IjEiLCJzcC10IjoiMzAwIiwic3AtdC11IjoiQyJ9fQ==
+```
+
+Japanese version (adds `"lang":"ja"`, **175 chars**):
+
+```
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJzcC1wIjoiNCIsInNwLXAtdSI6IjEiLCJzcC10IjoiMzAwIiwic3AtdC11IjoiQyJ9LCJsYW5nIjoiamEifQ==
+```
+
+*Verified 2026-08-12 on a genuine load with `localStorage` cleared: lands on Basic Eng with
+Region 2 / h 2,961.65148 / T_sat 250.35752 / h_fg 1,713.4713 already rendered, zero clicks.*
+
+#### First comment — ⏳ post this by hand once the scheduled post is live
+
+> The exact case above, already computed — 4 MPa abs / 300 °C:
+> https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJzcC1wIjoiNCIsInNwLXAtdSI6IjEiLCJzcC10IjoiMzAwIiwic3AtdC11IjoiQyJ9fQ==
+>
+> 日本語で開く場合:
+> https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJzcC1wIjoiNCIsInNwLXAtdSI6IjEiLCJzcC10IjoiMzAwIiwic3AtdC11IjoiQyJ9LCJsYW5nIjoiamEifQ==
+>
+> The IF97 coefficient extraction test that re-runs the Release's own tables:
+> https://github.com/petronaoto/unit-converter/blob/main/tests/test_steam_if97.py
+
+*(564 characters, inside the 1,250 limit. The GitHub link was checked — HTTP 200 on `main`.)*
+
+#### Mockup files — ✅ built, captured and attached to the scheduled post
+
+| File | What it is |
+|---|---|
+| [`linkedin/day03-mockup.html`](linkedin/day03-mockup.html) | **The generator.** Clones the real `#basic-steam` card out of a live `index.html`, then drives the same card to 25 MPa / 380 °C and reads `#sp-warn` so the Region 3 quotation cannot drift from what the app says. |
+| [`linkedin/day03-standalone.html`](linkedin/day03-standalone.html) | **The deliverable.** Frozen 1200 × 675 frame, styles inlined, no scripts, no external refs. |
+| [`linkedin/day03.png`](linkedin/day03.png) | The attached 1200 × 675 graphic. |
+
+Two deliberate departures from the mockup spec above:
+
+- **The Region 3 panel is a designed quotation, not a screenshot.** Two full card screenshots will
+  not both fit legibly in 1200 × 675 — at any scale that fits, the 10px warning text is unreadable.
+  The panel quotes the app's exact string (read from `#sp-warn` at build time) and is styled
+  unlike the app's chrome, so it reads as a quotation rather than a fake screenshot.
+- **The card's 10px footnote paragraph is cropped out.** It does not survive LinkedIn's
+  downscaling; its content (259 coefficients, Tables 5/15/35/36, the Region 3 scope) is carried by
+  the copy instead.
+
+No connector arrow: the only sensible one ran diagonally across the output grid and over the
+enthalpy and entropy values. The left panel quotes the STATE chip's own wording instead.
 
 ---
 
