@@ -87,7 +87,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **5** | There are three versions of these coefficients on the internet | `### Day 16` |
 > | **16** | A green CI badge is not evidence | `### Day 17` |
 > | **17** | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | `### Day 3` |
-> | **18** | The whole toolbox on one page, and ten published vectors | ⚠️ **no matching sheet** — closest is `### Day 20` ("Twenty days, ten reference vectors, one question"), which was written as the campaign closer. Needs a decision. |
+> | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
 > **Next up (Day 3, Thu 13 Aug): "The steam spreadsheet nobody owns" — draft is in `### Day 5`.**
@@ -250,7 +250,7 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C9 | 17 | "183 tests" | **242** today. |
 | C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = **56.000621** → **56.00**. Do not publish an intermediate. |
 | C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
-| C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** | Unresolved — needs Naoto's call, see the mapping under §2. Day 2 was unaffected (tracker and sheet agree), so publishing was not blocked. |
+| C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** Tracker Day 18 appeared to have no sheet at all. | ✅ **Resolved 2026-08-12** (Naoto). No topic was lost — tracker Day 18 is the material in `### Day 20`, which editorial decision 2 had already moved out of the closing slot. The mapping table under §2 is now complete, and the `### Day 20` sheet has been reframed as a Day 18 capability tour (the "twenty posts in" retrospective framing was cut, since the campaign is not over on Day 18). The sheets keep their pre-reflow numbers deliberately: renumbering twenty headings would break every cross-reference in this file for no gain. **Read sheets by title, via the §2 mapping.** |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1273,10 +1273,14 @@ vectors. **C9: not 183.**
 
 ---
 
-### Day 18 — Fri 4 Sep 2026
+### Day 18 — *this sheet runs as tracker **Day 20**, Mon 7 Sep 2026* · **campaign closer**
 
 **Title:** Five things this calculator refuses to do
 **Lens:** standards-credibility · **Format:** myth-buster
+
+> Sheet number is pre-reflow (C12); the tracker slot is **Day 20**. Editorial decision 2 promoted
+> this to the closing post — the strongest evergreen piece in the set, and the one most likely to
+> be shared after the campaign ends. Write it as an ending.
 
 **Hook**
 > The most valuable thing an engineering tool can do is stop.
@@ -1329,16 +1333,21 @@ browser"*, with a dotted line showing the amber part stopping at a boundary mark
 
 ---
 
-### Day 20 — Tue 8 Sep 2026 · *engagement post 3*
+### Day 20 — *this sheet runs as tracker **Day 18**, Thu 3 Sep 2026* · *engagement post 3*
 
-**Title:** Twenty days, ten reference vectors, one question
-**Lens:** story-community · **Format:** poll/question
+**Title:** The whole toolbox on one page, and ten published vectors
+**Lens:** story-community · **Format:** capability tour + question
 
-> **See §5, open decision 2** — consider closing on Day 18's material and holding the roadmap
-> question for a standalone post a fortnight later.
+> Sheet number is pre-reflow (C12); the tracker slot is **Day 18**, not the closer. Editorial
+> decision 2 moved this material forward and gave the closing slot to "Five things this calculator
+> refuses to do" (sheet `### Day 18`).
+>
+> ⚠️ **Do not write this as a retrospective.** The campaign still has two posts to run when this
+> goes out, so "twenty posts in / twenty days later" framing is factually wrong here. It is a
+> **capability tour**: here is everything, here is the evidence behind it, what's missing?
 
 **Hook**
-> Twenty posts, and I still haven't shown you the pipe-volume card, the LNG density card, or the
+> Seventeen posts, and I still haven't shown you the pipe-volume card, the LNG density card, or the
 > compressor card.
 > So here's the whole thing on one page — and the only question I actually want answered.
 
