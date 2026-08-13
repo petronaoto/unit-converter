@@ -57,8 +57,8 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 |---|---|---|---|---|---|---|
 | 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7492837311416741888/ | |
 | 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/ | |
-| 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ☐ | | |
+| 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493228666642923520/ | |
+| 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
@@ -90,7 +90,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Next up (Day 3, Thu 13 Aug): "The steam spreadsheet nobody owns" — draft is in `### Day 5`.**
+> **Next up (Day 5, Mon 17 Aug): "There are three versions of these coefficients on the internet" — draft is in `### Day 16`.**
 
 **Weekly themes**
 
@@ -779,7 +779,14 @@ factor field circled — *"build the factor your contract actually uses, then se
 
 ---
 
-### Day 4 — Mon 17 Aug 2026
+### Day 4 — *tracker **Day 4**, Fri 14 Aug 2026* · 🕗 SCHEDULED
+
+> **Scheduled 2026-08-13 for Fri 14 Aug 08:00 JST.** One bilingual post, **2,756 characters**,
+> graphic attached, `engineering-converter.com` in the body of both language sections. Confirmed in
+> *Scheduled posts* as "Posting Fri, Aug 14 at 8:00 AM". No first comment — see the Day 3 sheet;
+> that is the standing choice now, not an omission.
+>
+> Sheet number happens to match the tracker for this day (C12 affects Days 3, 5, 16, 17, 18, 20).
 
 **Title:** 176.9 kPa of ΔP, and 2.3 kPa of it is friction
 **Lens:** teach-theory · **Format:** worked example · **Feature:** Advanced → Pipe ΔP
@@ -806,22 +813,58 @@ Owning this makes the post stronger, not weaker.
 Right: one 100 %-width stacked bar totalling 176.93 kPa — friction 2.338 kPa as a barely visible
 sliver labelled 1.3 %, static 174.59 kPa filling the rest.
 
-**Numbers.** §4 ΔP table.
+**Numbers.** §4 ΔP table. **Re-verified against the running app 2026-08-13** — the card was driven
+with `calcDeltaPressure()` and `fetch` was wrapped to capture the endpoint's own response, because
+`dpFric` / `dpStatic` exist only in the JSON and never reach the DOM:
 
-**Hashtags:** `#Hydraulics #LineSizing #FlowAssurance #ProcessEngineering`
+| Quantity | Source | Published as |
+|---|---|---|
+| `dpPa` 176 928.8030035003 Pa | API | 176.9288 kPa (`#dp-out-total`), "176.9 kPa" in prose |
+| `dpFric` 2 338.32734471651 Pa | API | **2.338 kPa · 1.3 %** (1.3216 % exact) |
+| `dpStatic` 174 590.4756587838 Pa | API | **174.590 kPa · 98.7 %** (98.678 % exact) |
+| `#dp-out-len` | DOM | 176.9288 **kPa/100 m** — the total, and the trap the post names |
+| `#dp-out-dpfric100` | DOM | **0.0234 bar/100 m** — note the sizing screen shows this in **bar**, not kPa |
+| `#dp-out-vratio` / `#dp-out-sizing-badge` | DOM | `v / v_max = 0.09` → **WITHIN LIMIT** (v_max 11.54 m/s) |
+| `fr-badge` | DOM | **Churn / Slug Flow · θ = +45.0°** — re-run live, not quoted from §4 |
+| `k_total` | API request | **0** — fittings untouched, so this is the clean Vector 2 case |
+
+**No share link.** Every input in the reference case (`dp-id` 4, `dp-len` 100, `dp-elev` 70.711,
+`dp-rough` 0.045, `dp-cfactor` 100, `dp-v-flow` 150, `dp-v-den` 10, `dp-v-visc` 0.012, `dp-l-flow`
+7300, `dp-l-den` 500, `dp-l-visc` 0.12) is a hard-coded `value=` default in `index.html` — verified
+by grep, not assumed. A pre-filled link would therefore carry nothing, so the post says "there is
+nothing to type, open Advanced → Pipe ΔP and press Calculate" and links the bare domain instead.
+That also keeps the body to one link. **If those defaults ever change, this post's claim breaks** —
+re-check before reusing this copy.
+
+**Mockup files.** `day04-mockup.html` (generator) → `day04-standalone.html` → `day04.png`.
+Left is the app's real "3. HYDRAULIC OUTPUTS" block, cloned after a genuine round-trip to
+`dp_calculator`; right is a designed decomposition fed from the captured API response. Two
+departures from the mockup spec above, both deliberate:
+
+- **No pipe schematic.** The spec's left panel was a drawn pipe with the inputs labelled. Showing
+  the app's own output block instead makes the post's central claim — that the sizing verdict reads
+  0.0234 bar/100 m and *not* the 176.9288 kPa/100 m sitting next to it — visible rather than
+  asserted. The conditions moved to a one-line subtitle.
+- **No connector arrow.** The obvious one runs from "dP / LENGTH" across to the amber callout and
+  would cross the stacked bar, which is the one thing the graphic is about. Same reasoning as
+  Days 1 and 3; `drawArrows()` is left empty with the explanation in place.
+
+**Hashtags:** `#Hydraulics #LineSizing #FlowAssurance #ProcessEngineering #プロセスエンジニアリング #配管設計`
 
 ---
 
-### Day 5 — *this sheet runs as tracker **Day 3**, Thu 13 Aug 2026* · 🕗 SCHEDULED
+### Day 5 — *this sheet runs as tracker **Day 3**, Thu 13 Aug 2026* · ✅ POSTED
 
-> **Scheduled 2026-08-12 for Thu 13 Aug 08:00 JST** via LinkedIn's own scheduler (the clock icon
-> beside Post). One bilingual post, **2,263 characters**, graphic attached, URL in the body of both
-> language sections. Confirmed in *Scheduled posts* as "Posting Thu, Aug 13 at 8:00 AM".
+> **Published Thu 13 Aug 2026 08:00 JST**, exactly as scheduled 2026-08-12 via LinkedIn's own
+> scheduler (the clock icon beside Post). One bilingual post, **2,263 characters**, graphic
+> attached, URL in the body of both language sections. Scheduling worked end to end and is now the
+> normal way to ship a day.
+> https://www.linkedin.com/feed/update/urn:li:share:7493228666642923520/
 >
-> ⚠️ **The first comment still has to be added by hand after it publishes.** A scheduled post does
-> not exist as a post until it goes live, so there is nothing to comment on until 08:00. The
-> pre-filled share links are drafted below — post them as the first comment once the post is up,
-> and record the post URL in §2.
+> **No first comment was posted, and that is now the standing choice** (Naoto, 2026-08-13): the
+> pre-filled share links below are optional extras, not a required step. A scheduled post cannot
+> carry a comment, and the post already carries the URL in its body, so the day is complete without
+> one. The drafted comment stays below for anyone who wants to add it by hand.
 >
 > Sheet number is pre-reflow (C12); the tracker slot is Day 3.
 

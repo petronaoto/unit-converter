@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 4 mockup — pipe ΔP, friction vs static head</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. 1280px is where the ΔP card's HYDRAULIC
+     OUTPUTS block computes its natural 926x509. */
+  #app{position:absolute;width:1280px;height:1400px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 4 — "176.9 kPa of ΔP, and 2.3 kPa of it is friction".
+
+  LEFT   : the REAL "3. HYDRAULIC OUTPUTS" block of the Pipe ΔP card, cloned out of a live
+           index.html in a hidden same-origin iframe after a real round-trip to the
+           dp_calculator endpoint. Nothing in it is typed here.
+  RIGHT  : a designed decomposition of that same total. The two components are read from the
+           API RESPONSE (dpFric / dpStatic), captured by wrapping fetch() inside the iframe —
+           they are not in the DOM, and re-deriving them here would be exactly the kind of
+           re-implementation this file exists to avoid.
+  BOTTOM : the rule, and the honesty note (POST.md C3) about the no-slip static term.
+
+  Unlike Day 3 this card is SERVER-BACKED, so the build waits on the network round trip and
+  polls the output rather than firing on a fixed timeout.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day04-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Pipe ΔP (Darcy-Weisbach)</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px]" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= the real block ================= -->
+  <div id="card-slot" class="absolute" style="left:36px;top:84px;transform:scale(0.72);transform-origin:top left;">
+    <div class="text-slate-600 text-sm p-8">running the live calculation…</div>
+  </div>
+
+  <!-- ================= decomposition ================= -->
+  <div class="absolute" style="left:712px;top:84px;width:448px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">WHERE THE <span id="hdr-total">…</span> kPa COMES FROM</div>
+
+    <!-- One 100%-width stacked bar. The friction share really is this thin; that is the point.
+         The static fill is slate-500, not slate-700: at slate-700 the bar reads as an EMPTY box
+         with an amber tick, which says the opposite of what the panel is claiming. -->
+    <div style="margin-top:16px;height:56px;width:448px;display:flex;border-radius:6px;overflow:hidden;
+                border:1px solid rgba(148,163,184,.25);">
+      <div id="bar-fric"   style="height:100%;background:#f59e0b;"></div>
+      <div id="bar-static" style="height:100%;background:#64748b;"></div>
+    </div>
+
+    <div style="margin-top:20px;display:flex;align-items:baseline;gap:10px;">
+      <span style="width:11px;height:11px;background:#f59e0b;border-radius:2px;display:inline-block;"></span>
+      <span class="text-amber-400 text-[14px] font-medium">Friction</span>
+      <span class="text-slate-500 text-[12px]">f·(L/D)·ρv²/2</span>
+      <span style="flex:1 1 auto;"></span>
+      <span id="val-fric" class="text-amber-400 text-[15px] font-semibold">…</span>
+      <span id="pct-fric" class="text-slate-500 text-[13px]" style="width:56px;text-align:right;">…</span>
+    </div>
+    <div style="margin-top:11px;display:flex;align-items:baseline;gap:10px;">
+      <span style="width:11px;height:11px;background:#64748b;border-radius:2px;display:inline-block;"></span>
+      <span class="text-slate-300 text-[14px] font-medium">Static head</span>
+      <span class="text-slate-500 text-[12px]">ρ_mix·g·Δz</span>
+      <span style="flex:1 1 auto;"></span>
+      <span id="val-static" class="text-slate-300 text-[15px] font-semibold">…</span>
+      <span id="pct-static" class="text-slate-500 text-[13px]" style="width:56px;text-align:right;">…</span>
+    </div>
+
+    <div class="rounded-lg px-4 py-3" style="margin-top:24px;width:448px;
+         border:1px solid rgba(245,158,11,.40);background:rgba(245,158,11,.08);">
+      <div class="text-amber-300 text-[13px] font-semibold" style="margin-bottom:5px;">
+        Only one of the two is a line-sizing criterion.</div>
+      <div class="text-amber-200/80 text-[12.5px] leading-snug">
+        The app's own sizing screen judges the sliver — <b id="q-fric100">…</b> and
+        <b id="q-vratio">…</b> → <b id="q-badge">…</b>.
+        The <span id="q-static">…</span> of static head is pump duty, not line size.
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= bottom band ================= -->
+  <div class="absolute" style="left:36px;top:496px;width:640px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">RULE WORTH STEALING</div>
+    <div class="text-slate-200 text-[16px] leading-snug" style="margin-top:10px;">
+      Size on <b class="text-amber-400">frictional ΔP per 100 m</b> and <b class="text-amber-400">velocity</b>.<br>
+      Put static head in the pump duty, not in the line size.
+    </div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:712px;top:472px;width:448px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-400 text-[12px] leading-snug">
+      <b class="text-slate-300">What the static term assumes.</b>
+      ρ_mix is a no-slip homogeneous mixture density — there is no holdup model. At θ = +45° this
+      line runs Churn/Slug, where slip is largest, so treat the static figure as indicative.
+      The friction sliver and the velocity are far less slip-sensitive.
+    </div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID. The HYDRAULIC OUTPUTS block is `grid grid-cols-1 md:grid-cols-3` and
+  // `grid grid-cols-2 md:grid-cols-4`, and `md:` is a MEDIA QUERY — freezing without
+  // grid-template-columns drops the column definition entirely, every cell stacks into one
+  // column, and the frozen widths/heights then overlap into an unreadable pile. Day 3 lost a
+  // whole build to this. Do not remove these.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  // transform/transform-origin carry the 0.68 scale on the card slot. Omitting them makes the
+  // frozen copy render at 1.0 and overrun the frame.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the block snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it as an empty-ish value while stripping the
+    // class that hid the element makes every hidden node render — on Day 2 that shipped two
+    // empty amber rectangles that every programmatic check passed.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0 on every element; dropping the 0px makes the browser fall back to
+    // border-width:medium and paint a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function txt(doc, id) { var e = doc.getElementById(id); return e ? e.textContent.trim() : ''; }
+function val(doc, id) { var e = doc.getElementById(id); return e ? e.value : ''; }
+
+function buildCard() {
+  var fr  = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+
+  // KILL TRANSITIONS FIRST — load-bearing, not cosmetic. A CSS transition is driven by the
+  // compositor's frame clock, so in a non-painting context it never advances and
+  // getComputedStyle keeps returning the transition's START value.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // dpFric / dpStatic exist only in the API response — the card shows the total. Wrap fetch so
+  // the split comes from the endpoint rather than being recomputed in this file.
+  win.__api = null;
+  var of = win.fetch;
+  win.fetch = function (u, o) {
+    return of.apply(this, arguments).then(function (r) {
+      var c = r.clone();
+      c.json().then(function (j) { win.__api = j; }).catch(function () {});
+      return r;
+    });
+  };
+
+  // setLanguage() is ASYNC and re-renders, and language persists in localStorage — force it, or
+  // an earlier Japanese session silently renders this English graphic in Japanese.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    // The card's defaults ARE the §4 reference case; nothing is typed. Assert that below.
+    if (typeof win.calcDeltaPressure === 'function') { win.calcDeltaPressure(); }
+    waitForResult(doc, win, 0);
+  }, 900);
+}
+
+// Server-backed card: poll instead of guessing a timeout.
+function waitForResult(doc, win, tries) {
+  if (win.__api && win.__api.error === false && txt(doc, 'dp-out-total') &&
+      txt(doc, 'dp-out-sizing-badge')) { snapshotBlock(doc, win); return; }
+  if (tries > 100) { document.body.setAttribute('data-ready', 'TIMEOUT'); return; }
+  setTimeout(function () { waitForResult(doc, win, tries + 1); }, 100);
+}
+
+function snapshotBlock(doc, win) {
+  var node = doc.getElementById('dp-out-total').closest('div.bg-slate-900');
+  var clone = node.cloneNode(true);
+
+  // Bake live input/select values into attributes so the clone renders identically.
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is fully applied. The CDN JIT
+  // only styles markup it has scanned, so a block injected into this document after load would
+  // render unstyled.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  slot.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  fillPanels(doc, win, slot);
+}
+
+function fillPanels(doc, win, slot) {
+  var api = win.__api;
+  var fricPa = api.dpFric, statPa = api.dpStatic, totPa = api.dpPa;
+  var pf = fricPa / totPa * 100, ps = statPa / totPa * 100;
+
+  // Conditions line — read from the card's own inputs, not typed.
+  var L = parseFloat(val(doc, 'dp-len')), dz = parseFloat(val(doc, 'dp-elev'));
+  var theta = Math.asin(Math.min(1, dz / L)) * 180 / Math.PI;
+  document.getElementById('conditions').textContent =
+    val(doc, 'dp-id') + '″ ID · L ' + L + ' m · Δz +' + dz + ' m (θ = +' + theta.toFixed(1) + '°) · '
+    + 'vapour ' + val(doc, 'dp-v-flow') + ' kg/h @ ' + val(doc, 'dp-v-den') + ' kg/m³ · '
+    + 'liquid ' + Number(val(doc, 'dp-l-flow')).toLocaleString('en-US') + ' kg/h @ '
+    + val(doc, 'dp-l-den') + ' kg/m³';
+
+  document.getElementById('hdr-total').textContent = txt(doc, 'dp-out-total');
+
+  // The bar. A 1.3 % share is ~6 px of 460 — floor it so it cannot vanish entirely, and take
+  // the floor out of the static side so the two still sum to the full width.
+  var wf = Math.max(6, Math.round(448 * fricPa / totPa));
+  document.getElementById('bar-fric').style.width   = wf + 'px';
+  document.getElementById('bar-static').style.width = (448 - wf) + 'px';
+
+  document.getElementById('val-fric').textContent   = (fricPa / 1000).toFixed(3) + ' kPa';
+  document.getElementById('val-static').textContent = (statPa / 1000).toFixed(3) + ' kPa';
+  document.getElementById('pct-fric').textContent   = pf.toFixed(1) + ' %';
+  document.getElementById('pct-static').textContent = ps.toFixed(1) + ' %';
+
+  // Quote the sizing screen's own strings so the callout cannot drift from the app.
+  document.getElementById('q-fric100').textContent = txt(doc, 'dp-out-dpfric100') + ' bar/100 m';
+  document.getElementById('q-vratio').textContent  = txt(doc, 'dp-out-vratio').replace(/\s+/g, ' ');
+  document.getElementById('q-badge').textContent   = txt(doc, 'dp-out-sizing-badge');
+  document.getElementById('q-static').textContent  = (statPa / 1000).toFixed(1) + ' kPa';
+
+  drawArrows();
+
+  // Publish what the capture step asserts against: the snapshotted total straight out of the
+  // cloned block, the API split, and the sizing verdict.
+  document.body.setAttribute('data-ready', [
+    'total=' + slot.querySelector('#dp-out-total').textContent.trim(),
+    'perlen=' + slot.querySelector('#dp-out-len').textContent.trim(),
+    'fric=' + fricPa.toFixed(5),
+    'static=' + statPa.toFixed(5),
+    'fric100=' + slot.querySelector('#dp-out-dpfric100').textContent.trim(),
+    'badge=' + slot.querySelector('#dp-out-sizing-badge').textContent.trim(),
+    'phase=' + api.badge,
+    'ktotal=' + api.k_total
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The tempting connector runs from the cloned block's "dP / LENGTH 176.9288 kPa/100m" figure
+  // across to the amber callout, to make the point that the sizing screen ignores it. It has to
+  // cross the whole frame horizontally, passing straight through the stacked bar — the one
+  // graphic element the post is actually about. Day 1 learned that an arrow colliding with the
+  // subject sends the eye to the collision instead of the point; Day 3 dropped its connector for
+  // the same reason. The callout names the figures it is talking about, so it reads without one.
+  //
+  // The layer is kept so the standalone export and the frame geometry stay identical to the
+  // other days; if a future edit needs a connector, draw it here.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export. Freezing every node in #shot the same way the block was frozen makes the
+// frame self-contained: no network, no scripts, renders identically anywhere. Skip the <svg>
+// subtree — freezing computed styles onto SVG geometry rewrites presentation attributes and
+// silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 4 — pipe ΔP, friction vs static head</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day04-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
