@@ -58,8 +58,8 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 1 | Tue 11 Aug 2026 | The 1.013 bar error that never looks like an error | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7492837311416741888/ | |
 | 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/ | |
 | 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493228666642923520/ | |
-| 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ☐ | | |
+| 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/ | |
+| 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
 | 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
@@ -90,7 +90,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Next up (Day 5, Mon 17 Aug): "There are three versions of these coefficients on the internet" — draft is in `### Day 16`.**
+> **Next up (Day 6, Tue 18 Aug): "You cannot rearrange Colebrook-White" — draft is in `### Day 6`.**
 
 **Weekly themes**
 
@@ -779,12 +779,12 @@ factor field circled — *"build the factor your contract actually uses, then se
 
 ---
 
-### Day 4 — *tracker **Day 4**, Fri 14 Aug 2026* · 🕗 SCHEDULED
+### Day 4 — *tracker **Day 4**, Fri 14 Aug 2026* · ✅ POSTED
 
-> **Scheduled 2026-08-13 for Fri 14 Aug 08:00 JST.** One bilingual post, **2,756 characters**,
-> graphic attached, `engineering-converter.com` in the body of both language sections. Confirmed in
-> *Scheduled posts* as "Posting Fri, Aug 14 at 8:00 AM". No first comment — see the Day 3 sheet;
-> that is the standing choice now, not an omission.
+> **Published Fri 14 Aug 2026 08:00 JST**, as scheduled on 2026-08-13. One bilingual post,
+> **2,756 characters**, graphic attached, `engineering-converter.com` in the body of both language
+> sections. No first comment — see the Day 3 sheet; that is the standing choice now.
+> https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/
 >
 > Sheet number happens to match the tracker for this day (C12 affects Days 3, 5, 16, 17, 18, 20).
 
@@ -1260,12 +1260,20 @@ the breakdown boxed term by term and an arrow to the empty space where a verdict
 
 ---
 
-### Day 16 — Wed 2 Sep 2026
+### Day 16 — *this sheet runs as tracker **Day 5**, Mon 17 Aug 2026* · 🕗 SCHEDULED
+
+> **Scheduled 2026-08-14 for Mon 17 Aug 08:00 JST.** One bilingual post, **2,972 characters**
+> (the longest of the campaign so far — 28 under the limit), graphic attached,
+> `engineering-converter.com` in the body of both language sections. Confirmed in *Scheduled posts*
+> as "Posting Mon, Aug 17 at 8:00 AM". No first comment, per the standing choice recorded on the
+> Day 3 sheet.
+>
+> Sheet number is pre-reflow (C12); the tracker slot is Day 5. Editorial decision 1 moved this
+> material into week 1 — it works cold and needs no setup, and a skeptic decides about a free
+> solo-built sizing tool in the first week, not the fourth.
 
 **Title:** There are three versions of these coefficients on the internet
 **Lens:** standards-credibility · **Format:** teardown · **Feature:** Basic Eng → Gas Property Estimator (viscosity)
-
-> **Candidate to move into week 1** (see §5, open decision 1) — it works cold and needs no setup.
 
 **Hook**
 > Lee-Gonzalez-Eakin gas viscosity has at least three coefficient sets in circulation.
@@ -1282,11 +1290,54 @@ known-bad forms outright.
 (amber), CORRUPTED VARIANTS (red).
 
 **Numbers.** Original form: K = (9.379 + 0.01607M)T^1.5/(209.2 + 19.26M + T); X = 3.448 + 986.4/T +
-0.01009M; Y = 2.447 − 0.2224X. On the documented case → μ = 0.016663 cP.
-*Caveat:* the "≈ −2.1 % shift" for the rounded variant is the project's own figure with no stated
-basis state — publish it as "about −2 % on our reference state", or recompute and quote case-specific.
+0.01009M; Y = 2.447 − 0.2224X.
 
-**Hashtags:** `#GasProperties #Correlations #Traceability #ReservoirEngineering`
+> ✅ **The caveat on this sheet is resolved.** It read: *"the ≈ −2.1 % shift for the rounded variant
+> is the project's own figure with no stated basis state — publish it as 'about −2 % on our
+> reference state', or recompute and quote case-specific."* It was recomputed, on 2026-08-14, and
+> the docs' figure holds: **−2.1468 %** on the §9 Vector 6 state. The post quotes −2.15 % **with the
+> state attached**, which is what the caveat asked for.
+
+**Verified against the running app 2026-08-14.** All four rows were evaluated from the app's *own*
+ρ, T_R and M — `toPsia()`, `toRankine()`, `papayZ()`, `MW_AIR_GP`, `R_PSIA_GP`, `LB_FT3_PER_G_CM3` —
+so the only thing differing between rows is the nine coefficients. State: SG 0.65 · 2,000 psi ·
+150 °F · k 1.3 → Z = 0.8645842, ρ = 0.10662709 g/cm³, M = 18.827055 g/mol.
+
+| Coefficient set | μ (cP) | vs original |
+|---|---|---|
+| Original SPE 1340 — 9.379 / 0.01607 / 209.2 / 19.26, X = 3.448 + 986.4/T + 0.01009M, Y = 2.447 − 0.2224X | **0.01666** (0.016663471) | — |
+| Rounded — 9.4 / 0.02 / 209 / 19, X = 3.5 + 986/T + 0.01M, Y = 2.4 − 0.2X | **0.01631** (0.016305747) | **−2.15 %** |
+| Corrupted — X = 3.488 | **0.01680** (0.016803750) | **+0.84 %** |
+| Corrupted — 0.001·M | **0.01611** (0.016113649) | **−3.30 %** |
+
+The card itself displays **0.01666 cP** (5 d.p.), which is what the post and the graphic quote —
+*not* the 0.016663 in §4, which is the unrounded value and would not match what a reader sees.
+All four variants stay distinguishable at the card's own display precision, so the table needs no
+extra digits. Also confirmed live: Z 0.8646, c 410.02694 m/s, μ_JT 0.32787 K/bar; `pytest` 242 passed.
+
+**Share link** (works on a real page load; the Gas Property Estimator is client-side, so it renders
+on open with no Calculate click — 203 chars EN / 219 JA). Not used in the body, since the post asks
+readers to type four numbers instead and that keeps it to one link per language section. Kept here
+for any comment or repurposing:
+
+```
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJncC1zZyI6IjAuNjUiLCJncC1wIjoiMjAwMCIsImdwLXAtdSI6InBzaSIsImdwLXQiOiIxNTAiLCJncC10LXUiOiJGIiwiZ3AtayI6IjEuMyJ9fQ==
+https://engineering-converter.com/index.html#s=eyJ2IjoyLCJ0YWIiOiJiYXNpYyIsImlucHV0cyI6eyJncC1zZyI6IjAuNjUiLCJncC1wIjoiMjAwMCIsImdwLXAtdSI6InBzaSIsImdwLXQiOiIxNTAiLCJncC10LXUiOiJGIiwiZ3AtayI6IjEuMyJ9LCJsYW5nIjoiamEifQ==
+```
+
+**Mockup files.** `day05-mockup.html` → `day05-standalone.html` → `day05.png`. The real card on top,
+the four-way table underneath. The mockup spec's three-column provenance table (green / amber / red)
+became four rows instead — the rounded variant and the two corruptions are three distinct rows, and
+a row per set is what lets each carry its own μ and Δ. Colours kept: emerald / amber / rose.
+
+**What the post says about CI**, all verified in `tests/test_js_constants.py`: nine literals pinned
+by a parametrized test; a separate test asserting the three known-bad forms are absent **from the
+script block only**, via a fixture that strips the prose; and the converse test
+`test_theory_tab_names_the_bad_variants`, which *requires* the manual to keep naming X = 3.488.
+That pairing — the same string forbidden in code and mandatory in the docs — is the strongest
+detail in the post; do not paraphrase it away if this copy is reused.
+
+**Hashtags:** `#GasProperties #Correlations #Traceability #ReservoirEngineering #プロセスエンジニアリング`
 
 ---
 

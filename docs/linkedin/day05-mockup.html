@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 5 mockup — Lee-Gonzalez-Eakin coefficient provenance</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. 1280px is where this md:col-span-2 card
+     computes its natural 976x407. */
+  #app{position:absolute;width:1280px;height:1400px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 5 — "There are three versions of these coefficients on the internet".
+
+  TOP    : the REAL Gas Property Estimator card at SG 0.65 / 2,000 psi / 150 degF / k 1.3,
+           cloned out of a live index.html in a hidden same-origin iframe. mu = 0.01666 cP is
+           computed by the app's own Lee-Gonzalez-Eakin implementation, not typed here.
+  BOTTOM : the same thermodynamic state evaluated through FOUR coefficient sets. Every mu in
+           that table is computed in this file — but from the app's OWN rho, T_R and M, taken
+           from papayZ()/toPsia()/toRankine() rather than re-derived, so the only thing that
+           differs between rows is the nine coefficients themselves. That is the whole point:
+           an apples-to-apples comparison isolating the coefficients.
+
+  Day 16's sheet flagged the project's "about -2.1 %" figure as having no stated basis state.
+  This graphic computes it: -2.15 % on this reference state. The claim now has a case behind it.
+
+  The card's 10px footnote paragraph is cropped out: it does not survive LinkedIn's downscaling,
+  and the copy carries its content instead.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day05-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> Basic Eng <span class="text-slate-600">▸</span> Gas Property Estimator</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px]" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= the real card ================= -->
+  <div id="card-slot" class="absolute" style="left:40px;top:80px;transform:scale(0.85);transform-origin:top left;">
+    <div class="text-slate-600 text-sm p-8">loading the live card…</div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:900px;top:96px;width:260px;
+       border:1px solid rgba(16,185,129,.40);background:rgba(16,185,129,.08);">
+    <div class="text-emerald-300 text-[12.5px] font-semibold" style="margin-bottom:5px;">
+      Original SPE 1340 set.</div>
+    <div class="text-emerald-200/80 text-[12px] leading-snug">
+      CI pins all <b>nine</b> literals and separately forbids the three known-bad forms
+      <i>in the code</i> — while requiring the manual to still name them.
+    </div>
+  </div>
+
+  <!-- ================= variant table ================= -->
+  <div class="absolute" style="left:40px;top:370px;width:1120px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">THE SAME STATE, FOUR COEFFICIENT SETS</div>
+
+    <div style="margin-top:12px;display:flex;align-items:baseline;padding:0 4px 7px 4px;
+                border-bottom:1px solid rgba(148,163,184,.20);">
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:330px;">COEFFICIENT SET</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="flex:1 1 auto;">WHAT DIFFERS</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:150px;text-align:right;">μ (cP)</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:120px;text-align:right;">vs ORIGINAL</span>
+    </div>
+
+    <div id="rows"></div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID. This card is `grid grid-cols-2 md:grid-cols-4`, and `md:` is a MEDIA QUERY —
+  // freezing without grid-template-columns drops the column definition entirely, every cell
+  // stacks into one column, and the frozen widths/heights then overlap into an unreadable pile.
+  // Day 3 lost a whole build to this. Do not remove these.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  // transform/transform-origin carry the 0.85 scale on the card slot. Omitting them makes the
+  // frozen copy render at 1.0 and overrun the frame.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the card snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it as an empty-ish value while stripping the
+    // class that hid the element makes every hidden node render — on Day 2 that shipped two
+    // empty amber rectangles that every programmatic check passed. `gp-warn` is exactly such
+    // a node on this card: hidden here, because the state is inside LGE's stated envelope.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0 on every element; dropping the 0px makes the browser fall back to
+    // border-width:medium and paint a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function setIn(doc, win, id, v) {
+  var e = doc.getElementById(id);
+  if (!e) return;
+  e.value = v;
+  e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function buildCard() {
+  var fr  = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+
+  // KILL TRANSITIONS FIRST — load-bearing, not cosmetic. A CSS transition is driven by the
+  // compositor's frame clock, so in a non-painting context it never advances and
+  // getComputedStyle keeps returning the transition's START value.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC and re-renders, and language persists in localStorage — force it, or
+  // an earlier Japanese session silently renders this English graphic in Japanese.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('basic'); }
+    setIn(doc, win, 'gp-sg', '0.65');
+    setIn(doc, win, 'gp-p-u', 'psi');
+    setIn(doc, win, 'gp-p', '2000');
+    setIn(doc, win, 'gp-t-u', 'F');
+    setIn(doc, win, 'gp-t', '150');
+    setIn(doc, win, 'gp-k', '1.3');
+    if (typeof win.calcGasProps === 'function') { win.calcGasProps(); }
+    setTimeout(function () { snapshotCard(doc, win); }, 300);
+  }, 900);
+}
+
+function snapshotCard(doc, win) {
+  var node = doc.getElementById('basic-gp');
+  var clone = node.cloneNode(true);
+
+  // Bake live input/select values into attributes so the clone renders identically.
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // The freeze strips every class, so tag what we need to find afterwards. Attributes survive.
+  var foot = clone.querySelector('[data-i18n="basic.gasProps.footnote"]');
+  if (foot) {
+    foot.setAttribute('data-role', 'footnote');
+    foot.parentElement.setAttribute('data-role', 'inner');
+  }
+
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is fully applied. The CDN JIT
+  // only styles markup it has scanned, so a card injected into this document after load would
+  // render unstyled.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  // Crop the 10px footnote: it is unreadable once LinkedIn downscales the image, and the copy
+  // carries its content. Heights were frozen above, so both the card and its inner column must
+  // be released to auto or the card keeps the removed paragraph's space.
+  var footFrozen = clone.querySelector('[data-role="footnote"]');
+  var innerFrozen = clone.querySelector('[data-role="inner"]');
+  if (footFrozen) { footFrozen.parentElement.removeChild(footFrozen); }
+  clone.style.height = 'auto';
+  if (innerFrozen) { innerFrozen.style.height = 'auto'; }
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  slot.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  buildTable(doc, win, slot);
+}
+
+// The four coefficient sets. Only the nine numbers change between rows.
+var SETS = [
+  { name: 'Original — SPE 1340 (1966)', diff: 'as published, unrounded',
+    tone: 'emerald', c: [9.379, 0.01607, 209.2, 19.26, 3.448, 986.4, 0.01009, 2.447, 0.2224] },
+  { name: 'Rounded variant', diff: '9.4 / 0.02 / 209 / 19 · X = 3.5 + 986/T + 0.01M · Y = 2.4 − 0.2X',
+    tone: 'amber',   c: [9.4, 0.02, 209, 19, 3.5, 986, 0.01, 2.4, 0.2] },
+  { name: 'Corrupted — transposed digit', diff: 'X = 3.<b>488</b> instead of 3.448',
+    tone: 'rose',    c: [9.379, 0.01607, 209.2, 19.26, 3.488, 986.4, 0.01009, 2.447, 0.2224] },
+  { name: 'Corrupted — lost order of magnitude', diff: '0.00<b>1</b>·M instead of 0.01·M',
+    tone: 'rose',    c: [9.379, 0.01607, 209.2, 19.26, 3.448, 986.4, 0.001, 2.447, 0.2224] }
+];
+
+var TONE = {
+  emerald: { text: '#6ee7b7', dot: '#10b981' },
+  amber:   { text: '#fcd34d', dot: '#f59e0b' },
+  rose:    { text: '#fda4af', dot: '#f43f5e' }
+};
+
+function buildTable(doc, win, slot) {
+  // rho, T_R and M come from the APP's own helpers. Re-deriving them here would let a unit or
+  // Z difference leak into the comparison and be mistaken for a coefficient effect.
+  //
+  // These must be read with win.eval(), NOT as win.papayZ / win.MW_AIR_GP. The app declares them
+  // with `const`, and a top-level `const` creates a binding in the global LEXICAL environment —
+  // it never becomes a property of `window`. Reaching for them across the frame boundary
+  // therefore yields undefined and every mu below comes out NaN. eval() runs in the iframe's own
+  // scope, where the bindings are visible.
+  var env = win.eval('(function(){'
+    + 'var sg=0.65, pPsia=toPsia(2000,"psi"), tR=toRankine(150,"F");'
+    + 'var pz=papayZ(sg,pPsia,tR), M=sg*MW_AIR_GP;'
+    + 'return {sg:sg, pPsia:pPsia, tR:tR, Z:pz.Z, M:M,'
+    + ' rho:(pPsia*M/(pz.Z*R_PSIA_GP*tR))/LB_FT3_PER_G_CM3};})()');
+
+  var sg = env.sg, pPsia = env.pPsia, tR = env.tR, M = env.M, rho = env.rho;
+  var pz = { Z: env.Z };
+
+  function mu(c) {
+    var K = (c[0] + c[1] * M) * Math.pow(tR, 1.5) / (c[2] + c[3] * M + tR);
+    var X = c[4] + c[5] / tR + c[6] * M;
+    var Y = c[7] - c[8] * X;
+    return 1e-4 * K * Math.exp(X * Math.pow(rho, Y));
+  }
+
+  var base = mu(SETS[0].c);
+  var html = '';
+  var values = [];
+  for (var i = 0; i < SETS.length; i++) {
+    var s = SETS[i], v = mu(s.c), t = TONE[s.tone];
+    var d = (v / base - 1) * 100;
+    var delta = i === 0 ? '—' : (d > 0 ? '+' : '') + d.toFixed(2) + ' %';
+    values.push(v);
+    html += '<div style="display:flex;align-items:baseline;padding:9px 4px;'
+          + (i < SETS.length - 1 ? 'border-bottom:1px solid rgba(148,163,184,.10);' : '') + '">'
+          + '<span style="width:330px;display:flex;align-items:baseline;gap:9px;">'
+          +   '<span style="width:9px;height:9px;border-radius:2px;background:' + t.dot + ';display:inline-block;"></span>'
+          +   '<span style="color:' + t.text + ';font-size:13.5px;font-weight:500;">' + s.name + '</span>'
+          + '</span>'
+          + '<span style="flex:1 1 auto;color:#94a3b8;font-size:12px;">' + s.diff + '</span>'
+          + '<span id="mu-' + i + '" style="width:150px;text-align:right;color:' + t.text
+          +   ';font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;">'
+          +   v.toFixed(5) + '</span>'
+          + '<span style="width:120px;text-align:right;color:'
+          +   (i === 0 ? '#64748b' : t.text) + ';font-size:13px;font-variant-numeric:tabular-nums;">'
+          +   delta + '</span>'
+          + '</div>';
+  }
+  document.getElementById('rows').innerHTML = html;
+
+  document.getElementById('conditions').textContent =
+    'SG ' + sg + ' · ' + pPsia.toLocaleString('en-US') + ' psi · 150 °F · k = 1.3'
+    + '  —  Z = ' + pz.Z.toFixed(4) + ', ρ = ' + rho.toFixed(6) + ' g/cm³, M = ' + M.toFixed(4) + ' g/mol'
+    + ' (identical for every row; only the coefficients change)';
+
+  drawArrows();
+
+  // Publish what the capture step asserts against: the card's own displayed mu, and the four
+  // recomputed values. If the top-left table value and the card disagree, the build is wrong.
+  document.body.setAttribute('data-ready', [
+    'card_mu=' + slot.querySelector('#gp-out-mu').textContent.trim(),
+    'card_z=' + slot.querySelector('#gp-out-z').textContent.trim(),
+    'orig=' + values[0].toFixed(8),
+    'rounded=' + values[1].toFixed(8),
+    'x3488=' + values[2].toFixed(8),
+    'm001=' + values[3].toFixed(8),
+    'pct_rounded=' + ((values[1] / base - 1) * 100).toFixed(4)
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The tempting connector runs from the card's "GAS VISCOSITY μ 0.01666 cP" up-and-over to the
+  // table's first row, to show they are the same number. It would have to travel the full height
+  // of the frame through the middle of the table, and the two values are already adjacent in
+  // reading order and identical to five decimals — the eye makes the link unaided. Days 1, 3 and
+  // 4 each dropped a connector for the same reason.
+  //
+  // The layer is kept so the standalone export and the frame geometry stay identical to the
+  // other days; if a future edit needs a connector, draw it here.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export. Freezing every node in #shot the same way the card was frozen makes the
+// frame self-contained: no network, no scripts, renders identically anywhere. Skip the <svg>
+// subtree — freezing computed styles onto SVG geometry rewrites presentation attributes and
+// silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 5 — Lee-Gonzalez-Eakin coefficient provenance</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day05-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>

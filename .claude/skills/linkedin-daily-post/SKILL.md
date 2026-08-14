@@ -70,7 +70,7 @@ computed styles. **Never re-implement the UI** — the numbers in the image must
 
 Frame is 1200 × 675. Keep the footer strip carrying `engineering-converter.com`.
 
-### Nine traps, all of which have bitten
+### Ten traps, all of which have bitten
 
 1. **Kill CSS transitions in the iframe first**: `*{transition:none !important;animation:none !important}`.
    Transitions are driven by the compositor's frame clock, so in a non-painting context they never
@@ -108,8 +108,31 @@ Frame is 1200 × 675. Keep the footer strip carrying `engineering-converter.com`
    `grid-auto-rows`, `grid-column`, `grid-row`, `row-gap`, `column-gap`, `align-self`, `justify-self`.
    `docs/linkedin/day03-mockup.html` has the complete `STYLE_PROPS` list — copy that one.
 
+10. **`iframe.contentWindow.someHelper` is `undefined` for anything the app declares with `const`.**
+    A top-level `const`/`let` binds in the global *lexical* environment and never becomes a property
+    of `window` — only `var` and function declarations do. So `win.papayZ(...)` throws and
+    `win.MW_AIR_GP` is `undefined`, which silently propagates as `NaN` into every derived figure
+    rather than erroring anywhere useful. Day 5 shipped a table of four `NaN`s this way.
+    Use `win.eval('(function(){ … })()')` instead — eval runs in the iframe's own scope, where the
+    bindings are visible — and return a plain object:
+
+    ```javascript
+    var env = win.eval('(function(){'
+      + 'var pPsia=toPsia(2000,"psi"), tR=toRankine(150,"F"), pz=papayZ(0.65,pPsia,tR);'
+      + 'return {Z:pz.Z, tR:tR, M:0.65*MW_AIR_GP};})()');
+    ```
+
+    This matters whenever a figure the graphic needs is **not** in the DOM. Two shapes of that so
+    far: an intermediate the card never displays (Day 5's ρ and M), and a value that lives only in
+    an API response (Day 4's `dpFric`/`dpStatic` — there, wrap `win.fetch` instead). Either way the
+    rule is the same: take it from the app, never re-derive it in the mockup.
+
 Also: **`uppercase` destroys chemistry notation.** A Tailwind `uppercase` on a caption turns
 `iC₄`/`nC₄`/`vol%` into `IC₄`/`NC₄`/`VOL%`. Component case is significant; don't uppercase it.
+
+And: **quote what the card DISPLAYS, not the unrounded value in §4.** The Gas Property Estimator
+shows `0.01666 cP` where §4 records `0.016663`. A reader who opens the app sees the former; a post
+quoting the latter looks wrong. Check the display precision before writing the number down.
 
 ## Step 4 — Capture a real PNG
 
@@ -189,6 +212,17 @@ Attaching the image: **only the OS clipboard works, and only two things make it 
 > `GetLastInputInfo` gives idle seconds. If it is ~0 they are typing right now — make one atomic,
 > fully guarded attempt, and if it fails, stop and hand over rather than fighting for the browser.
 
+> ### DO NOT CALL `ShowWindow(hwnd, 9)`.
+> `SW_RESTORE` **un-maximises an already-maximised window.** On Day 5 that shrank Chrome from
+> 1550×830 to 1536×442 in the middle of the sequence, which relaid out the composer, dropped the
+> editor's DOM focus, and the `^v` went nowhere — the composer stayed empty with the media toolbar
+> still showing, which reads exactly like the "toolbar hidden" failure and sends you hunting the
+> wrong bug. `SetForegroundWindow` alone is enough to raise the window. If a window does need
+> un-minimising, check `IsIconic` first and re-maximise afterwards with `ShowWindow(hwnd, 3)`.
+>
+> Symptom to recognise: the screenshot after the paste comes back with an odd small viewport
+> (e.g. 1522×259 instead of ~1536×639). That is the resize, not a rendering hiccup.
+
 ```powershell
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 $img = [System.Drawing.Image]::FromFile("<abs path>\dayNN.png")
@@ -199,6 +233,9 @@ $img.Dispose()
 
 Find the target window with
 `Get-Process chrome | ? { $_.MainWindowTitle -like "*LinkedIn*" }` → `MainWindowHandle`.
+
+**Re-click the editor before every paste attempt.** DOM focus does not survive a window resize or
+a re-raise, and the click is free.
 
 > **The attach is not instant, and the toolbar changes as it lands** — the media icons are replaced
 > by the image preview, which looks like the paste failed. **It did not.** Scroll the composer and
@@ -222,11 +259,28 @@ Composer flow:
 3. Click into the text area and type the English body, then the Japanese section. Both languages
    go in **one post** (Day 1 set that pattern); each carries `https://engineering-converter.com`.
 4. Scroll the composer to the bottom and **look at** the whole post, image included.
-5. Post. Then `…` → **Copy link to post** → paste that `lnkd.in/p/...` into the tab to resolve the
-   real URL; the share id in it gives the tracker form
-   `https://www.linkedin.com/feed/update/urn:li:share:<id>/`.
-6. Add the pre-filled share link as the **first comment**.
+5. Post, then get the tracker URL — see below.
+6. Add the pre-filled share link as the **first comment**, *if you want one*. Naoto ruled on
+   2026-08-13 that first comments are **optional**: a day is complete once the post is scheduled
+   and its URL recorded. Do not treat a missing comment as an outstanding task.
 7. Drafts auto-restore if the composer is closed, so a mistake is recoverable.
+
+### Getting the `urn:li:share:` id for the tracker
+
+§2 records `https://www.linkedin.com/feed/update/urn:li:share:<id>/`. **The `urn:li:activity:<id>`
+you can scrape off the activity feed is a DIFFERENT number** and does not match that format, so it
+cannot be substituted.
+
+**Fastest route — `…` → Embed this post → Copy code.** The clipboard then holds
+`<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7493672957697806337?…">`;
+regex the urn straight out of it. One dialog, no navigation.
+
+The older route also works: `…` → **Copy link to post** → open the `lnkd.in/p/…` in the tab and read
+the resolved URL, whose slug ends `…-share-<id>-…`. It costs an extra page load.
+
+⚠️ **The `…` menu's item positions move.** It has a "Boost" row on some posts and not others, so a
+fixed y-coordinate silently lands on the neighbouring item — that is how Day 5 opened *Embed this
+post* while aiming for *Copy link to post*. Screenshot the open menu and click what you can see.
 
 ### Scheduling instead of posting now
 
