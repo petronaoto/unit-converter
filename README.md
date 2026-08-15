@@ -151,4 +151,12 @@ The calculations and conversions provided by this application are for **general 
 
 ---
 
-© 2026 Naoto Yamabe. All rights reserved.
+## 📄 Licence
+
+Released under the **[MIT Licence](LICENSE)** — free to use, copy, modify and redistribute, including commercially, provided the copyright notice and licence text are retained.
+
+That covers this project's own code, design and documentation. It grants **no rights in third-party material** the project cites or transcribes: the engineering standards behind the calculations (JIS K 2301, ISO 6578, API 520/526, NORSOK P-001, IAPWS-IF97 and others) remain the property of their issuing bodies and are not reproduced here; the LNG reference compositions come from GIIGNL Information Paper No. 1; and the gas-turbine catalogue figures come from the manufacturers' own published literature. See the `LICENSE` file for the full attribution list.
+
+---
+
+© 2026 Naoto Yamabe. Licensed under the MIT Licence.

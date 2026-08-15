@@ -1,0 +1,56 @@
+MIT License
+
+Copyright (c) 2026 Naoto Yamabe
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---------------------------------------------------------------------------
+THIRD-PARTY MATERIAL — NOT COVERED BY THIS LICENCE
+---------------------------------------------------------------------------
+
+The MIT licence above covers this project's own source code, design and
+documentation. It grants no rights in third-party material that the project
+refers to, cites or transcribes. In particular:
+
+* Engineering standards. The calculation methods and physical constants are
+  derived from publicly available engineering standards — JIS K 2301, ISO 6578,
+  API 520 / API 526, API RP 14E, NORSOK P-001, IAPWS-IF97, Crane TP-410 and
+  others. Those standards remain the property of their issuing bodies. Their
+  texts, tables and figures are NOT reproduced in this repository; only the
+  results of applying published methods are.
+
+* LNG reference compositions (LNG_PRESETS, v3.3). The five "published" entries
+  are transcribed, with citation, from GIIGNL Information Paper No. 1, "Basic
+  Properties of LNG", Table 1 (data credited to the 2018 GIIGNL Annual Report).
+  That data remains the property of GIIGNL. The three "assumed" entries are the
+  author's own engineering assumptions and are labelled as such in the
+  application.
+
+* Gas turbine catalogue (GT_MODELS, v3.1). Manufacturer names and model
+  designations — including MHI / Mitsubishi Power, GE Vernova and Siemens
+  Energy — are used solely to identify equipment and are the property of their
+  respective owners. Performance figures are transcribed, with source
+  citations, from those manufacturers' publicly available brochures, fact
+  sheets and product pages. This project is independent and is not affiliated
+  with, sponsored by, or endorsed by any of them. The catalogue thumbnails are
+  original schematic illustrations created for this project and are not
+  manufacturer imagery.
+
+Anyone redistributing or building on this project remains responsible for their
+own compliance with the terms attached to that third-party material.

@@ -445,6 +445,7 @@ All vectors are enforced automatically on every push and pull request, except Ve
 - **Production:** Vercel, auto-deploy on push to `main`. Zero-config: static `index.html` + auto-provisioned `api/` Python functions.
 - **Dependencies:** `requirements.txt` applies to `flowregime.py` only (numpy ≥ 1.26, matplotlib ≥ 3.8, seaborn ≥ 0.13). The other two endpoints must remain standard-library-only.
 - **Local:** `vercel dev` → <http://localhost:3000>.
+- **Licence (2026-08-16):** **MIT**, in `LICENSE` at the repo root. The repository had been public but unlicensed while in-app Terms §6 prohibited redistribution and commercial use; the two were contradictory and were reconciled together. Three artefacts must stay in agreement — `LICENSE`, the README licence section, and Terms §6 (`docs.terms.b008`) in inline English plus all 9 dictionaries. The licence covers this project's own code, design and documentation only; the `LICENSE` file's third-party section (engineering standards, the GIIGNL LNG composition data, the vendor gas-turbine specifications) records what it does **not** grant rights in, and must not be dropped.
 
 ## 11. Known Issues Register
 
