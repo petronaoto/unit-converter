@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.2</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.3</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -870,7 +870,42 @@
                 <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1" data-i18n="advanced.ghv.compositionHeading">1. GAS COMPOSITION</h3>
                 <div class="text-[10px] text-slate-500 italic" data-i18n="advanced.ghv.c6Note">*C6+ evaluated as nC6.</div>
               </div>
-              
+
+              <!-- v3.3 — LNG reference composition presets. The <option> list is STATIC and is
+                   never rebuilt: a share-link/localStorage restore sets comp-preset by value
+                   before any event fires (same rule as the v3.1 GT model list). Option values
+                   are the LNG_PRESETS ids, so translating the labels cannot break a restore. -->
+              <div id="comp-preset-wrap" class="mb-4 rounded-lg border border-slate-700/50 bg-slate-950/30 p-3 space-y-2.5">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <label for="comp-preset" class="text-[10px] font-bold tracking-widest text-slate-400 uppercase shrink-0" data-i18n="advanced.ghv.preset.label">Reference Composition</label>
+                  <select id="comp-preset" onchange="applyLNGPreset(this.value)" class="flex-1 min-w-0 px-3 py-2 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 text-sm outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="" data-i18n="advanced.ghv.preset.custom">Custom / manual entry</option>
+                    <optgroup data-i18n-label="advanced.ghv.preset.grpPub" label="Published — GIIGNL (mol %)">
+                      <option value="au-nws">Australia — North West Shelf</option>
+                      <option value="my-bintulu">Malaysia — Bintulu (MLNG)</option>
+                      <option value="ng-bonny">Nigeria — Bonny (NLNG)</option>
+                      <option value="qa-raslaffan">Qatar — Ras Laffan</option>
+                      <option value="tt-atlantic">Trinidad — Point Fortin</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.ghv.preset.grpAsm" label="Assumed — indicative archetypes">
+                      <option value="us-gulf">U.S. Gulf Coast — pipeline-spec shale feed</option>
+                      <option value="rich-assoc">Rich associated-gas LNG (generic)</option>
+                      <option value="n2-rich">Nitrogen-rich feed (generic)</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.ghv.preset.grpApp" label="App reference">
+                      <option value="jis-ref">JIS K 2301 worked example (vol %)</option>
+                    </optgroup>
+                  </select>
+                  <span id="comp-preset-badge" class="shrink-0 text-[10px] font-bold px-2 py-1 rounded tracking-wider border bg-slate-700/40 text-slate-400 border-slate-600">CUSTOM</span>
+                </div>
+                <p id="comp-preset-src" class="text-[10px] text-slate-500 leading-relaxed">
+                  <span id="comp-preset-src-prefix" class="text-slate-500"></span>
+                  <span id="comp-preset-src-warn" class="text-amber-400/90 font-semibold"></span>
+                  <span id="comp-preset-src-text"></span>
+                </p>
+                <div id="comp-preset-check" class="hidden flex-wrap gap-2 text-[11px]"></div>
+              </div>
+
               <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">CH₄</label><input type="number" step="any" id="comp-ch4" value="89" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
                 <div><label class="block text-[10px] text-slate-400 mb-1 font-bold">C₂H₆</label><input type="number" step="any" id="comp-c2h6" value="7" oninput="calcGHV()" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-orange-500" /></div>
@@ -1770,7 +1805,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.1</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.3</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#howto-new31" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
@@ -1794,6 +1829,7 @@
             <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Compressor</a>
             <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-lime-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Copy</a>
             <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 GT Fuel</a>
+            <a href="#howto-21" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">21 LNG Refs</a>
           </nav>
         </div>
 
@@ -2415,6 +2451,21 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Screening, not a guarantee.</strong> Catalogue figures are indicative vendor data at ISO conditions; real fuel burn moves with ambient conditions, degradation, part load and fuel composition. Every dataset entry carries its source, and CI re-verifies that each machine's published heat rate equals 3600/η within rounding.</p></div>
         </section>
 
+        <!-- 21. LNG Reference Compositions (v3.3) -->
+        <section>
+          <h3 id="howto-21" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b092">21. LNG Reference Compositions</h3>
+          <div data-i18n-html="docs.howto.b093"><p class="text-sm text-slate-400 leading-relaxed">The Advanced tab's <strong class="text-slate-200">Gas Composition</strong> block opens with a <strong class="text-slate-200">Reference Composition</strong> pull-down. Choosing an entry fills all fourteen component boxes at once and switches the Input Mode to the basis that entry is reported on — so you can go from a blank screen to a full LNG property set in one click. Every entry states where its numbers came from, directly under the selector.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3">Entries carry one of three badges, and the badge is the important part:</p>
+          <ul class="text-sm text-slate-400 leading-relaxed mt-2 space-y-1.5 list-disc pl-5">
+            <li><strong class="text-emerald-400">PUBLISHED</strong> — five LNG origins transcribed from GIIGNL Information Paper No. 1, <em>Basic Properties of LNG</em>, Table 1 (data: 2018 GIIGNL Annual Report): Australia NWS, Malaysia Bintulu, Nigeria, Qatar and Trinidad. Reported as mole %.</li>
+            <li><strong class="text-orange-400">REFERENCE</strong> — this calculator's own JIS K 2301 worked example, reported as volume %.</li>
+            <li><strong class="text-amber-400">ASSUMED</strong> — three indicative archetypes (lean U.S. Gulf Coast pipeline feed, rich associated gas, nitrogen-rich feed). These are <strong class="text-slate-200">engineering assumptions, not project data</strong>. Each states the numbers it assumed so you can audit or overwrite them.</li>
+          </ul>
+          <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-xs text-emerald-300 mt-3"><strong>✓ Cross-check</strong> — GIIGNL publishes a gross calorific value and Wobbe index alongside each composition, so a PUBLISHED or REFERENCE entry shows chips comparing the source's figure with this calculator's own result. Qatar, for example, reads <span class="font-mono">Published GCV 43.43 → 43.43</span> and <span class="font-mono">Published WI 55.40 → 55.38</span>. Anything inside ±0.05 MJ/Nm³ passes. The chips are a live demonstration that the JIS K 2301 engine reproduces independently published data.</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Two details worth knowing. GIIGNL reports butanes as a single lumped C4+ column, so the split into iC₄/nC₄ is an assumption — 50/50 here; sweeping it across the full range moves HHV and Wobbe index by no more than 0.03 MJ/Nm³, which CI re-measures on every build. And the published Qatar row sums to 100.01 %, which is reproduced verbatim rather than quietly rescaled; the calculator normalizes it before use, exactly as it does for any off-100 total.</p>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3">Editing any component drops the selector back to <em>Custom</em> and hides the citation — a source is never left attached to numbers it no longer describes. The selection travels in share links and is restored with the rest of your inputs. <strong class="text-amber-400">For real work, always substitute the cargo certificate or contract specification:</strong> cargo compositions vary shipment to shipment, and none of these entries is a custody-transfer document.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -2422,7 +2473,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.3. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Compositional</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Density &amp; Flow</a>
@@ -2435,6 +2486,7 @@
             <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX NPSHa</a>
             <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X Compressor</a>
             <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI GT Fuel</a>
+            <a href="#theory-p12" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XII LNG Refs</a>
           </nav>
         </div>
 
@@ -3058,6 +3110,30 @@
           <div class="bg-rose-500/10 border border-rose-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 11)</strong> — M701JAC (448): P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 %. Q_fuel = 448/0.44 = <strong>1,018.18 MW-th</strong>; HR = 3600/0.44 = <strong>8,182 kJ/kWh</strong> = 7,755 Btu/kWh — reproducing MHI's published 8,182 kJ/kWh exactly. V̇ = 1,018.18 × 3600 / 40.25 = <strong>91,067 Nm³/h</strong> = 91.07 kNm³/h; ṁ = 91,067 × 0.8193 = <strong>74,611 kg/h</strong> = 74.61 t/h; 91,067 × 37.3258 × 24/10⁶ = <strong>81.58 MMSCFD</strong>. Yearly at 92 %: 91,067 × 8,760 × 0.92 = <strong>733.93 MMNm³</strong> (601,308 t), delivering 3,610.5 GWh.</div></div>
           </div></div>
         </section>
+
+        <!-- PART XII: LNG REFERENCE COMPOSITIONS -->
+        <section>
+          <h3 id="theory-p12" class="text-lg font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-900 pb-2 mb-6" data-i18n-html="docs.theory.b048">Part XII — LNG Reference Compositions (v3.3)</h3>
+          <div data-i18n-html="docs.theory.b049"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-emerald-400 mb-2">12.1 Provenance and the three tiers</h4>
+          <p class="text-sm leading-relaxed">The preset dataset separates what is <em>published</em> from what is <em>assumed</em>, because the two carry entirely different weight in an engineering argument. Five entries are transcribed from <strong class="text-slate-200">GIIGNL Information Paper No. 1, <em>Basic Properties of LNG</em>, Table 1 — Examples of LNG composition</strong>, whose data is credited to the 2018 GIIGNL Annual Report. One entry is this application's own JIS K 2301 reference case. Three are engineering archetypes carrying no external citation at all, and are badged <strong class="text-amber-400">ASSUMED</strong> so they can never be mistaken for measured data. The tier boundary is enforced in CI: an assumed entry is forbidden from declaring a published calorific value, because a cross-check against an invented number would dress up a guess as a citation.</p></div>
+
+            <div><h4 class="text-base font-semibold text-emerald-400 mb-2">12.2 Fraction basis — why these load as mole %</h4>
+          <p class="text-sm leading-relaxed">GIIGNL Table 1 does not state its basis in the column headers. It can be recovered from the table itself: running each composition through the JIS K 2301 chain on a <strong class="text-slate-200">mole</strong> basis reproduces the published gross calorific values to within 0.02 MJ/Nm³, whereas a <strong class="text-slate-200">volume</strong> basis is systematically 0.06 MJ/Nm³ high across all five rows — a bias far larger than the scatter, and in one direction. The table is therefore mole %, and each preset carries its own <span class="font-mono text-slate-300">basis</span> field which is applied to the Input Mode selector on load. The application's own reference case remains volume %, as JIS K 2301 defines it.</p></div>
+
+            <div><h4 class="text-base font-semibold text-emerald-400 mb-2">12.3 The lumped C4+ column</h4>
+          <p class="text-sm leading-relaxed">GIIGNL reports butanes as one lumped <span class="font-mono text-slate-300">C4+</span> column, while JIS K 2301 needs iC₄ and nC₄ separately — the two differ slightly in gross calorific value (128.23 vs 128.66 MJ/Nm³), compressibility and √b. The split is therefore an assumption, taken here as 50/50. Its consequence is bounded rather than asserted: sweeping the butane pool across the entire range, from all-iC₄ to all-nC₄, moves HHV and Wobbe index by no more than <strong class="text-slate-200">0.03 MJ/Nm³</strong> (worst case: Bintulu's Wobbe index). That is inside the ±0.05 MJ/Nm³ band the cross-check chips use, so the split alone can never flip a preset's own verification. CI re-measures this sweep on every build and fails if the spread grows, and separately asserts that the figure quoted in the on-screen citation is the same figure the suite enforces.</p></div>
+
+            <div><h4 class="text-base font-semibold text-emerald-400 mb-2">12.4 Cross-check as a verification vector</h4>
+          <p class="text-sm leading-relaxed">Because GIIGNL publishes a gross calorific value and Wobbe index beside each composition, every published preset doubles as an <strong class="text-slate-200">external verification vector</strong> for the JIS K 2301 implementation — five reference points that were not derived from this application and cannot drift with it. The comparison always uses the gross value <span class="font-mono text-slate-300">hhv_mix</span>, never the toggled display value, so switching the panel between HHV and LHV cannot disturb a comparison against a published figure that never moved.</p>
+          <div class="bg-emerald-500/10 border border-emerald-500/30 rounded p-3 text-xs mt-3"><strong>Verification table</strong> — calculated vs published, MJ/Nm³:<br />
+          Australia NWS <strong>45.32</strong> / 45.32, WI <strong>56.52</strong> / 56.53 · Malaysia Bintulu <strong>43.69</strong> / 43.67, WI <strong>55.58</strong> / 55.59 · Nigeria <strong>43.41</strong> / 43.41, WI <strong>55.49</strong> / 55.50 · Qatar <strong>43.43</strong> / 43.43, WI <strong>55.38</strong> / 55.40 · Trinidad <strong>41.05</strong> / 41.05, WI <strong>54.23</strong> / 54.23. Largest deviation across all ten comparisons: <strong>0.02 MJ/Nm³</strong>.</div></div>
+
+            <div><h4 class="text-base font-semibold text-emerald-400 mb-2">12.5 Fidelity to the source</h4>
+          <p class="text-sm leading-relaxed">Published rows are reproduced exactly as printed, including the Qatar row's total of <strong class="text-slate-200">100.01 %</strong>. Silently rescaling it to 100 would make the on-screen numbers disagree with the cited table and break the traceability the citation exists to provide; instead the existing normalization path handles it, as it does for any composition that does not sum to 100. For the same reason a manual edit of any component immediately clears the attribution — the source line describes the dataset, and the moment the numbers stop being the dataset, the citation must go.</p>
+          <p class="text-sm leading-relaxed mt-3"><strong class="text-amber-400">Scope.</strong> These are representative compositions for screening and teaching. Real cargo compositions vary shipment to shipment and are established by the custody-transfer analysis; nothing in this dataset is a substitute for a cargo certificate or a contract specification.</p></div>
+          </div></div>
+        </section>
 </div>
     </div>
 
@@ -3278,7 +3354,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.2</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.3</div>
     </div>
   </footer>
 
@@ -3518,6 +3594,49 @@
       {id:'o2',   mw:31.9988, hhv:0,      lhv:0,       zi:0.999,  sqrtbi:0.0316, si:1.105,  flame_si:0,    fi:0,     ai:0,   comb:false}
     ];
 
+    // v3.3 — LNG reference compositions for the preset selector. Three tiers:
+    //   "pub" — published, citable data. `gcv`/`wi` are the SOURCE's own published figures;
+    //           they are never used in a calculation, only displayed beside this app's JIS
+    //           K 2301 output as a live cross-check.
+    //   "ref" — this app's own regulatory reference vector (CLAUDE.md), so the pinned
+    //           HHV 44.59 / WI 56.00 are visible on screen rather than only in the test suite.
+    //   "asm" — an engineering ASSUMPTION, not project data. No cross-check is offered
+    //           because there is no published figure to check against.
+    // `basis` is the fraction basis the source reports on ('mol' or 'vol') and is applied to
+    // ghv-mode on load — GIIGNL Table 1 is mole %, the JIS worked example is volume %.
+    // Kept as ONE JSON.parse literal so tests/test_lng_presets.py can extract it verbatim and
+    // re-verify every row against its published GCV/WI (same contract as GT_MODELS).
+    const LNG_PRESETS = JSON.parse(`[
+      {"id":"au-nws","tier":"pub","basis":"mol","gcv":45.32,"wi":56.53,
+       "c":{"ch4":87.33,"c2h6":8.33,"c3h8":3.33,"ic4":0.485,"nc4":0.485,"n2":0.04},
+       "src":"GIIGNL Information Paper No.1 'Basic Properties of LNG', Table 1 — Examples of LNG composition (data: 2018 GIIGNL Annual Report). Mole %. The table's lumped C4+ column is split 50/50 iC4/nC4 — an assumption; across the full 0-100% split range its effect on HHV and Wobbe index is <= 0.03 MJ/Nm3, well inside the +/-0.05 cross-check band."},
+      {"id":"my-bintulu","tier":"pub","basis":"mol","gcv":43.67,"wi":55.59,
+       "c":{"ch4":91.69,"c2h6":4.64,"c3h8":2.60,"ic4":0.465,"nc4":0.465,"n2":0.14},
+       "src":"GIIGNL Information Paper No.1 'Basic Properties of LNG', Table 1 — Examples of LNG composition (data: 2018 GIIGNL Annual Report). Mole %. The table's lumped C4+ column is split 50/50 iC4/nC4 — an assumption; across the full 0-100% split range its effect on HHV and Wobbe index is <= 0.03 MJ/Nm3, well inside the +/-0.05 cross-check band."},
+      {"id":"ng-bonny","tier":"pub","basis":"mol","gcv":43.41,"wi":55.50,
+       "c":{"ch4":91.70,"c2h6":5.52,"c3h8":2.17,"ic4":0.29,"nc4":0.29,"n2":0.03},
+       "src":"GIIGNL Information Paper No.1 'Basic Properties of LNG', Table 1 — Examples of LNG composition (data: 2018 GIIGNL Annual Report). Mole %. The table's lumped C4+ column is split 50/50 iC4/nC4 — an assumption; across the full 0-100% split range its effect on HHV and Wobbe index is <= 0.03 MJ/Nm3, well inside the +/-0.05 cross-check band."},
+      {"id":"qa-raslaffan","tier":"pub","basis":"mol","gcv":43.43,"wi":55.40,
+       "c":{"ch4":90.91,"c2h6":6.43,"c3h8":1.66,"ic4":0.37,"nc4":0.37,"n2":0.27},
+       "src":"GIIGNL Information Paper No.1 'Basic Properties of LNG', Table 1 — Examples of LNG composition (data: 2018 GIIGNL Annual Report). Mole %. The table's lumped C4+ column is split 50/50 iC4/nC4 — an assumption; across the full 0-100% split range its effect on HHV and Wobbe index is <= 0.03 MJ/Nm3, well inside the +/-0.05 cross-check band. This row is published as summing to 100.01% and is reproduced verbatim rather than rescaled; the calculator normalizes it."},
+      {"id":"tt-atlantic","tier":"pub","basis":"mol","gcv":41.05,"wi":54.23,
+       "c":{"ch4":96.78,"c2h6":2.78,"c3h8":0.37,"ic4":0.03,"nc4":0.03,"n2":0.01},
+       "src":"GIIGNL Information Paper No.1 'Basic Properties of LNG', Table 1 — Examples of LNG composition (data: 2018 GIIGNL Annual Report). Mole %. The table's lumped C4+ column is split 50/50 iC4/nC4 — an assumption; across the full 0-100% split range its effect on HHV and Wobbe index is <= 0.03 MJ/Nm3, well inside the +/-0.05 cross-check band."},
+      {"id":"us-gulf","tier":"asm","basis":"mol","gcv":null,"wi":null,
+       "c":{"ch4":95.0,"c2h6":4.0,"c3h8":0.5,"ic4":0.1,"nc4":0.1,"n2":0.3},
+       "src":"U.S. Gulf Coast liquefaction runs on pipeline-specification gas whose natural gas liquids are largely extracted upstream, which gives a characteristically lean LNG. Modelled here as CH4 95.0 / C2H6 4.0 / C3H8 0.5 / iC4 0.1 / nC4 0.1 / N2 0.3 mol %."},
+      {"id":"rich-assoc","tier":"asm","basis":"mol","gcv":null,"wi":null,
+       "c":{"ch4":87.0,"c2h6":8.0,"c3h8":3.2,"ic4":0.8,"nc4":0.7,"n2":0.3},
+       "src":"An archetype for LNG produced from associated gas with limited NGL extraction — the rich end of the range, useful for screening heating-value and Wobbe-index margins. Modelled here as CH4 87.0 / C2H6 8.0 / C3H8 3.2 / iC4 0.8 / nC4 0.7 / N2 0.3 mol %."},
+      {"id":"n2-rich","tier":"asm","basis":"mol","gcv":null,"wi":null,
+       "c":{"ch4":89.5,"c2h6":6.0,"c3h8":2.2,"ic4":0.5,"nc4":0.4,"n2":1.4},
+       "src":"An archetype for a nitrogen-rich feed, useful for screening the effect of inerts on heating value and Wobbe index. Modelled here as CH4 89.5 / C2H6 6.0 / C3H8 2.2 / iC4 0.5 / nC4 0.4 / N2 1.4 mol %."},
+      {"id":"jis-ref","tier":"ref","basis":"vol","gcv":44.59,"wi":56.00,
+       "c":{"ch4":89,"c2h6":7,"c3h8":2.5,"ic4":0.7,"nc4":0.5,"n2":0.3},
+       "src":"The calculator's own reference case, traceable to the JIS K 2301:2011 Excel reference worksheet. Volume %. Expected output: HHV 44.59, LHV 40.25 MJ/Nm3, SG 0.634, WI 56.00, MW 18.305 g/mol, rho_std 0.81930 kg/Nm3."}
+    ]`);
+    const LNG_PRESET_TOL = 0.05;   // MJ/Nm³ — cross-check pass band vs the published figure
+
     // ISO 6578 Klosek-McKinley: molar volumes [m³/kmol] at cryogenic temperatures
     const ISO6578_VM = {
       108:{ch4:0.037489,c2h6:0.047513,c3h8:0.062047,ic4:0.077842,nc4:0.076392,ic5:0.091157,nc5:0.091060,nc6:0.105630,n2:0.043571},
@@ -3571,6 +3690,100 @@
     }
 
     let lastGHV = null;   // v3.1 — cached HHV/LHV/ρ_std of the last compositional run, for the GT Fuel import
+    let lastCompCheck = null;   // v3.3 — {gcv, wi} of the last run, for the preset cross-check chips
+
+    function lngPresetById(id) { return LNG_PRESETS.find(p => p.id === id) || null; }
+
+    // Loads a preset into the 14 composition inputs. Components a preset does not list are
+    // explicitly zeroed, so switching presets can never leave a residue of the previous one.
+    // Selecting "Custom" (id '') deliberately keeps the current numbers — it only drops the
+    // attribution. Assigning .value programmatically fires no 'input' event, so this cannot
+    // trip the edit listener below.
+    function applyLNGPreset(id) {
+      const p = lngPresetById(id);
+      if (p) {
+        gasComps.forEach(c => {
+          const el = document.getElementById('comp-' + c.id);
+          if (el) el.value = (p.c[c.id] !== undefined) ? p.c[c.id] : 0;
+        });
+        // Each source reports on its own basis; honour it rather than silently reinterpreting
+        // mole % as volume %, which would shift GCV by ~0.06 MJ/Nm³ against the cited figure.
+        document.getElementById('ghv-mode').value = p.basis;
+      }
+      calcGHV();
+    }
+
+    // A citation must never label numbers it no longer matches: any manual edit of a
+    // component drops the selector back to Custom. Delegated so the 14 inputs stay untouched.
+    document.addEventListener('input', e => {
+      const el = e.target;
+      if (!el || !el.id || el.id.indexOf('comp-') !== 0 || el.id === 'comp-preset') return;
+      const sel = document.getElementById('comp-preset');
+      if (sel && sel.value) { sel.value = ''; renderLNGPresetInfo(); }
+    }, true);
+
+    // Repaints the badge / citation / cross-check chips. Called from calcGHV() rather than
+    // from applyLNGPreset() alone, so a share-link or localStorage restore — which sets
+    // comp-preset directly and then recomputes — repaints its attribution too.
+    function renderLNGPresetInfo() {
+      const sel = document.getElementById('comp-preset');
+      if (!sel) return;
+      const p = lngPresetById(sel.value);
+      const tier = p ? p.tier : 'custom';
+      const BADGE = {
+        pub:    ['advanced.ghv.preset.badgePub',    'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'],
+        ref:    ['advanced.ghv.preset.badgeRef',    'bg-orange-500/15 text-orange-400 border-orange-500/30'],
+        asm:    ['advanced.ghv.preset.badgeAsm',    'bg-amber-500/15 text-amber-400 border-amber-500/40'],
+        custom: ['advanced.ghv.preset.badgeCustom', 'bg-slate-700/40 text-slate-400 border-slate-600']
+      };
+      const badge = document.getElementById('comp-preset-badge');
+      badge.className = 'shrink-0 text-[10px] font-bold px-2 py-1 rounded tracking-wider border ' + BADGE[tier][1];
+      badge.textContent = tr(BADGE[tier][0]);
+      document.getElementById('comp-preset-wrap').className = 'mb-4 rounded-lg border p-3 space-y-2.5 ' +
+        (p ? 'border-amber-500/30 bg-amber-500/[0.04]' : 'border-slate-700/50 bg-slate-950/30');
+
+      // Citation line. Built from textContent only — no innerHTML anywhere in this function.
+      const prefix = document.getElementById('comp-preset-src-prefix');
+      const warn   = document.getElementById('comp-preset-src-warn');
+      const text   = document.getElementById('comp-preset-src-text');
+      prefix.textContent = p ? tr(p.tier === 'asm' ? 'advanced.ghv.preset.basisPrefix'
+                                                   : 'advanced.ghv.preset.srcPrefix') + ' ' : '';
+      warn.textContent   = (p && p.tier === 'asm') ? tr('advanced.ghv.preset.assumedWarn') + ' ' : '';
+      text.textContent   = p ? p.src : tr('advanced.ghv.preset.customHint');
+
+      const chk = document.getElementById('comp-preset-check');
+      chk.textContent = '';
+      chk.classList.toggle('hidden', !p);
+      chk.classList.toggle('flex', !!p);
+      if (!p || !lastCompCheck) return;
+
+      const fmt2 = n => isFinite(n) ? n.toFixed(2) : '—';
+      const chip = parts => {
+        const s = document.createElement('span');
+        s.className = 'bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300';
+        parts.forEach(([txt, cls]) => {
+          const c = document.createElement('span');
+          if (cls) c.className = cls;
+          c.textContent = txt;
+          s.appendChild(c);
+        });
+        chk.appendChild(s);
+      };
+      const pair = (labelKey, published, calc) => {
+        const d = calc - published;
+        const ok = Math.abs(d) <= LNG_PRESET_TOL;
+        chip([[tr(labelKey) + ' ', ''], [fmt2(published), 'font-mono text-slate-400'],
+              [' → ', 'text-slate-600'], [fmt2(calc), 'font-mono text-amber-500'],
+              [' ' + (ok ? '✓' : '⚠') + ' ' + (d >= 0 ? '+' : '−') + Math.abs(d).toFixed(2),
+               'font-bold ' + (ok ? 'text-emerald-400' : 'text-amber-400')]]);
+      };
+      if (p.gcv != null) pair('advanced.ghv.preset.chipPubGcv', p.gcv, lastCompCheck.gcv);
+      else chip([[tr('advanced.ghv.preset.chipCalcGcv') + ' ', ''], [fmt2(lastCompCheck.gcv), 'font-mono text-amber-500']]);
+      if (p.wi != null) pair('advanced.ghv.preset.chipPubWi', p.wi, lastCompCheck.wi);
+      else chip([[tr('advanced.ghv.preset.chipCalcWi') + ' ', ''], [fmt2(lastCompCheck.wi), 'font-mono text-amber-500']]);
+      chip([[p.gcv == null ? tr('advanced.ghv.preset.chipNoCross') : tr('advanced.ghv.preset.chipUnits'), 'text-slate-500']]);
+    }
+
     function calcGHV() {
       const mode = document.getElementById('ghv-mode').value;
       let sumFrac = 0;
@@ -3642,6 +3855,11 @@
 
       // WI=ROUND(HHV_2dp/√(SG_3dp),2) [R28]  ────────────────────────────────────
       const wi_calc=sg_calc>0?Math.round(hhv_mix/Math.sqrt(sg_calc)*100)/100:0;
+
+      // v3.3 — preset cross-check. GCV is the GROSS calorific value, so this always compares
+      // hhv_mix and never hv_mix: the HHV/LHV display toggle must not change the comparison.
+      lastCompCheck = { gcv: hhv_mix, wi: wi_calc };
+      renderLNGPresetInfo();
 
       // MCP  ────────────────────────────────────────────────────────────────────
       let sAi=0,sAiAi=0,sSfiAi=0,sFiAi=0;
@@ -5618,6 +5836,9 @@
         const next = (s !== undefined) ? s : i18nHtmlOriginals[key];
         if (el.innerHTML !== next) el.innerHTML = next;
       });
+      // v3.3 — <optgroup> labels. These cannot use data-i18n: that sets textContent, which on
+      // an optgroup would delete its <option> children.
+      document.querySelectorAll('[data-i18n-label]').forEach(el => { el.label = tr(el.getAttribute('data-i18n-label')); });
       document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = tr(el.getAttribute('data-i18n-title')); });
       document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', tr(el.getAttribute('data-i18n-aria'))); });
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = tr(el.getAttribute('data-i18n-placeholder')); });
@@ -6037,7 +6258,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.2', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.3', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}${gt}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
