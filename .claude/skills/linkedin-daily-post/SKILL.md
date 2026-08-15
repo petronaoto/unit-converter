@@ -61,7 +61,8 @@ only the keys the post needs. 10–15 keys lands at ~200–400 characters.
 
 ```javascript
 const state = { v: 2, tab: 'advanced', inputs: { /* only what this post shows */ } };
-location.origin + '/index.html#s=' + btoa(unescape(encodeURIComponent(JSON.stringify(state))))
+// '?s=' for anything you POST — LinkedIn strips the fragment when it auto-links (see below).
+location.origin + '/index.html?s=' + btoa(unescape(encodeURIComponent(JSON.stringify(state))))
 ```
 
 - `tab`: `general` / `basic` / `advanced` / `safety`. Omit to land on General.
@@ -69,12 +70,15 @@ location.origin + '/index.html#s=' + btoa(unescape(encodeURIComponent(JSON.strin
 - `lang: 'ja'` only on Japanese content.
 - **Test on a real page load.** Changing the fragment alone does not re-run the restore; the page
   must actually load. Clear `localStorage` first so you see what a first-time visitor sees.
-- ⚠️ **LinkedIn strips the `#fragment` when it auto-links a URL** (2026-08-16). The comment shows
-  the whole string as text, but the generated `href` drops everything after the `#` — which is the
-  entire payload. Clicking restores nothing, and it fails silently. Until the app accepts a `?s=`
-  query-string form, word the comment as **copy-paste**, and say plainly that clicking will not
-  work. After publishing, read the posted anchor's `href` and confirm it still carries `#s=`.
-  See POST.md section 3 for the proposed `decodeShareState()` fix.
+- ⚠️ **Use `?s=` for anything posted, not `#s=`.** LinkedIn strips everything after the `#` when
+  it auto-links a URL (2026-08-16), so a fragment link renders correctly, looks clickable, and
+  restores nothing. `decodeShareState()` accepts `?s=` from the query string precisely so posted
+  links work — build campaign links with `'/index.html?s=' + btoa(...)`.
+- **The app's own Share button must keep emitting `#s=`.** A fragment never reaches the server; a
+  query string lands in access logs. Read `?s=`, never generate it — `tests/test_share_state.py`
+  fails if `copyShareLink()` is flipped.
+- **After publishing, read the posted anchor's `href`**, not the link you built. They are
+  different URLs and only the second one is what readers click.
 - Server-backed cards (ΔP, Flow Regime, PRV) still need a Calculate click; client-side cards
   (composition, steam, NPSHa, compressor, gas properties, Z-factor, pipe volume) render on open.
 
