@@ -124,6 +124,8 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 |---|---|---|---|
 | Sat 15 Aug 2026 | **v3.1 launch — GT Fuel estimator** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7494264076139802624/> |
 | Sat 15 Aug 2026 | **v3.1 launch — GT Fuel estimator** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088499375039447394> |
+| Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7494421563887247360/> |
+| Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088656797607547322> |
 
 **v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
 a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
@@ -155,6 +157,50 @@ because 280 characters cannot hold both languages. Both platforms carry
 > `win.eval` (`translationsCache` is a top-level `const`, so it is *not* a property of
 > `contentWindow` — see trap 10 in the skill), then refuses to mount the frame at all unless a
 > probe label has resolved. Any future mock-up on this port needs the same guard.
+
+---
+
+**v3.3 launch — what went out.** Same shape as v3.1: one bilingual LinkedIn post (EN then JA,
+2,967 chars) and a three-tweet X thread (EN + image / JA / the GIIGNL detail closing with the ask),
+because 280 characters cannot hold both languages. Both carry `https://engineering-converter.com/`
+in the body and the same image.
+
+- **Figures** are reference **Vector 12** (`docs/SPECIFICATION.md` §9), reproduced against the
+  live site before the copy was written: Australia NWS GCV **45.32** vs GIIGNL's published 45.32
+  and WI **56.52** vs 56.53; Qatar WI **55.38** vs 55.40; largest deviation across all ten
+  comparisons **0.02 MJ/Nm³**. That the app reproduces a source it did not choose is the post's
+  credibility argument, and both numbers appear in the same frame.
+- **Assets:** `docs/linkedin/v33-lng-presets-mockup.html` (generator), `-standalone.html` (frozen
+  export), `v33-lng-presets.png` (the 1200 × 675 capture). Reuse the generator for the next release.
+- **Australia NWS, not Qatar, in the graphic.** Qatar is the more interesting row — GIIGNL publishes
+  it summing to 100.01 % and the app reproduces that verbatim — but a red 100.01 % total reads as an
+  error to someone scrolling a feed. The nuance went in the copy; the hero image stayed all-green.
+- **A pre-filled share link was prepared** (299 chars, Advanced tab + the au-nws preset, verified on
+  a real page load) but not posted as a first comment — optional per the 2026-08-13 ruling.
+
+> ⚠️ **The `PrintWindow` capture in the skill is dead on Chrome 151.** It returns success and a
+> blank surface (~11 KB for a 1290 × 820 window), with or without `--disable-gpu`, and the render
+> widget is now a 12 × 206 stub — so walking the child windows does not help either. Confirmed
+> against the *v3.1* frame too, so it is the environment, not the new generator.
+>
+> **Use headless instead**, which is simpler than what it replaces — the viewport is the frame, so
+> there is no title-bar detection and no crop:
+>
+> ```
+> chrome --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 >        --window-size=1200,675 --screenshot=docs/linkedin/NAME.png <standalone url>
+> ```
+>
+> A real capture is 150 KB+; a blank one is ~8 KB, so the size check still applies. Step 4 of the
+> skill has been rewritten around this.
+
+> ⚠️ **Do not press Escape in the LinkedIn composer.** It is not a "dismiss the hashtag dropdown"
+> key — LinkedIn reads it as *close the composer* and raises the "Save this post as a draft?"
+> dialog mid-compose. Cancel with the dialog's ✕ (not Discard) and the text survives intact.
+
+> ⚠️ **On X, scroll the composer to the BOTTOM before clicking "Post all".** With the modal
+> scrolled to the top, the bottom action bar is off-screen and the click at the button's usual
+> coordinates lands on the attached image instead, opening the *Crop media* editor. Harmless —
+> back out with ← and nothing is lost — but it looks like a failed post.
 
 ---
 

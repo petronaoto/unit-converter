@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>v3.3 announcement mockup — LNG reference compositions</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn / X 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. */
+  #app{position:absolute;width:1280px;height:1400px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  v3.3 announcement — "the calculator shows its work against the source".
+
+  LEFT  : the REAL section-1 block of the Advanced compositional card — the new Reference
+          Composition selector with its PUBLISHED badge, the GIIGNL citation, the two
+          cross-check chips, and all 14 component boxes filled by one click.
+  RIGHT : the REAL section-3 properties panel from the same live page.
+
+  Every figure comes from the app's own calcGHV() after selecting the qa-raslaffan preset.
+  Nothing here types a number by hand. Reference Vector 12 in docs/SPECIFICATION.md pins the
+  cross-check; the published GCV 43.43 / WI 55.40 are GIIGNL's own figures, carried in the
+  LNG_PRESETS dataset and displayed beside the app's 43.43 / 55.38.
+
+  Australia NWS is the chosen preset: its published row sums to exactly 100.000 and both
+  cross-checks land green (GCV 45.32 vs 45.32, WI 56.52 vs 56.53). Qatar was tried first and
+  is the more interesting row -- GIIGNL publishes it summing to 100.01 % and the app reproduces
+  that verbatim -- but a red 100.01 % total reads as an error to someone scrolling a feed. That
+  nuance belongs in the post copy, not in the hero image.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/v33-lng-presets-mockup.html
+  Then screenshot #shot (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-5 left-[52px] flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-orange-400 font-semibold">v3.3</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> LNG Reference Compositions</span>
+    <span class="text-[10px] font-bold tracking-widest text-orange-300 border border-orange-500/50 bg-orange-500/10 rounded px-2 py-[3px]">NEW</span>
+  </div>
+
+  <div class="absolute top-[46px] left-[52px] right-[52px] z-30">
+    <div id="subcap" class="text-slate-500 text-[12.5px] leading-snug">&nbsp;</div>
+  </div>
+
+  <!-- ================= the real cards =================
+       Three fragments, all cloned live:
+         row 1 (full width) — the new preset block: selector, PUBLISHED badge, cross-check chips
+         row 2 left         — the 14 component boxes + the total row
+         row 2 right        — the section-3 properties panel
+       Two columns that merely overlap-and-clip was the first attempt; widths are budgeted here
+       so the columns cannot collide, and each fragment is measured and scaled independently. -->
+  <div id="stack" class="absolute" style="left:52px;top:76px;transform-origin:top left;">
+    <div id="slot-preset"></div>
+    <div class="text-slate-600 text-sm p-8" id="loading">loading the live card…</div>
+  </div>
+  <div id="stack2" class="absolute" style="left:52px;transform-origin:top left;">
+    <div id="slot-grid"></div>
+  </div>
+  <div id="stack3" class="absolute" style="right:52px;transform-origin:top right;">
+    <div id="slot-props"></div>
+  </div>
+
+  <!-- Takeaway band. Positioned from JS once the cards above have been measured. -->
+  <div id="band" class="absolute" style="left:52px;right:52px;top:520px;">
+    <div style="border-top:1px solid rgba(148,163,184,.14);padding-top:16px;">
+      <div id="band-1" class="text-slate-300 text-[17px] leading-snug">&nbsp;</div>
+      <div id="band-2" class="text-slate-500 text-[13.5px] leading-snug" style="margin-top:7px;">&nbsp;</div>
+    </div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute" style="left:52px;right:52px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:52px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no ads &middot; 10 languages</div>
+  </div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Copied from day03/v31 — the complete list. Grid properties are NOT optional: Tailwind writes
+// columns via `md:`/`lg:` MEDIA QUERIES, and freezing without them collapses every cell into one
+// column. The component grid here is `grid-cols-3 md:grid-cols-4 lg:grid-cols-7`.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','flex-wrap','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'border-collapse','border-spacing','table-layout',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. The freeze strips the class that hid the element, so
+    // skipping `none` as noise makes every hidden node appear. comp-warn and out-liq-warn are
+    // both hidden in this frame; Day 2 shipped two empty amber rectangles exactly this way.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN — Tailwind preflight sets border-style:solid with
+    // width 0, and dropping the 0px falls back to `medium`, painting a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function setIn(doc, win, id, v) {
+  var e = doc.getElementById(id);
+  if (!e) return;
+  e.value = v;
+  e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function snapshot(node, win) {
+  var clone = node.cloneNode(true);
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is applied. The CDN JIT does
+  // not style markup injected into THIS document after load.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  return clone;
+}
+
+function buildCard() {
+  var frame = document.getElementById('app');
+  var doc = frame.contentDocument, win = frame.contentWindow;
+
+  // KILL TRANSITIONS FIRST. A transition is driven by the compositor frame clock, so in a
+  // non-painting context it never advances and getComputedStyle returns its START value
+  // forever. The card's title dot also carries animate-pulse.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // A previous session's language persists in localStorage, and a stale share/state restore
+  // would overwrite the composition we are about to set. Clear both, then force English.
+  try { win.localStorage.removeItem('og_lang'); win.localStorage.removeItem('og_converter_state'); } catch (e) {}
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  // Reload the dictionary past the HTTP cache and re-apply. translationsCache is a top-level
+  // `const`, so it is NOT a property of contentWindow — win.eval runs in the iframe's own scope
+  // where the binding is visible. Without this a pre-v3.3 en.json from disk cache has no
+  // `preset` branch and every new label bakes out as its raw i18n key.
+  win.fetch('i18n/en.json?cachebust=' + encodeURIComponent(String(new Date().getTime())),
+            { cache: 'no-store' })
+     .then(function (r) { return r.json(); })
+     .then(function (dict) {
+       win.eval('(function(d){ translationsCache.en = d; currentLang = "en";'
+              + ' applyTranslations(); })(' + JSON.stringify(dict) + ')');
+     })
+     .catch(function (e) { window._i18nErr = String(e); });
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    // Drive it exactly as a user would: pick the preset and let the app do the rest.
+    // applyLNGPreset() is what fills the 14 boxes, sets ghv-mode to the source's own basis,
+    // and repaints the badge, citation and cross-check chips.
+    setIn(doc, win, 'comp-preset', 'au-nws');
+    if (typeof win.applyLNGPreset === 'function') { win.applyLNGPreset('au-nws'); }
+    // The cross-check compares GROSS calorific value, so show HHV rather than LHV — otherwise
+    // the headline figure and the chip beside it read differently and the point is lost.
+    if (typeof win.setHVMode === 'function') { win.setHVMode('hhv'); }
+    setTimeout(function () { mount(doc, win); }, 400);
+  }, 900);
+}
+
+function mount(doc, win) {
+  // GATE ON THE DICTIONARY. An untranslated render is not degraded, it is wrong — labels come
+  // out as literal i18n keys. Refuse to mount rather than bake that, and say so in data-ready
+  // so the capture step fails loudly instead of saving a broken PNG.
+  var probe = doc.querySelector('[data-i18n="advanced.ghv.preset.label"]');
+  var raw = !probe || /^advanced\./.test((probe.textContent || '').trim());
+  // The badge is painted by renderLNGPresetInfo() via tr(), not by a data-i18n attribute, so it
+  // is the only proof the NEW v3.3 keys resolved rather than merely the old ones.
+  var badge = (doc.getElementById('comp-preset-badge') || {}).textContent || '';
+  if (raw || /^advanced\./.test(badge.trim()) || !badge.trim()) {
+    if ((mount._tries = (mount._tries || 0) + 1) < 12) { setTimeout(function () { mount(doc, win); }, 400); return; }
+    document.body.setAttribute('data-ready',
+      'ERROR=i18n-not-applied|probe=' + (probe ? probe.textContent.trim() : 'missing')
+      + '|badge=' + badge + '|fetch=' + (window._i18nErr || 'ok'));
+    return;
+  }
+
+  // --- fragment A: the new preset block on its own — selector, badge, citation, chips.
+  var presetBlock = doc.getElementById('comp-preset-wrap');
+
+  // --- fragment B: the rest of section 1 — the 14 component boxes and the total row. Cloned
+  // from the section wrapper; the heading and the preset block are then removed from the clone
+  // so the two fragments can be positioned independently.
+  var section1 = presetBlock.parentElement;
+
+  // --- fragment C: the section-3 properties panel. Walk up from the headline output until the
+  // node also carries MW and WI — that is the panel wrapper, whichever depth it sits at.
+  var props = doc.getElementById('out-ghv');
+  while (props && !(props.querySelector('#out-mw') && props.querySelector('#out-wi'))) {
+    props = props.parentElement;
+  }
+
+  var presetClone = snapshot(presetBlock, win);
+  var gridClone   = snapshot(section1, win);
+  var propsClone  = snapshot(props, win);
+
+  // The citation is 10px. LinkedIn renders a 1200px image at roughly 600px in feed, so it lands
+  // at ~5px: texture, not information. The campaign crops such notes rather than ship an
+  // unreadable smear — the source goes in the sub-caption at a legible size and in the copy.
+  var srcNote = presetClone.querySelector('#comp-preset-src');
+  if (srcNote) { srcNote.parentElement.removeChild(srcNote); }
+  presetClone.style.height = 'auto';
+
+  // Strip fragment A and the section heading out of fragment B's clone. Heights were frozen, so
+  // the container must be released to auto or the removed nodes keep their space.
+  var dupPreset = gridClone.querySelector('#comp-preset-wrap');
+  if (dupPreset) { dupPreset.parentElement.removeChild(dupPreset); }
+  if (gridClone.firstElementChild) { gridClone.removeChild(gridClone.firstElementChild); }
+  gridClone.style.height = 'auto';
+  propsClone.style.height = 'auto';
+
+  document.getElementById('loading').remove();
+  document.getElementById('slot-preset').appendChild(presetClone);
+  document.getElementById('slot-grid').appendChild(gridClone);
+  document.getElementById('slot-props').appendChild(propsClone);
+  document.querySelectorAll('#shot [onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  // Echo the preset's identity from the app's own DOM so the caption cannot drift from the card.
+  var sel = doc.getElementById('comp-preset');
+  var name = sel.options[sel.selectedIndex].text;
+  var mode = doc.getElementById('ghv-mode');
+  document.getElementById('subcap').innerHTML =
+    'One click fills all 14 components — then the app shows you it reproduces the '
+    + 'source’s own published figures.';
+
+  // The band carries the provenance at a legible size, and the claim the post is making.
+  // Both preset name and basis are read from the app so they cannot drift from the card.
+  document.getElementById('band-1').innerHTML =
+    '<span class="text-slate-100 font-semibold">' + name + '</span>'
+    + '<span class="text-slate-600"> · </span>' + mode.options[mode.selectedIndex].text
+    + '<span class="text-slate-600"> · </span>GIIGNL Information Paper No. 1, Table 1 '
+    + '<span class="text-slate-500">(data: 2018 GIIGNL Annual Report)</span>';
+  document.getElementById('band-2').innerHTML =
+    'Five published LNG origins ship with the app, each carrying the calorific value and Wobbe '
+    + 'index its source published. Largest deviation across all ten comparisons: '
+    + '<span class="text-amber-400 font-semibold">0.02 MJ/Nm³</span> — re-verified in CI on every build.';
+
+  // Measure, then scale — never guess. The first attempt placed two overlapping absolute columns
+  // and the properties panel clipped the component grid. Width budgets now make that impossible:
+  // 52 + 700 = 752 for the left column, and the right column starts at 1148 - 372 = 776.
+  function fit(id, maxW, maxH) {
+    var el = document.getElementById(id);
+    var r = el.getBoundingClientRect();
+    var h = r.height / (el._s || 1), w = r.width / (el._s || 1);
+    var s = Math.min(1, maxW / w, maxH / h);
+    el._s = s;
+    el.style.transform = 'scale(' + s + ')';
+    return { s: s, h: h * s, w: w * s };
+  }
+  var TOP = 76, BOTTOM = 606;                       // 606 clears the footer rule at 620
+  var fA = fit('stack', 1096, 250);                 // row 1 — the preset block, full width
+  var row2 = TOP + fA.h + 22;
+  document.getElementById('stack2').style.top = row2 + 'px';
+  document.getElementById('stack3').style.top = row2 + 'px';
+  var fB = fit('stack2', 700, BOTTOM - row2);       // row 2 left  — component grid + total
+  var fC = fit('stack3', 372, BOTTOM - row2);       // row 2 right — properties panel
+  document.getElementById('band').style.top = Math.round(row2 + Math.max(fB.h, fC.h) + 26) + 'px';
+
+  drawArrows();
+
+  // Publish what the capture step asserts against: the figures actually rendered into the
+  // frame, read from the FROZEN clones rather than the live page.
+  var g = function (id) { var e = document.querySelector('#shot #' + id); return e ? e.innerText.trim() : 'MISSING'; };
+  var chips = document.querySelector('#shot #comp-preset-check');
+  document.body.setAttribute('data-ready', [
+    'badge=' + g('comp-preset-badge'), 'ghv=' + g('out-ghv'), 'wi=' + g('out-wi'),
+    'sg=' + g('out-sg'), 'mw=' + g('out-mw'), 'total=' + g('comp-total'),
+    'ch4=' + (document.querySelector('#shot #comp-ch4') || {}).value,
+    'n2=' + (document.querySelector('#shot #comp-n2') || {}).value,
+    'chips=' + (chips ? chips.innerText.replace(/\s+/g, ' ').trim() : 'MISSING'),
+    'sPreset=' + fA.s.toFixed(4), 'sGrid=' + fB.s.toFixed(4), 'sProps=' + fC.s.toFixed(4),
+    'row2=' + row2.toFixed(0)
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY — same ruling as v3.1.
+  //
+  // The connector worth drawing runs from the "Published GCV 43.43 → 43.43 ✓" chip on the left
+  // to "Heating Value (HHV) 43.43" on the right, and that agreement IS the argument. But the two
+  // sit on opposite sides of the frame with the component grid between them, so any line crosses
+  // the numbers the post is about. Day 1 learned that an arrow colliding with a value sends the
+  // eye to the collision instead of the point. The chips already state the match in words, and
+  // the copy repeats it.
+  //
+  // The layer is kept so the standalone export and frame geometry match the campaign days.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export — freezing every node in #shot the same way makes the frame self-contained:
+// no network, no scripts, renders identically anywhere. Skip the <svg> subtree; freezing computed
+// styles onto SVG geometry rewrites presentation attributes and drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>v3.3 — LNG reference compositions</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/v33-lng-presets-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>

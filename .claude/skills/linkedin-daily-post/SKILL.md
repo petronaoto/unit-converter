@@ -146,47 +146,36 @@ quoting the latter looks wrong. Check the display precision before writing the n
 
 ## Step 4 — Capture a real PNG
 
-**What does not work:** the in-app Browser pane never composites frames; the Chrome MCP screenshot
-does not paint CSS `transform`/`zoom` (it returns stale frames and often times out);
-`save_to_disk` keeps the image in extension storage, never the filesystem; canvas export is tainted
-by `foreignObject` SVG; `SetForegroundWindow` is refused from a background process, so
+**Use headless Chrome.** The standalone export is self-contained and its frame is exactly
+1200 × 675 at the document origin, so the viewport *is* the frame — no title-bar detection, no
+crop, no DPI correction:
+
+```bash
+chrome --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
+       --window-size=1200,675 --screenshot=docs/linkedin/NAME.png <standalone url>
+```
+
+**Check the size.** A real capture is 150 KB+; a blank one is ~8 KB. Verify the dimensions too
+(`PIL.Image.open(...).size` must be `(1200, 675)`).
+
+> ⚠️ **The old `PrintWindow` recipe is DEAD as of Chrome 151** (verified 2026-08-16). An isolated
+> `--app` window plus `PrintWindow(hWnd, hdc, 2)` still *returns success*, but the surface is
+> blank — ~11 KB for a 1290 × 820 window — with or without `--disable-gpu`/`--disable-gpu-compositing`,
+> and Chrome's render widget is now a 12 × 206 stub, so enumerating child windows does not help.
+> This was confirmed against a frame that had captured fine under the old method, so it is the
+> browser version and not the generator. Do not spend time re-deriving it.
+
+**Still true, and still the reason not to reach for a screen grab:** the in-app Browser pane never
+composites frames; the Chrome MCP screenshot does not paint CSS `transform`/`zoom`; `save_to_disk`
+keeps the image in extension storage, never the filesystem; canvas export is tainted by
+`foreignObject` SVG; and `SetForegroundWindow` is refused from a background process, so
 `CopyFromScreen` captures whatever is actually on top — **the maintainer's private windows**.
+**Never full-screen capture.**
 
-**What works:** an isolated Chrome `--app` window plus `PrintWindow`, which captures a specific
-window's own pixels without needing foreground.
-
-```powershell
-# A FRESH profile dir each time — Chrome restores the previous window size from the profile
-# and silently ignores --window-size.
-# --disable-gpu IS REQUIRED. With GPU compositing on, PrintWindow returns a blank white surface
-# (~8 KB PNG) no matter how long you wait. Software rendering makes it capture reliably.
-Start-Process $chrome -ArgumentList @(
-  "--user-data-dir=$env:TEMP\og_cap_$(New-Guid)", "--no-first-run", "--disable-extensions",
-  "--disable-gpu", "--disable-gpu-compositing",
-  "--force-device-scale-factor=1", "--window-position=0,0", "--window-size=1290,780",
-  "--app=http://127.0.0.1:8000/docs/linkedin/dayNN-standalone.html")
-# then PrintWindow(hWnd, hdc, 2)   # 2 = PW_RENDERFULLCONTENT
-```
-
-**Call `SetProcessDPIAware()` before `GetWindowRect`.** This display runs at 125 %. Without it,
-Windows hands a DPI-unaware process virtualised coordinates and you capture a downscaled window
-(1290 × 780 came back as 1032 × 624 — too small to crop 1200 × 675 out of).
-
-**Check the output size and retry.** Even with `--disable-gpu` the first capture after window
-creation can land before the first paint. A blank frame is ~8 KB; a real one is 150 KB+. Loop
-until it exceeds ~60 KB rather than trusting a fixed sleep.
-
-Crop by detecting the content origin rather than guessing the title-bar height:
-
-```python
-from PIL import Image                      # Pillow is available
-dr = lambda y: sum(1 for x in range(0,W,7) if sum(px[x,y])<120)/len(range(0,W,7))
-top  = next(y for y in range(H) if dr(y) > 0.85)
-left = next(x for x in range(W) if dark_col(x, top+5, top+400) > 0.85)
-im.crop((left, top, left+1200, top+675)).save('docs/linkedin/dayNN.png')
-```
-
-**Then open the PNG with the Read tool and actually look at it** (rule 3).
+**Then open the PNG with the Read tool and actually look at it** (rule 3). Programmatic checks pass
+on visibly broken images: the v3.3 frame's first capture had every value correct while the
+properties panel overlapped and clipped the component grid, the 10 px citation was an unreadable
+smear, and ~180 px of the frame was empty. All of that is invisible to an assertion on `data-ready`.
 
 ## Step 5 — Publish
 
@@ -199,6 +188,12 @@ Attaching the image: **only the OS clipboard works, and only two things make it 
 > *then* type the text. The attachment survives typing; the reverse does not work.
 >
 > If you have already typed, `ctrl+a` then `Delete` clears the editor and the toolbar comes back.
+
+> ### DO NOT PRESS ESCAPE IN THE COMPOSER.
+> It is not a "dismiss the hashtag suggestions" key. LinkedIn reads Escape as *close the composer*
+> and raises **"Save this post as a draft?"** mid-compose. Cancel with that dialog's ✕ — **not**
+> Discard — and the text and attachment both survive. Nothing needs dismissing anyway: typing a
+> newline after a hashtag already commits it.
 
 > ### THE PASTE MUST BE A REAL OS KEYSTROKE.
 > A synthetic `ctrl+v` through the browser tool does **not** carry the OS clipboard — the page
