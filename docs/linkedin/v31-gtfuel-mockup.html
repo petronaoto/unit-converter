@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>v3.1 announcement mockup — GT Fuel estimator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn / X 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. */
+  #app{position:absolute;width:1280px;height:1200px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  v3.1 announcement — "GT Fuel: pick the machine, get the gas bill".
+
+  TOP    : the REAL Gas Turbine Selection card (vendor / model / cycle + vendor spec chips),
+           cloned out of a live index.html in a hidden same-origin iframe.
+  BOTTOM : the REAL estimator OUTPUT block from the same live page — four primary outputs and
+           the hourly/daily/monthly/yearly totals table.
+
+  Every figure is produced by the app's own calcGTFuel() after selecting M701JAC (448) and
+  entering the Vector 1 reference gas (LHV 40.25 MJ/Nm3, rho_std 0.8193 kg/Nm3) at 92 %
+  availability. Nothing in this file types a number by hand. Reference Vector 11 in
+  docs/SPECIFICATION.md pins every one of them.
+
+  Two fragments are cropped for the frame, exactly as Day 3 cropped its footnote:
+    - gt-select's 10px prefill note
+    - gt-est's title bar, input grid, cross-link buttons and 10px screening note
+  The copy carries what they said. The estimator's own inputs are echoed in the sub-caption,
+  read out of the app's DOM so they cannot drift from the numbers below them.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/v31-gtfuel-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-5 left-[52px] flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-orange-400 font-semibold">v3.1</span>
+      <span class="text-slate-600">·</span> GT Fuel <span class="text-slate-600">▸</span> Gas Turbine Fuel Gas Estimator</span>
+    <span class="text-[10px] font-bold tracking-widest text-orange-300 border border-orange-500/50 bg-orange-500/10 rounded px-2 py-[3px]">NEW</span>
+  </div>
+
+  <div class="absolute top-[46px] left-[52px] right-[52px] z-30">
+    <div id="subcap" class="text-slate-500 text-[12.5px] leading-snug">&nbsp;</div>
+  </div>
+
+  <!-- ================= the real cards ================= -->
+  <!-- 113 = (1200 - 974) / 2: the cards keep their natural desktop width, centred in the frame. -->
+  <div id="stack" class="absolute" style="left:113px;top:76px;transform-origin:top left;">
+    <div id="slot-sel"></div>
+    <div id="slot-out" style="margin-top:14px;"></div>
+    <div class="text-slate-600 text-sm p-8" id="loading">loading the live cards…</div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute" style="left:52px;right:52px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:52px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID. These cards are `grid grid-cols-1 md:grid-cols-2|3`, and `md:` is a MEDIA QUERY —
+  // freezing without grid-template-columns drops the column definition entirely, every cell
+  // stacks into one column, and the frozen widths/heights then overlap into an unreadable pile.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  // The totals table is a real <table>: without these the frozen cells lose their collapse
+  // model and every border doubles.
+  'border-collapse','border-spacing','table-layout',
+  // transform/transform-origin carry any scale. Omitting them makes the frozen copy render at
+  // 1.0 while measured coordinates were taken at the scaled size.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the card snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it as an empty-ish value while stripping the
+    // class that hid the element makes every hidden node render — on Day 2 that shipped two
+    // empty amber rectangles that every programmatic check passed. #gt-warn is hidden here.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0 on every element; dropping the 0px makes the browser fall back to
+    // border-width:medium and paint a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function setIn(doc, win, id, v) {
+  var e = doc.getElementById(id);
+  if (!e) return;
+  e.value = v;
+  e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+// Clone `node` out of the iframe with its computed styles frozen, baking live form values in.
+function snapshot(node, win) {
+  var clone = node.cloneNode(true);
+
+  // Bake live input/select values into attributes so the clone renders identically.
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is fully applied. The CDN JIT
+  // only styles markup it has scanned, so a card injected into this document after load would
+  // render unstyled.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  return clone;
+}
+
+function buildCard() {
+  var frame = document.getElementById('app');
+  var doc = frame.contentDocument, win = frame.contentWindow;
+
+  // KILL TRANSITIONS FIRST — load-bearing, not cosmetic. A CSS transition is driven by the
+  // compositor's frame clock, so in a non-painting context it never advances and
+  // getComputedStyle keeps returning the transition's START value. The GT title dot also
+  // carries `animate-pulse`, which would freeze at an arbitrary opacity.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC and re-renders, and language persists in localStorage — force it, or
+  // an earlier Japanese session silently renders this English graphic in Japanese.
+  try { win.localStorage.removeItem('og_lang'); } catch (e) {}
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  // RELOAD THE DICTIONARY PAST THE HTTP CACHE, then re-apply.
+  //
+  // The app boots with `await loadLanguage('en')` → plain `fetch('i18n/en.json')`, no cache
+  // directive. Every dev server this repo has ever used runs on 127.0.0.1:8000, so the browser
+  // happily serves a *previous session's* en.json from disk cache — and a pre-v3.1 copy has no
+  // `gtfuel` branch at all. tr() then falls back to translationsCache.en, misses, and returns
+  // the KEY: the first capture of this frame baked "gtfuel.out.energyLabel" over every label
+  // while every value in it was correct. Nothing about that is visible to a numeric check.
+  //
+  // translationsCache is a top-level `const`, so it is NOT a property of contentWindow — it
+  // binds in the global lexical environment. win.eval runs in the iframe's own scope, where it
+  // is visible; assigning through win.translationsCache would silently create a new global.
+  win.fetch('i18n/en.json?cachebust=' + encodeURIComponent(String(new Date().getTime())),
+            { cache: 'no-store' })
+     .then(function (r) { return r.json(); })
+     .then(function (dict) {
+       win.eval('(function(d){ translationsCache.en = d; currentLang = "en";'
+              + ' applyTranslations(); })(' + JSON.stringify(dict) + ')');
+     })
+     .catch(function (e) { window._i18nErr = String(e); });
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('gtfuel'); }
+    setIn(doc, win, 'gt-vendor', 'mhi');
+    setIn(doc, win, 'gt-cycle', 'sc');
+    setIn(doc, win, 'gt-model', 'm701jac');
+    // selectGTModel() is what pre-fills power/efficiency and paints the vendor spec chips.
+    if (typeof win.selectGTModel === 'function') { win.selectGTModel('m701jac'); }
+
+    setTimeout(function () {
+      // Vector 1's reference gas — the same composition the Advanced tab's JIS K 2301 suite
+      // produces, which is exactly what the Import cross-link would hand over.
+      setIn(doc, win, 'gt-hv-basis', 'lhv');
+      setIn(doc, win, 'gt-hv-u', 'mj');
+      setIn(doc, win, 'gt-hv', '40.25');
+      setIn(doc, win, 'gt-rho', '0.8193');
+      setIn(doc, win, 'gt-avail', '92');
+      setIn(doc, win, 'gt-out-vol-u', 'knm3h');
+      setIn(doc, win, 'gt-out-mass-u', 'th');
+      if (typeof win.calcGTFuel === 'function') { win.calcGTFuel(); }
+      setTimeout(function () { mount(doc, win); }, 300);
+    }, 400);
+  }, 900);
+}
+
+function mount(doc, win) {
+  // GATE ON THE DICTIONARY. An untranslated render is not a degraded graphic, it is a wrong
+  // one — the labels come out as literal i18n keys. Refuse to mount rather than bake that,
+  // and say so in data-ready so the capture step fails loudly instead of saving a broken PNG.
+  var probe = doc.querySelector('[data-i18n="gtfuel.out.energyLabel"]');
+  var raw = !probe || /^gtfuel\./.test((probe.textContent || '').trim());
+  if (raw) {
+    if ((mount._tries = (mount._tries || 0) + 1) < 12) { setTimeout(function () { mount(doc, win); }, 400); return; }
+    document.body.setAttribute('data-ready',
+      'ERROR=i18n-not-applied|probe=' + (probe ? probe.textContent.trim() : 'missing')
+      + '|fetch=' + (window._i18nErr || 'ok'));
+    return;
+  }
+
+  // --- fragment A: the selection card's body (vendor / model / cycle + vendor spec chips).
+  // Its 10px prefill note is cropped: it does not survive downscaling and the copy carries it.
+  var selBody = doc.getElementById('gt-select').children[1];
+
+  // --- fragment B: the estimator's OUTPUT block. Walk up from a known output until the node
+  // also contains the totals table — that is the `pt-4 border-t` wrapper, whichever depth it
+  // sits at. Its 10px screening note is cropped for the same reason.
+  var outBlock = doc.getElementById('gt-out-q');
+  while (outBlock && !outBlock.querySelector('#gt-tot-y-vol')) { outBlock = outBlock.parentElement; }
+
+  // Tag before freezing — the freeze strips every class, but IDs and data-* attributes survive.
+  var prefill = selBody.querySelector('[data-i18n="gtfuel.sel.prefillNote"]');
+  if (prefill) { prefill.setAttribute('data-role', 'note'); }
+  var screening = outBlock.querySelector('[data-i18n="gtfuel.est.screeningNote"]');
+  if (screening) { screening.setAttribute('data-role', 'note'); }
+
+  var selClone = snapshot(selBody, win);
+  var outClone = snapshot(outBlock, win);
+
+  // Crop the notes. Heights were frozen above, so the containers must be released to auto or
+  // the frame keeps the removed paragraphs' space.
+  [selClone, outClone].forEach(function (c) {
+    var n = c.querySelector('[data-role="note"]');
+    if (n) { n.parentElement.removeChild(n); }
+    c.style.height = 'auto';
+  });
+  // The output block's top border/padding belonged to the input grid above it, which is gone.
+  outClone.style.borderTopWidth = '0px';
+  outClone.style.paddingTop = '0px';
+
+  document.getElementById('loading').remove();
+  document.getElementById('slot-sel').appendChild(selClone);
+  // Fragment A is the card BODY (its own 24px padding included); fragment B is a block that
+  // sat inside that padding. Indent B by the same 24px so both contents share a left edge.
+  document.getElementById('slot-out').style.marginLeft = '24px';
+  document.getElementById('slot-out').appendChild(outClone);
+  document.querySelectorAll('#stack [onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  // Echo the estimator's own inputs, read out of the app, so the sub-caption can never drift
+  // from the outputs underneath it.
+  var v = function (id) { return (doc.getElementById(id) || {}).value; };
+  document.getElementById('subcap').innerHTML =
+    'Pick the machine — 31 source-cited models from MHI, GE Vernova and Siemens Energy — then '
+    + 'the fuel gas your plant actually burns, hour to year. '
+    + '<span class="text-slate-400">Fuel: LHV ' + v('gt-hv') + ' MJ/Nm³ · ρ<sub>std</sub> '
+    + v('gt-rho') + ' kg/Nm³ · availability ' + v('gt-avail') + ' %</span>';
+
+  // Fit the stack to the frame. Measure, then scale — never guess: cropping the notes changes
+  // the height, and so does any future edit to the cards.
+  var stack = document.getElementById('stack');
+  var TOP = 76, BOTTOM = 608;                       // 608 clears the footer rule at 620
+  var h = stack.getBoundingClientRect().height / (stack._s || 1);
+  var s = Math.min(1, (BOTTOM - TOP) / h);
+  stack._s = s;
+  stack.style.transform = 'scale(' + s + ')';
+
+  drawArrows();
+
+  // Publish what the capture step asserts against: the figures actually rendered into the
+  // frame, taken from the FROZEN clones rather than the live page.
+  var g = function (id) { var e = document.querySelector('#stack #' + id); return e ? e.innerText.trim() : 'MISSING'; };
+  document.body.setAttribute('data-ready', [
+    'q=' + g('gt-out-q'), 'hr=' + g('gt-out-hr'), 'hrbtu=' + g('gt-out-hr-btu'),
+    'vol=' + g('gt-out-vol'), 'mass=' + g('gt-out-mass'),
+    'y-vol=' + g('gt-tot-y-vol'), 'y-mass=' + g('gt-tot-y-mass'), 'y-e=' + g('gt-tot-y-e'),
+    'm-vol=' + g('gt-tot-m-vol'),
+    'chip-hr=' + g('gt-spec-hr'), 'chip-mw=' + g('gt-spec-mw'), 'chip-eff=' + g('gt-spec-eff'),
+    'scale=' + s.toFixed(4)
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The one connector worth drawing runs from the vendor's published heat-rate chip (top) to
+  // the estimator's computed heat rate (bottom) — they read 8,182 kJ/kWh and 8,182 kJ/kWh, and
+  // that agreement is the whole credibility argument. But the two sit in the same column with
+  // the four output tiles between them, so any line crosses the fuel-energy and volume figures
+  // the post is about. Day 1 already learned that an arrow colliding with a value sends the
+  // reader's eye to the collision instead of the point. The copy states the match instead.
+  //
+  // The layer is kept so the standalone export and the frame geometry stay identical to the
+  // campaign days; if a future edit needs a connector, draw it here.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export. Freezing every node in #shot the same way the cards were frozen makes the
+// frame self-contained: no network, no scripts, renders identically anywhere. Skip the <svg>
+// subtree — freezing computed styles onto SVG geometry rewrites presentation attributes and
+// silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>v3.1 — GT Fuel estimator</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/v31-gtfuel-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>
