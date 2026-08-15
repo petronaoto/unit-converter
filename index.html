@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.1</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.2</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -17,7 +17,7 @@
   <meta property="og:site_name" content="O&amp;G Engineering Converter" />
   <meta property="og:url" content="https://engineering-converter.com/" />
   <meta property="og:title" content="O&amp;G Engineering Converter — standards-traceable tools for gas &amp; LNG" />
-  <meta property="og:description" content="JIS K 2301 heating value &amp; Wobbe index, API 520 PRV sizing, Darcy-Weisbach ΔP with Colebrook-White, two-phase flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no tracking." />
+  <meta property="og:description" content="JIS K 2301 heating value &amp; Wobbe index, API 520 PRV sizing, Darcy-Weisbach ΔP with Colebrook-White, two-phase flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no ads." />
   <meta property="og:image" content="https://engineering-converter.com/lng-plant-bg.jpg" />
   <meta property="og:image:width" content="2752" />
   <meta property="og:image:height" content="1536" />
@@ -26,8 +26,19 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="O&amp;G Engineering Converter — standards-traceable tools for gas &amp; LNG" />
-  <meta name="twitter:description" content="JIS K 2301, API 520 PRV sizing, Colebrook-White ΔP, flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no tracking." />
+  <meta name="twitter:description" content="JIS K 2301, API 520 PRV sizing, Colebrook-White ΔP, flow regime maps, IAPWS-IF97 steam. Free, no sign-up, no ads." />
   <meta name="twitter:image" content="https://engineering-converter.com/lng-plant-bg.jpg" />
+
+  <!-- Vercel Web Analytics (v3.2). Script-tag install, not @vercel/analytics: this app has no
+       build step and no npm dependencies, so the React/Next component is not applicable.
+       `/_vercel/insights/script.js` is injected by Vercel's edge at request time — it 404s on
+       localhost and on any non-Vercel host, which is harmless (the queue below just never drains).
+       The stub must come FIRST so that va() calls fired before the script finishes loading are
+       queued into window.vaq and replayed, rather than throwing. Cookieless and IP-anonymised by
+       Vercel; see the Privacy Policy tab §2/§5/§7 and `trackEvent()` near the end of this file
+       for the exhaustive list of what is sent. -->
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -3125,7 +3136,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.privacy.b001">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: August 2026 — Version 3.1</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: August 2026 — Version 3.2</p>
           <p class="text-xs text-slate-500 italic" data-i18n-html="docs.privacy.langNote">Translations of this Privacy Policy are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
           <div data-i18n-html="docs.privacy.b003">
@@ -3141,9 +3152,10 @@
               <li>Gas composition data or engineering inputs you enter (these are kept only in your own browser — see Section 3 — except the transient numerical parameters sent to the calculation APIs in Section 4)</li>
               <li>Calculation results or session history on any server</li>
               <li>Browser fingerprinting or device identifiers</li>
-              <li>Cookies for tracking or analytics purposes</li>
-              <li>Any usage telemetry or analytics</li>
+              <li>Cookies — of any kind, for any purpose</li>
+              <li>Advertising, ad networks, or data sold or shared with third parties</li>
             </ul>
+            <p class="mt-2"><strong>Changed in v3.2.</strong> Earlier versions of this policy also stated that the Application collected no usage analytics of any kind. That is no longer true: the Application now records anonymous, cookieless usage statistics so the developer can see which calculators are actually used and prioritise accordingly. Nothing you type is ever included. Section 7 sets out in full what is recorded.</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b005">
@@ -3170,6 +3182,7 @@
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
             <p class="mt-2">The Application also loads open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). Like any web resource request, these providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to any of them.</p>
+            <p class="mt-2"><strong>Vercel Web Analytics (v3.2).</strong> The Application additionally loads Vercel's cookieless analytics script, served from the Application's own domain. Vercel is the sole processor of this data and it is not shared with anyone else. Section 7 describes in full what is and is not recorded.</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b008">
@@ -3178,8 +3191,16 @@
           </div>
 
           <div data-i18n-html="docs.privacy.b009">
-            <h3 class="text-base font-semibold text-amber-500 mb-2">7. No Cookies or Tracking</h3>
-            <p>The Application does not set any cookies and does not use any tracking technologies including Google Analytics, session tracking, or advertising pixels. Your use of the Application is completely anonymous from the Application's perspective.</p>
+            <h3 class="text-base font-semibold text-amber-500 mb-2">7. Cookieless Usage Analytics (v3.2)</h3>
+            <p>The Application uses <strong>Vercel Web Analytics</strong>, a privacy-focused analytics product provided by the Application's host. It sets <strong>no cookies</strong>, reads nothing from your device's storage, and performs no cross-site tracking. There is no Google Analytics, no advertising pixel, and no third-party tracker of any kind.</p>
+            <p class="mt-2">Two categories of information are recorded:</p>
+            <ul class="list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4">
+              <li><strong>Page views</strong> — the page address, the referring site (e.g. that you arrived from LinkedIn or a search engine), your country, and your device type, operating system and browser.</li>
+              <li><strong>Anonymous interaction events</strong> — four kinds only: which <em>tab</em> you open, which <em>calculator</em> you use (recorded as a fixed name such as <span class="font-mono">steam-if97</span> or <span class="font-mono">pipe-dp</span>), which <em>interface language</em> you select, and whether you used <em>Export PDF</em>, <em>Share</em>, or the report form.</li>
+            </ul>
+            <p class="mt-2"><strong>What is never recorded.</strong> No value you type or select is transmitted — not a gas composition, not a pressure, not a flow rate, not a calculation result, and not one character of the Report tab, which is excluded from analytics entirely. An event records only <em>that</em> a calculator was used, never <em>what</em> it was used on. For the live-updating converters, at most one event is recorded per calculator per visit, no matter how much you type.</p>
+            <p class="mt-2"><strong>How visits are counted.</strong> To count a visit once without a cookie, Vercel derives a non-reversible hash from the incoming request (IP address and user agent). The raw IP address is not retained by the analytics product, and the hash is rotated, so your visits cannot be linked together across days or to your activity on any other website. No profile is built and no identifier is stored on your device. Vercel acts as the data processor; see <a href="https://vercel.com/docs/analytics/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Web Analytics privacy documentation</a> for the authoritative description.</p>
+            <p class="mt-2"><strong>Opting out.</strong> The analytics script is a standard, widely recognised script file. Any content blocker or privacy-focused browser will block it, and the Application is designed to work identically when it is blocked — every calculator functions normally and no error is shown.</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b010">
@@ -3189,7 +3210,7 @@
 
           <div data-i18n-html="docs.privacy.b011">
             <h3 class="text-base font-semibold text-amber-500 mb-2">9. Your Rights</h3>
-            <p>As no personal data is collected by the Application, there is no personal data to access, rectify, delete, or export. To remove your locally stored custom modules, use your browser's developer tools or site data clearing options (Settings → Privacy → Clear Site Data for the relevant domain).</p>
+            <p>The Application collects no personal data, so there is no personal data to access, rectify, delete, or export. The usage analytics described in Section 7 are anonymous and carry no identifier that could be used to locate, isolate, or delete "your" records — which also means a deletion request cannot be fulfilled, because there is nothing to match it against. If you would prefer not to be counted at all, block the analytics script as described in Section 7. To remove your locally stored custom modules, use your browser's developer tools or site data clearing options (Settings → Privacy → Clear Site Data for the relevant domain).</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b012">
@@ -3257,7 +3278,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.1</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.2</div>
     </div>
   </footer>
 
@@ -6016,7 +6037,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.1', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.2', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}${gt}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
@@ -6036,6 +6057,114 @@
         return;
       }
       w.document.open(); w.document.write(html); w.document.close();
+    }
+
+    // ── VERCEL WEB ANALYTICS — USAGE INSTRUMENTATION (v3.2) ──────────────────
+    //
+    // ADDITIVE BY CONSTRUCTION. This block does not modify a single line of calculation or
+    // UI code: it wraps existing global functions and attaches delegated listeners. The whole
+    // feature is removed by deleting this block plus the two <script> tags in <head>.
+    //
+    // WHAT IS SENT: a tool slug, a tab name, a language code, an action name. Never an input
+    // value, never a calculation result, never anything the user typed. The Privacy Policy
+    // (§2, §5, §7) documents exactly this list and must be kept in step with it.
+    //
+    // Two problems this has to solve, or the numbers are worse than useless:
+    //
+    //  1. EVERY-KEYSTROKE CALCULATORS. The live converters are bound to oninput — calcGHV()
+    //     alone has 31 inline bindings. One event per call would measure typing speed, not
+    //     tool usage, and would exhaust the plan's event allowance in a handful of sessions.
+    //     So the live tools report 'Tool Used' AT MOST ONCE PER TOOL PER PAGE LOAD. The
+    //     question worth answering is "what share of sessions touch the steam table", not
+    //     "how many characters were typed into it". Detection is delegated off the element id
+    //     rather than by wrapping the calc functions: several converters are bound with
+    //     addEventListener(fn) by reference (updateTemp2, the custom-module cards), and a
+    //     wrapper installed later would never see those calls.
+    //
+    //     The three SERVER-BACKED calculators are different: they are click-driven, deliberate,
+    //     and each one costs a serverless invocation, so those count EVERY run via 'Calculation'.
+    //     That figure is directly comparable to the function invocation count in the Vercel
+    //     dashboard, which makes a mismatch (ad-blockers, failures) visible.
+    //
+    //  2. BOOT MUST BE SILENT. applyState() → recomputeAll() runs the live calculators on every
+    //     page load to repopulate a restored session, and a share link additionally calls
+    //     switchTab(). Counting those would report a localStorage restore as user activity and
+    //     flatten every tool to the same popularity. Nothing is sent until the visitor actually
+    //     touches the page — see vaArmed. (applyInputs() assigns .value directly, which fires no
+    //     input event, so the delegated listeners are already immune; vaArmed is what protects
+    //     the wrapped functions.)
+    const VA_TOOL_BY_ID_PREFIX = {
+      // General tab
+      'nm3': 'gas-volume', 'scf': 'gas-volume', 'press': 'pressure',
+      'temp': 'temperature', 'hv': 'heating-value', 'mod': 'custom-module',
+      // Basic Eng tab
+      'pipe': 'pipe-volume', 'z': 'z-factor', 'api': 'petroleum-gravity',
+      'visc': 'viscosity', 'mf': 'mass-vol-flow', 'gp': 'gas-properties',
+      'sp': 'steam-if97', 'npsh': 'npsh', 'cmp': 'compressor',
+      // Advanced tab — the JIS K 2301 composition card owns four id families
+      'comp': 'gas-composition', 'op': 'gas-composition',
+      'flow': 'gas-composition', 'ghv': 'gas-composition',
+      'dp': 'pipe-dp',
+      // GT Fuel tab (v3.1)
+      'gt': 'gt-fuel',
+      // Safety tab
+      'psv': 'prv-sizing'
+      // Deliberately absent: report-* (the bug-report form is never instrumented — it is the
+      // one place a user types prose), lang-*, btn-*, tab-*, mobile-*, out-* (read-only).
+    };
+
+    let vaArmed = false;                 // false until the visitor's first real interaction
+    const vaSeenTools = new Set();       // 'Tool Used' de-duplication, per page load
+
+    function trackEvent(name, data) {
+      if (!vaArmed) return;
+      try { window.va('event', data ? { name: name, data: data } : { name: name }); } catch (e) {}
+    }
+
+    // Arm on the first genuine user gesture. Capture phase so this runs before the inline
+    // handler on the same element, which means the very first click or keystroke is counted
+    // rather than swallowed.
+    ['pointerdown', 'keydown'].forEach(type => {
+      window.addEventListener(type, () => { vaArmed = true; }, { capture: true, once: true });
+    });
+
+    // Live converters — one event per tool per page load, keyed off the id prefix.
+    ['input', 'change'].forEach(type => {
+      document.addEventListener(type, e => {
+        const id = e.target && e.target.id;
+        if (!id) return;
+        const tool = VA_TOOL_BY_ID_PREFIX[id.split('-')[0]];
+        if (!tool || vaSeenTools.has(tool)) return;
+        vaSeenTools.add(tool);
+        trackEvent('Tool Used', { tool: tool });
+      }, true);
+    });
+
+    // Wrap a global function so it reports before delegating. Every call site for these is an
+    // inline onclick=""; those resolve the name off `window` at call time, so the wrapper is
+    // picked up even by the markup buildMobileNav()/buildLangMenu() generate at runtime.
+    function vaWrap(fnName, report) {
+      const original = window[fnName];
+      if (typeof original !== 'function') return;   // renamed upstream — degrade silently
+      window[fnName] = function () {
+        try { report.apply(null, arguments); } catch (e) {}
+        return original.apply(this, arguments);     // async fns keep returning their promise
+      };
+    }
+
+    vaWrap('switchTab',          tab  => trackEvent('Tab View', { tab: String(tab) }));
+    vaWrap('setLanguage',        code => trackEvent('Language', { lang: String(code) }));
+    vaWrap('calcDeltaPressure',  ()   => trackEvent('Calculation', { tool: 'pipe-dp' }));
+    vaWrap('calcPSV',            ()   => trackEvent('Calculation', { tool: 'prv-sizing' }));
+    vaWrap('calcFlowRegime',     ()   => trackEvent('Calculation', { tool: 'flow-regime' }));
+    vaWrap('exportReport',       ()   => trackEvent('Action', { action: 'export-pdf' }));
+    vaWrap('copyShareLink',      ()   => trackEvent('Action', { action: 'share-link' }));
+
+    // A second submit listener; the existing one at the top of this script still builds the
+    // mailto: as before. Only the fact that a report was sent is recorded — never its content.
+    const vaReportForm = document.getElementById('report-form');
+    if (vaReportForm) {
+      vaReportForm.addEventListener('submit', () => trackEvent('Action', { action: 'report-sent' }));
     }
 
   </script>

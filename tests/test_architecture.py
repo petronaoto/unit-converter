@@ -130,10 +130,22 @@ def test_index_html_is_a_single_file_with_no_local_script_or_style_imports():
     than silently ignored. Worth revisiting separately: the app deploys to Vercel, where
     `/cdn-cgi/` does not exist, and there is no `__cf_email__` span left in the document
     for it to decode — so it is most likely a dead 404 on every page load.
+
+    KNOWN EXCEPTION: `/_vercel/insights/script.js` (v3.2) is Vercel Web Analytics. It looks
+    like a local path but no such file exists in this repository and none is ever built —
+    Vercel's edge injects it at request time, which is why the script-tag install is used
+    here instead of the `@vercel/analytics` npm package (that would require the bundler this
+    project deliberately does not have). The single-file principle is therefore intact: the
+    repo still ships exactly one HTML file and no local JS or CSS. Off Vercel — opening
+    index.html directly, or `python -m http.server` — it 404s harmlessly and every
+    calculator works unchanged.
     """
     import re
     html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-    allowed = {"/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"}
+    allowed = {
+        "/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
+        "/_vercel/insights/script.js",
+    }
 
     local_refs = set(re.findall(
         r'(?:src|href)=["\'](?!https?://|//|#|mailto:|data:)([^"\']+\.(?:js|css))["\']',

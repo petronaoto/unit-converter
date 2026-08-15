@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.5 (describes app v3.1)
+**Document version:** 1.6 (describes app v3.2)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -25,6 +25,7 @@ This is the engineering specification of every feature in the application. It is
 | Serverless | Python on Vercel, `api/` auto-detected | `dp_calculator.py` and `psv_calculator.py`: standard library only. `flowregime.py`: numpy/matplotlib/seaborn (`requirements.txt`). |
 | Persistence | Browser `localStorage` only | Keys: `og_ui_state_v24` (session state), `og_custom_modules` (user-built cards), `og_lang` (selected UI language, v2.6). No server-side storage. |
 | Assets | `lng-plant-bg.jpg` (background), `favicon.ico`, `assets/flow-regime-map.png`, `assets/flow-regime-3d.gif` (doc images) | |
+| Analytics (v3.2) | Vercel Web Analytics, script-tag install (`/_vercel/insights/script.js` + a `window.va` queue stub) | Cookieless. Edge-injected at request time — the path looks local but no such file exists in the repo, so the no-build-step rule is intact. 404s off Vercel; the app is unaffected. See §14. |
 
 Local development requires `vercel dev` (opening `index.html` directly breaks the three API-backed cards).
 
@@ -519,6 +520,7 @@ a manual checklist; it now runs on every push and pull request.
 | `tests/test_basic_nav.py` | (v3.0) Basic Eng quick-links strip: all nine pills resolve to anchored cards in order, `scroll-mt-24` clearance survives, every pill carries a `basic.nav.*` key |
 | `tests/test_gt_fuel.py` | (v3.1) Vector 11 display pins + page↔spec worked-example agreement; GT_MODELS extraction (JSON.parse contract) with per-entry source citations, HR ≡ 3600/η within 30 kJ/kWh, CC > SC invariants and MHI brochure spot-pins; derived `GT_HV_FACTOR` guard; static-option-list completeness (share-restore trap); `lastGHV` bridge, `recomputeAll` wiring and SVG-symbol presence |
 | `tests/test_architecture.py` | The stdlib-only rule, the no-build-step rule, dev/prod dependency separation |
+| `tests/test_analytics_privacy.py` | (v3.2) The analytics privacy boundary — Report tab excluded from the id-prefix map, no `.value`/`.innerText` read in the instrumentation block, closed set of five event names, fixed slugs only; plus disclosure parity: no stale "no analytics" claim in the English policy or the og:/twitter: tags, and all 9 translated policies name the product, cite Vercel's privacy doc and carry the bumped version. Includes a non-vacuity guard on its own map-extraction regex |
 | `.github/workflows/ci.yml` | Two jobs — see 13.3 |
 
 ### 13.2 How `dp_calculator.py` is tested without refactoring it
@@ -562,3 +564,62 @@ fixture; a future Python release breaking it is a one-line fix in `conftest.py`.
   is banker's rounding, JavaScript's `Math.round()` is half-up, and the JIS rules round at
   five separate places.)
 - **Vector 4 (PRV) was authored during v2.8** and reviewed and approved by the maintainer before promotion into §9. Its two-phase case was adjusted during that review — W halved so the result lands on a real API 526 orifice rather than over-ranging — and the review is what surfaced Known Issue #1, now fixed.
+
+---
+
+## 14. Usage Analytics (v3.2)
+
+### 14.1 Why custom events, not just page views
+
+The app is a **single URL**. Page views therefore measure arrival and nothing else: they cannot distinguish a visitor who ran a PRV sizing from one who bounced off the General tab. With ~20 calculators competing for maintenance effort, "which of these earns its keep" is the only question worth instrumenting for, and it is invisible without custom events.
+
+### 14.2 Installation
+
+Script-tag install, not `@vercel/analytics`. The npm package targets React/Next and needs a bundler; this project has no build step (§2), and the dashboard's default "Get Started" panel shows the Next.js instructions, which do not apply here. Two tags in `<head>`:
+
+```html
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+```
+
+The stub must precede the script: events fired before the deferred load completes are queued into `window.vaq` and replayed. Without it they would throw.
+
+`/_vercel/insights/script.js` is injected by Vercel's edge and exists only on a Vercel deployment where Web Analytics is enabled for the project. Off Vercel it 404s and the queue simply never drains — every calculator behaves identically, which is also what happens for any visitor running a content blocker.
+
+### 14.3 Event schema
+
+Five event names, a closed set (Vercel caps distinct names per project; the variance belongs in `data`, not in the name).
+
+| Event | `data` | Cardinality |
+|---|---|---|
+| `Tool Used` | `tool` — fixed slug: `gas-volume`, `pressure`, `temperature`, `heating-value`, `custom-module`, `pipe-volume`, `z-factor`, `petroleum-gravity`, `viscosity`, `mass-vol-flow`, `gas-properties`, `steam-if97`, `npsh`, `compressor`, `gas-composition`, `pipe-dp`, `gt-fuel`, `prv-sizing` | **≤ 1 per tool per page load** |
+| `Calculation` | `tool` — `pipe-dp` \| `prv-sizing` \| `flow-regime` | Every run |
+| `Tab View` | `tab` — the ten tab ids | Every user-initiated switch |
+| `Language` | `lang` — the ten language codes | Every switch |
+| `Action` | `action` — `export-pdf` \| `share-link` \| `report-sent` | Every click |
+
+### 14.4 Two implementation constraints
+
+**Live converters fire on every keystroke.** `calcGHV()` alone has 31 inline `oninput`/`onchange` bindings. One event per call would measure typing speed and exhaust the plan's event allowance. `Tool Used` is therefore de-duplicated through a `Set` for the life of the page: it measures *reach* (what share of visits touch the steam table), not intensity.
+
+Detection is **delegated off `e.target.id`** via `VA_TOOL_BY_ID_PREFIX`, not by wrapping the calc functions. Several converters are bound by reference (`tIn1.addEventListener('input', updateTemp2)`, the `createCard()` module cards), and a wrapper installed after binding would never see those calls. Element ids are already an API (§1), so keying on them adds no new coupling — and it means a new card is instrumented by adding one line to the map, which is how GT Fuel's `gt-*` family is covered.
+
+The three **server-backed** calculators are click-driven and each costs a serverless invocation, so `Calculation` counts every run. That figure is directly comparable to the function invocation count in the Vercel dashboard; the gap between them is the ad-blocker rate.
+
+**Boot must be silent.** `applyState()` → `recomputeAll()` runs the live calculators on every page load, and a share link additionally calls `switchTab()`. Counting those would report a `localStorage` restore as user activity and flatten every tool to equal popularity. A module-level `vaArmed` flag stays `false` until the first `pointerdown` or `keydown` (capture phase, `once`), and `trackEvent()` is a no-op until then. The delegated listeners are independently safe — `applyInputs()` assigns `.value` directly, which fires no `input` event — so `vaArmed` is what protects the wrapped functions.
+
+### 14.5 The privacy boundary
+
+**Record *that* a tool was used; never *what* was entered into it.** No input value, no unit selection, no calculation result, and no character of the Report tab, which is excluded from the id-prefix map outright (it is the one place a user types prose, and v2.8 already excluded it from `localStorage` and from share links).
+
+Nothing enforces this at runtime — it is a property of the id-prefix map and of six `trackEvent()` call sites, all wideable in one line. `tests/test_analytics_privacy.py` is what makes that line fail (§13.1).
+
+The whole feature is additive: it modifies no existing function, and is removed by deleting the block at the end of the `<script>` plus the two `<head>` tags.
+
+### 14.6 Disclosure
+
+Per the release rule in MARKETING.md §5, no measurement ships before the Privacy Policy discloses it **in the same release**. v3.2 rewrote §2 (bullet list + a "Changed in v3.2" note), §5 (processor), §7 (rewritten from "No Cookies or Tracking" to "Cookieless Usage Analytics", with the exhaustive event list and the opt-out route) and §9 (a deletion request cannot be matched against anonymous records), in the inline English **and** in all nine non-English dictionaries (`docs.privacy.b002/b004/b007/b009/b011`). The `og:description` and `twitter:description` claims of "no tracking" were changed to "no ads", which remains true.
+
+### 14.7 Dashboard enablement
+
+The script alone is not sufficient — Web Analytics must also be enabled for the project in the Vercel dashboard. It already is: `https://engineering-converter.com/_vercel/insights/script.js` returned HTTP 200 with a 2,495-byte body before this release shipped, and that route is served only when the feature is on (a disabled project 404s). The dashboard's "Get Started" panel persists until the first event arrives, so it is not an indicator of the enablement state.
