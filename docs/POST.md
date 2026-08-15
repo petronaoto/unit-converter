@@ -238,7 +238,35 @@ console.log(location.origin + location.pathname + '#s=' + btoa(unescape(encodeUR
 1. Include only the keys the post actually needs. Omitted keys keep their defaults.
 2. `tab` accepts `general` / `basic` / `advanced` / `safety`. Omit it to land on General.
 3. `lang` carries the UI language — **use `ja` only on the Japanese post**, never on the English one.
-4. **Test every link on a real page load before publishing.** A fragment change alone does not
+> ### ⚠️ LinkedIn STRIPS THE `#fragment` WHEN IT AUTO-LINKS A URL.
+>
+> Discovered 2026-08-16 on the v3.3 launch comment, and it defeats this entire recipe for anyone
+> who *clicks*. Paste `https://engineering-converter.com/index.html#s=<base64>` into a comment and
+> LinkedIn renders the full string as visible text — all 252 characters of fragment intact — but
+> the `href` it generates points at `https://engineering-converter.com/index.html` with **the
+> fragment removed**. The reader lands on a default General tab and nothing restores. Verified by
+> reading the posted comment's anchor: `anchorHasFragment=false`, while the plain text still
+> carried the whole thing.
+>
+> **This is silent.** The comment looks perfect, the link is blue and clickable, and the failure
+> only appears if you actually click it. Nothing about the compose flow warns you.
+>
+> **Until the app accepts a query-string form, the only honest wording is copy-paste**, and the
+> comment must say so — a link that says "opens the Advanced tab with the preset loaded" while
+> clicking it does nothing is worse than no link. The v3.3 comment now reads: *"Copy the whole line
+> below (all of it, past the #) and paste it into your browser … Clicking it won't work — LinkedIn
+> drops everything after the # when it turns a URL into a link, and that's exactly the part
+> carrying the composition."*
+>
+> **Proposed fix (not yet implemented):** teach `decodeShareState()` to read `?s=` from
+> `location.search` as well as `#s=` from `location.hash`. A query string survives LinkedIn's
+> auto-linking, and would also fix Teams/Outlook/Slack rewriting. It is a few lines, backwards
+> compatible (hash links keep working), and would make `copyShareLink()` output clickable
+> everywhere. Needs maintainer approval — it changes the format of every share link the app emits.
+
+4. **Test every link on a real page load before publishing** — and, if the link is going into a
+   post or comment, **click the published one too**, not just the one you built. Those are
+   different URLs; see the fragment-stripping warning above. A fragment change alone does not
    re-run the restore; the page must actually load.
 5. Server-backed cards (ΔP, Flow Regime, PRV) still need a **Calculate** click after opening.
    Client-side cards (composition, steam, NPSHa, compressor, gas properties, Z-factor, pipe

@@ -69,6 +69,12 @@ location.origin + '/index.html#s=' + btoa(unescape(encodeURIComponent(JSON.strin
 - `lang: 'ja'` only on Japanese content.
 - **Test on a real page load.** Changing the fragment alone does not re-run the restore; the page
   must actually load. Clear `localStorage` first so you see what a first-time visitor sees.
+- ⚠️ **LinkedIn strips the `#fragment` when it auto-links a URL** (2026-08-16). The comment shows
+  the whole string as text, but the generated `href` drops everything after the `#` — which is the
+  entire payload. Clicking restores nothing, and it fails silently. Until the app accepts a `?s=`
+  query-string form, word the comment as **copy-paste**, and say plainly that clicking will not
+  work. After publishing, read the posted anchor's `href` and confirm it still carries `#s=`.
+  See POST.md section 3 for the proposed `decodeShareState()` fix.
 - Server-backed cards (ΔP, Flow Regime, PRV) still need a Calculate click; client-side cards
   (composition, steam, NPSHa, compressor, gas properties, Z-factor, pipe volume) render on open.
 
