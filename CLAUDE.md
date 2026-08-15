@@ -5,6 +5,7 @@ Project memory for Claude Code. Read and follow all rules below in every session
 ## Project Overview
 
 - **App**: O&G Engineering Converter v3.3 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **Licence**: **MIT** (`LICENSE`, added 2026-08-16). The repo was previously public but unlicensed, and the in-app Terms §6 actively *prohibited* redistribution and commercial use — those two facts contradicted each other. Three things must now stay in agreement, and a change to any one of them is a change to all three: the `LICENSE` file, the README licence section, and **in-app Terms §6 (`docs.terms.b008`) in the inline English AND all 9 dictionaries**. The licence covers this project's own code only — the `LICENSE` file's third-party section (engineering standards, GIIGNL LNG data, vendor GT specs) is load-bearing and must not be dropped.
   - Default UI language is English; as of v2.7 all 10 menu languages (en, ja, zh, ko, th, id, ru, es, fr, de) are fully live — working tool AND the four documentation tabs. See "Internationalization (i18n)" below and `docs/SPECIFICATION.md` §12.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
 - **Live deployment**: Vercel (auto-deploys from `main` branch on GitHub)
