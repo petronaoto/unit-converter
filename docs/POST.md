@@ -238,31 +238,35 @@ console.log(location.origin + location.pathname + '#s=' + btoa(unescape(encodeUR
 1. Include only the keys the post actually needs. Omitted keys keep their defaults.
 2. `tab` accepts `general` / `basic` / `advanced` / `safety`. Omit it to land on General.
 3. `lang` carries the UI language — **use `ja` only on the Japanese post**, never on the English one.
-> ### ⚠️ LinkedIn STRIPS THE `#fragment` WHEN IT AUTO-LINKS A URL.
+> ### ⚠️ LinkedIn STRIPS THE `#fragment` WHEN IT AUTO-LINKS A URL — use `?s=` in posts.
 >
-> Discovered 2026-08-16 on the v3.3 launch comment, and it defeats this entire recipe for anyone
-> who *clicks*. Paste `https://engineering-converter.com/index.html#s=<base64>` into a comment and
-> LinkedIn renders the full string as visible text — all 252 characters of fragment intact — but
-> the `href` it generates points at `https://engineering-converter.com/index.html` with **the
-> fragment removed**. The reader lands on a default General tab and nothing restores. Verified by
-> reading the posted comment's anchor: `anchorHasFragment=false`, while the plain text still
-> carried the whole thing.
+> Discovered 2026-08-16 on the v3.3 launch comment. Paste
+> `https://engineering-converter.com/index.html#s=<base64>` into a comment and LinkedIn renders the
+> full string as visible text — fragment intact — but the `href` it generates drops everything after
+> the `#`. The reader lands on a default General tab and nothing restores. Verified on the published
+> comment (`anchorHasFragment=false`). It is silent: the link is blue and clickable and looks right.
 >
-> **This is silent.** The comment looks perfect, the link is blue and clickable, and the failure
-> only appears if you actually click it. Nothing about the compose flow warns you.
+> **Fixed in the app the same day.** `decodeShareState()` now reads `?s=` from `location.search` as
+> well as `#s=` from `location.hash`, so **a hand-authored `?s=` link survives posting and is
+> clickable**. Build campaign links that way:
 >
-> **Until the app accepts a query-string form, the only honest wording is copy-paste**, and the
-> comment must say so — a link that says "opens the Advanced tab with the preset loaded" while
-> clicking it does nothing is worse than no link. The v3.3 comment now reads: *"Copy the whole line
-> below (all of it, past the #) and paste it into your browser … Clicking it won't work — LinkedIn
-> drops everything after the # when it turns a URL into a link, and that's exactly the part
-> carrying the composition."*
+> ```javascript
+> location.origin + '/index.html?s=' + btoa(unescape(encodeURIComponent(JSON.stringify(state))))
+> ```
 >
-> **Proposed fix (not yet implemented):** teach `decodeShareState()` to read `?s=` from
-> `location.search` as well as `#s=` from `location.hash`. A query string survives LinkedIn's
-> auto-linking, and would also fix Teams/Outlook/Slack rewriting. It is a few lines, backwards
-> compatible (hash links keep working), and would make `copyShareLink()` output clickable
-> everywhere. Needs maintainer approval — it changes the format of every share link the app emits.
+> A `normalizeShareB64()` pass also undoes the manglings such links pick up in transit — percent-
+> encoding, `+`→space (a query string reads `+` as a space), and base64url — each of which
+> otherwise makes `atob()` throw and restores nothing. All five variants verified byte-identical.
+>
+> **The app itself still emits `#s=`, deliberately, and must keep doing so.** A fragment is never
+> sent to the server; a query string travels in the request line and lands in access logs. Reading
+> `?s=` is a courtesy to links the app did not build; *generating* one would put every user's
+> engineering inputs into Vercel's logs, against the Privacy Policy and the "never *what* was
+> entered" boundary CLAUDE.md holds analytics to. `tests/test_share_state.py` pins this asymmetry,
+> and the pin is mutation-tested — flipping `copyShareLink()` to `?s=` fails the suite.
+>
+> The live v3.3 comment predates the fix and is worded as copy-paste; that is still correct and was
+> left alone. Future comments can use a clickable `?s=` link.
 
 4. **Test every link on a real page load before publishing** — and, if the link is going into a
    post or comment, **click the published one too**, not just the one you built. Those are

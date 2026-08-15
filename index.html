@@ -6038,10 +6038,41 @@
     function loadStoredState() {
       try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch (e) { return null; }
     }
+    // Added 2026-08-16 (no version bump: nothing user-visible changes). Accepts the payload
+    // from EITHER the fragment (#s=) or the query string (?s=).
+    //
+    // The fragment is the form this app emits and is the privacy-preserving one: a fragment is
+    // never sent to the server, so a shared link's engineering inputs stay out of request logs.
+    // copyShareLink() therefore still writes #s= and MUST keep doing so.
+    //
+    // The query string is read-only support, for links this app did not build. LinkedIn strips
+    // everything after the # when it auto-links a URL in a post or comment (found 2026-08-16),
+    // and Teams/Outlook/Slack rewriting mangles long fragments the same way — so a hand-authored
+    // ?s= link is the only form that survives being posted somewhere and clicked. Anyone choosing
+    // that form is choosing to put the payload in the request line; that is why it is opt-in and
+    // never generated automatically.
+    //
+    // The fragment wins when both are present: it is the form the app itself produces, so a stray
+    // ?s= left on the URL by a redirect cannot override what the user actually pasted.
     function decodeShareState() {
-      const m = (location.hash || '').match(/[#&]s=([^&]+)/);
-      if (!m) return null;
-      try { return JSON.parse(decodeURIComponent(escape(atob(m[1])))); } catch (e) { return null; }
+      const src = [location.hash, location.search];
+      for (let i = 0; i < src.length; i++) {
+        const m = (src[i] || '').match(/[#?&]s=([^&]+)/);
+        if (!m) continue;
+        try { return JSON.parse(decodeURIComponent(escape(atob(normalizeShareB64(m[1]))))); }
+        catch (e) { return null; }
+      }
+      return null;
+    }
+
+    // Undoes the manglings a base64 payload picks up in transit. Standard base64 uses '+', '/'
+    // and '=', all of which mean something in a URL, so link rewriters mangle them in two
+    // predictable ways: percent-encoding them, and — because '+' means space in a query string —
+    // turning '+' into a literal space. Both produce a payload that atob() rejects, and the only
+    // symptom is a share link that silently restores nothing.
+    // Also accepts base64url ('-'/'_'), which is what most encoders reach for to avoid all this.
+    function normalizeShareB64(v) {
+      return decodeURIComponent(v).replace(/ /g, '+').replace(/-/g, '+').replace(/_/g, '/');
     }
     function showToast(msg, ok) {
       const t = document.getElementById('state-toast');

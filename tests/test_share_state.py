@@ -156,3 +156,60 @@ def test_share_link_length_warning_exists(html):
     assert "common.shareLinkCopiedLong" in html, (
         "an over-long share link must say so — several chat and mail clients truncate "
         "around 2,000 characters, producing a link that silently restores nothing")
+
+
+# ── v3.4: the query-string fallback, and the privacy asymmetry it must preserve ──
+
+def test_decode_accepts_both_fragment_and_query(html):
+    """LinkedIn strips everything after '#' when it auto-links a URL, so a posted share link
+    restores nothing when clicked. decodeShareState() therefore also reads '?s='."""
+    block = _decode_share_state_body(html)
+    assert "location.hash" in block, "the fragment form must keep working"
+    assert "location.search" in block, (
+        "decodeShareState() no longer reads location.search — posted share links are silently "
+        "back to restoring nothing when clicked")
+    assert "[#?&]s=" in block, "the capture regex must accept the '?' separator"
+
+
+def test_fragment_takes_precedence_over_query(html):
+    """The fragment is the form this app emits, so a stray '?s=' left on the URL by a redirect
+    must never override what the user actually pasted."""
+    block = _decode_share_state_body(html)
+    hash_at = block.index("location.hash")
+    search_at = block.index("location.search")
+    assert hash_at < search_at, (
+        "location.hash must be read before location.search, or the precedence rule documented "
+        "in SPECIFICATION 6 is reversed")
+
+
+def test_share_button_still_emits_a_fragment_not_a_query(html):
+    """THE PRIVACY INVARIANT. A fragment is never sent to the server; a query string travels in
+    the request line and lands in access logs. The app reads '?s=' as a courtesy to links it did
+    not build, but it must never GENERATE one — that would put every user's engineering inputs
+    into server logs, contradicting the Privacy Policy and the 'never what was entered' boundary
+    that CLAUDE.md holds analytics to."""
+    start = html.index("function copyShareLink()")
+    end = html.index("function ", start + 10)
+    body = html[start:end]
+    assert "'#s=' + enc" in body, "copyShareLink() must emit the fragment form"
+    assert "?s=" not in body, (
+        "copyShareLink() now emits a query string — that leaks the shared state into server "
+        "request logs. Read '?s=', never write it.")
+
+
+def test_base64_normalizer_undoes_transit_manglings(html):
+    """'+', '/' and '=' all mean something in a URL, so rewriters mangle them. Each mangling
+    produces a payload atob() rejects, and the only symptom is a link that restores nothing."""
+    assert "function normalizeShareB64(" in html
+    start = html.index("function normalizeShareB64(")
+    body = html[start:html.index("\n    }", start)]
+    assert "decodeURIComponent" in body, "percent-encoded payloads must be decoded"
+    assert r"replace(/ /g, '+')" in body, (
+        "'+' becomes a literal space in a query string; that must be undone or atob() throws")
+    assert r"replace(/-/g, '+')" in body and r"replace(/_/g, '/')" in body, (
+        "base64url payloads must be accepted")
+
+
+def _decode_share_state_body(html):
+    start = html.index("function decodeShareState()")
+    return html[start:html.index("\n    }", start)]
