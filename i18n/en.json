@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.2"
+    "pageTitle": "O&G Unit Converter V3.3"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -231,6 +231,27 @@
       "molFractionOption": "Mole Fraction (%)",
       "compositionHeading": "1. GAS COMPOSITION",
       "c6Note": "*C6+ evaluated as nC6.",
+      "preset": {
+        "label": "Reference Composition",
+        "custom": "Custom / manual entry",
+        "grpPub": "Published — GIIGNL (mol %)",
+        "grpAsm": "Assumed — indicative archetypes",
+        "grpApp": "App reference",
+        "badgePub": "PUBLISHED",
+        "badgeRef": "REFERENCE",
+        "badgeAsm": "ASSUMED",
+        "badgeCustom": "CUSTOM",
+        "srcPrefix": "Source:",
+        "basisPrefix": "Basis:",
+        "assumedWarn": "Not project data — an engineering assumption for screening only. Always substitute the cargo certificate or contract specification for real work.",
+        "customHint": "Pick a reference composition to pre-fill all 14 components, or type your own. Editing any component clears the reference attribution.",
+        "chipPubGcv": "Published GCV",
+        "chipPubWi": "Published WI",
+        "chipCalcGcv": "Calc GCV",
+        "chipCalcWi": "Calc WI",
+        "chipNoCross": "No published value to cross-check against",
+        "chipUnits": "MJ/Nm³ (0 °C, 101.325 kPa)"
+      },
       "totalFractionLabel": "Total Input Fraction",
       "conditionsHeading": "2. Conditions & Operating State",
       "temperatureLabel": "Temperature",
@@ -499,7 +520,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.2"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.3"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -514,7 +535,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.2"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.3"
   },
   "moduleModal": {
     "title": "Configure Module",

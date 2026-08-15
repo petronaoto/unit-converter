@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.6 (describes app v3.2)
+**Document version:** 1.7 (describes app v3.3)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -96,6 +96,22 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 - **Outputs:** `out-ghv` (+`out-ghv-label`, HHV/LHV toggle `ghv-hv-hhv`/`-lhv`), `out-mw`, `out-sg`, `out-wi`, `out-mcp` (Maximum Combustion Potential incl. inert correction), `out-liq-den` (+`out-liq-den-u`, `out-liq-warn`), opposite-basis fraction grid `opp-frac-grid` (desktop only).
 - **LNG liquid density:** ISO 6578:1991 Klosek-McKinley — molar-volume table `ISO6578_VM` (108–120 K, linear T interpolation) and correction factors `ISO6578_K` (k₁/k₂, linear MW interpolation); input `op-liq-temp`; out-of-range temperatures flagged in `out-liq-warn`.
 - **Flow conversion:** mass↔vol↔mol both directions (`flow-mass-in`/`-u`, `flow-vol-in`/`-u` → `out-vol-flow`, `out-mass-flow` with unit selects and VOL/MOL, MASS/MOL toggles `flowA-mode-*`, `flowB-mode-*`); actual-vs-standard T/P correction from `op-temp`, `op-press` with `flow-warn` and "Actual" label swap when off-standard.
+- **Reference-composition selector (v3.3):** `comp-preset` prefills all 14 component fields from `LNG_PRESETS` (9 entries, one `JSON.parse` literal) and applies each entry's own `basis` to `ghv-mode`. See §4.3.1.1.
+
+##### 4.3.1.1 LNG reference compositions (v3.3)
+
+- **Dataset:** `LNG_PRESETS` — a single `JSON.parse(\`…\`)` literal, extracted verbatim by `tests/test_lng_presets.py`. Per entry: `id`, `tier`, `basis`, `c` (component percentages, omitted species implicitly zero), `gcv`, `wi`, `src`.
+- **Tiers**, which are an honesty boundary and are enforced in CI:
+  - `pub` — five origins from **GIIGNL Information Paper No. 1, *Basic Properties of LNG*, Table 1 — Examples of LNG composition** (data: 2018 GIIGNL Annual Report): `au-nws`, `my-bintulu`, `ng-bonny`, `qa-raslaffan`, `tt-atlantic`. Carry the source's own published GCV and Wobbe index.
+  - `ref` — `jis-ref`, the app's own JIS K 2301 reference case (Vector 1), carrying its pinned 44.59 / 56.00.
+  - `asm` — `us-gulf`, `rich-assoc`, `n2-rich`. Engineering assumptions, **not project data**. `gcv` and `wi` MUST be `null`: a cross-check against an invented figure would present a guess as a citation.
+- **Basis:** GIIGNL Table 1 does not state its basis. It is recoverable — on a **mole** basis the JIS chain reproduces the published GCVs to within 0.02 MJ/Nm³; on a volume basis all five rows sit a systematic 0.06 MJ/Nm³ high. The GIIGNL entries are therefore `mol`; `jis-ref` stays `vol`.
+- **C4+ split:** GIIGNL lumps butanes into one column; the split to iC₄/nC₄ is taken as 50/50. Sweeping the full range moves HHV and WI by ≤ **0.03 MJ/Nm³** (worst case: Bintulu's WI), inside the ±0.05 cross-check band. The figure is quoted in the on-screen citations and enforced as `C4_SPLIT_MAX_SPREAD`; a test asserts the two agree.
+- **Cross-check display:** `lastCompCheck` is assigned from **`hhv_mix`** — the gross value — never `hv_mix`, so the HHV/LHV display toggle cannot disturb a comparison against a published figure. Pass band `LNG_PRESET_TOL` = 0.05 MJ/Nm³.
+- **Fidelity:** published rows are reproduced exactly as printed, including the Qatar row's 100.01 % total, which the existing normalization path handles rather than a silent rescale.
+- **Attribution lifecycle:** a delegated `input` listener drops `comp-preset` to Custom on any manual `comp-*` edit; `renderLNGPresetInfo()` repaints from inside `calcGHV()` so a share-link or `localStorage` restore repaints its citation. The renderer is `textContent`-only — no `innerHTML`.
+- **Elements:** `comp-preset`, `comp-preset-wrap`, `comp-preset-badge`, `comp-preset-src` (+ `-prefix`/`-warn`/`-text`), `comp-preset-check`. The `<option>` list is static and never rebuilt — a restore sets the value before any event fires. Analytics needs no change: the `comp` id prefix already maps to `gas-composition`.
+- **i18n:** `advanced.ghv.preset.*` (19 keys) in all 10 dictionaries. `<optgroup>` labels use the v3.3 `data-i18n-label` mechanism, because plain `data-i18n` sets `textContent` and would delete an optgroup's `<option>` children. Preset names and `src` citations stay English, as GT_MODELS does.
 
 #### 4.3.2 Pipe Delta Pressure (Darcy-Weisbach) — server-backed
 
@@ -136,8 +152,8 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 
 ### 4.5 Documentation & Support Tabs
 
-- **How To Use** — Operations manual: "What's New" blocks (v3.1, v3.0, v2.8, v2.5, v2.4) + 20 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report, Gas Property Estimator, fittings & line sizing, mobile navigation & shared modules — added v3.0, Steam Properties, NPSHa, the compressor card and unit-aware copy — and, added v3.1, the GT Fuel tab, §20) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors (`howto-new31`, `howto-new30`, `howto-new28`, `howto-new25`, `howto-new`, `howto-1`…`howto-20`).
-- **Theory** — Constants and formulas: Part I gas compositional (JIS K 2301 with worked examples), Part II density/flow, Part III LNG Klosek-McKinley (Tables B.2/C), Part IV hydraulics (Papay Z-factor §4.1, Darcy-Weisbach + Colebrook §4.2, flow-regime maps §4.3, erosional velocity §4.4), Part VI PRV sizing (§6.1–§6.7 incl. API 526 orifice table), Part V data sources, Part VII real-gas properties & fittings, Part VIII steam (IAPWS-IF97 §8.1–§8.5, added v3.0, anchor `theory-p8`), Part IX pump-suction NPSHa (§9.1–§9.3, added v3.0, anchor `theory-p9`), Part X compressor head & power (§10.1–§10.3, added v3.0, anchor `theory-p10`), Part XI gas-turbine fuel estimation (§11.1–§11.3, added v3.1, anchor `theory-p11`). Worked-example numbers must match actual calculator output exactly.
+- **How To Use** — Operations manual: "What's New" blocks (v3.1, v3.0, v2.8, v2.5, v2.4) + 20 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report, Gas Property Estimator, fittings & line sizing, mobile navigation & shared modules — added v3.0, Steam Properties, NPSHa, the compressor card and unit-aware copy — and, added v3.1, the GT Fuel tab, §20; and, added v3.3, LNG reference compositions, §21) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors (`howto-new31`, `howto-new30`, `howto-new28`, `howto-new25`, `howto-new`, `howto-1`…`howto-21`).
+- **Theory** — Constants and formulas: Part I gas compositional (JIS K 2301 with worked examples), Part II density/flow, Part III LNG Klosek-McKinley (Tables B.2/C), Part IV hydraulics (Papay Z-factor §4.1, Darcy-Weisbach + Colebrook §4.2, flow-regime maps §4.3, erosional velocity §4.4), Part VI PRV sizing (§6.1–§6.7 incl. API 526 orifice table), Part V data sources, Part VII real-gas properties & fittings, Part VIII steam (IAPWS-IF97 §8.1–§8.5, added v3.0, anchor `theory-p8`), Part IX pump-suction NPSHa (§9.1–§9.3, added v3.0, anchor `theory-p9`), Part X compressor head & power (§10.1–§10.3, added v3.0, anchor `theory-p10`), Part XI gas-turbine fuel estimation (§11.1–§11.3, added v3.1, anchor `theory-p11`), Part XII LNG reference compositions (§12.1–§12.5 — provenance and tiers, fraction basis, the lumped C4+ column, cross-check as a verification vector, fidelity to the source; added v3.3, anchor `theory-p12`). Worked-example numbers must match actual calculator output exactly.
 - **Terms of Use** — 8 clauses (reference-only nature, warranty disclaimer, liability, user responsibility, IP, updates, governing law).
 - **Privacy Policy** — 10 clauses (zero collection, localStorage-only state, stateless APIs, hosting, report feature, no cookies/tracking, children, rights, contact).
 - **Report** — `mailto:` composer for bug reports / feature requests (no server round-trip); includes app-version environment string.
@@ -410,6 +426,18 @@ Cross-check worth keeping: at Z = 1 the sonic velocity would be 441.0 m/s, **7.5
 | Yearly (8,760 h × 92 %) | **733.93 MMNm³** · **601,308 t** · 3,610.5 GWh sent out |
 | LHV in Btu/scf | 40.25 ÷ (0.001055056 × 37.3258) = **1,022.1** (1 MJ/Nm³ = 25.393 Btu/scf) |
 
+**Vector 12 — LNG reference compositions (added v3.3).** The five GIIGNL Table 1 origins, run through the JIS K 2301 chain on a mole basis and compared with the *source's own* published figures. These are external reference points: they were not derived from this application, so they verify the engine as well as the dataset (`tests/test_lng_presets.py`):
+
+| Origin (mol %) | GCV calc / published | WI calc / published |
+|---|---|---|
+| Australia NWS | **45.32** / 45.32 | **56.52** / 56.53 |
+| Malaysia Bintulu | **43.69** / 43.67 | **55.58** / 55.59 |
+| Nigeria Bonny | **43.41** / 43.41 | **55.49** / 55.50 |
+| Qatar Ras Laffan | **43.43** / 43.43 | **55.38** / 55.40 |
+| Trinidad Point Fortin | **41.05** / 41.05 | **54.23** / 54.23 |
+
+Largest deviation across all ten comparisons: **0.02 MJ/Nm³**, against a pass band of ±0.05. The `jis-ref` preset reproduces Vector 1 exactly (44.59 / 56.00) on its volume basis.
+
 All vectors are enforced automatically on every push and pull request, except Vector 1 and the display layers of Vectors 8–11 (browser-side JavaScript) — see §13.
 
 ## 10. Deployment
@@ -519,6 +547,7 @@ a manual checklist; it now runs on every push and pull request.
 | `tests/test_clipboard.py` | (v3.0) every static `data-unit-src` id resolves to a real element, site counts (21 dynamic + 6 literal + 2 template as of v3.1), bare-value-preserving `copyText` structure, delegated-listener and long-press source guards, `createCard` id-only attribute invariant |
 | `tests/test_basic_nav.py` | (v3.0) Basic Eng quick-links strip: all nine pills resolve to anchored cards in order, `scroll-mt-24` clearance survives, every pill carries a `basic.nav.*` key |
 | `tests/test_gt_fuel.py` | (v3.1) Vector 11 display pins + page↔spec worked-example agreement; GT_MODELS extraction (JSON.parse contract) with per-entry source citations, HR ≡ 3600/η within 30 kJ/kWh, CC > SC invariants and MHI brochure spot-pins; derived `GT_HV_FACTOR` guard; static-option-list completeness (share-restore trap); `lastGHV` bridge, `recomputeAll` wiring and SVG-symbol presence |
+| `tests/test_lng_presets.py` | (v3.3) Vector 12 — every published preset re-run through a Python replica of the JIS K 2301 chain and checked against the source's own GCV/WI within ±0.05 MJ/Nm³ (the replica is itself pinned to Vector 1 first, so a drifting guard cannot pass silently); LNG_PRESETS extraction (JSON.parse contract) with per-entry citations; the tier honesty boundary (`asm` entries forbidden from declaring a published value); GIIGNL entries pinned to `mol` basis and required to disclose the C4-split assumption; the C4-split sweep re-measured against `C4_SPLIT_MAX_SPREAD` and cross-checked against the figure quoted in the citations; static-option-list completeness (share-restore trap); source guards on `hhv_mix` (not `hv_mix`), the edit-clears-attribution listener, the `calcGHV()` repaint and the no-`innerHTML` renderer |
 | `tests/test_architecture.py` | The stdlib-only rule, the no-build-step rule, dev/prod dependency separation |
 | `tests/test_analytics_privacy.py` | (v3.2) The analytics privacy boundary — Report tab excluded from the id-prefix map, no `.value`/`.innerText` read in the instrumentation block, closed set of five event names, fixed slugs only; plus disclosure parity: no stale "no analytics" claim in the English policy or the og:/twitter: tags, and all 9 translated policies name the product, cite Vercel's privacy doc and carry the bumped version. Includes a non-vacuity guard on its own map-extraction regex |
 | `.github/workflows/ci.yml` | Two jobs — see 13.3 |

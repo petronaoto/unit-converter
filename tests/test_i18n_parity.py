@@ -116,8 +116,10 @@ def test_docs_keys_match_across_non_english_dictionaries(code, flat_keys):
 
 # ── index.html <-> dictionary agreement ──────────────────────────────────────────
 
+# -label was added in v3.3 for <optgroup> labels, which cannot use plain data-i18n:
+# that sets textContent, which on an optgroup would delete its <option> children.
 ATTR_PATTERN = re.compile(
-    r'data-i18n(?:-title|-aria|-placeholder)?=["\']([^"\']+)["\']')
+    r'data-i18n(?:-title|-aria|-placeholder|-label)?=["\']([^"\']+)["\']')
 HTML_ATTR_PATTERN = re.compile(r'data-i18n-html=["\']([^"\']+)["\']')
 
 
