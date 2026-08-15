@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.0
+# O&G Engineering Converter — v3.1
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -106,7 +106,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 
 | Document | Contents |
 |---|---|
-| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, the i18n program milestones, and the v3.0 outcome with the v3.1 candidates |
+| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, the i18n program milestones, and the v3.1 outcome with the v3.2 candidates |
 | [docs/SPECIFICATION.md](docs/SPECIFICATION.md) | Detailed engineering spec of every module, the three API contracts, state/share-link format, calculation rules, reference test vectors, and the known-issues register |
 | [docs/MARKETING.md](docs/MARKETING.md) | Positioning, target segments, SEO/content plan, channels, and privacy-compatible analytics options |
 

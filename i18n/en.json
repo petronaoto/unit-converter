@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.0"
+    "pageTitle": "O&G Unit Converter V3.1"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -35,6 +35,7 @@
     "basic": "Basic Eng",
     "advanced": "Advanced",
     "safety": "Safety",
+    "gtfuel": "GT Fuel",
     "howto": "How To Use",
     "theory": "Theory",
     "terms": "Terms of Use",
@@ -419,6 +420,72 @@
       "advisorySupercritical": "P1 exceeds the critical pressure (22.064 MPa / 3,200.1 psia) — no saturation temperature exists."
     }
   },
+  "gtfuel": {
+    "sel": {
+      "title": "Gas Turbine Selection",
+      "vendorLabel": "VENDOR",
+      "vendorManual": "Manual input",
+      "modelLabel": "MODEL",
+      "modelManual": "— manual input —",
+      "cycleLabel": "CYCLE",
+      "cycleSC": "Simple cycle (GT only)",
+      "cycleCC": "Combined cycle (GTCC plant)",
+      "chipIso": "Rating",
+      "chipHR": "Heat rate",
+      "chipExh": "Exhaust",
+      "prefillNote": "Selecting a model pre-fills the estimator below with its ISO rating and efficiency (simple-cycle GT, or GTCC plant values in Combined cycle mode). All figures are indicative vendor catalogue data at ISO conditions (15 °C, 101.325 kPa, 60% RH), natural gas. You can overwrite any input."
+    },
+    "est": {
+      "title": "Fuel Gas Rate Estimator",
+      "powerLabel": "POWER OUTPUT",
+      "effLabel": "EFFICIENCY",
+      "effHint": "— %-LHV basis",
+      "hvLabel": "FUEL HEATING VALUE",
+      "basisLabel": "HEATING VALUE BASIS",
+      "basisLHV": "LHV (net)",
+      "basisHHV": "HHV (gross)",
+      "ratioLabel": "HHV/LHV RATIO",
+      "ratioHint": "— to convert to LHV",
+      "rhoLabel": "GAS DENSITY",
+      "availLabel": "AVAILABILITY",
+      "availHint": "— for monthly/yearly totals",
+      "importBtn": "⇩ Import LHV/HHV & ρ_std from Advanced tab composition",
+      "sendBtn": "⇨ Send result to Mass↔Vol card (Basic Eng)",
+      "warnNoGHV": "Run the Gas Heating Value (compositional) calculation in the Advanced tab first — Import uses its most recent result.",
+      "warnNoCC": "No published GTCC data for this model — Combined cycle mode uses your manual inputs.",
+      "warnEffRange": "Efficiency outside the typical 15–72% screening range — check the value.",
+      "warnHvRange": "Heating value outside the typical 20–60 MJ/Nm³ range for fuel gas — check the value/unit.",
+      "screeningNote": "Screening estimate: Q_fuel = P / η (LHV basis); V = 3600·Q / LHV; ṁ = V·ρ_std. Daily/monthly/yearly totals apply the availability factor; the hourly row is the instantaneous rate at load. Efficiency and heat-rate definitions per ISO 3977-2 / ASME PTC 22 convention (HR = 3600/η). Actual fuel consumption varies with site conditions, degradation, part load and fuel composition — verify against vendor performance data before commercial use."
+    },
+    "out": {
+      "energyLabel": "Fuel energy input",
+      "hrLabel": "Heat rate",
+      "totalsTitle": "CONSUMPTION TOTALS",
+      "colPeriod": "Period",
+      "colVol": "Fuel volume",
+      "colMass": "Fuel mass",
+      "colEnergy": "Power sent out",
+      "rowHour": "Hourly",
+      "rowHourNote": "(continuous)",
+      "rowDay": "Daily",
+      "rowMonth": "Monthly (730 h)",
+      "rowYear": "Yearly (8,760 h)",
+      "availNote": "daily/monthly/yearly at {pct}% availability"
+    },
+    "cat": {
+      "title": "Gas Turbine Catalogue",
+      "subtitle": "Indicative ISO ratings from public vendor catalogues (natural gas). Click a card to load the model into the estimator.",
+      "filterAll": "All vendors",
+      "filterAny": "All types",
+      "classHD": "Heavy duty",
+      "classAD": "Aeroderivative",
+      "classIND": "Industrial",
+      "useBtn": "Use this model",
+      "exhLabel": "Exhaust",
+      "noMatch": "No models match the selected filters.",
+      "srcNote": "Thumbnails are original schematic illustrations (not vendor imagery). Data sources: MHI GTCC brochure METP-11GT01E1-E-0; GE Vernova fact sheets GEA35750/GEA35768 and product pages; Siemens Energy product pages. Ratings are net or gross per each vendor's published convention and change with catalogue revisions — always confirm against the current vendor datasheet."
+    }
+  },
   "report": {
     "title": "System Report & Request Form",
     "intro": "Found a calculation bug or have an idea for a new module? Fill out the form below. This will automatically draft an email to the developer (Naoto Yamabe).",
@@ -432,7 +499,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.0"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.1"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -447,7 +514,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.0"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.1"
   },
   "moduleModal": {
     "title": "Configure Module",
@@ -519,7 +586,17 @@
       "viscosityLabel": "Viscosity μ / ν",
       "massVolFlowLabel": "Mass ↔ Vol flow",
       "disclaimerBold": "Disclaimer.",
-      "disclaimerText": "Generated by the O&G Engineering Converter for general reference and convenience only. Calculations follow simplified or indicative models (HEM two-phase, Papay Z-factor, simplified flow-regime maps). They must not be used as the sole basis for process-safety, billing, or regulatory decisions. Verify independently against the governing standards (JIS K 2301, ISO 6578, API 520/526, API RP 14E)."
+      "disclaimerText": "Generated by the O&G Engineering Converter for general reference and convenience only. Calculations follow simplified or indicative models (HEM two-phase, Papay Z-factor, simplified flow-regime maps). They must not be used as the sole basis for process-safety, billing, or regulatory decisions. Verify independently against the governing standards (JIS K 2301, ISO 6578, API 520/526, API RP 14E).",
+      "section6Title": "6 · GT Fuel Gas Estimator",
+      "gtModelLabel": "GT model",
+      "gtPowerLabel": "Power output",
+      "gtEffLabel": "Efficiency",
+      "gtFuelEnergyLabel": "Fuel energy input",
+      "gtHeatRateLabel": "Heat rate",
+      "gtVolFlowLabel": "Fuel volumetric flow",
+      "gtMassFlowLabel": "Fuel mass flow",
+      "gtAvailLabel": "Availability",
+      "gtYearlyLabel": "Yearly consumption"
     }
   }
 }

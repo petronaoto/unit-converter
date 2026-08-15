@@ -32,13 +32,14 @@ def test_every_static_unit_src_resolves(html):
 
 
 def test_site_census(html):
-    """19 static dynamic-unit sites + 2 template sites; 4 literal-unit sites.
+    """21 static dynamic-unit sites + 2 template sites; 6 literal-unit sites.
     If this fails after adding a card, extend the survey deliberately — do not
-    just bump the number."""
+    just bump the number. v3.1 added 2 static (gt-out-vol-u, gt-out-mass-u) and
+    2 literal ("MW" on gt-out-q, "kJ/kWh" on gt-out-hr) on the GT Fuel tab."""
     srcs = re.findall(r'data-unit-src="([^"]+)"', html)
-    assert len([s for s in srcs if "${" not in s]) == 19
+    assert len([s for s in srcs if "${" not in s]) == 21
     assert len([s for s in srcs if "${" in s]) == 2
-    assert len(re.findall(r'data-copy-unit="([^"]+)"', html)) == 4
+    assert len(re.findall(r'data-copy-unit="([^"]+)"', html)) == 6
     # the two mode-dependent flow outputs use the visible-select fallback list
     assert 'data-unit-src="flow-vol-out-u flow-mol-out-u"' in html
     assert 'data-unit-src="flow-mass-out-u flow-mol-out2-u"' in html
