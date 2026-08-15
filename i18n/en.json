@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.3"
+    "pageTitle": "O&G Unit Converter V3.4"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -520,7 +520,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.3"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.4"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -535,7 +535,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.3"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.4"
   },
   "moduleModal": {
     "title": "Configure Module",
