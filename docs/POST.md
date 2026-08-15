@@ -60,7 +60,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493228666642923520/ | |
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/ | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ☐ | | |
+| 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
 | 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
 | 9 | Fri 21 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
@@ -90,7 +90,9 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Next up (Day 6, Tue 18 Aug): "You cannot rearrange Colebrook-White" — draft is in `### Day 6`.**
+> **Next up (Day 7, Wed 19 Aug): "The constant that looked precise and was wrong" — draft is in `### Day 7`.**
+>
+> *Days 5 and 6 are both queued in LinkedIn (Mon 17 and Tue 18, 08:00 JST). Neither has a URL yet.*
 
 **Weekly themes**
 
@@ -977,7 +979,13 @@ enthalpy and entropy values. The left panel quotes the STATE chip's own wording 
 
 ---
 
-### Day 6 — Wed 19 Aug 2026
+### Day 6 — *tracker **Day 6**, Tue 18 Aug 2026* · 🕗 SCHEDULED
+
+> **Scheduled 2026-08-15 for Tue 18 Aug 08:00 JST.** One bilingual post, **2,959 characters**,
+> graphic attached, `engineering-converter.com` in the body of both language sections. Confirmed in
+> *Scheduled posts* alongside Day 5. No first comment, per the standing choice on the Day 3 sheet.
+>
+> Sheet number matches the tracker for this day (C12 affects Days 3, 5, 16, 17, 18, 20).
 
 **Title:** You cannot rearrange Colebrook-White. Here is what the solver is actually doing.
 **Lens:** teach-theory · **Format:** mini-tutorial
@@ -997,10 +1005,52 @@ starting at 0.02 and converging to 0.0183544.
 
 **Numbers.** Converged f = 0.0183544 at Re = 2.2011 × 10⁵, ε = 0.045 mm, D = 0.1016 m.
 
+**Verified against the running app 2026-08-15.** The endpoint returns only the converged f, never
+the trace — so the trace was obtained by replaying `get_darcy_friction_factor` from
+`api/dp_calculator.py` and **checking the replay's final f against the endpoint's own f to full
+double precision** (`match=true` in the generator's `data-ready`). ε/D = 4.4291338582677165e-4,
+Re = 220105.6680055071:
+
+| iter | f in | f out | \|Δf\| |
+|---|---|---|---|
+| 1 | 0.020000000 | 0.018279010 | 1.72e-3 |
+| 2 | 0.018279010 | 0.018358052 | 7.90e-5 |
+| 3 | 0.018358052 | 0.018354202 | 3.85e-6 |
+| 4 | 0.018354202 | 0.018354389 | 1.87e-7 → **below 1×10⁻⁶, stop** |
+
+Converged f = **0.01835438889630599**; **the card displays 0.01835**, which is what the post quotes
+in prose (the 9-decimal values appear only in the trace, where they are the point). Four iterations
+— the 100-iteration cap never fires.
+
+**Laminar branch, confirmed end-to-end** (not just by reading the source): the same line with the
+liquid viscosity raised to 50 cP returns Re = **508.238**, `re_regime` = **Laminar**, f =
+**0.12592526133946247**, which equals 64/Re exactly — `f == 64.0/Re` is `True` in Python, not merely
+close. Zero iterations.
+
+**Haaland and Swamee-Jain are NOT app features.** They were computed for the comparison panel and
+the post says so explicitly. Formulas used, so anyone can check:
+`1/√f = −1.8·log₁₀[(ε/3.7D)^1.11 + 6.9/Re]` → **0.0181738 (−0.98 %)**;
+`f = 0.25/[log₁₀(ε/3.7D + 5.74/Re^0.9)]²` → **0.0184608 (+0.58 %)**.
+This is the one place the campaign quotes a number the tool does not produce — keep the disclaimer
+if the copy is reused.
+
+**No share link.** Same reasoning as Day 4: this is the ΔP card's default case, so a pre-filled link
+would carry nothing, and the ΔP card is server-backed and needs a Calculate click regardless.
+
+**Mockup files.** `day06-mockup.html` → `day06-standalone.html` → `day06.png`. Left is the **real
+Theory §4.2 block** (`data-i18n-html="docs.theory.b021"`), cloned live — it already states the
+equation, the laminar branch and the tolerance/cap, so the post's claims appear in the app's own
+words. Its two-phase HEM sub-box is cropped (different subject, and it would take the table's
+space). **The Colebrook equation is additionally quoted at readable size in the right-hand panel**:
+inside the cloned block it renders at 10px × 0.72 ≈ 7px and does not survive LinkedIn's downscaling,
+and that equation *is* the post. Same call Day 3 made for the Region 3 refusal — text read from the
+DOM, styling not pretending to be app chrome. Both occurrences of `√f` are marked, and the generator
+**asserts there are exactly two** (`eq_f_occurrences=2`) rather than trusting the string split.
+
 **CTA.** "If you use Haaland or Swamee-Jain in production, tell me where you've actually seen the
 difference matter — I want the counter-argument."
 
-**Hashtags:** `#FluidMechanics #NumericalMethods #Hydraulics #EngineeringEducation`
+**Hashtags:** `#FluidMechanics #NumericalMethods #Hydraulics #EngineeringEducation #プロセスエンジニアリング`
 
 ---
 

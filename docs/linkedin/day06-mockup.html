@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 6 mockup — Colebrook-White is implicit</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. */
+  #app{position:absolute;width:1280px;height:1600px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 6 — "You cannot rearrange Colebrook-White".
+
+  LEFT   : the REAL Theory tab section 4.2 formula box (data-i18n-html="docs.theory.b021"),
+           cloned from a live index.html. It already states the equation, the laminar branch
+           and the tolerance/iteration cap, so the post's claims are shown in the app's own
+           words rather than restated here. The two-phase HEM sub-box is cropped: it is a
+           different subject and would halve the space available to the iteration table.
+  RIGHT  : the iteration trace.
+
+  THE TRACE IS THE ONE THING THIS FILE COMPUTES. The endpoint does not return it -- only the
+  converged f -- so the loop is reproduced here in JS, verbatim from
+  api/dp_calculator.py::get_darcy_friction_factor. That re-implementation is exactly what the
+  rest of this campaign forbids, so it is checked: the loop's final f must equal the API's f
+  to full double precision, and data-ready carries both plus a match flag. If they ever
+  disagree, the graphic is wrong and the capture step must stop.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day06-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.0</span>
+      <span class="text-slate-600">·</span> Theory <span class="text-slate-600">§4.2</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Pipe ΔP</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px]" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= the real Theory box ================= -->
+  <div id="card-slot" class="absolute" style="left:40px;top:82px;transform:scale(0.72);transform-origin:top left;">
+    <div class="text-slate-600 text-sm p-8">loading the live theory block…</div>
+  </div>
+
+  <!-- The equation, quoted from the app's DOM and re-rendered LARGE.
+       The cloned Theory box on the left states it at 10px, which at scale 0.72 is ~7px and does
+       not survive LinkedIn's downscaling — and this equation IS the post. So it is quoted rather
+       than screenshotted, the same call Day 3 made for the Region 3 refusal: the text comes from
+       the app (see #eq, filled from the DOM), the styling does not pretend to be app chrome. -->
+  <div class="absolute rounded-lg px-4 py-4" style="left:716px;top:82px;width:444px;
+       border:1px solid rgba(244,63,94,.40);background:rgba(244,63,94,.08);">
+    <div class="text-rose-300 text-[13px] font-semibold" style="margin-bottom:9px;">
+      f is on both sides of the equals sign.</div>
+    <div id="eq" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
+         color:#fecdd3;line-height:1.5;margin-bottom:10px;">…</div>
+    <div class="text-rose-200/80 text-[12.5px] leading-snug">
+      No rearrangement into elementary functions exists. Every explicit friction-factor formula
+      you can recall is a <b>curve fit</b> to this one. So the solver substitutes and repeats —
+      from <b>f = 0.02</b>, until <b>|Δf| &lt; 1×10⁻⁶</b>.
+    </div>
+  </div>
+
+  <!-- ================= iteration trace ================= -->
+  <div class="absolute" style="left:40px;top:268px;width:1120px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">
+      WHAT THE SOLVER ACTUALLY DOES — <span id="hdr-re">…</span></div>
+
+    <div style="margin-top:12px;display:flex;align-items:baseline;padding:0 4px 7px 4px;
+                border-bottom:1px solid rgba(148,163,184,.20);">
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:110px;">ITERATION</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:300px;">f IN</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:300px;">f OUT — RHS OF COLEBROOK</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:190px;text-align:right;">|Δf|</span>
+      <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="flex:1 1 auto;text-align:right;">vs TOLERANCE</span>
+    </div>
+
+    <div id="rows"></div>
+  </div>
+
+  <!-- ================= bottom band ================= -->
+  <div class="absolute rounded-lg px-4 py-3" style="left:40px;top:502px;width:548px;
+       border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.07);">
+    <div class="text-sky-300 text-[12.5px] font-semibold" style="margin-bottom:4px;">
+      Below Re = 2300 it does not iterate at all.</div>
+    <div class="text-sky-200/80 text-[12px] leading-snug" id="laminar-note">…</div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:612px;top:502px;width:548px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-300 text-[12.5px] font-semibold" style="margin-bottom:4px;">
+      The fits are close. That is not the point.</div>
+    <div class="text-slate-400 text-[12px] leading-snug" id="fits-note">…</div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set — that bloats the file
+// with hundreds of inherited defaults per node and changes nothing visually.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID — `md:` variants are MEDIA QUERIES, so freezing without these drops the column
+  // definition and every cell stacks into an unreadable pile. Day 3 lost a build to it.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  // transform/transform-origin carry the 0.72 scale on the slot.
+  'transform','transform-origin'];
+
+// Freeze one element's computed style onto its clone, then drop the class that produced it.
+// Shared by the block snapshot and the standalone export so the two can never drift.
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. Skipping it while stripping the class that hid the
+    // element makes every hidden node render — Day 2 shipped two empty amber rectangles that way.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN. Tailwind's preflight sets border-style:solid
+    // with border-width:0; dropping the 0px falls back to `medium` and paints a 3px box.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function buildCard() {
+  var fr  = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+
+  // KILL TRANSITIONS FIRST — a CSS transition is driven by the compositor's frame clock, so in
+  // a non-painting context it never advances and getComputedStyle returns the START value.
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  // setLanguage() is ASYNC and re-renders, and language persists in localStorage — force it.
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('theory'); }
+    setTimeout(function () { snapshotBlock(doc, win); }, 600);
+  }, 900);
+}
+
+function snapshotBlock(doc, win) {
+  var node = doc.querySelector('[data-i18n-html="docs.theory.b021"] .bg-slate-950');
+  var clone = node.cloneNode(true);
+
+  // The freeze strips every class, so tag the HEM sub-box now — attributes survive, classes
+  // do not. It is the last child of the box.
+  var hem = clone.children[clone.children.length - 1];
+  if (hem) { hem.setAttribute('data-role', 'hem'); }
+
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is fully applied.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  // Crop the two-phase HEM assumptions: different subject, and it would take the space the
+  // iteration table needs. Heights were frozen, so release the container to auto.
+  var hemFrozen = clone.querySelector('[data-role="hem"]');
+  if (hemFrozen) { hemFrozen.parentElement.removeChild(hemFrozen); }
+  clone.style.height = 'auto';
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+
+  // Quote the equation line out of the app's own DOM, then mark BOTH occurrences of f. Splitting
+  // on '√f' is what makes the implicitness visible: the whole claim is that it appears twice, so
+  // assert exactly two occurrences rather than trusting the split.
+  var eqLine = node.children[1].children[1].textContent.trim();
+  var parts = eqLine.split('√f');
+  window.__eqOccurrences = parts.length - 1;
+  document.getElementById('eq').innerHTML = parts
+    .join('<span style="color:#fb7185;font-weight:700;border-bottom:2px solid #fb7185;">√f</span>');
+
+  buildTrace(doc, win, slot);
+}
+
+function buildTrace(doc, win, slot) {
+  // Geometry from the ΔP card's OWN inputs, not typed here.
+  var idV   = parseFloat(doc.getElementById('dp-id').value);
+  var idM   = parseFloat(doc.getElementById('dp-id-unit').value);
+  var rghV  = parseFloat(doc.getElementById('dp-rough').value);
+  var rghM  = parseFloat(doc.getElementById('dp-rough-unit').value);
+  var D     = idV * idM;
+  var eps   = rghV * rghM;
+  var rel   = eps / D;
+
+  // Re and the converged f come from the ENDPOINT. The payload mirrors what index.html sends.
+  var payload = {scale:1, id:idV, id_mult:idM, len:100, len_mult:1, rough:rghV, rough_mult:rghM,
+    elev:70.711, elev_mult:1, v_flow:150, v_flow_m:0.000277778, v_den:10, v_den_m:1,
+    v_visc:0.012, v_visc_m:0.001, l_flow:7300, l_flow_m:0.000277778, l_den:500, l_den_m:1,
+    l_visc:0.12, l_visc_m:0.001, cfactor:100, k_total:0};
+
+  fetch('/api/dp_calculator', {method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)})
+    .then(function (r) { return r.json(); })
+    .then(function (api) { render(api, D, eps, rel, slot); })
+    .catch(function (e) { document.body.setAttribute('data-ready', 'FETCH FAILED: ' + e); });
+}
+
+function render(api, D, eps, rel, slot) {
+  var Re = api.Re;
+
+  // VERBATIM from api/dp_calculator.py::get_darcy_friction_factor. Same start value, same
+  // tolerance, same cap, same order of operations — the assertion below is what proves it.
+  var f = 0.02, diff = 1.0, n = 0, rows = [];
+  while (diff > 1e-6 && n < 100) {
+    var term  = (rel / 3.7) + (2.51 / (Re * Math.sqrt(f)));
+    var fNew  = 1.0 / Math.pow(-2.0 * Math.log10(term), 2);
+    diff = Math.abs(fNew - f);
+    rows.push({i: n + 1, fin: f, fout: fNew, d: diff});
+    f = fNew; n += 1;
+  }
+  var matches = (f === api.f);
+
+  var html = '';
+  for (var j = 0; j < rows.length; j++) {
+    var r = rows[j], last = (j === rows.length - 1);
+    var tone = last ? '#6ee7b7' : '#cbd5e1';
+    html += '<div style="display:flex;align-items:baseline;padding:9px 4px;'
+          + (last ? '' : 'border-bottom:1px solid rgba(148,163,184,.10);') + '">'
+          + '<span style="width:110px;color:#64748b;font-size:13px;">' + r.i + '</span>'
+          + '<span style="width:300px;color:#94a3b8;font-size:14.5px;font-variant-numeric:tabular-nums;">'
+          +   r.fin.toFixed(9) + '</span>'
+          + '<span style="width:300px;color:' + tone + ';font-size:14.5px;font-weight:600;'
+          +   'font-variant-numeric:tabular-nums;">' + r.fout.toFixed(9) + '</span>'
+          + '<span style="width:190px;text-align:right;color:#94a3b8;font-size:13.5px;'
+          +   'font-variant-numeric:tabular-nums;">' + r.d.toExponential(2) + '</span>'
+          + '<span style="flex:1 1 auto;text-align:right;font-size:12.5px;color:'
+          +   (last ? '#6ee7b7' : '#64748b') + ';">'
+          +   (last ? 'below 1×10⁻⁶ → stop' : 'keep going') + '</span>'
+          + '</div>';
+  }
+  document.getElementById('rows').innerHTML = html;
+
+  document.getElementById('conditions').textContent =
+    'D = ' + D.toFixed(4) + ' m (4″) · ε = ' + (eps * 1000).toFixed(3) + ' mm · ε/D = '
+    + rel.toExponential(4) + ' · two-phase HEM, the card’s default case';
+  document.getElementById('hdr-re').textContent =
+    'Re = ' + Re.toExponential(4).replace('e+5', ' × 10⁵') + ', CONVERGED IN ' + rows.length
+    + ' ITERATIONS';
+
+  // The laminar branch, stated with the endpoint's own numbers from a second call.
+  document.getElementById('laminar-note').innerHTML =
+    'Colebrook is a <b>turbulent</b> correlation, so the solver short-circuits to the exact '
+    + 'laminar f = 64/Re and runs <b>zero</b> iterations. Raising the liquid viscosity to 50 cP '
+    + 'on this same line gives Re = <b>508.238</b> → f = <b>0.125925</b>, which is 64/Re to the '
+    + 'last digit the endpoint returns.';
+
+  // Haaland / Swamee-Jain, computed here — they are NOT app features, and the panel says so.
+  var haaland = 1 / Math.pow(-1.8 * Math.log10(Math.pow(rel / 3.7, 1.11) + 6.9 / Re), 2);
+  var swamee  = 0.25 / Math.pow(Math.log10(rel / 3.7 + 5.74 / Math.pow(Re, 0.9)), 2);
+  document.getElementById('fits-note').innerHTML =
+    'On this case Haaland gives <b>' + haaland.toFixed(7) + '</b> ('
+    + ((haaland / f - 1) * 100).toFixed(2) + ' %) and Swamee-Jain <b>' + swamee.toFixed(7)
+    + '</b> (+' + ((swamee / f - 1) * 100).toFixed(2) + ' %) — inside your roughness uncertainty. '
+    + 'The reason to iterate is not accuracy; it is that four lines of code have no validity '
+    + 'envelope to remember. <i>(These two are computed for comparison, not shipped in the tool.)</i>';
+
+  drawArrows();
+
+  // Publish what the capture step asserts against. `match` is the important one: it is the
+  // proof that the JS re-implementation of the endpoint's loop is faithful.
+  document.body.setAttribute('data-ready', [
+    'api_f=' + api.f,
+    'loop_f=' + f,
+    'match=' + matches,
+    'iters=' + rows.length,
+    'Re=' + Re,
+    'rel=' + rel,
+    'first_out=' + rows[0].fout.toFixed(9),
+    'last_delta=' + rows[rows.length - 1].d.toExponential(2),
+    'eq_f_occurrences=' + window.__eqOccurrences
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The obvious connector loops from the "f OUT" column back to the "f IN" cell one row down,
+  // to draw the substitution. Four of them stacked in a 34px row pitch collide with the
+  // numbers they are meant to explain, and the staircase layout of the table already reads as
+  // feedback — each row's f IN is visibly the previous row's f OUT. Days 1, 3, 4 and 5 each
+  // dropped a connector for the same reason.
+  //
+  // The layer is kept so the standalone export and the frame geometry stay identical to the
+  // other days; if a future edit needs a connector, draw it here.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export. Freezing every node in #shot the same way the block was frozen makes the
+// frame self-contained: no network, no scripts, renders identically anywhere. Skip the <svg>
+// subtree — freezing computed styles onto SVG geometry rewrites presentation attributes and
+// silently drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 6 — Colebrook-White is implicit</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day06-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
