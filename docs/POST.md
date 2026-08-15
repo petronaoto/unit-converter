@@ -1,6 +1,6 @@
 # LinkedIn Campaign Log — O&G Engineering Converter
 
-**Document version:** 1.1 (accompanies app v3.1)
+**Document version:** 1.2 (accompanies app v3.2)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [MARKETING.md](MARKETING.md) · [SPECIFICATION.md](SPECIFICATION.md) · [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)
 
@@ -399,7 +399,7 @@ typical domain — comfortably inside LinkedIn's 1,250-character comment limit.
 #### CTA & placement
 
 Question in the body (above). **App link in the first comment**, phrased:
-> Free, no sign-up, no tracking: https://engineering-converter.com
+> Free, no sign-up, no ads: https://engineering-converter.com
 >
 > This exact case, pre-filled — 10 barg on the left, psia on the right:
 > https://engineering-converter.com/index.html#s=eyJ2IjoyLCJwMSI6ImdhdSIsInAyIjoiYWJzIiwiaW5wdXRzIjp7InByZXNzLWlucHV0MSI6IjEwIiwicHJlc3Mtc2VsZWN0MSI6IjEwMDAwMCIsInByZXNzLXNlbGVjdDIiOiI2ODk0Ljc1NzI5In19
@@ -630,7 +630,7 @@ Two panels, 1200 × 675.
   (4) HHV/LHV → 2 d.p., SG → 3 d.p.;
   (5) `WI = 44.59 / √0.634 = 56.00`, annotated *"rounded inputs, by rule — not by sloppiness"*.
 - Reproduce **no JIS table content** — arithmetic structure only.
-- Reuse the Day 1 footer strip (URL + free / no sign-up / no tracking).
+- Reuse the Day 1 footer strip (URL + free / no sign-up / no ads).
 
 #### Mockup files — ✅ built, captured and published
 
@@ -1453,7 +1453,13 @@ names its own ceiling outperforms every feature post.
 **Lens:** pain-workflow · **Format:** behind-the-scenes
 
 **Hook**
-> There's no sign-up on the tool I built, no cookie banner, and no analytics script.
+> There's no sign-up on the tool I built, no cookie banner, and nothing that follows you off the page.
+
+> **v3.2 accuracy note.** Do not write "no analytics script" in this post. Since v3.2 the app runs
+> Vercel Web Analytics — cookieless and aggregate-only, so "no cookie banner" and "nothing follows
+> you across sites" both remain true, but a measurement script does load. The honest and more
+> interesting version of this post is the distinction itself: counting *that* a calculator was used
+> versus recording *what* was typed into it. See Privacy Policy §7.
 > The share links don't even reach my server — the whole calculation state rides in the URL fragment.
 
 **Angle.** The transport: a share link is `origin + path + '#s=' + base64(state JSON)`, and everything
@@ -1498,7 +1504,7 @@ browser"*, with a dotted line showing the amber part stopping at a boundary mark
 **Angle.** Lay the toolbox out flat: pipe volume for line packing and hydrotest; three-way °API ↔ SG
 ↔ density; dynamic ↔ kinematic viscosity; mass ↔ volumetric flow at a stated density; temperature and
 heating value; LNG liquid density by ISO 6578 Klosek-McKinley; compressor head and power. Then
-restate the spine: ten published reference vectors, 242 tests, no sign-up, no tracking, ten languages.
+restate the spine: ten published reference vectors, 285 tests, no sign-up, no ads, ten languages.
 
 **Mockup.** One page, two zones. Top: a labelled map of the app — five columns (General, Basic Eng,
 Advanced, Safety, cross-cutting) with every card as a chip, the eleven never given a dedicated day

@@ -1,6 +1,6 @@
 # Advertisement & Promotion Strategy — O&G Engineering Converter
 
-**Document version:** 1.5 (accompanies app v3.1)
+**Document version:** 1.6 (accompanies app v3.2)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [SPECIFICATION.md](SPECIFICATION.md)
 
@@ -63,20 +63,39 @@ A pragmatic promotion plan for a solo-maintained, free, zero-tracking engineerin
 
 ## 5. Analytics — within the zero-data-harvesting policy
 
-The in-app Privacy Policy currently promises **no cookies and no tracking**. Options, ranked:
+**Status: resolved in v3.2 — option 2 adopted.** The options as originally ranked:
 
 1. **Search Console only (recommended start).** Google Search Console + Bing Webmaster Tools measure impressions, queries, and clicks with **zero on-site code** — fully compatible with the current Privacy Policy as written. Do this immediately.
-2. **Vercel Web Analytics (optional, later).** Cookieless, aggregate-only. Still adds a measurement script, so the in-app Privacy tab **must be updated first** to disclose it; requires the maintainer's explicit decision.
+2. **Vercel Web Analytics (optional, later).** ✅ **Adopted in v3.2.** Cookieless, aggregate-only. Still adds a measurement script, so the in-app Privacy tab **must be updated first** to disclose it; requires the maintainer's explicit decision.
 3. **Self-hosted Plausible / GoatCounter (optional).** Cookieless, open-source, EU-hostable. Same disclosure requirement as #2, plus hosting effort.
 
-**Rule: no on-site analytics of any kind ships before the Privacy Policy tab is updated in the same release.**
+**Rule: no on-site analytics of any kind ships before the Privacy Policy tab is updated in the same release.** Honoured — v3.2 rewrote Privacy §2, §5, §7 and §9 in English plus all nine translations in the same commit as the script.
+
+### 5.1 What v3.2 measures
+
+The app is a **single URL**, so raw page views say nothing about which of the ~20 calculators earn their keep. Custom events close that gap. Five event names, chosen to stay well inside the Pro plan's allowance:
+
+| Event | Data | Fired |
+|---|---|---|
+| `Tool Used` | `tool` — fixed slug (`steam-if97`, `pipe-dp`, `gt-fuel`, `gas-composition`, …) | **Once per tool per visit.** The live converters run on every keystroke (31 inline `oninput="calcGHV()"` bindings alone), so this is de-duplicated — it measures reach, not typing. |
+| `Calculation` | `tool` — `pipe-dp` \| `prv-sizing` \| `flow-regime` | **Every run.** These are click-driven and each costs a serverless invocation, so the count is directly comparable to the function invocation count in the Vercel dashboard. A gap between the two is the ad-blocker rate. |
+| `Tab View` | `tab` | Per tab switch (user-initiated only). |
+| `Language` | `lang` | Per language switch — the payoff metric for the v2.7 i18n work. |
+| `Action` | `action` — `export-pdf` \| `share-link` \| `report-sent` | Per click. |
+
+**The boundary, restated:** slugs only. No input value, no result, and the Report tab is excluded outright. Boot is silent — `applyState()` → `recomputeAll()` runs the live calculators on every page load and none of them count, or a `localStorage` restore would read as user activity.
+
+**Questions this is meant to answer:** which calculators justify further work (GT Fuel, the newest and largest, is instrumented from day one); whether the ten-language investment is used; whether Share and Export are discovered at all; and what fraction of ΔP/PRV traffic the ad-blocker rate is hiding.
 
 ## 6. Success Metrics
 
 | Metric | Source | 6-month target (suggestion) |
 |---|---|---|
 | Search impressions / clicks | Search Console | Establish baseline → +50 % |
-| Referral visits per channel | (only if on-site analytics is ever adopted; otherwise track link clicks via channel-side stats) | n/a |
+| Referral visits per channel | Vercel Web Analytics — Referrers (live since v3.2) | Establish baseline; LinkedIn should be visible on posting days |
+| Calculator reach (share of visits touching each tool) | Vercel Web Analytics — `Tool Used` event | Identify the bottom quartile; decide keep / improve / retire |
+| Deliberate server-backed runs | Vercel Web Analytics — `Calculation` event | Compare against serverless invocation count |
+| Non-English usage share | Vercel Web Analytics — `Language` event | Validate or retire the ten-language investment |
 | GitHub stars / forks | GitHub | 50 stars |
 | Report-tab feedback emails | Inbox | Quality signal, not volume |
 | Article engagement (Qiita LGTM, LinkedIn reactions) | Per platform | Trend up |

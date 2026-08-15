@@ -251,7 +251,14 @@ def test_numeric_tokens_are_en_us_in_every_language(code, dictionaries, flat_key
 
 # ── Version-string consistency (CLAUDE.md version-bump checklist) ────────────────
 
-VERSION = re.compile(r"[Vv](\d+\.\d+(?:\.\d+)?)")
+# Matches "V3.2", "v3.2" AND the spelled-out "Version 3.2" / "バージョン 3.2" / "Versión 3.2"
+# forms. Widened in v3.2: the original `[Vv](\d+\.\d+...)` required a digit immediately after
+# the V, so it never matched ANY of the ten `footer.copyright` values — every one of which is
+# "… • Version 3.1" or its translation. The key was listed in the loop below and in this
+# docstring, but contributed nothing, and a bump that updated pageTitle and mailtoBody while
+# leaving all ten footers behind passed cleanly. The trailing `(?![\d.])` stops "3.1" from
+# matching inside "3.10".
+VERSION = re.compile(r"(?:[Vv]|[Vv]ers[iãóé]?[oóõe]?n?|バージョン|版本|버전|เวอร์ชัน|Versi)\s*(\d+\.\d+(?:\.\d+)?)(?![\d.])")
 
 
 def test_version_strings_agree_across_all_dictionaries(dictionaries):
@@ -263,6 +270,9 @@ def test_version_strings_agree_across_all_dictionaries(dictionaries):
     for code, data in dictionaries.items():
         for path in ("meta.pageTitle", "footer.copyright", "report.mailtoBody"):
             found = VERSION.findall(_leaf(data, path))
+            # Non-vacuity: a key that yields no match is a silent hole in this test, which is
+            # exactly how the footers drifted. Every one of these three carries a version.
+            assert found, f"{code}:{path} contains no recognisable version string"
             for version in found:
                 seen.setdefault(version, []).append(f"{code}:{path}")
 
