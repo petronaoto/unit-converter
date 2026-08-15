@@ -19,6 +19,16 @@ the procedure for turning a day sheet into a live post without rediscovering the
 2. **Every number must be reproduced against the running app before it is written**, not copied
    from the docs. An adversarial check of the original plan found ten defects, including a wrong
    headline figure.
+
+   Two legitimate exceptions, both with obligations attached:
+   - **A figure the app computes but never displays** (Day 4's `dpFric`/`dpStatic`, Day 5's ρ and M,
+     Day 6's iteration trace). Take it from the app anyway — wrap `fetch` for API-only values, use
+     `win.eval` for `const` bindings, and when you must re-implement a loop, **assert your result
+     equals the app's** to full precision before using it.
+   - **A figure the app does not compute at all** (Day 6's Haaland and Swamee-Jain comparison).
+     Allowed only when the post's argument needs it. Then: say in the post that it is not from the
+     tool, and record the formula used in the day sheet so a reader can check it. Never let such a
+     number sit next to app output unlabelled.
 3. **Look at the rendered image before publishing.** Programmatic checks (values, sizes, arrow
    counts, colours) have all passed on an image that was visibly broken. They are not verification.
 4. **Never full-screen capture.** It caught the maintainer's unrelated private windows three times.
