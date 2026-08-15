@@ -115,7 +115,12 @@
         <div id="mobile-nav-menu" class="hidden absolute left-0 right-0 mt-1 bg-slate-900 border border-slate-700 rounded-lg shadow-xl py-1 z-50 max-h-[70vh] overflow-y-auto"></div>
       </div>
 
-      <nav class="hidden md:flex space-x-6 md:space-x-8 text-sm font-semibold tracking-wide text-slate-400 overflow-x-auto pb-2 scrollbar-hide">
+      <!-- v3.1 hotfix — ten tabs no longer fit max-w-5xl at text-sm/space-x-8 (EN needed 1,008 px
+           for a 976 px row; RU 1,503 px), and overflow-x-auto + scrollbar-hide made the cut-off
+           REPORT tab look truncated with no affordance. Compact responsive spacing puts EN/JA/DE
+           on one row; flex-wrap lets long-label languages (RU/ES/FR/TH) wrap to a second row
+           instead of clipping. overflow-x-auto stays as an inert safety net. -->
+      <nav class="hidden md:flex flex-wrap gap-x-4 xl:gap-x-6 text-xs lg:text-sm font-semibold tracking-wide text-slate-400 overflow-x-auto pb-2 scrollbar-hide">
         <button id="btn-general" onclick="switchTab('general')" class="pb-3 whitespace-nowrap border-b-2 border-amber-500 text-amber-500 hover:text-amber-400 transition-colors uppercase" data-i18n="nav.general">General</button>
         <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.basic">Basic Eng</button>
         <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.advanced">Advanced</button>
