@@ -124,13 +124,6 @@ def test_index_html_is_a_single_file_with_no_local_script_or_style_imports():
     """External CDN references (Tailwind, Three.js) are expected and allowed; a relative
     src=/href= to a local .js/.css file would mean the single-file principle has broken.
 
-    KNOWN EXCEPTION: `/cdn-cgi/scripts/.../email-decode.min.js` (index.html:2182) is a
-    Cloudflare email-obfuscation script that was baked into the file at some point and is
-    disclosed in the Privacy Policy tab (index.html:2045). It is allowlisted here rather
-    than silently ignored. Worth revisiting separately: the app deploys to Vercel, where
-    `/cdn-cgi/` does not exist, and there is no `__cf_email__` span left in the document
-    for it to decode — so it is most likely a dead 404 on every page load.
-
     KNOWN EXCEPTION: `/_vercel/insights/script.js` (v3.2) is Vercel Web Analytics. It looks
     like a local path but no such file exists in this repository and none is ever built —
     Vercel's edge injects it at request time, which is why the script-tag install is used
@@ -142,10 +135,7 @@ def test_index_html_is_a_single_file_with_no_local_script_or_style_imports():
     """
     import re
     html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-    allowed = {
-        "/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
-        "/_vercel/insights/script.js",
-    }
+    allowed = {"/_vercel/insights/script.js"}
 
     local_refs = set(re.findall(
         r'(?:src|href)=["\'](?!https?://|//|#|mailto:|data:)([^"\']+\.(?:js|css))["\']',
