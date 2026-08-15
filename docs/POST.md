@@ -6,7 +6,8 @@
 
 A 20-post daily LinkedIn campaign, plus the running record of what was published, when, and
 how it performed. **This file is the single source of truth for the campaign** — plan here,
-post from here, record the URL here.
+post from here, record the URL here. Release announcements and other one-offs — including
+posts to X — are recorded in **§2.1**, kept out of the numbered day tracker on purpose.
 
 **Goal (stated):** acquire more visitors who will support the project. Not lead generation —
 reach, credibility, and genuine affection for the work.
@@ -112,6 +113,48 @@ after the 2026-08-11 reflow — zero violations). Engagement posts sit on **Days
 > week 1, still cold-readable), the steam post moves up to Day 3, and week 4 alternates cleanly to
 > the new close. The roadmap poll is cut from the ending entirely — hold it for a standalone post
 > a fortnight after the campaign, when there is something concrete to decide.
+
+### 2.1 Off-campaign posts
+
+Release announcements and other one-offs that are **not** part of the 20-day sequence. They are
+recorded here rather than as rows in the tracker above, so the day numbering — which C12 already
+had to reconcile once — stays intact. **Do not renumber the campaign to fit one of these in.**
+
+| Date | Occasion | Platform | Post URL |
+|---|---|---|---|
+| Sat 15 Aug 2026 | **v3.1 launch — GT Fuel estimator** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7494264076139802624/> |
+| Sat 15 Aug 2026 | **v3.1 launch — GT Fuel estimator** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088499375039447394> |
+
+**v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
+a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
+because 280 characters cannot hold both languages. Both platforms carry
+`https://engineering-converter.com/` in the body and the same image.
+
+- **Posted on a Saturday, deliberately.** The weekday-only cadence in §1 is a *reach* rule for the
+  campaign drip; a release announcement is tied to the release, not to the calendar. It does not
+  displace or renumber any campaign day, and Day 5 still goes out Monday 17th as queued.
+- **Figures** are reference **Vector 11** (`docs/SPECIFICATION.md` §9), reproduced against the
+  running app before the copy was written, per the standing rule: M701JAC (448) at 448 MW on the
+  Vector 1 reference gas (LHV 40.25 MJ/Nm³, ρ_std 0.8193 kg/Nm³) at 92 % availability →
+  Q 1,018.18 MW-th · HR **8,182 kJ/kWh** = 7,755 Btu/kWh · 91.07 kNm³/h · 74.61 t/h ·
+  733.93 MMNm³/yr. The computed heat rate equalling MHI's *published* 8,182 kJ/kWh is the post's
+  credibility argument, and both numbers appear in the same frame.
+- **Assets:** `docs/linkedin/v31-gtfuel-mockup.html` (generator), `-standalone.html` (frozen
+  export), `v31-gtfuel.png` (the 1200 × 675 capture). The generator follows the `dayNN-mockup.html`
+  pattern in §7 — off-screen iframe, real app driven by its own JS, computed styles frozen — but is
+  **not** a day sheet. Reuse it for the next release announcement.
+
+> ⚠️ **New trap, and it produces a wrong image that every numeric check passes.** The app boots
+> with a plain `fetch('i18n/en.json')`, and every dev server in this project runs on
+> `127.0.0.1:8000` — so the browser can serve a **previous session's** dictionary from disk cache.
+> A pre-v3.1 copy has no `gtfuel` branch, `tr()` misses, and every label in the GT Fuel tab renders
+> as its literal i18n key (`gtfuel.out.energyLabel`) while all the numbers stay correct. The first
+> capture of this graphic baked exactly that in. It is **not** an app bug — production is fine.
+>
+> The generator now refetches the dictionary with `cache:'no-store'` and reapplies it through
+> `win.eval` (`translationsCache` is a top-level `const`, so it is *not* a property of
+> `contentWindow` — see trap 10 in the skill), then refuses to mount the frame at all unless a
+> probe label has resolved. Any future mock-up on this port needs the same guard.
 
 ---
 
