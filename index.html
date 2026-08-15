@@ -2335,6 +2335,69 @@
         <!-- 20. GT Fuel (v3.1) -->
         <section>
           <h3 id="howto-20" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">20. GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
+          <div data-i18n-html="docs.howto.b091">
+            <div class="flex flex-wrap items-center gap-2 mb-4 text-[10px] font-mono">
+              <span class="px-2 py-1 rounded bg-rose-500/15 border border-rose-500/40 text-rose-300">① Pick a turbine (pull-down or catalogue)</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-rose-500/15 border border-rose-500/40 text-rose-300">② Set fuel LHV, ρ_std, availability</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-rose-500/15 border border-rose-500/40 text-rose-300">③ Read fuel rate &amp; period totals</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-400">④ Copy / Send to Mass↔Vol / Export</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+                <div class="text-rose-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">① GAS TURBINE SELECTION</div>
+                <div class="text-[10px] text-slate-500">VENDOR</div>
+                <div class="flex items-center justify-between bg-slate-800 rounded px-2 py-1 text-amber-400">MHI (Mitsubishi Power) <span class="text-slate-500">▾</span></div>
+                <div class="text-[10px] text-slate-500">MODEL <span class="text-slate-600">— list filtered by vendor</span></div>
+                <div class="flex items-center justify-between bg-slate-800 rounded px-2 py-1 text-amber-400 ring-1 ring-amber-500/60">M701JAC (448) — 448 MW <span class="text-slate-500">▾</span></div>
+                <div class="text-[10px] text-slate-500">CYCLE</div>
+                <div class="flex items-center justify-between bg-slate-800 rounded px-2 py-1 text-amber-400">Simple cycle (GT only) <span class="text-slate-500">▾</span></div>
+                <div class="flex flex-wrap gap-1 pt-1">
+                  <span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-slate-300">Rating <span class="text-amber-400">448 MW</span></span>
+                  <span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-slate-300">η <span class="text-amber-400">44.0%-LHV</span></span>
+                  <span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-slate-300">HR <span class="text-amber-400">8,182</span></span>
+                  <span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-slate-300">TIT <span class="text-amber-400">1,650 °C</span></span>
+                </div>
+                <div class="text-[10px] text-slate-500 leading-snug pt-1">Choosing a model pre-fills ② with its ISO rating &amp; efficiency. In <span class="text-slate-300">Combined cycle</span> mode the GTCC plant output/η are used instead.</div>
+              </div>
+              <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+                <div class="text-rose-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">② FUEL GAS RATE ESTIMATOR</div>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <div><div class="text-[10px] text-slate-500">POWER</div><div class="flex"><span class="flex-1 bg-slate-800 rounded-l px-2 py-1 text-slate-200">448</span><span class="bg-slate-700 rounded-r px-1.5 py-1 text-amber-400 text-[10px]">MW ▾</span></div></div>
+                  <div><div class="text-[10px] text-slate-500">EFF. %-LHV</div><div class="flex"><span class="flex-1 bg-slate-800 rounded-l px-2 py-1 text-slate-200">44.0</span><span class="bg-slate-700 rounded-r px-1.5 py-1 text-amber-400 text-[10px]">%</span></div></div>
+                  <div><div class="text-[10px] text-slate-500">HEATING VALUE</div><div class="flex"><span class="flex-1 bg-slate-800 rounded-l px-2 py-1 text-slate-200">40.25</span><span class="bg-slate-700 rounded-r px-1.5 py-1 text-amber-400 text-[10px]">MJ/Nm³ ▾</span></div></div>
+                  <div><div class="text-[10px] text-slate-500">BASIS</div><div class="flex items-center justify-between bg-slate-800 rounded px-2 py-1 text-amber-400">LHV <span class="text-slate-500">▾</span></div></div>
+                  <div><div class="text-[10px] text-slate-500">ρ_std</div><div class="flex"><span class="flex-1 bg-slate-800 rounded-l px-2 py-1 text-slate-200">0.8193</span><span class="bg-slate-700 rounded-r px-1.5 py-1 text-amber-400 text-[10px]">kg/Nm³</span></div></div>
+                  <div><div class="text-[10px] text-slate-500">AVAILABILITY</div><div class="flex"><span class="flex-1 bg-slate-800 rounded-l px-2 py-1 text-slate-200">92</span><span class="bg-slate-700 rounded-r px-1.5 py-1 text-amber-400 text-[10px]">%</span></div></div>
+                </div>
+                <div class="flex flex-wrap gap-1"><span class="border border-dashed border-amber-500/50 rounded px-1.5 py-0.5 text-[10px] text-amber-400">⇩ Import from Advanced</span><span class="border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-slate-400">⇨ Send to Mass↔Vol</span></div>
+                <div class="border-t border-slate-800 pt-2 space-y-1">
+                  <div class="flex justify-between bg-slate-900 rounded px-2 py-1 border border-slate-700"><span class="text-amber-400 text-[10px]">Fuel energy</span><span class="text-white font-bold">1,018.18 <span class="text-slate-500 font-normal text-[10px]">MW-th</span></span></div>
+                  <div class="flex justify-between bg-slate-900 rounded px-2 py-1 border border-slate-700"><span class="text-amber-400 text-[10px]">Heat rate</span><span class="text-white font-bold">8,182 <span class="text-slate-500 font-normal text-[10px]">kJ/kWh</span></span></div>
+                  <div class="flex justify-between bg-slate-900 rounded px-2 py-1 border border-slate-700"><span class="text-amber-400 text-[10px]">kNm³/h ▾</span><span class="text-white font-bold">91.07 <span class="text-slate-600">📋</span></span></div>
+                  <div class="flex justify-between bg-slate-900 rounded px-2 py-1 border border-slate-700"><span class="text-amber-400 text-[10px]">t/h ▾</span><span class="text-white font-bold">74.61 <span class="text-slate-600">📋</span></span></div>
+                </div>
+                <table class="w-full text-[10px] text-slate-300"><tbody>
+                  <tr class="text-slate-500"><td>Period</td><td class="text-right">Volume</td><td class="text-right">Mass</td></tr>
+                  <tr><td>Hourly</td><td class="text-right">91.07 kNm³</td><td class="text-right">74.6 t</td></tr>
+                  <tr><td>Monthly ×92%</td><td class="text-right">61.16 MMNm³</td><td class="text-right">50,109 t</td></tr>
+                  <tr><td>Yearly ×92%</td><td class="text-right text-white">733.93 MMNm³</td><td class="text-right text-white">601,308 t</td></tr>
+                </tbody></table>
+              </div>
+              <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+                <div class="text-rose-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">③ CATALOGUE — ONE CARD</div>
+                <div class="flex flex-wrap gap-1 text-[10px]"><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-amber-500/50 text-amber-400">All vendors</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">MHI</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">GE</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Siemens</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">50 Hz</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">60 Hz</span></div>
+                <div class="bg-slate-900 rounded-lg border border-slate-700 p-2.5 space-y-1">
+                  <svg viewBox="0 0 160 54" class="w-full h-auto" aria-hidden="true"><use href="#gt-svg-hd"></use></svg>
+                  <div class="text-slate-100 font-semibold">M701JAC (448) <span class="text-[10px] font-normal text-slate-500">MHI</span></div>
+                  <div class="text-[10px] text-slate-400">50 Hz · <span class="text-slate-200">448 MW · 44.0%-LHV · 8,182 kJ/kWh</span></div>
+                  <div class="text-[10px] text-slate-400">MPCP1 1x1: <span class="text-slate-200">650 MW · 64.0%</span></div>
+                  <div class="text-[10px] text-slate-500">TIT 1,650 °C · Exhaust 765 kg/s @ 663 °C</div>
+                  <span class="inline-block text-[10px] px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/40 text-amber-400">Use this model</span>
+                </div>
+                <div class="text-[10px] text-slate-500 leading-snug">31 machines · filter by vendor, frequency and class · thumbnails are schematic (heavy-duty / aeroderivative / industrial) · <span class="text-slate-300">Use this model</span> loads the card into ① and scrolls up.</div>
+              </div>
+            </div>
+          </div>
           <div data-i18n-html="docs.howto.b090"><p class="text-sm text-slate-400 leading-relaxed">The GT Fuel tab holds three panels. In <strong class="text-slate-200">Gas Turbine Selection</strong>, pick a vendor and model from the pull-down (31 machines: MHI including FT-series aeroderivatives, GE Vernova, Siemens Energy) — or scroll to the <strong class="text-slate-200">Gas Turbine Catalogue</strong> below and click <em>Use this model</em> on any card. The selection pre-fills the estimator with the machine's ISO rating and %-LHV efficiency and shows its spec chips (rating, η, heat rate, TIT and exhaust where published). The <strong class="text-slate-200">Cycle</strong> selector switches between simple-cycle GT and GTCC plant basis: in Combined cycle mode the published plant output and plant efficiency are used — the fuel still burns only in the gas turbine, so fuel = plant output ÷ plant efficiency. Choose <em>Manual input</em> as vendor to type everything yourself.</p>
           <p class="text-sm text-slate-400 leading-relaxed mt-3">The <strong class="text-slate-200">Fuel Gas Rate Estimator</strong> needs five numbers: power output (MW/kW), efficiency (%-LHV), fuel heating value (MJ/Nm³ or Btu/scf; if you set the basis to HHV, an HHV/LHV ratio field appears — default 1.108, the reference-composition value), standard gas density, and availability. The dashed <em>Import</em> button pulls LHV/HHV and ρ_std from the last Advanced-tab compositional run; the <em>Send</em> button pushes the computed mass flow and density into the Basic Eng Mass↔Vol card and jumps there. Outputs update live: fuel energy input (MW-th), heat rate in kJ/kWh and Btu/kWh, volumetric flow (kNm³/h · Nm³/h · scf/h · MMSCFD) and mass flow (t/h · kg/h · kg/s), each with a unit-aware copy button, plus a totals table — the hourly row is the instantaneous rate, while daily, monthly (730 h) and yearly (8,760 h) rows are multiplied by the availability factor.</p>
           <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3 text-xs text-rose-300 mt-3"><strong>ℹ Worked example</strong> — M701JAC (448) at 448 MW and η = 44.0 %-LHV: fuel energy <strong>1,018.18 MW-th</strong>, heat rate <strong>8,182 kJ/kWh</strong> (7,755 Btu/kWh). With LHV 40.25 MJ/Nm³ and ρ_std 0.8193 kg/Nm³ the fuel flow is <strong>91.07 kNm³/h</strong> (74.61 t/h, 81.58 MMSCFD); at 92 % availability the yearly total is <strong>733.93 MMNm³</strong> (601,308 t).</div>
@@ -2991,7 +3054,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.terms.b001">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500" data-i18n-html="docs.terms.b002">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.terms.b002">Last updated: August 2026 — Version 3.1</p>
           <p class="text-xs text-slate-500 italic" data-i18n-html="docs.terms.langNote">Translations of these Terms of Use are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
           <div data-i18n-html="docs.terms.b003">
@@ -3014,6 +3077,7 @@
               <li>Compliance with any specific national or international standard</li>
             </ul>
             <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. Several tools deliberately use simplified or screening-level models and are provided for qualitative orientation only — they <strong>must not be used as a basis for design, operational, or safety decisions</strong>. These include: the Flow Regime visualization (approximate regime-map boundaries + a conceptual 3D animation), the Pipe Delta Pressure two-phase calculation (Homogeneous Equilibrium Model — no slip, no acceleration term), the erosional-velocity check (API RP 14E empirical screening), and the Z-Factor Estimator (Papay correlation, valid only within its stated P<sub>r</sub>/T<sub>r</sub> envelope). Where an input falls outside a method's validated range, the Application flags the result as extrapolated; such results are indicative only.</p>
+            <p class="mt-2"><strong>Screening tools added in v2.8–v3.1</strong> carry the same qualification: the Gas Property Estimator (Lee-Gonzalez-Eakin viscosity, sonic velocity and Joule-Thomson coefficient on the Papay Z-factor), the Steam Properties card (IAPWS-IF97 industrial formulation, Regions 1/2/4 only), the NPSHa card (available head only — it deliberately issues no margin verdict against the pump vendor's NPSHr), the Compressor card (isentropic and perfect-gas polytropic relations with a one-pass real-gas correction; not a test-code procedure), and the GT Fuel estimator and catalogue. The GT catalogue figures are <strong>indicative ratings transcribed from vendors' publicly available materials at ISO conditions</strong>; they may be superseded by later vendor revisions, are net or gross per each vendor's own convention, and do not constitute a performance guarantee — actual fuel consumption depends on site conditions, degradation, part load and fuel composition. Always confirm against the current vendor datasheet.</p>
           </div>
 
           <div data-i18n-html="docs.terms.b006">
@@ -3041,6 +3105,7 @@
           <div data-i18n-html="docs.terms.b008">
             <h3 class="text-base font-semibold text-amber-500 mb-2">6. Intellectual Property</h3>
             <p>The Application code, design, and documentation are the intellectual property of Naoto Yamabe. The underlying calculation methods and physical constants are derived from publicly available engineering standards (JIS K 2301, ISO 6578, etc.), which remain the property of their respective issuing bodies. Redistribution or commercial use of the Application without explicit written permission is prohibited.</p>
+            <p class="mt-2"><strong>Third-party names and data (v3.1).</strong> The GT Fuel catalogue refers to gas-turbine manufacturers and model designations (including MHI / Mitsubishi Power, GE Vernova and Siemens Energy) solely to identify the equipment; those names and marks are the property of their respective owners, and the performance figures shown are transcribed, with source citations, from the manufacturers' publicly available brochures, fact sheets and product pages. The Application is an independent tool that is <strong>not affiliated with, sponsored by, or endorsed by</strong> any of these manufacturers. The catalogue thumbnails are original schematic illustrations created for this Application and are not manufacturer imagery.</p>
           </div>
 
           <div data-i18n-html="docs.terms.b009">
@@ -3060,7 +3125,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.privacy.b001">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: June 2026 — Version 2.4</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: August 2026 — Version 3.1</p>
           <p class="text-xs text-slate-500 italic" data-i18n-html="docs.privacy.langNote">Translations of this Privacy Policy are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
           <div data-i18n-html="docs.privacy.b003">
@@ -3093,6 +3158,7 @@
             <p class="mt-2"><strong>Share links (v2.4).</strong> The "Share" button encodes your current inputs into the page URL (after the <span class="font-mono">#</span> fragment) and copies it to your clipboard. This is performed entirely in your browser; the fragment is never sent to the server. Anyone you give the link to can reconstruct those inputs, so avoid sharing links containing data you consider sensitive.</p>
             <p class="mt-2"><strong>Share links now carry custom modules (v2.8).</strong> A share link also encodes the <em>definitions</em> of any custom converter modules you have created — their title, unit labels and conversion factor. When someone opens such a link, those modules are added to their browser's local storage and <strong>persist after reload</strong>, so they remain usable. A short on-screen notice states how many were added. Imported module text is sanitised on arrival and their internal identifiers are regenerated, so a link cannot overwrite or delete modules the recipient already had. Anyone can remove an imported module with its TERMINATE button, or by clearing site data.</p>
             <p class="mt-2"><strong>The bug-report form is excluded (v2.8).</strong> Anything typed into the Report tab — your name, the description, the report type — is <strong>no longer</strong> written to local storage or encoded into share links. Previously those fields were captured along with the calculator inputs. That text is now used only when you choose to open your email client to send the report.</p>
+            <p class="mt-2"><strong>Language preference (v2.6).</strong> Your chosen interface language is also kept in local storage (a two-letter code such as <span class="font-mono">ja</span>) so the page opens in that language next time. Like everything else in local storage it never leaves your browser; a share link may carry the sender's language so the recipient sees the same view.</p>
           </div>
 
           <div data-i18n-html="docs.privacy.b006">
