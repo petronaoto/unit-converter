@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 1.4 (describes app v3.0)
+**Document version:** 1.5 (describes app v3.1)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -135,11 +135,22 @@ Local development requires `vercel dev` (opening `index.html` directly breaks th
 
 ### 4.5 Documentation & Support Tabs
 
-- **How To Use** — Operations manual: "What's New" blocks (v2.8, v2.5, v2.4) + 19 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report, Gas Property Estimator, fittings & line sizing, mobile navigation & shared modules — and, added v3.0, Steam Properties, NPSHa, the compressor card and unit-aware copy) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors (`howto-new28`, `howto-new25`, `howto-new`, `howto-1`…`howto-19`).
-- **Theory** — Constants and formulas: Part I gas compositional (JIS K 2301 with worked examples), Part II density/flow, Part III LNG Klosek-McKinley (Tables B.2/C), Part IV hydraulics (Papay Z-factor §4.1, Darcy-Weisbach + Colebrook §4.2, flow-regime maps §4.3, erosional velocity §4.4), Part VI PRV sizing (§6.1–§6.7 incl. API 526 orifice table), Part V data sources, Part VII real-gas properties & fittings, Part VIII steam (IAPWS-IF97 §8.1–§8.5, added v3.0, anchor `theory-p8`), Part IX pump-suction NPSHa (§9.1–§9.3, added v3.0, anchor `theory-p9`), Part X compressor head & power (§10.1–§10.3, added v3.0, anchor `theory-p10`). Worked-example numbers must match actual calculator output exactly.
+- **How To Use** — Operations manual: "What's New" blocks (v3.1, v3.0, v2.8, v2.5, v2.4) + 20 illustrated sections (header/nav, General, custom modules, Basic Eng, Advanced §1–4, ΔP, Flow Regime, PRV, Report, Gas Property Estimator, fittings & line sizing, mobile navigation & shared modules — added v3.0, Steam Properties, NPSHa, the compressor card and unit-aware copy — and, added v3.1, the GT Fuel tab, §20) using CSS wireframe diagrams. Since v2.5: jump-link strip at the top and section anchors (`howto-new31`, `howto-new30`, `howto-new28`, `howto-new25`, `howto-new`, `howto-1`…`howto-20`).
+- **Theory** — Constants and formulas: Part I gas compositional (JIS K 2301 with worked examples), Part II density/flow, Part III LNG Klosek-McKinley (Tables B.2/C), Part IV hydraulics (Papay Z-factor §4.1, Darcy-Weisbach + Colebrook §4.2, flow-regime maps §4.3, erosional velocity §4.4), Part VI PRV sizing (§6.1–§6.7 incl. API 526 orifice table), Part V data sources, Part VII real-gas properties & fittings, Part VIII steam (IAPWS-IF97 §8.1–§8.5, added v3.0, anchor `theory-p8`), Part IX pump-suction NPSHa (§9.1–§9.3, added v3.0, anchor `theory-p9`), Part X compressor head & power (§10.1–§10.3, added v3.0, anchor `theory-p10`), Part XI gas-turbine fuel estimation (§11.1–§11.3, added v3.1, anchor `theory-p11`). Worked-example numbers must match actual calculator output exactly.
 - **Terms of Use** — 8 clauses (reference-only nature, warranty disclaimer, liability, user responsibility, IP, updates, governing law).
 - **Privacy Policy** — 10 clauses (zero collection, localStorage-only state, stateless APIs, hosting, report feature, no cookies/tracking, children, rights, contact).
 - **Report** — `mailto:` composer for bug reports / feature requests (no server round-trip); includes app-version environment string.
+
+### 4.6 GT Fuel (v3.1)
+
+A top-level tab (between Safety and How To Use: nav `btn-gtfuel`, panel `tab-gtfuel`, `switchTab('gtfuel')`) estimating gas-turbine fuel gas consumption from vendor specifications. Client-side only — no API involvement.
+
+- **Gas Turbine Selection** (`gt-select`): vendor select `gt-vendor` (`mhi`/`ge`/`sie`/`manual`), model select `gt-model` (static `<optgroup>` option list — options are hidden/disabled by the vendor filter, never rebuilt, so share-link restore always finds its option; `gtFilterModelOptions()`), cycle select `gt-cycle` (`sc`/`cc`). Selecting a model (`selectGTModel(id)`) pre-fills power and efficiency from the simple-cycle rating or, in `cc` mode, the first published combined-cycle configuration, and paints spec chips `gt-spec-mw/-eff/-hr/-tit/-exh` (chips are re-derived inside `calcGTFuel()` so a state restore repaints them without a selection event).
+- **Dataset**: `const GT_MODELS = JSON.parse(\`…\`)` — 31 machines (MHI 15 incl. FT-series aeroderivatives; GE Vernova 10; Siemens Energy 6), fields `{id, vendor, model, hz(0|50|60; 0 = both), cls(HD|AD|IND), scMW, scEff(%-LHV), hrKJ, exhKgS, exhC, titC, cc:[{cfg, mw, eff}], svg(hd|ad|ind), src}`. Every entry cites its source (MHI brochure METP-11GT01E1-E-0 performance tables; GE fact sheets GEA35750/GEA35768 + product pages; Siemens product pages). CI enforces `|hrKJ − 3600/η| ≤ 30 kJ/kWh` per machine and `cc.mw > scMW`, `cc.eff > scEff`.
+- **Estimator** (`gt-est`): inputs `gt-power`(+`-u` MW|kW), `gt-eff` (%-LHV), `gt-hv`(+`-u` MJ/Nm³|Btu/scf), `gt-hv-basis` (lhv|hhv; hhv reveals `gt-hhv-ratio`, default 1.108 = 44.59/40.25), `gt-rho` (kg/Nm³), `gt-avail` (%). Physics: `Q = P/η`; `HR = 3600/η` (Btu/kWh ÷ 1.055056); `LHV_used = basis==hhv ? HV/ratio : HV`; `V = 3600·Q/LHV` Nm³/h; `ṁ = V·ρ_std`. Named constants `GT_HV_FACTOR = 0.001055056 * 37.3258` (derived, mirrors the General-tab `HV_FACTOR`), `GT_H_YEAR = 8760`, `GT_H_MONTH = 730`. Outputs `gt-out-q`, `gt-out-hr`, `gt-out-hr-btu`, `gt-out-vol`(+`-u` kNm³/h|Nm³/h|scf/h|MMSCFD), `gt-out-mass`(+`-u` t/h|kg/h|kg/s) with unit-aware copy buttons; totals table `gt-tot-{h,d,m,y}-{vol,mass,e}` — hourly row is the instantaneous rate, daily/monthly/yearly rows apply the availability factor. Soft warnings in `gt-warn` (η outside 15–72 %, LHV outside 20–60 MJ/Nm³, CC mode without published CC data).
+- **Cross-links**: `importGHVToGT()` reads the module-level `lastGHV = {hhv, lhv, rho}` cached by `calcGHV()` (precedent: `lastFlowRegime`) and warns if the Advanced-tab calculation has not run; `sendGTToMassVol()` writes t/h + kg/m³ into `mf-mass`/`mf-rho`, runs `calcMassVol('mass')` and jumps to `basic-mf`.
+- **Catalogue** (`gt-cat`): filter pills (vendor exclusive-select + attribute exclusive-select: all/50 Hz/60 Hz/HD/AD/IND; `hz 0` machines match both frequency filters), grid `gt-cat-grid` rendered by `renderGTCatalogue()` from `GT_MODELS` via `tr('gtfuel.cat.*')` (re-rendered when a translation-sentinel changes — language switches run `recomputeAll()` → `calcGTFuel()` → `gtRenderCatalogueIfStale()`). Thumbnails are three original inline `<symbol>` schematics (`gt-svg-hd/ad/ind`) referenced per card — no vendor imagery (copyright). All figures labelled indicative, ISO conditions, natural gas.
+- `calcGTFuel` is in `recomputeAll()` and in the no-stored-state boot branch; all `gt-*` inputs/selects persist via `collectInputs()` and share links automatically.
 
 ## 5. Serverless API Contracts
 
@@ -257,7 +268,7 @@ plus mode-specific intermediates — gas: `C`, `Pcf`, `critical_ratio`; steam: `
 
 ## 7. Export Report
 
-`exportReport()` builds a standalone printable HTML document (report header with version + timestamp, sections for GHV & composition, ΔP, Flow Regime, PRV, Basic Eng values, plus the reference-only disclaimer) and opens it in a new window for the browser's Save-as-PDF. Since v2.5, if the pop-up is blocked the same HTML is downloaded as `og-converter-report.html` instead, with a toast explaining the fallback.
+`exportReport()` builds a standalone printable HTML document (report header with version + timestamp, sections for GHV & composition, ΔP, Flow Regime, PRV, Basic Eng values and — v3.1, only when a valid estimate exists — section 6 GT Fuel, plus the reference-only disclaimer) and opens it in a new window for the browser's Save-as-PDF. Since v2.5, if the pop-up is blocked the same HTML is downloaded as `og-converter-report.html` instead, with a toast explaining the fallback.
 
 ## 8. Calculation Rules Summary (normative)
 
@@ -386,7 +397,19 @@ Cross-check worth keeping: at Z = 1 the sonic velocity would be 441.0 m/s, **7.5
 | H_is (m_s = (k−1)/k) | **92.60625** kJ/kg → implied η_s = 0.75 × 92.60625/95.18714 = **72.97 %** |
 | Gas power W = ṁ·H_poly/η_p @ 27.77778 kg/s | **3,525.44967 kW** (3.52545 MW · 4,727.70592 hp) |
 
-All vectors are enforced automatically on every push and pull request, except Vector 1 and the display layers of Vectors 8–10 (browser-side JavaScript) — see §13.
+**Vector 11 — GT fuel estimator (added v3.1).** M701JAC (448) one-click prefill + Vector 1's reference gas: P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 % (`tests/test_gt_fuel.py`):
+
+| Step | Expected (display strings) |
+|---|---|
+| Q_fuel = P/η | **1,018.18 MW-th** |
+| HR = 3600/η | **8,182 kJ/kWh** = **7,755 Btu/kWh** — reproduces MHI's published heat rate exactly |
+| V = 3600·Q/LHV | 91,067 Nm³/h → **91.07 kNm³/h**, **81.58 MMSCFD** (×37.3258×24/10⁶) |
+| ṁ = V·ρ_std | 74,611 kg/h → **74.61 t/h** |
+| Monthly (730 h × 92 %) | **61.16 MMNm³** |
+| Yearly (8,760 h × 92 %) | **733.93 MMNm³** · **601,308 t** · 3,610.5 GWh sent out |
+| LHV in Btu/scf | 40.25 ÷ (0.001055056 × 37.3258) = **1,022.1** (1 MJ/Nm³ = 25.393 Btu/scf) |
+
+All vectors are enforced automatically on every push and pull request, except Vector 1 and the display layers of Vectors 8–11 (browser-side JavaScript) — see §13.
 
 ## 10. Deployment
 
@@ -410,6 +433,7 @@ All vectors are enforced automatically on every push and pull request, except Ve
 | 10 | ~~`index.html` loads `/cdn-cgi/scripts/…/email-decode.min.js`, a Cloudflare email-obfuscation script baked into the file~~ | `index.html` | **FIXED v2.8.1.** The script tag (latterly at `index.html:2470`, sharing its line with the app's opening `<script>`) was removed with the maintainer's approval: the app deploys to Vercel where `/cdn-cgi/` does not exist (a dead 404 on every load), and no `__cf_email__` element remained for it to decode. The Privacy Policy clause that disclosed it (`docs.privacy.b007`) was rewritten in the inline English and in all 9 non-English dictionaries in the same commit |
 | 12 | ~~PRV two-phase SUBCRITICAL mass-flux bracket mis-coded: `−2·ω·ln(η) + (ω−1)(1−η)` instead of Leung's `−2·[ω·ln(η) + (ω−1)(1−η)]` — the −2 multiplied only the log term~~ | `api/psv_calculator.py` (subcritical branch of `size_twophase`) | **FIXED v3.0 (PR-1).** Found by adversarial review of PR-1 itself. The wrong form produced subcritical flux ABOVE choked flux (impossible — choked flow is maximal) and was discontinuous at η_c, overstating G by ~20–30 % at ω ≈ 1.5 and **under-sizing** the valve on that branch. It shipped unnoticed since v2.0 because the branch was unreachable at the UI's `Pa` default of 0 (vacuum ⇒ always critical) — only an explicitly-entered `Pa > P_c` reached it. The §11 #5 atmospheric default would have made it the *default* path for low-P_o cases, so both changes ship in the same PR. Verified by construction: η_c is defined as the flux maximum, so the corrected subcritical G reproduces the critical-branch G at η_a = η_c (`test_subcritical_flux_is_continuous_with_the_critical_branch`, three ω values, plus pinned corrected areas: the P_o = 20 psia case moves 30.978 → **38.972 in²**). Vector 4 is on the critical branch and is bit-identical |
 | 11 | ~~Z-Factor Estimator silently ignores a temperature of exactly **0**~~ (`0` is falsy, so `if(!sg \|\| !p \|\| !t) return;` aborted and left the *previous* result on screen with no indication it was stale — and 0 °C is an ordinary process temperature) | `index.html` `calcZFactor()` | **FIXED v2.8.** Guard is now `if(!sg \|\| !p \|\| isNaN(t)) return;`. `sg` and `p` keep the falsy check deliberately — zero gas gravity or zero absolute pressure are genuinely invalid, not merely unusual. Verified in a browser: 0 °C → Z = 0.6934 on **both** cards (they disagreed before), 0 °F → 0.6185, blank/`sg = 0`/`p = 0` still rejected, Vector 5 unchanged at 0.8646. Pinned by `test_zero_temperature_is_not_treated_as_missing_input` |
+| 13 | ~~v2.4 Basic Eng converter cards (°API/SG/Density, Viscosity, Mass↔Vol) silently blank their computed field whenever the result reaches **1,000**~~ — the six `.value = formatValue(…)` writes put comma-grouped strings (e.g. `91,067.19`) into `type="number"` inputs, which browsers reject wholesale, leaving an empty field with no error | `index.html` `calcAPI()`/`calcVisc()`/`calcMassVol()` | **FIXED v3.1.** Found because the new GT Fuel "Send to Mass↔Vol" cross-link produces gas-scale flows (91,067 m³/h) that hit the threshold on every use; latent since v2.4 for any density > 999 kg/m³ or large flow. The six sites now use `formatValuePlain()` — identical digits to `formatValue()` (`toLocaleString` en-US, ≤ 5 fraction digits) with `useGrouping: false`, so sub-1,000 results render character-identically and larger results simply work. The General-tab converters keep `formatValue()` unchanged — their fields are `type="text" inputmode="decimal"` by design and display grouping correctly |
 
 ## 12. Internationalization (i18n)
 
@@ -418,7 +442,7 @@ Added in v2.6 as **Milestone 1** of a multi-milestone program (roadmap and decis
 ### 12.1 Dictionaries
 
 - `i18n/en.json` — canonical working-tool dictionary and the runtime fallback for any working-tool key missing in another language. It deliberately contains **no `docs.*` keys** — English documentation content lives inline in `index.html` (see 12.6).
-- `i18n/ja.json`, `zh.json`, `ko.json`, `th.json`, `id.json`, `ru.json`, `es.json`, `fr.json`, `de.json` — each carries the full 459-key working-tool set (368 through v2.8.1 + 36 steam keys, 19 NPSHa keys, 25 compressor keys, the `common.copiedWithUnit` toast and the 10 `basic.nav.*` quick-link keys in the v3.0 cycle) **plus** the 155 `docs.*` documentation keys (125 shipped in v2.7; 14 v2.8 blocks translated in v2.8.1; 4 steam, 4 NPSHa, 4 compressor and 2 unit-aware-copy blocks added with their translations in the same PR-2/PR-3/PR-4/PR-5 commits; 2 more for the ★ v3.0 What's New block in the release PR).
+- `i18n/ja.json`, `zh.json`, `ko.json`, `th.json`, `id.json`, `ru.json`, `es.json`, `fr.json`, `de.json` — each carries the full 526-key working-tool set (368 through v2.8.1 + 36 steam keys, 19 NPSHa keys, 25 compressor keys, the `common.copiedWithUnit` toast and the 10 `basic.nav.*` quick-link keys in the v3.0 cycle; + 67 in v3.1: `nav.gtfuel`, the 56-key `gtfuel.*` namespace and 10 `js.export.gt*` keys) **plus** the 161 `docs.*` documentation keys (125 shipped in v2.7; 14 v2.8 blocks translated in v2.8.1; 4 steam, 4 NPSHa, 4 compressor and 2 unit-aware-copy blocks added with their translations in the same PR-2/PR-3/PR-4/PR-5 commits; 2 more for the ★ v3.0 What's New block in the release PR; 6 in v3.1: `docs.howto.b087`–`b090` and `docs.theory.b046`–`b047`).
 - One flat/nested, dot-path-keyed JSON file per language (e.g. `advanced.deltaP.pipeIdLabel`, `safety.psv.gasHeading`, `docs.theory.b005`), namespaced roughly by tab/card. Fetched lazily at runtime via `fetch('i18n/<code>.json')` — not bundled into `index.html` — so the no-build-step principle holds and a visitor never downloads a language they don't select. English is always fetched too, as the fallback source.
 - **Number formatting is en-US in every language** (decimal point, comma grouping) — a deliberate anti-ambiguity rule (see 12.5), enforced editorially in the dictionaries as well as in code.
 
@@ -491,8 +515,9 @@ a manual checklist; it now runs on every push and pull request.
 | `tests/test_steam_if97.py` | (v3.0) IF97 coefficient extraction from `index.html` + independent Python re-evaluation of the Release's verification tables (Tables 5/15/35/36, B23) to 9 s.f.; Vector 8 display pins; exact-unit-factor and advisory-isolation guards |
 | `tests/test_npsh.py` | (v3.0) Vector 9 through the exact UI path (8-s.f. helper quantization), page↔spec worked-example agreement, g = 9.80665 and exact-unit-factor guards, shared-IF97-routing guard |
 | `tests/test_compressor.py` | (v3.0) Vector 10 re-run on literals extracted from `index.html` (bar factor, MW_AIR_GP, R_KMOL_GP), page↔spec worked-example agreement, exact-derivation checks on the ft·lbf/lbm and hp display factors, shared-`papayZ()`-routing and guard-polarity source guards |
-| `tests/test_clipboard.py` | (v3.0) every static `data-unit-src` id resolves to a real element, site counts (19 dynamic + 4 literal + 2 template), bare-value-preserving `copyText` structure, delegated-listener and long-press source guards, `createCard` id-only attribute invariant |
+| `tests/test_clipboard.py` | (v3.0) every static `data-unit-src` id resolves to a real element, site counts (21 dynamic + 6 literal + 2 template as of v3.1), bare-value-preserving `copyText` structure, delegated-listener and long-press source guards, `createCard` id-only attribute invariant |
 | `tests/test_basic_nav.py` | (v3.0) Basic Eng quick-links strip: all nine pills resolve to anchored cards in order, `scroll-mt-24` clearance survives, every pill carries a `basic.nav.*` key |
+| `tests/test_gt_fuel.py` | (v3.1) Vector 11 display pins + page↔spec worked-example agreement; GT_MODELS extraction (JSON.parse contract) with per-entry source citations, HR ≡ 3600/η within 30 kJ/kWh, CC > SC invariants and MHI brochure spot-pins; derived `GT_HV_FACTOR` guard; static-option-list completeness (share-restore trap); `lastGHV` bridge, `recomputeAll` wiring and SVG-symbol presence |
 | `tests/test_architecture.py` | The stdlib-only rule, the no-build-step rule, dev/prod dependency separation |
 | `.github/workflows/ci.yml` | Two jobs — see 13.3 |
 

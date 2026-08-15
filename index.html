@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.0</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.1</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -120,6 +120,7 @@
         <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.basic">Basic Eng</button>
         <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.advanced">Advanced</button>
         <button id="btn-safety" onclick="switchTab('safety')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-red-400 text-red-500/70 transition-colors uppercase" data-i18n="nav.safety">Safety</button>
+        <button id="btn-gtfuel" onclick="switchTab('gtfuel')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.gtfuel">GT Fuel</button>
         <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.howto">How To Use</button>
         <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.theory">Theory</button>
         <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.terms">Terms of Use</button>
@@ -1492,13 +1493,271 @@
       </div>
     </div>
 
+    <!-- v3.1 — GT FUEL: gas-turbine fuel gas estimator + catalogue -->
+    <div id="tab-gtfuel" class="hidden">
+      <div class="space-y-8">
+
+        <!-- G1 — Gas Turbine Selection -->
+        <div id="gt-select" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.sel.title">Gas Turbine Selection</span></h2>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.vendorLabel">VENDOR</label>
+                <select id="gt-vendor" onchange="gtVendorChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                  <option value="mhi">MHI (Mitsubishi Power)</option>
+                  <option value="ge">GE Vernova</option>
+                  <option value="sie">Siemens Energy</option>
+                  <option value="manual" data-i18n="gtfuel.sel.vendorManual">Manual input</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.modelLabel">MODEL</label>
+                <select id="gt-model" onchange="selectGTModel(this.value)" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                  <option value="" data-i18n="gtfuel.sel.modelManual">— manual input —</option>
+                  <optgroup label="MHI">
+                    <option value="h25">H-25 — 41.03 MW</option>
+                    <option value="h100-50">H-100 (50 Hz) — 116.45 MW</option>
+                    <option value="h100-60">H-100 (60 Hz) — 105.78 MW</option>
+                    <option value="m701da">M701DA — 144.09 MW</option>
+                    <option value="m701f">M701F — 385 MW</option>
+                    <option value="m701jac" selected>M701JAC (448) — 448 MW</option>
+                    <option value="m701jac574">M701JAC (574) — 574 MW</option>
+                    <option value="m501gac">M501GAC — 283 MW</option>
+                    <option value="m501jac">M501JAC — 453 MW</option>
+                    <option value="ft8-50">FT8 (50 Hz) — 28.53 MW</option>
+                    <option value="ft8-60">FT8 (60 Hz) — 30.94 MW</option>
+                    <option value="ft4000-70">FT4000 SWIFTPAC 70 (50 Hz) — 70.15 MW</option>
+                    <option value="ft4000-140">FT4000 SWIFTPAC 140 (50 Hz) — 140.5 MW</option>
+                    <option value="ft4000-72">FT4000 SWIFTPAC 70 (60 Hz) — 71.93 MW</option>
+                    <option value="ft4000-144">FT4000 SWIFTPAC 140 (60 Hz) — 144.24 MW</option>
+                  </optgroup>
+                  <optgroup label="GE Vernova">
+                    <option value="9ha01">9HA.01 — 448 MW</option>
+                    <option value="9ha02">9HA.02 — 571 MW</option>
+                    <option value="7ha01">7HA.01 — 290 MW</option>
+                    <option value="7ha02">7HA.02 — 384 MW</option>
+                    <option value="7ha03">7HA.03 — 430 MW</option>
+                    <option value="9f04">9F.04 — 294 MW</option>
+                    <option value="7f05">7F.05 — 239 MW</option>
+                    <option value="lm2500xg4">LM2500XPRESS +G4 — 34.5 MW</option>
+                    <option value="lm6000pf">LM6000VELOX PF+ Sprint — 56.9 MW</option>
+                    <option value="lms100">LMS100 PA+ — 112.9 MW</option>
+                  </optgroup>
+                  <optgroup label="Siemens Energy">
+                    <option value="sgt5-9000hl">SGT5-9000HL — 593 MW</option>
+                    <option value="sgt6-9000hl">SGT6-9000HL — 440 MW</option>
+                    <option value="sgt5-8000h">SGT5-8000H — 450 MW</option>
+                    <option value="sgt6-8000h">SGT6-8000H — 310 MW</option>
+                    <option value="sgt5-4000f">SGT5-4000F — 385 MW</option>
+                    <option value="sgt800">SGT-800 — 62.5 MW</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.cycleLabel">CYCLE</label>
+                <select id="gt-cycle" onchange="gtCycleChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                  <option value="sc" data-i18n="gtfuel.sel.cycleSC">Simple cycle (GT only)</option>
+                  <option value="cc" data-i18n="gtfuel.sel.cycleCC">Combined cycle (GTCC plant)</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipIso">Rating</span> <span id="gt-spec-mw" class="text-amber-500 font-mono">—</span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">η <span id="gt-spec-eff" class="text-amber-500 font-mono">—</span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipHR">Heat rate</span> <span id="gt-spec-hr" class="text-amber-500 font-mono">—</span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">TIT <span id="gt-spec-tit" class="text-amber-500 font-mono">—</span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipExh">Exhaust</span> <span id="gt-spec-exh" class="text-amber-500 font-mono">—</span></span>
+            </div>
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.sel.prefillNote">Selecting a model pre-fills the estimator below with its ISO rating and efficiency (simple-cycle GT, or GTCC plant values in Combined cycle mode). All figures are indicative vendor catalogue data at ISO conditions (15 °C, 101.325 kPa, 60% RH), natural gas. You can overwrite any input.</p>
+          </div>
+        </div>
+
+        <!-- G2 — Fuel Gas Rate Estimator -->
+        <div id="gt-est" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.est.title">Fuel Gas Rate Estimator</span></h2>
+          </div>
+          <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.powerLabel">POWER OUTPUT</label>
+                <div class="flex">
+                  <input type="number" step="any" id="gt-power" value="448" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  <select id="gt-power-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">MW</option><option value="0.001">kW</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.effLabel">EFFICIENCY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.effHint">— %-LHV basis</span></label>
+                <div class="flex">
+                  <input type="number" step="any" id="gt-eff" value="44.0" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.hvLabel">FUEL HEATING VALUE</label>
+                <div class="flex">
+                  <input type="number" step="any" id="gt-hv" value="40.25" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  <select id="gt-hv-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="mj">MJ/Nm³</option><option value="btu">Btu/scf</option></select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.basisLabel">HEATING VALUE BASIS</label>
+                <select id="gt-hv-basis" onchange="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                  <option value="lhv" data-i18n="gtfuel.est.basisLHV">LHV (net)</option>
+                  <option value="hhv" data-i18n="gtfuel.est.basisHHV">HHV (gross)</option>
+                </select>
+                <div id="gt-ratio-wrap" class="hidden mt-2">
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.ratioLabel">HHV/LHV RATIO</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.ratioHint">— to convert to LHV</span></label>
+                  <input type="number" step="any" id="gt-hhv-ratio" value="1.108" oninput="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.rhoLabel">GAS DENSITY</span> (ρ<sub>std</sub>)</label>
+                <div class="flex">
+                  <input type="number" step="any" id="gt-rho" value="0.8193" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">kg/Nm³</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.availLabel">AVAILABILITY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.availHint">— for monthly/yearly totals</span></label>
+                <div class="flex">
+                  <input type="number" step="any" id="gt-avail" value="92" min="0" max="100" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="gt-import" onclick="importGHVToGT()" class="text-xs px-3 py-1.5 rounded border border-dashed border-amber-500/50 text-amber-400 hover:bg-amber-500/10 transition-colors" data-i18n="gtfuel.est.importBtn">⇩ Import LHV/HHV &amp; ρ_std from Advanced tab composition</button>
+              <button id="gt-send-mf" onclick="sendGTToMassVol()" class="text-xs px-3 py-1.5 rounded border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-400 transition-colors" data-i18n="gtfuel.est.sendBtn">⇨ Send result to Mass↔Vol card (Basic Eng)</button>
+            </div>
+            <div id="gt-warn" class="hidden bg-orange-500/10 border border-orange-500/20 rounded p-2 text-[10px] text-orange-400"></div>
+
+            <div class="pt-4 border-t border-slate-800 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                  <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.energyLabel">Fuel energy input</span>
+                  <div class="flex items-center gap-3">
+                    <span id="gt-out-q" class="text-2xl font-bold font-mono text-white">—</span><span class="text-xs text-slate-400">MW-th</span>
+                    <button onclick="copyText(document.getElementById('gt-out-q').innerText, this)" data-copy-unit="MW" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                  <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.hrLabel">Heat rate</span>
+                  <div class="flex items-center gap-3">
+                    <span id="gt-out-hr" class="text-2xl font-bold font-mono text-white">—</span><span class="text-xs text-slate-400">kJ/kWh</span>
+                    <span class="text-xs text-slate-500 font-mono"><span id="gt-out-hr-btu">—</span> Btu/kWh</span>
+                    <button onclick="copyText(document.getElementById('gt-out-hr').innerText, this)" data-copy-unit="kJ/kWh" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                  <select id="gt-out-vol-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="knm3h">kNm³/h</option><option value="nm3h">Nm³/h</option><option value="scfh">scf/h</option><option value="mmscfd">MMSCFD</option></select>
+                  <div class="flex items-center gap-3">
+                    <span id="gt-out-vol" class="text-2xl font-bold font-mono text-white">—</span>
+                    <button onclick="copyText(document.getElementById('gt-out-vol').innerText, this)" data-unit-src="gt-out-vol-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                  <select id="gt-out-mass-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="th">t/h</option><option value="kgh">kg/h</option><option value="kgs">kg/s</option></select>
+                  <div class="flex items-center gap-3">
+                    <span id="gt-out-mass" class="text-2xl font-bold font-mono text-white">—</span>
+                    <button onclick="copyText(document.getElementById('gt-out-mass').innerText, this)" data-unit-src="gt-out-mass-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.out.totalsTitle">CONSUMPTION TOTALS</span> <span class="text-slate-600 font-normal" id="gt-avail-note"></span></label>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-[11px] font-mono border-collapse">
+                    <thead>
+                      <tr class="text-slate-400 text-left">
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold" data-i18n="gtfuel.out.colPeriod">Period</th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colVol">Fuel volume</th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colMass">Fuel mass</th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colEnergy">Power sent out</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-slate-200">
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800"><span data-i18n="gtfuel.out.rowHour">Hourly</span> <span class="text-slate-600" data-i18n="gtfuel.out.rowHourNote">(continuous)</span></td><td id="gt-tot-h-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowDay">Daily</td><td id="gt-tot-d-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowMonth">Monthly (730 h)</td><td id="gt-tot-m-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2" data-i18n="gtfuel.out.rowYear">Yearly (8,760 h)</td><td id="gt-tot-y-vol" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-mass" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-e" class="py-1.5 px-2 text-right">—</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.est.screeningNote">Screening estimate: Q_fuel = P / η (LHV basis); V = 3600·Q / LHV; ṁ = V·ρ_std. Daily/monthly/yearly totals apply the availability factor; the hourly row is the instantaneous rate at load. Efficiency and heat-rate definitions per ISO 3977-2 / ASME PTC 22 convention (HR = 3600/η). Actual fuel consumption varies with site conditions, degradation, part load and fuel composition — verify against vendor performance data before commercial use.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- G3 — Gas Turbine Catalogue -->
+        <div id="gt-cat" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.cat.title">Gas Turbine Catalogue</span></h2>
+          </div>
+          <div class="p-6 space-y-4">
+            <p class="text-[11px] text-slate-500" data-i18n="gtfuel.cat.subtitle">Indicative ISO ratings from public vendor catalogues (natural gas). Click a card to load the model into the estimator.</p>
+            <div class="flex flex-wrap gap-2 text-[10px] font-mono">
+              <button id="gt-filt-all" onclick="gtSetCatFilter('vendor','all',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAll">All vendors</button>
+              <button id="gt-filt-mhi" onclick="gtSetCatFilter('vendor','MHI',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">MHI</button>
+              <button id="gt-filt-ge" onclick="gtSetCatFilter('vendor','GE Vernova',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">GE Vernova</button>
+              <button id="gt-filt-sie" onclick="gtSetCatFilter('vendor','Siemens Energy',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">Siemens Energy</button>
+              <span class="w-px bg-slate-700 mx-1"></span>
+              <button id="gt-filt-any" onclick="gtSetCatFilter('attr','all',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAny">All types</button>
+              <button id="gt-filt-50" onclick="gtSetCatFilter('attr','50',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">50 Hz</button>
+              <button id="gt-filt-60" onclick="gtSetCatFilter('attr','60',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">60 Hz</button>
+              <button id="gt-filt-hd" onclick="gtSetCatFilter('attr','HD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classHD">Heavy duty</button>
+              <button id="gt-filt-ad" onclick="gtSetCatFilter('attr','AD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classAD">Aeroderivative</button>
+              <button id="gt-filt-ind" onclick="gtSetCatFilter('attr','IND',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classIND">Industrial</button>
+            </div>
+            <svg width="0" height="0" class="absolute" aria-hidden="true">
+              <defs>
+                <symbol id="gt-svg-hd" viewBox="0 0 160 54">
+                  <path d="M8 20 L30 8 L30 46 L8 34 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M30 12 L74 18 L74 36 L30 42 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <circle cx="84" cy="16" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <circle cx="84" cy="38" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M94 20 L122 12 L122 42 L94 34 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <path d="M122 16 L152 10 L152 44 L122 38 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                </symbol>
+                <symbol id="gt-svg-ad" viewBox="0 0 160 54">
+                  <ellipse cx="26" cy="27" rx="14" ry="13" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <ellipse cx="26" cy="27" rx="5" ry="4.5" fill="none" stroke="#94a3b8" stroke-width="1"/>
+                  <path d="M40 18 L100 21 L100 33 L40 36 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <path d="M100 22 L120 19 L120 35 L100 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M120 21 L148 25 L148 29 L120 33 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </symbol>
+                <symbol id="gt-svg-ind" viewBox="0 0 160 54">
+                  <rect x="8" y="10" width="144" height="36" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="16" y="2" width="22" height="14" rx="2" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M27 16 L27 24" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M22 26 L44 22 L44 34 L22 30 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M44 24 L86 26 L86 30 L44 32 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <path d="M86 24 L104 21 L104 35 L86 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <path d="M104 25 L138 27 L138 29 L104 31 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="130" y="4" width="10" height="24" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </symbol>
+              </defs>
+            </svg>
+            <div id="gt-cat-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.cat.srcNote">Thumbnails are original schematic illustrations (not vendor imagery). Data sources: MHI GTCC brochure METP-11GT01E1-E-0; GE Vernova fact sheets GEA35750/GEA35768 and product pages; Siemens Energy product pages. Ratings are net or gross per each vendor's published convention and change with catalogue revisions — always confirm against the current vendor datasheet.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.0</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.1</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
-            <a href="#howto-new30" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
+            <a href="#howto-new31" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ New</a>
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
             <a href="#howto-2" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">2 General</a>
             <a href="#howto-3" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">3 Custom</a>
@@ -1518,8 +1777,18 @@
             <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 NPSHa</a>
             <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Compressor</a>
             <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-lime-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Copy</a>
+            <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 GT Fuel</a>
           </nav>
         </div>
+
+        <!-- 0. WHAT'S NEW IN v3.1 -->
+        <section>
+          <h3 id="howto-new31" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b087">★ New in Version 3.1</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b088"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">GT Fuel tab</strong> — a new top-level tab estimating gas-turbine fuel gas consumption from vendor specifications: pick a model (MHI, GE Vernova, Siemens Energy — 31 machines) or enter power, efficiency and heating value manually, toggle between simple-cycle GT and GTCC plant basis, and read fuel energy, heat rate, volumetric and mass flow in selectable units, plus hourly/daily/monthly/yearly totals at your availability factor.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Gas turbine catalogue</strong> — a filterable card grid (vendor, 50/60 Hz, heavy-duty / aeroderivative / industrial) with original schematic thumbnails and the key published specs that drive fuel burn: ISO rating, %-LHV efficiency, heat rate, exhaust and TIT where published, and combined-cycle output/efficiency. One click loads any model into the estimator.</div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Cross-links</strong> — the estimator imports LHV/HHV and ρ_std straight from the Advanced-tab compositional calculation, and can push its fuel mass flow and density into the Basic Eng Mass↔Vol card, so a JIS K 2301 composition flows through to yearly fuel tonnage without retyping a number.</div>
+          </div>
+        </section>
 
         <!-- 0. WHAT'S NEW IN v3.0 -->
         <section>
@@ -2058,6 +2327,15 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3">The unit is read live from the control next to the value — change a unit selector and the next copy carries the new unit, including the VOL/MOL flow outputs, which follow whichever selector is currently visible. Dimensionless results (Z-factor, SG, Wobbe Index, the API 526 orifice letter) never gain a suffix, and the PSV orifice area keeps embedding its unit in the displayed text as it always has. Custom-module cards get the same treatment with their own unit labels.</p></div>
         </section>
 
+        <!-- 20. GT Fuel (v3.1) -->
+        <section>
+          <h3 id="howto-20" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">20. GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
+          <div data-i18n-html="docs.howto.b090"><p class="text-sm text-slate-400 leading-relaxed">The GT Fuel tab holds three panels. In <strong class="text-slate-200">Gas Turbine Selection</strong>, pick a vendor and model from the pull-down (31 machines: MHI including FT-series aeroderivatives, GE Vernova, Siemens Energy) — or scroll to the <strong class="text-slate-200">Gas Turbine Catalogue</strong> below and click <em>Use this model</em> on any card. The selection pre-fills the estimator with the machine's ISO rating and %-LHV efficiency and shows its spec chips (rating, η, heat rate, TIT and exhaust where published). The <strong class="text-slate-200">Cycle</strong> selector switches between simple-cycle GT and GTCC plant basis: in Combined cycle mode the published plant output and plant efficiency are used — the fuel still burns only in the gas turbine, so fuel = plant output ÷ plant efficiency. Choose <em>Manual input</em> as vendor to type everything yourself.</p>
+          <p class="text-sm text-slate-400 leading-relaxed mt-3">The <strong class="text-slate-200">Fuel Gas Rate Estimator</strong> needs five numbers: power output (MW/kW), efficiency (%-LHV), fuel heating value (MJ/Nm³ or Btu/scf; if you set the basis to HHV, an HHV/LHV ratio field appears — default 1.108, the reference-composition value), standard gas density, and availability. The dashed <em>Import</em> button pulls LHV/HHV and ρ_std from the last Advanced-tab compositional run; the <em>Send</em> button pushes the computed mass flow and density into the Basic Eng Mass↔Vol card and jumps there. Outputs update live: fuel energy input (MW-th), heat rate in kJ/kWh and Btu/kWh, volumetric flow (kNm³/h · Nm³/h · scf/h · MMSCFD) and mass flow (t/h · kg/h · kg/s), each with a unit-aware copy button, plus a totals table — the hourly row is the instantaneous rate, while daily, monthly (730 h) and yearly (8,760 h) rows are multiplied by the availability factor.</p>
+          <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3 text-xs text-rose-300 mt-3"><strong>ℹ Worked example</strong> — M701JAC (448) at 448 MW and η = 44.0 %-LHV: fuel energy <strong>1,018.18 MW-th</strong>, heat rate <strong>8,182 kJ/kWh</strong> (7,755 Btu/kWh). With LHV 40.25 MJ/Nm³ and ρ_std 0.8193 kg/Nm³ the fuel flow is <strong>91.07 kNm³/h</strong> (74.61 t/h, 81.58 MMSCFD); at 92 % availability the yearly total is <strong>733.93 MMNm³</strong> (601,308 t).</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Screening, not a guarantee.</strong> Catalogue figures are indicative vendor data at ISO conditions; real fuel burn moves with ambient conditions, degradation, part load and fuel composition. Every dataset entry carries its source, and CI re-verifies that each machine's published heat rate equals 3600/η within rounding.</p></div>
+        </section>
+
       </div>
     </div>
 
@@ -2065,7 +2343,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.0. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.1. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Compositional</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Density &amp; Flow</a>
@@ -2077,6 +2355,7 @@
             <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII Steam</a>
             <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-teal-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX NPSHa</a>
             <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-violet-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X Compressor</a>
+            <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI GT Fuel</a>
           </nav>
         </div>
 
@@ -2678,6 +2957,28 @@
           <div class="bg-violet-500/10 border border-violet-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 10)</strong> — SG 0.65, 40 → 80 bar a (r = 2), T₁ = 30 °C = 545.67 °R, k = 1.3, η<sub>p</sub> = 75 %. m = (k−1)/(k·η_p) = 0.30769 → n = 1.4444, and T₂ = 545.67 × 2<sup>0.30769</sup> = 675.39010 °R = <strong>102.06672 °C</strong>. Papay gives Z₁ = 0.9083 (Pr 0.86573, Tr 1.49454) and Z₂ = 0.9322 at the discharge estimate (Pr 1.73146, Tr 1.84983), so Z_avg = 0.9203. With R·T₁/M = 8,314.462618 × 303.15 / 18.827055 = 133,878.05 J/kg the card returns <strong>H_poly = 95.18714 kJ/kg</strong> and H_is = 92.60625 kJ/kg, hence η_s = 0.75 × 92.60625 / 95.18714 = <strong>72.97 %</strong>. At 100 t/h (27.77778 kg/s): W = ṁ·H_poly/η_p = <strong>3,525.44967 kW</strong> ≈ 3.5 MW.</div></div>
           </div></div>
         </section>
+
+        <!-- PART XI: GT FUEL (v3.1) -->
+        <section>
+          <h3 id="theory-p11" class="text-lg font-bold text-rose-400 uppercase tracking-widest border-b border-rose-900 pb-2 mb-6" data-i18n-html="docs.theory.b046">Part XI — Gas Turbine Fuel Estimation (v3.1)</h3>
+          <div data-i18n-html="docs.theory.b047"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.1 Governing relations</h4>
+          <p class="text-sm leading-relaxed">A gas turbine converting fuel energy to electrical output at thermal efficiency η absorbs fuel energy <strong class="text-slate-200">Q_fuel = P / η</strong>. Vendor catalogue efficiencies are quoted on a lower-heating-value basis at ISO conditions (15 °C, 101.325 kPa, 60 % RH), per the ISO 3977-2 / ASME PTC 22 convention, so the heat rate follows directly as HR = 3600/η. The volumetric fuel demand at standard conditions and the mass flow are then closure arithmetic:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>Q_fuel [MW]&nbsp;&nbsp;&nbsp;= P [MW] / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;η in fraction, LHV basis</div>
+            <div>HR [kJ/kWh]&nbsp;&nbsp;= 3600 / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Btu/kWh: ÷ 1.055056)</div>
+            <div>V̇ [Nm³/h]&nbsp;&nbsp;&nbsp;= 3600 · Q_fuel / LHV&nbsp;&nbsp;&nbsp;LHV in MJ/Nm³</div>
+            <div>ṁ [kg/h]&nbsp;&nbsp;&nbsp;&nbsp; = V̇ · ρ_std&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ρ_std in kg/Nm³</div>
+            <div class="text-slate-500">Totals: hours × availability — 24 h/day, 730 h/month (= 8,760/12), 8,760 h/year; the hourly figure is the instantaneous rate</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">In <strong class="text-slate-200">GTCC plant mode</strong> the same relation runs on the published plant output and plant efficiency: all fuel is fired in the gas turbine (the steam cycle recovers exhaust heat), so plant fuel = plant output ÷ plant η. This is why a &gt;64 % LHV combined-cycle plant burns ~31 % less gas per MWh than its 44 % simple-cycle turbine alone.</p></div>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.2 Heating-value basis and unit conversions</h4>
+          <p class="text-sm leading-relaxed">Turbine efficiencies are LHV-based, but commercial gas is often specified in HHV. When the estimator's basis selector is set to HHV, the input is divided by the <strong class="text-slate-200">HHV/LHV ratio</strong> (default 1.108, the app's reference composition 44.59/40.25; the Import button recomputes it from the live Advanced-tab composition). Heating-value units interconvert with the same constants as the General-tab converter: 1 Nm³ = 37.3258 scf (0 °C ↔ 60 °F standard-volume basis) and 1 Btu = 1,055.056 J, giving <strong class="text-slate-200">Btu/scf = MJ/Nm³ ÷ (0.001055056 × 37.3258) = MJ/Nm³ × 25.393</strong>. Standard-volume flows convert likewise: MMSCFD = Nm³/h × 37.3258 × 24 / 10⁶.</p></div>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.3 Dataset, consistency and scope</h4>
+          <p class="text-sm leading-relaxed">The embedded catalogue holds 31 machines with published ISO ratings: MHI heavy-duty, H-series industrial and FT-series aeroderivative units transcribed from the MHI GTCC brochure (METP-11GT01E1-E-0, performance tables); GE Vernova HA-class from fact sheets GEA35750/GEA35768 plus F-class and aeroderivatives from product pages; Siemens Energy HL/H/F-class and SGT-800 from product pages. Every entry records its source, and CI asserts the internal consistency <strong class="text-slate-200">|HR − 3600/η| ≤ 30 kJ/kWh</strong> for each machine (vendors round HR and η independently) and that combined-cycle output and efficiency always exceed the simple-cycle values. Ratings are net or gross per each vendor's own publication convention — the estimate is a screening number, not a performance guarantee; degradation, ambient conditions, part load and fuel composition all move real-world fuel burn.</p>
+          <div class="bg-rose-500/10 border border-rose-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 11)</strong> — M701JAC (448): P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 %. Q_fuel = 448/0.44 = <strong>1,018.18 MW-th</strong>; HR = 3600/0.44 = <strong>8,182 kJ/kWh</strong> = 7,755 Btu/kWh — reproducing MHI's published 8,182 kJ/kWh exactly. V̇ = 1,018.18 × 3600 / 40.25 = <strong>91,067 Nm³/h</strong> = 91.07 kNm³/h; ṁ = 91,067 × 0.8193 = <strong>74,611 kg/h</strong> = 74.61 t/h; 91,067 × 37.3258 × 24/10⁶ = <strong>81.58 MMSCFD</strong>. Yearly at 92 %: 91,067 × 8,760 × 0.92 = <strong>733.93 MMNm³</strong> (601,308 t), delivering 3,610.5 GWh.</div></div>
+          </div></div>
+        </section>
 </div>
     </div>
 
@@ -2885,7 +3186,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.0</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.1</div>
     </div>
   </footer>
 
@@ -3061,7 +3362,7 @@
     let currentTab = 'general';
     function switchTab(tabId) {
       currentTab = tabId;
-      const tabs = ['general', 'basic', 'advanced', 'safety', 'howto', 'theory', 'terms', 'privacy', 'report'];
+      const tabs = ['general', 'basic', 'advanced', 'safety', 'gtfuel', 'howto', 'theory', 'terms', 'privacy', 'report'];
       tabs.forEach(t => {
         const pane = document.getElementById('tab-' + t);
         if(pane) pane.classList.add('hidden');
@@ -3177,6 +3478,7 @@
       return Vc>0 ? MW/Vc : 0;
     }
 
+    let lastGHV = null;   // v3.1 — cached HHV/LHV/ρ_std of the last compositional run, for the GT Fuel import
     function calcGHV() {
       const mode = document.getElementById('ghv-mode').value;
       let sumFrac = 0;
@@ -3244,6 +3546,7 @@
       const lhv_mix =Math.round(sumKlhv/Z_exact*100)/100;
       const hv_mix  = hvMode==='lhv' ? lhv_mix : hhv_mix;
       const sg_calc =Math.round(sumL/Z_exact*1000)/1000;
+      lastGHV = { hhv: hhv_mix, lhv: lhv_mix, rho: rho_std };   // v3.1 — GT Fuel import source
 
       // WI=ROUND(HHV_2dp/√(SG_3dp),2) [R28]  ────────────────────────────────────
       const wi_calc=sg_calc>0?Math.round(hhv_mix/Math.sqrt(sg_calc)*100)/100:0;
@@ -3956,9 +4259,9 @@
       else if (src === 'sg') { sg = parseValue(sgEl.value); }
       else if (src === 'den') { const d = parseValue(denEl.value); if (!isNaN(d)) sg = (d/denF)/RHO_WATER_60F; }
       if (isNaN(sg) || sg <= 0) { return; }
-      if (src !== 'sg')  sgEl.value  = formatValue(sg);
-      if (src !== 'api') apiEl.value = formatValue(141.5/sg - 131.5);
-      if (src !== 'den') denEl.value = formatValue(sg*RHO_WATER_60F*denF);
+      if (src !== 'sg')  sgEl.value  = formatValuePlain(sg);
+      if (src !== 'api') apiEl.value = formatValuePlain(141.5/sg - 131.5);
+      if (src !== 'den') denEl.value = formatValuePlain(sg*RHO_WATER_60F*denF);
     }
 
     // B3a — Viscosity: dynamic (μ) ↔ kinematic (ν) via density.  ν = μ/ρ.
@@ -3971,12 +4274,249 @@
       if (src === 'dyn') {
         const mu = parseValue(dynEl.value); if (isNaN(mu)) { kinEl.value=''; return; }
         const nu = (mu*dynF)/rho;            // m²/s
-        kinEl.value = formatValue(nu/kinF);
+        kinEl.value = formatValuePlain(nu/kinF);
       } else {
         const nu = parseValue(kinEl.value); if (isNaN(nu)) { dynEl.value=''; return; }
         const mu = (nu*kinF)*rho;            // Pa·s
-        dynEl.value = formatValue(mu/dynF);
+        dynEl.value = formatValuePlain(mu/dynF);
       }
+    }
+
+    // ══════════ v3.1 — GT FUEL: gas-turbine fuel gas estimator + catalogue ══════════
+    // Screening physics: Q_fuel = P/η (LHV); HR = 3600/η; V = 3600·Q/LHV; ṁ = V·ρ_std.
+    // Dataset = indicative vendor catalogue ISO ratings; every entry carries its source.
+    const GT_MODELS = JSON.parse(`[
+      {"id":"h25","vendor":"MHI","model":"H-25","hz":0,"cls":"IND","scMW":41.03,"scEff":36.2,"hrKJ":9949,"exhKgS":114,"exhC":569,"titC":null,"cc":[{"cfg":"MPCP1 1x1","mw":60.1,"eff":54.0},{"cfg":"MPCP2 2x1","mw":121.4,"eff":54.5}],"svg":"ind","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"h100-50","vendor":"MHI","model":"H-100 (50 Hz)","hz":50,"cls":"IND","scMW":116.45,"scEff":38.3,"hrKJ":9400,"exhKgS":296,"exhC":586,"titC":null,"cc":[{"cfg":"MPCP1 1x1","mw":171.0,"eff":57.4},{"cfg":"MPCP2 2x1","mw":346.0,"eff":58.0}],"svg":"ind","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"h100-60","vendor":"MHI","model":"H-100 (60 Hz)","hz":60,"cls":"IND","scMW":105.78,"scEff":38.2,"hrKJ":9421,"exhKgS":293,"exhC":534,"titC":null,"cc":[{"cfg":"MPCP1 1x1","mw":150.0,"eff":55.1},{"cfg":"MPCP2 2x1","mw":305.7,"eff":56.1}],"svg":"ind","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m701da","vendor":"MHI","model":"M701DA","hz":50,"cls":"HD","scMW":144.09,"scEff":34.8,"hrKJ":10350,"exhKgS":453,"exhC":542,"titC":null,"cc":[{"cfg":"MPCP1 1x1","mw":212.5,"eff":51.4},{"cfg":"MPCP2 2x1","mw":426.6,"eff":51.6},{"cfg":"MPCP3 3x1","mw":645.0,"eff":51.8}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m701f","vendor":"MHI","model":"M701F","hz":50,"cls":"HD","scMW":385.0,"scEff":41.9,"hrKJ":8592,"exhKgS":748,"exhC":630,"titC":null,"cc":[{"cfg":"MPCP1 1x1","mw":566.0,"eff":62.0},{"cfg":"MPCP2 2x1","mw":1135.0,"eff":62.2}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m701jac","vendor":"MHI","model":"M701JAC (448)","hz":50,"cls":"HD","scMW":448.0,"scEff":44.0,"hrKJ":8182,"exhKgS":765,"exhC":663,"titC":1650,"cc":[{"cfg":"MPCP1 1x1","mw":650.0,"eff":64.0}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m701jac574","vendor":"MHI","model":"M701JAC (574)","hz":50,"cls":"HD","scMW":574.0,"scEff":43.4,"hrKJ":8295,"exhKgS":1024,"exhC":646,"titC":1650,"cc":[{"cfg":"MPCP1 1x1","mw":840.0,"eff":64.0}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m501gac","vendor":"MHI","model":"M501GAC","hz":60,"cls":"HD","scMW":283.0,"scEff":40.0,"hrKJ":9000,"exhKgS":618,"exhC":617,"titC":1500,"cc":[{"cfg":"MPCP1 1x1","mw":427.0,"eff":60.5},{"cfg":"MPCP2 2x1","mw":856.0,"eff":60.7},{"cfg":"MPCP3 3x1","mw":1285.0,"eff":60.7}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"m501jac","vendor":"MHI","model":"M501JAC","hz":60,"cls":"HD","scMW":453.0,"scEff":44.0,"hrKJ":8182,"exhKgS":815,"exhC":649,"titC":1650,"cc":[{"cfg":"MPCP1 1x1","mw":664.0,"eff":64.0},{"cfg":"MPCP2 2x1","mw":1332.0,"eff":64.2}],"svg":"hd","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft8-50","vendor":"MHI","model":"FT8 (50 Hz)","hz":50,"cls":"AD","scMW":28.53,"scEff":34.7,"hrKJ":10376,"exhKgS":92,"exhC":496,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft8-60","vendor":"MHI","model":"FT8 (60 Hz)","hz":60,"cls":"AD","scMW":30.94,"scEff":36.7,"hrKJ":9825,"exhKgS":92,"exhC":491,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft4000-70","vendor":"MHI","model":"FT4000 SWIFTPAC 70 (50 Hz)","hz":50,"cls":"AD","scMW":70.15,"scEff":40.4,"hrKJ":8908,"exhKgS":183,"exhC":431,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft4000-140","vendor":"MHI","model":"FT4000 SWIFTPAC 140 (50 Hz)","hz":50,"cls":"AD","scMW":140.5,"scEff":40.5,"hrKJ":8896,"exhKgS":367,"exhC":431,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft4000-72","vendor":"MHI","model":"FT4000 SWIFTPAC 70 (60 Hz)","hz":60,"cls":"AD","scMW":71.93,"scEff":41.5,"hrKJ":8686,"exhKgS":183,"exhC":422,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"ft4000-144","vendor":"MHI","model":"FT4000 SWIFTPAC 140 (60 Hz)","hz":60,"cls":"AD","scMW":144.24,"scEff":41.6,"hrKJ":8661,"exhKgS":367,"exhC":422,"titC":null,"cc":[],"svg":"ad","src":"MHI GTCC brochure METP-11GT01E1-E-0 pp.21-22"},
+      {"id":"9ha01","vendor":"GE Vernova","model":"9HA.01","hz":50,"cls":"HD","scMW":448.0,"scEff":42.9,"hrKJ":8398,"exhKgS":null,"exhC":null,"titC":null,"cc":[{"cfg":"1x1 CC","mw":680.0,"eff":63.7},{"cfg":"2x1 CC","mw":1363.0,"eff":63.8}],"svg":"hd","src":"GE Vernova 9HA fact sheet GEA35750 (11/2025)"},
+      {"id":"9ha02","vendor":"GE Vernova","model":"9HA.02","hz":50,"cls":"HD","scMW":571.0,"scEff":44.0,"hrKJ":8166,"exhKgS":null,"exhC":null,"titC":null,"cc":[{"cfg":"1x1 CC","mw":838.0,"eff":64.1},{"cfg":"2x1 CC","mw":1680.0,"eff":64.3}],"svg":"hd","src":"GE Vernova 9HA fact sheet GEA35750 (11/2025)"},
+      {"id":"7ha01","vendor":"GE Vernova","model":"7HA.01","hz":60,"cls":"HD","scMW":290.0,"scEff":42.0,"hrKJ":8567,"exhKgS":null,"exhC":null,"titC":null,"cc":[{"cfg":"1x1 CC","mw":438.0,"eff":62.3},{"cfg":"2x1 CC","mw":880.0,"eff":62.6}],"svg":"hd","src":"GE Vernova 7HA fact sheet GEA35768 (05/2025)"},
+      {"id":"7ha02","vendor":"GE Vernova","model":"7HA.02","hz":60,"cls":"HD","scMW":384.0,"scEff":42.6,"hrKJ":8450,"exhKgS":null,"exhC":null,"titC":null,"cc":[{"cfg":"1x1 CC","mw":573.0,"eff":63.4},{"cfg":"2x1 CC","mw":1148.0,"eff":63.6}],"svg":"hd","src":"GE Vernova 7HA fact sheet GEA35768 (05/2025)"},
+      {"id":"7ha03","vendor":"GE Vernova","model":"7HA.03","hz":60,"cls":"HD","scMW":430.0,"scEff":43.3,"hrKJ":8318,"exhKgS":null,"exhC":null,"titC":null,"cc":[{"cfg":"1x1 CC","mw":640.0,"eff":63.9},{"cfg":"2x1 CC","mw":1282.0,"eff":64.0}],"svg":"hd","src":"GE Vernova 7HA fact sheet GEA35768 (05/2025)"},
+      {"id":"9f04","vendor":"GE Vernova","model":"9F.04","hz":50,"cls":"HD","scMW":294.0,"scEff":38.7,"hrKJ":9297,"exhKgS":null,"exhC":null,"titC":null,"cc":[],"svg":"hd","src":"gevernova.com product page (2026-08)"},
+      {"id":"7f05","vendor":"GE Vernova","model":"7F.05","hz":60,"cls":"HD","scMW":239.0,"scEff":38.5,"hrKJ":9359,"exhKgS":null,"exhC":null,"titC":null,"cc":[],"svg":"hd","src":"gevernova.com product page (2026-08)"},
+      {"id":"lm2500xg4","vendor":"GE Vernova","model":"LM2500XPRESS +G4","hz":0,"cls":"AD","scMW":34.5,"scEff":39.4,"hrKJ":9146,"exhKgS":null,"exhC":null,"titC":null,"cc":[],"svg":"ad","src":"gevernova.com product page (2026-08)"},
+      {"id":"lm6000pf","vendor":"GE Vernova","model":"LM6000VELOX PF+ Sprint","hz":0,"cls":"AD","scMW":56.9,"scEff":41.0,"hrKJ":8800,"exhKgS":null,"exhC":null,"titC":null,"cc":[],"svg":"ad","src":"gevernova.com product page (2026-08)"},
+      {"id":"lms100","vendor":"GE Vernova","model":"LMS100 PA+","hz":0,"cls":"AD","scMW":112.9,"scEff":43.0,"hrKJ":8372,"exhKgS":null,"exhC":null,"titC":null,"cc":[],"svg":"ad","src":"gevernova.com product page (2026-08)"},
+      {"id":"sgt5-9000hl","vendor":"Siemens Energy","model":"SGT5-9000HL","hz":50,"cls":"HD","scMW":593.0,"scEff":43.0,"hrKJ":8375,"exhKgS":1030,"exhC":670,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":880.0,"eff":64.0},{"cfg":"SCC 2x1","mw":1760.0,"eff":64.0}],"svg":"hd","src":"siemens-energy.com product page (2026-08)"},
+      {"id":"sgt6-9000hl","vendor":"Siemens Energy","model":"SGT6-9000HL","hz":60,"cls":"HD","scMW":440.0,"scEff":43.2,"hrKJ":8333,"exhKgS":760,"exhC":675,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":655.0,"eff":64.0},{"cfg":"SCC 2x1","mw":1310.0,"eff":64.0}],"svg":"hd","src":"siemens-energy.com product page (2026-08)"},
+      {"id":"sgt5-8000h","vendor":"Siemens Energy","model":"SGT5-8000H","hz":50,"cls":"HD","scMW":450.0,"scEff":41.2,"hrKJ":8740,"exhKgS":935,"exhC":630,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":675.0,"eff":62.4},{"cfg":"SCC 2x1","mw":1350.0,"eff":62.4}],"svg":"hd","src":"siemens-energy.com product page (2026-08)"},
+      {"id":"sgt6-8000h","vendor":"Siemens Energy","model":"SGT6-8000H","hz":60,"cls":"HD","scMW":310.0,"scEff":40.4,"hrKJ":8920,"exhKgS":650,"exhC":645,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":472.0,"eff":61.9},{"cfg":"SCC 2x1","mw":948.0,"eff":62.1}],"svg":"hd","src":"siemens-energy.com product page (2026-08)"},
+      {"id":"sgt5-4000f","vendor":"Siemens Energy","model":"SGT5-4000F","hz":50,"cls":"HD","scMW":385.0,"scEff":41.5,"hrKJ":8675,"exhKgS":800,"exhC":619,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":570.0,"eff":62.0},{"cfg":"SCC 2x1","mw":1140.0,"eff":62.0}],"svg":"hd","src":"siemens-energy.com product page (2026-08)"},
+      {"id":"sgt800","vendor":"Siemens Energy","model":"SGT-800","hz":0,"cls":"IND","scMW":62.5,"scEff":41.1,"hrKJ":8759,"exhKgS":null,"exhC":596,"titC":null,"cc":[{"cfg":"SCC 1x1","mw":89.0,"eff":59.6},{"cfg":"SCC 2x1","mw":182.0,"eff":60.6}],"svg":"ind","src":"siemens-energy.com product page (2026-08)"}
+    ]`);
+    const GT_HV_FACTOR = 0.001055056 * 37.3258;   // Btu/scf → MJ/Nm³ (same convention as the General-tab HV card)
+    const GT_H_YEAR = 8760, GT_H_MONTH = 730;     // availability basis hours (8760/yr, 8760/12 per month)
+    const GT_VENDOR_KEY = { 'MHI': 'mhi', 'GE Vernova': 'ge', 'Siemens Energy': 'sie' };
+    let gtCatVendor = 'all', gtCatAttr = 'all', gtLastResult = null;
+
+    function gtModelById(id) { return GT_MODELS.find(m => m.id === id) || null; }
+
+    // Keeps the static model <option> list in sync with the vendor filter. Options are
+    // never rebuilt (share-link restore sets gt-model before any event fires), only hidden.
+    function gtFilterModelOptions() {
+      const v = document.getElementById('gt-vendor').value;
+      const sel = document.getElementById('gt-model');
+      sel.querySelectorAll('optgroup').forEach(g => {
+        const show = v !== 'manual' && (GT_VENDOR_KEY[g.label] === v);
+        g.hidden = !show;
+        g.querySelectorAll('option').forEach(o => { o.hidden = !show; o.disabled = !show; });
+      });
+    }
+    function gtVendorChanged() {
+      const v = document.getElementById('gt-vendor').value;
+      gtFilterModelOptions();
+      const sel = document.getElementById('gt-model');
+      if (v === 'manual') { sel.value = ''; calcGTFuel(); return; }
+      const cur = gtModelById(sel.value);
+      if (!cur || GT_VENDOR_KEY[cur.vendor] !== v) {
+        const first = GT_MODELS.find(m => GT_VENDOR_KEY[m.vendor] === v);
+        if (first) { selectGTModel(first.id); return; }
+      }
+      calcGTFuel();
+    }
+    function gtCycleChanged() {
+      const id = document.getElementById('gt-model').value;
+      if (id) selectGTModel(id); else calcGTFuel();
+    }
+    // Prefills the estimator from a catalogue model (SC rating, or GTCC plant values in CC mode).
+    function selectGTModel(id) {
+      const m = gtModelById(id);
+      if (m) {
+        document.getElementById('gt-vendor').value = GT_VENDOR_KEY[m.vendor];
+        gtFilterModelOptions();
+        document.getElementById('gt-model').value = id;
+        const cyc = document.getElementById('gt-cycle').value;
+        const cc = (cyc === 'cc' && m.cc.length) ? m.cc[0] : null;
+        document.getElementById('gt-power').value = cc ? cc.mw : m.scMW;
+        document.getElementById('gt-power-u').value = '1';
+        document.getElementById('gt-eff').value = (cc ? cc.eff : m.scEff).toFixed(1);
+      }
+      calcGTFuel();
+    }
+    function importGHVToGT() {
+      const warnEl = document.getElementById('gt-warn');
+      if (!lastGHV) {
+        warnEl.classList.remove('hidden');
+        warnEl.innerText = '⚠ ' + tr('gtfuel.est.warnNoGHV');
+        return;
+      }
+      const basis = document.getElementById('gt-hv-basis').value;
+      const hvMJ = basis === 'hhv' ? lastGHV.hhv : lastGHV.lhv;
+      const isBtu = document.getElementById('gt-hv-u').value === 'btu';
+      document.getElementById('gt-hv').value = isBtu ? (hvMJ / GT_HV_FACTOR).toFixed(1) : hvMJ.toFixed(2);
+      document.getElementById('gt-hhv-ratio').value = lastGHV.lhv > 0 ? (lastGHV.hhv / lastGHV.lhv).toFixed(3) : '1.108';
+      document.getElementById('gt-rho').value = lastGHV.rho.toFixed(5);
+      calcGTFuel();
+    }
+    function sendGTToMassVol() {
+      if (!gtLastResult) return;
+      document.getElementById('mf-mass').value = (gtLastResult.mkg / 1000).toFixed(3);
+      document.getElementById('mf-mass-u').value = '0.277778';   // t/h option
+      document.getElementById('mf-rho').value = gtLastResult.rho.toFixed(4);
+      document.getElementById('mf-rho-u').value = '1';           // kg/m³ option
+      calcMassVol('mass');
+      switchTab('basic');
+      setTimeout(() => { const el = document.getElementById('basic-mf'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 80);
+    }
+    function calcGTFuel() {
+      const gv = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      const fmt = (n, dp) => isFinite(n) ? n.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp }) : '—';
+      const m = gtModelById(gv('gt-model'));
+      const cyc = gv('gt-cycle');
+      gtFilterModelOptions();   // keep the optgroup visibility in sync (boot + state restore)
+      document.getElementById('gt-ratio-wrap').classList.toggle('hidden', gv('gt-hv-basis') !== 'hhv');
+
+      // spec chips reflect the selected model (per cycle mode); recomputed here so a
+      // share-link/localStorage restore repaints them without needing selectGTModel()
+      const cc = (m && cyc === 'cc' && m.cc.length) ? m.cc[0] : null;
+      const chip = (id, txt) => { document.getElementById(id).innerText = txt; };
+      if (m) {
+        chip('gt-spec-mw', (cc ? fmt(cc.mw, cc.mw % 1 ? 1 : 0) + ' MW (' + cc.cfg + ')' : fmt(m.scMW, m.scMW % 1 ? 2 : 0) + ' MW'));
+        chip('gt-spec-eff', (cc ? cc.eff.toFixed(1) : m.scEff.toFixed(1)) + '%-LHV');
+        chip('gt-spec-hr', cc ? '≈' + fmt(3600 / (cc.eff / 100), 0) + ' kJ/kWh' : fmt(m.hrKJ, 0) + ' kJ/kWh');
+        chip('gt-spec-tit', m.titC ? fmt(m.titC, 0) + ' °C' : '—');
+        chip('gt-spec-exh', m.exhKgS ? fmt(m.exhKgS, 0) + ' kg/s @ ' + fmt(m.exhC, 0) + ' °C' : (m.exhC ? fmt(m.exhC, 0) + ' °C' : '—'));
+      } else {
+        ['gt-spec-mw', 'gt-spec-eff', 'gt-spec-hr', 'gt-spec-tit', 'gt-spec-exh'].forEach(id => chip(id, '—'));
+      }
+
+      const P = (parseValue(gv('gt-power')) || 0) * (parseFloat(gv('gt-power-u')) || 1);   // MW
+      const eff = (parseValue(gv('gt-eff')) || 0) / 100;
+      let hv = parseValue(gv('gt-hv')) || 0;
+      if (gv('gt-hv-u') === 'btu') hv = hv * GT_HV_FACTOR;                                  // → MJ/Nm³
+      const ratio = parseValue(gv('gt-hhv-ratio')) || 1.108;
+      const lhv = gv('gt-hv-basis') === 'hhv' ? hv / ratio : hv;                            // MJ/Nm³ (LHV)
+      const rho = parseValue(gv('gt-rho')) || 0;
+      const avail = Math.min(100, Math.max(0, parseValue(gv('gt-avail')) || 0)) / 100;
+      document.getElementById('gt-avail-note').innerText = '— ' + tr('gtfuel.out.availNote', { pct: (avail * 100).toFixed(0) });
+
+      const warns = [];
+      if (m && cyc === 'cc' && !m.cc.length) warns.push(tr('gtfuel.est.warnNoCC'));
+      if (eff > 0 && (eff < 0.15 || eff > 0.72)) warns.push(tr('gtfuel.est.warnEffRange'));
+      if (lhv > 0 && (lhv < 20 || lhv > 60)) warns.push(tr('gtfuel.est.warnHvRange'));
+      const warnEl = document.getElementById('gt-warn');
+      warnEl.classList.toggle('hidden', warns.length === 0);
+      warnEl.innerText = warns.length ? '⚠ ' + warns.join(' ') : '';
+
+      const outIds = ['gt-out-q', 'gt-out-hr', 'gt-out-hr-btu', 'gt-out-vol', 'gt-out-mass',
+                      'gt-tot-h-vol', 'gt-tot-h-mass', 'gt-tot-h-e', 'gt-tot-d-vol', 'gt-tot-d-mass', 'gt-tot-d-e',
+                      'gt-tot-m-vol', 'gt-tot-m-mass', 'gt-tot-m-e', 'gt-tot-y-vol', 'gt-tot-y-mass', 'gt-tot-y-e'];
+      if (P <= 0 || eff <= 0 || lhv <= 0) {
+        gtLastResult = null;
+        outIds.forEach(id => { document.getElementById(id).innerText = '—'; });
+        gtRenderCatalogueIfStale();
+        return;
+      }
+      const Q = P / eff;                 // MW-th (LHV)
+      const hr = 3600 / eff;             // kJ/kWh
+      const V = Q * 3600 / lhv;          // Nm³/h
+      const mkg = V * rho;               // kg/h
+      gtLastResult = { P: P, Q: Q, V: V, mkg: mkg, rho: rho, avail: avail };
+
+      document.getElementById('gt-out-q').innerText = fmt(Q, 2);
+      document.getElementById('gt-out-hr').innerText = fmt(hr, 0);
+      document.getElementById('gt-out-hr-btu').innerText = fmt(hr / 1.055056, 0);
+      const volU = gv('gt-out-vol-u');
+      const volVal = volU === 'knm3h' ? V / 1000 : volU === 'scfh' ? V * 37.3258 : volU === 'mmscfd' ? V * 37.3258 * 24 / 1e6 : V;
+      document.getElementById('gt-out-vol').innerText = fmt(volVal, volVal >= 1000 ? 0 : 2);
+      const masU = gv('gt-out-mass-u');
+      const masVal = masU === 'th' ? mkg / 1000 : masU === 'kgs' ? mkg / 3600 : mkg;
+      document.getElementById('gt-out-mass').innerText = fmt(masVal, masVal >= 1000 ? 0 : 2);
+
+      // Totals: hourly = instantaneous rate; daily/monthly/yearly apply availability.
+      const totRow = (key, hours, withAvail) => {
+        const f = withAvail ? avail : 1;
+        const vol = V * hours * f, mass = mkg * hours * f / 1000, e = P * hours * f;
+        document.getElementById('gt-tot-' + key + '-vol').innerText = vol >= 1e6 ? fmt(vol / 1e6, 2) + ' MMNm³' : fmt(vol / 1000, 2) + ' kNm³';
+        document.getElementById('gt-tot-' + key + '-mass').innerText = fmt(mass, mass >= 1000 ? 0 : 1) + ' t';
+        document.getElementById('gt-tot-' + key + '-e').innerText = e >= 1e5 ? fmt(e / 1000, 1) + ' GWh' : fmt(e, 0) + ' MWh';
+      };
+      totRow('h', 1, false);
+      totRow('d', 24, true);
+      totRow('m', GT_H_MONTH, true);
+      totRow('y', GT_H_YEAR, true);
+      gtRenderCatalogueIfStale();
+    }
+    // Catalogue rendering. Cards are built from GT_MODELS (static app data, no user input).
+    // Re-renders when the translation sentinel changes (language switch runs recomputeAll()).
+    function gtRenderCatalogueIfStale() {
+      const grid = document.getElementById('gt-cat-grid');
+      if (!grid) return;
+      const sentinel = tr('gtfuel.cat.useBtn') + '|' + gtCatVendor + '|' + gtCatAttr;
+      if (grid.dataset.sentinel !== sentinel) renderGTCatalogue();
+    }
+    function gtSetCatFilter(kind, val, btn) {
+      if (kind === 'vendor') gtCatVendor = val; else gtCatAttr = val;
+      const cls = kind === 'vendor' ? '.gt-vpill' : '.gt-apill';
+      document.querySelectorAll(cls).forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('text-amber-400', on); b.classList.toggle('border-amber-500/50', on);
+        b.classList.toggle('text-slate-400', !on); b.classList.toggle('border-slate-700', !on);
+      });
+      renderGTCatalogue();
+    }
+    function renderGTCatalogue() {
+      const grid = document.getElementById('gt-cat-grid');
+      if (!grid) return;
+      const rows = GT_MODELS.filter(m =>
+        (gtCatVendor === 'all' || m.vendor === gtCatVendor) &&
+        (gtCatAttr === 'all' || (gtCatAttr === '50' ? (m.hz === 50 || m.hz === 0) :
+                                 gtCatAttr === '60' ? (m.hz === 60 || m.hz === 0) : m.cls === gtCatAttr)));
+      const fmtI = n => n.toLocaleString('en-US');
+      grid.innerHTML = rows.map(m => {
+        const hzTxt = m.hz === 0 ? '50/60 Hz' : m.hz + ' Hz';
+        const ccLine = m.cc.length
+          ? '<p class="text-[11px] text-slate-400">' + m.cc[0].cfg + ': <span class="text-slate-200">' + m.cc[0].mw.toLocaleString('en-US') + ' MW · ' + m.cc[0].eff.toFixed(1) + '%</span></p>'
+          : '';
+        const exhLine = (m.exhKgS || m.exhC || m.titC)
+          ? '<p class="text-[11px] text-slate-500">' +
+            (m.titC ? 'TIT ' + fmtI(m.titC) + ' °C' : '') +
+            (m.titC && (m.exhKgS || m.exhC) ? ' · ' : '') +
+            (m.exhKgS ? tr('gtfuel.cat.exhLabel') + ' ' + fmtI(m.exhKgS) + ' kg/s @ ' + fmtI(m.exhC) + ' °C' : (m.exhC ? tr('gtfuel.cat.exhLabel') + ' ' + fmtI(m.exhC) + ' °C' : '')) + '</p>'
+          : '';
+        return '<div class="bg-slate-950/70 border border-slate-700 rounded-lg p-4 flex flex-col gap-1.5 hover:border-amber-500/40 transition-colors">' +
+          '<svg viewBox="0 0 160 54" class="w-full h-auto mb-1" aria-hidden="true"><use href="#gt-svg-' + m.svg + '"></use></svg>' +
+          '<p class="text-sm font-semibold text-slate-100">' + m.model + ' <span class="text-[10px] font-normal text-slate-500">' + m.vendor + '</span></p>' +
+          '<p class="text-[11px] text-slate-400">' + hzTxt + ' · <span class="text-slate-200">' + m.scMW.toLocaleString('en-US') + ' MW · ' + m.scEff.toFixed(1) + '%-LHV · ' + fmtI(m.hrKJ) + ' kJ/kWh</span></p>' +
+          ccLine + exhLine +
+          '<button onclick="selectGTModel(\'' + m.id + '\');document.getElementById(\'gt-select\').scrollIntoView({behavior:\'smooth\'})" class="mt-auto self-start text-[11px] px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 transition-colors">' + tr('gtfuel.cat.useBtn') + '</button>' +
+          '</div>';
+      }).join('') || '<p class="text-xs text-slate-500 col-span-full">' + tr('gtfuel.cat.noMatch') + '</p>';
+      grid.dataset.sentinel = tr('gtfuel.cat.useBtn') + '|' + gtCatVendor + '|' + gtCatAttr;
     }
 
     // B3b — Mass ↔ volumetric flow via density.  Q = ṁ/ρ. All select factors are multiply-to-SI.
@@ -3989,11 +4529,11 @@
       if (src === 'mass') {
         const m = parseValue(mEl.value); if (isNaN(m)) { vEl.value=''; return; }
         const q = (m*mF)/rho;               // m³/s
-        vEl.value = formatValue(q/vF);
+        vEl.value = formatValuePlain(q/vF);
       } else {
         const q = parseValue(vEl.value); if (isNaN(q)) { mEl.value=''; return; }
         const m = (q*vF)*rho;               // kg/s
-        mEl.value = formatValue(m/mF);
+        mEl.value = formatValuePlain(m/mF);
       }
     }
 
@@ -4578,6 +5118,9 @@
     // --- BASE FORMATTING & LOCAL STORAGE---
     function parseValue(v) { return parseFloat(v.toString().replace(/,/g, '')); }
     function formatValue(n) { if(!isFinite(n)) return ''; return n.toLocaleString('en-US', {maximumFractionDigits: 5}); }
+    // v3.1 — same digits as formatValue but no thousands grouping, for type="number" inputs:
+    // browsers silently reject "91,067.19" in a number field, blanking it for any result ≥ 1,000.
+    function formatValuePlain(n) { if(!isFinite(n)) return ''; return n.toLocaleString('en-US', {maximumFractionDigits: 5, useGrouping: false}); }
     function formatOnBlur(e) { const v = parseValue(e.target.value); if(!isNaN(v)) e.target.value = formatValue(v); }
     
     const nm3Input = document.getElementById('nm3-input'); const scfInput = document.getElementById('scf-input');
@@ -4778,7 +5321,7 @@
       applyAwaitingBadgeDefaults();
       updateLangSwitcherUI();
       if (stored) { applyState(stored, !!shared); }
-      else { calcGHV(); updatePSVMode(); }
+      else { calcGHV(); updatePSVMode(); calcGTFuel(); }
       enhanceAccessibility();
       // v2.8 — tell the recipient their workspace changed. Imported modules are kept
       // (they persist to og_custom_modules), so this is a state change worth announcing
@@ -5156,7 +5699,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, calcGTFuel, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;
@@ -5368,6 +5911,21 @@
           ${row(tr('js.export.massVolFlowLabel'), t('mf-mass') + ' ' + us('mf-mass-u') + ' ↔ ' + t('mf-vol') + ' ' + us('mf-vol-u'))}
         </tbody></table>`;
 
+      // v3.1 — GT Fuel section (only rendered once a valid estimate exists)
+      const gt = gtLastResult ? `
+        <h3>${esc(tr('js.export.section6Title'))}</h3>
+        <table><tbody>
+          ${row(tr('js.export.gtModelLabel'), (us('gt-model') || '—') + ' (' + us('gt-cycle') + ')')}
+          ${row(tr('js.export.gtPowerLabel'), t('gt-power') + ' ' + us('gt-power-u'))}
+          ${row(tr('js.export.gtEffLabel'), t('gt-eff') + ' %-LHV')}
+          ${row(tr('js.export.gtFuelEnergyLabel'), t('gt-out-q') + ' MW')}
+          ${row(tr('js.export.gtHeatRateLabel'), t('gt-out-hr') + ' kJ/kWh / ' + t('gt-out-hr-btu') + ' Btu/kWh')}
+          ${row(tr('js.export.gtVolFlowLabel'), t('gt-out-vol') + ' ' + us('gt-out-vol-u'))}
+          ${row(tr('js.export.gtMassFlowLabel'), t('gt-out-mass') + ' ' + us('gt-out-mass-u'))}
+          ${row(tr('js.export.gtAvailLabel'), t('gt-avail') + ' %')}
+          ${row(tr('js.export.gtYearlyLabel'), t('gt-tot-y-vol') + ' / ' + t('gt-tot-y-mass'))}
+        </tbody></table>` : '';
+
       const html = `<!DOCTYPE html><html lang="${currentLang}"><head><meta charset="utf-8"/>
         <title>${esc(tr('js.export.reportTitle'))}</title>
         <style>
@@ -5387,8 +5945,8 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.0', date: now.toLocaleString()}))}</h2>
-        ${ghv}${dp}${regime}${psv}${basic}
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.1', date: now.toLocaleString()}))}</h2>
+        ${ghv}${dp}${regime}${psv}${basic}${gt}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
 

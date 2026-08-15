@@ -1,6 +1,6 @@
 # Development Plan — O&G Engineering Converter
 
-**Document version:** 1.4 (accompanies app v3.0)
+**Document version:** 1.5 (accompanies app v3.1)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Repository:** <https://github.com/petronaoto/unit-converter>
 **Companion documents:** [SPECIFICATION.md](SPECIFICATION.md) (feature-level detail) · [MARKETING.md](MARKETING.md) (promotion strategy)
@@ -61,16 +61,18 @@ Reconstructed from the git log and tags (all dates 2026).
 | **v2.8.1** | Aug 2026 | **Documentation completion release** — the 14 v2.8 doc blocks (How To Use ★ New + §13–15, Theory Part VII) translated into all 9 non-English languages, closing the §12.5.1 exemption: the `PENDING_TRANSLATION` set and its guard tests deleted together, stale key counts corrected (368 working-tool keys / 139 `docs.*` keys). Also removed the dead Cloudflare email-decode script (Known Issue #10, maintainer-approved) with the matching Privacy Policy rewrite in English + 9 dictionaries. |
 | **v2.8** | Aug 2026 | **"Junior engineer value pack"** — shipped as six reviewed PRs. **Testing:** first automated suite (183 pytest assertions + GitHub Actions), covering Vectors 2–4, i18n key parity across all 10 dictionaries, and the architectural constraints; mutation-tested, which exposed two real gaps in the tests themselves. **Basic Eng:** Gas Property Estimator — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson — on a shared `papayZ()` helper verified against the original arithmetic over 7,203 input combinations. **Advanced:** Crane TP-410 fittings (backward-compatible `k_total`, default 0) and a NORSOK P-001 line-sizing screen judging frictional ΔP only; `phase_key`/`re_regime_key` replace English-badge branching. **UX:** mobile navigation dropdown; share links now carry custom modules (state v:2) behind a sanitizing import boundary. **Corrections:** RP 14E SI constant (#9), two-phase PRV `Pc` (#1), Z-Factor 0 °C guard (#11); `report-*` removed from state; guarded `og_custom_modules` parse. New reference Vectors 4–7. Documentation sections for all of the above are English-only pending v2.8.1 translation. |
 | **v3.0** | Aug 2026 | **"Professional pack"** — shipped as six reviewed PRs, every feature PR carrying its full i18n (10 languages) and documentation in the same commit ("zero translation debt"). **PR-1 API hardening:** Known Issues #2–#6 closed with structured, translatable errors; review surfaced and fixed #12, a two-phase subcritical Leung flux-bracket error dormant since v2.0 (~20–30 % valve under-sizing on that branch). **PR-2 Steam (IAPWS-IF97):** Basic Eng card for Regions 1/2/4 + B23, all 259 coefficients in one `JSON.parse` literal extracted and re-verified in CI against the Release's own check tables to 9 s.f.; PSV steam-mode T_sat/superheat advisory. **PR-3 NPSHa:** first-principles suction-head card with IF97 water autofill; deliberately no margin verdict. **PR-4 Compressor:** isentropic + perfect-gas polytropic head/power with one-pass Papay Z_avg via the shared `papayZ()`; zero new physics constants; PTC 10 uncited. **PR-5 Unit-aware clipboard:** plain click keeps the bare value; modifier-click / long-press appends the live unit at all 33 copy sites. **PR-6 Basic Eng quick links:** nine-pill jump strip (maintainer-requested). New reference Vectors 8–10; suite grown 183 → 242 tests. |
+| **v3.1** | Aug 2026 | **"GT Fuel"** (maintainer-requested, scope approved 2026-08-15) — a new top-level **GT Fuel tab**: gas-turbine fuel gas estimator (Q = P/η, V = 3600·Q/LHV, ṁ = V·ρ_std; heat rate 3600/η per ISO 3977-2 / ASME PTC 22 convention) with vendor→model selection, simple-cycle/GTCC basis toggle, MJ/Nm³↔Btu/scf and LHV/HHV handling, and hourly/daily/monthly (730 h)/yearly (8,760 h) totals under a user availability factor; a filterable **gas turbine catalogue** — 31 machines (MHI incl. FT aeroderivatives from brochure METP-11GT01E1-E-0; GE Vernova incl. HA fact sheets GEA35750/GEA35768; Siemens Energy) with original SVG schematic thumbnails (no vendor imagery), every entry source-cited; cross-links (`lastGHV` import bridge from the Advanced compositional suite; send-to-Mass↔Vol); export-report section 6; full 10-language i18n and How To Use §20 / Theory Part XI in the same change. New reference Vector 11; CI enforces per-machine HR ≡ 3600/η (±30 kJ/kWh) and CC > SC dataset invariants. |
 
-## 5. Current State (v3.0)
+## 5. Current State (v3.1)
 
 ### Feature inventory
 
-- **9 tabs:** General · Basic Eng · Advanced · Safety · How To Use · Theory · Terms of Use · Privacy Policy · Report.
+- **10 tabs:** General · Basic Eng · Advanced · Safety · GT Fuel · How To Use · Theory · Terms of Use · Privacy Policy · Report.
 - **General:** Gas Volume (Nm³↔scf), Pressure ×2 with Abs/Gauge toggles, Temperature, Heating Value (MJ/Nm³↔Btu/scf), user-defined Custom Modules with presets.
 - **Basic Eng:** Pipe Volume (canonical card layout), Z-Factor (Papay + Standing-Katz), Petroleum Gravity (°API↔SG↔ρ), Viscosity (dynamic↔kinematic), Mass↔Volumetric Flow, **Gas Property Estimator** (v2.8 — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson coefficient, all sharing the Z-Factor card's Papay routine via `papayZ()`), and the v3.0 trio — **Steam Properties** (IAPWS-IF97 Regions 1/2/4, CI-verified coefficients), **Pump Suction NPSHa** (IF97 water helper, no margin verdict), **Compressor Head & Power** (isentropic + perfect-gas polytropic, one-pass Papay Z_avg) — reachable via the quick-links strip under the tab bar.
 - **Advanced:** Compositional GHV & Flow (JIS K 2301, 14 components, HHV/LHV/SG/WI/MCP/MW, ISO 6578 LNG density, mass↔vol↔mol flow), Pipe ΔP (Darcy-Weisbach + Colebrook-White + HEM two-phase + RP 14E erosion check + **v2.8 Crane TP-410 fittings and NORSOK P-001 line-sizing screen**), Flow Regime (Hewitt & Roberts / Baker maps + 3D animation).
 - **Safety:** API 520 Part I PRV sizing, five modes, API 526 orifice letters.
+- **GT Fuel (v3.1):** vendor→model gas-turbine selection (31 source-cited machines: MHI, GE Vernova, Siemens Energy), simple-cycle/GTCC fuel gas estimator (power, %-LHV efficiency, MJ/Nm³↔Btu/scf heating value with LHV/HHV basis, ρ_std, availability; heat rate + volumetric/mass flow + period totals), filterable catalogue with original SVG thumbnails, Advanced-tab composition import and send-to-Mass↔Vol cross-links.
 - **Productivity:** copy buttons (unit-aware since v3.0 — modifier-click or long-press appends the displayed unit), Export PDF report, Share links, session auto-restore, out-of-range warnings.
 - **Serverless:** `/api/dp_calculator`, `/api/psv_calculator` (stdlib only), `/api/flowregime` (numpy/matplotlib/seaborn).
 
@@ -143,12 +145,26 @@ by the PR-1 API-hardening pass (shipped — see §11 notes above).
 | NPSH / pump hydraulics screening | Med | M | **Shipped in the v3.0 cycle (PR-3)** — NPSHa card with IF97 water helper (Region 4 Pv + Region 1 ρ_f autofill); deliberately no margin verdict, HI/API margin tables are paywalled and stay out (SPECIFICATION.md §4.2, §9 Vector 9) |
 | Compressor power estimate (isentropic/polytropic) | Med | M | **Shipped in the v3.0 cycle (PR-4)** — head & power card: isentropic + perfect-gas polytropic from first principles, one-pass Papay Z_avg via the shared `papayZ()`, zero new physics constants; PTC 10 remains uncited (SPECIFICATION.md §4.2, §9 Vector 10) |
 | Unit-aware clipboard (copy value + unit) | Low | L | **Shipped in the v3.0 cycle (PR-5)** — plain click stays the bare value (spreadsheet-safe, maintainer's decision); Ctrl/⌘/Shift+click or ~500 ms long-press appends the live unit at all 33 copy sites incl. custom modules (SPECIFICATION.md §3 "Unit-aware clipboard") |
-| Calculation notebook (save/load named scenarios) | High | M | Deferred to v3.1 (headliner; needs its own security review of stored state) |
-| Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred to v3.1 "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) |
-| Orifice metering (ISO 5167-2 lite) | Med | M–H | Deferred to v3.1 — iterative, takes the fourth-endpoint slot; primary content verified accessible (IS 15675:2006 + Reader-Harris NSFMW papers). Venturi (ISO 5167-4) rejected outright: no accessible primary text |
+| Calculation notebook (save/load named scenarios) | High | M | Deferred (headliner; needs its own security review of stored state) — **remains open after v3.1**, which shipped the maintainer-requested GT Fuel feature instead; re-bucketed to v3.2 |
+| Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) — **remains open after v3.1**; re-bucketed to v3.2 |
+| Orifice metering (ISO 5167-2 lite) | Med | M–H | Deferred — iterative, takes the fourth-endpoint slot; primary content verified accessible (IS 15675:2006 + Reader-Harris NSFMW papers). Venturi (ISO 5167-4) rejected outright: no accessible primary text. **Remains open after v3.1**; re-bucketed to v3.2 |
 | PWA / offline mode | Med | M | Rejected — a stale cached calculator is silently wrong physics; no benign fallback exists |
 | Tank volume / strapping | Med | M | Rejected — accessible sources for torispherical heads proved unreliable (a published example contains its own arithmetic error); fails the traceability bar |
 | Dark/light theme toggle | Low | M | Rejected for v3.0 — ~1,900 dark-theme utility classes make this structural, not cosmetic |
+
+### v3.1 — "GT Fuel" (maintainer-requested, scope approved 2026-08-15)
+
+Requested directly by the maintainer (with the MHI GTCC brochure as source material), so it
+took priority over the three deferred v3.1 candidates above. Scoping rule applied: the
+physics is first-principles closure arithmetic (Q = P/η per the ISO 3977-2 / ASME PTC 22
+efficiency convention) and the dataset is transcribed exclusively from publicly published
+vendor material, each entry carrying its citation — no licensed text is used or needed.
+
+| Feature | Value | Effort | Status |
+|---|---|---|---|
+| GT Fuel tab — estimator + vendor/model selection + GTCC mode + availability totals | High | M | **Shipped v3.1** (SPECIFICATION.md §4.6, §9 Vector 11) |
+| Gas turbine catalogue — 31 source-cited machines, filterable, original SVG thumbnails | Med | M | **Shipped v3.1** — vendor photos deliberately excluded (copyright); dataset invariants CI-enforced (`tests/test_gt_fuel.py`) |
+| Cross-links (Advanced-composition import via `lastGHV`; send-to-Mass↔Vol) | Med | L | **Shipped v3.1** |
 
 ### Explicitly out of scope
 
