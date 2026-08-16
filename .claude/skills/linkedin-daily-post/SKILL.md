@@ -174,6 +174,15 @@ chrome --headless=new --disable-gpu --hide-scrollbars --force-device-scale-facto
 > and Chrome's render widget is now a 12 × 206 stub, so enumerating child windows does not help.
 > This was confirmed against a frame that had captured fine under the old method, so it is the
 > browser version and not the generator. Do not spend time re-deriving it.
+>
+> **Refinement (Day 7, 2026-08-17): the cause is occlusion, not Chrome 151 as such.** Adding
+> `--disable-features=CalculateNativeWinOcclusion` (plus
+> `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`) makes
+> `PrintWindow` return a full 185 KB frame again — Chrome suspends painting for a window it
+> believes is covered, which the capture window always is. **Headless is still the method to
+> use**; this is recorded only so the next person does not conclude the machine is broken.
+> The tell for occlusion: the byte count is *identical on every retry* (11,612 here), where a
+> genuine timing problem varies.
 
 **Still true, and still the reason not to reach for a screen grab:** the in-app Browser pane never
 composites frames; the Chrome MCP screenshot does not paint CSS `transform`/`zoom`; `save_to_disk`
@@ -248,6 +257,11 @@ $img.Dispose()
 
 Find the target window with
 `Get-Process chrome | ? { $_.MainWindowTitle -like "*LinkedIn*" }` → `MainWindowHandle`.
+
+⚠️ **Close leftover capture windows first, and never fall back to "first chrome process with a
+title".** A capture window carries its own `MainWindowTitle`, so the fallback can select it and
+the paste lands in a throwaway window. If the `*LinkedIn*` filter finds nothing it means the
+LinkedIn tab is not that window's active tab — send `^9` and re-check, do not widen the filter.
 
 **Re-click the editor before every paste attempt.** DOM focus does not survive a window resize or
 a re-raise, and the click is free.

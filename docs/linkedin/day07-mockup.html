@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 7 mockup — the RP 14E constant that looked precise</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. */
+  #app{position:absolute;width:1280px;height:1600px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 7 — "The constant that looked precise and was wrong".
+
+  LEFT   : the autopsy. Both constants are DERIVED here from SI/imperial definitions
+           (0.45359237 kg per lb, 0.3048 m per ft) rather than typed, and the wrong one is
+           shown to be exactly sqrt(1.5) by comparison, not by assertion.
+  RIGHT  : the app's REAL erosion cells, cloned live from the Pipe DP card, plus the
+           before/after. The "before" figures are NOT fabricated and not taken from the
+           docs: they are recomputed from the app's OWN current rho_mix using the old
+           sqrt(1.5) constant, so the only thing that differs is the constant itself.
+
+  NOTE ON THE "BEFORE" STATE. The wrong constant no longer exists anywhere in the running
+  app -- it was fixed in v2.8 -- so there is nothing to screenshot. Reconstructing it from
+  the app's own density is the honest option; the alternative (a screenshot of an old build)
+  would be less checkable, not more.
+
+  Serve the repo root over HTTP and open:
+      /docs/linkedin/day07-mockup.html
+  Then screenshot the #shot element (1200x675), or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600" id="ver">v3.4</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Pipe ΔP
+      <span class="text-slate-600">▸</span> API RP 14E erosional velocity</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= autopsy ================= -->
+  <div class="absolute" style="left:40px;top:88px;width:545px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">CONSTANT AUTOPSY</div>
+
+    <div class="rounded-lg px-4 py-3" style="margin-top:12px;
+         border:1px solid rgba(244,63,94,.40);background:rgba(244,63,94,.08);">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span id="wrong" style="font-family:ui-monospace,Menlo,monospace;font-size:23px;
+              color:#fb7185;text-decoration:line-through;text-decoration-thickness:2px;">…</span>
+        <span class="text-rose-300 text-[13px] font-semibold">shipped v2.4 – v2.8</span>
+      </div>
+      <div class="text-rose-200/80 text-[12.5px] leading-snug" style="margin-top:6px;">
+        <b>= √1.5, exactly.</b> That is the tell. A constant that lands on a tidy radical was
+        not derived — it was a rounded “1.22” reverse-engineered into something that looks
+        like it came from somewhere.
+      </div>
+    </div>
+
+    <div class="rounded-lg px-4 py-3" style="margin-top:12px;
+         border:1px solid rgba(16,185,129,.40);background:rgba(16,185,129,.08);">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span id="right" style="font-family:ui-monospace,Menlo,monospace;font-size:23px;
+              color:#6ee7b7;">…</span>
+        <span class="text-emerald-300 text-[13px] font-semibold">since v2.8</span>
+      </div>
+      <div class="text-emerald-200/85 text-[12.5px] leading-snug" style="margin-top:6px;">
+        <span style="font-family:ui-monospace,Menlo,monospace;">0.3048 · √(0.45359237 / 0.3048³)
+        = 0.3048 · √16.0184634</span><br>
+        An exact unit conversion. Two defined constants and nothing fitted — RP 14E is written
+        in field units, so porting it to SI is arithmetic, not judgement.
+      </div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;align-items:baseline;gap:10px;">
+      <span style="width:11px;height:11px;background:#f43f5e;border-radius:2px;display:inline-block;"></span>
+      <span class="text-rose-300 text-[13.5px]">Old constant was <b id="pct">…</b> high — so V<sub>e</sub>
+        read high, and the screen was <b>non-conservative</b>.</span>
+    </div>
+  </div>
+
+  <!-- ================= the card, and the shift ================= -->
+  <div class="absolute" style="left:620px;top:88px;width:540px;">
+    <div class="text-slate-400 text-[12px] tracking-[0.14em]">WHAT THE CARD SHOWS NOW</div>
+    <!-- Window onto the two erosion cells of the real row. Cloning the whole 885px row and
+         scaling it to fit would put its 10px labels at ~6px, which does not survive LinkedIn's
+         downscaling; clipping keeps them at full size. -->
+    <div id="cell-window" style="margin-top:10px;overflow:hidden;height:60px;position:relative;">
+      <div id="card-slot" style="position:absolute;left:0;top:0;">
+        <div class="text-slate-600 text-sm">loading the live row…</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div style="display:flex;align-items:baseline;padding:0 2px 6px 2px;
+                  border-bottom:1px solid rgba(148,163,184,.20);">
+        <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="flex:1 1 auto;">AT C = 100, ρ<sub>mix</sub> = 251.69 kg/m³</span>
+        <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:150px;text-align:right;">v2.4 – v2.8</span>
+        <span class="text-slate-500 text-[11px] tracking-[0.10em]" style="width:150px;text-align:right;">NOW</span>
+      </div>
+      <div id="shift-rows"></div>
+    </div>
+  </div>
+
+  <!-- ================= bottom band ================= -->
+  <div class="absolute rounded-lg px-4 py-3" style="left:40px;top:452px;width:545px;
+       border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.07);">
+    <div class="text-sky-300 text-[12.5px] font-semibold" style="margin-bottom:4px;">
+      The fix is not a pinned number.</div>
+    <div class="text-sky-200/80 text-[12px] leading-snug">
+      One test derives the constant from first principles. A second computes V<sub>e</sub> in
+      ft/s from lb/ft³ and converts — so the two unit paths must agree. That one catches
+      <i>any</i> wrong constant, not just this one.
+    </div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:620px;top:452px;width:540px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-300 text-[12.5px] font-semibold" style="margin-bottom:4px;">
+      Still in the register, struck through.</div>
+    <div class="text-slate-400 text-[12px] leading-snug">
+      Logged as SPECIFICATION §11 issue&nbsp;#9 — crossed out and annotated, not deleted, so the
+      error stays readable next to its fix. <b id="ntests">…</b> tests run on every commit.
+    </div>
+  </div>
+
+  <!-- Footer strip: a shared image that carries the URL is worth more than one that does not. -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Properties worth freezing. Deliberately not the full computed set.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  // CSS GRID — the erosion row IS `grid grid-cols-2 md:grid-cols-4`, and `md:` is a MEDIA
+  // QUERY. Freeze without these and the four cells stack into one column. Day 3 lost a build
+  // to exactly this.
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written — skipping it while stripping the class that hid the
+    // element makes hidden nodes render. Day 2 shipped two empty amber rectangles that way.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN, or Tailwind's preflight border-style:solid
+    // falls back to `medium` and paints a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function buildCard() {
+  var fr  = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  // The endpoint carries v_ero and rho_mix; the DOM rounds them to 2 d.p.
+  win.__api = null;
+  var of = win.fetch;
+  win.fetch = function (u, o) {
+    return of.apply(this, arguments).then(function (r) {
+      var c = r.clone();
+      c.json().then(function (j) { win.__api = j; }).catch(function () {});
+      return r;
+    });
+  };
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    if (typeof win.calcDeltaPressure === 'function') { win.calcDeltaPressure(); }
+    waitForResult(doc, win, 0);
+  }, 900);
+}
+
+function waitForResult(doc, win, tries) {
+  if (win.__api && win.__api.error === false && doc.getElementById('dp-out-ve').textContent.trim()) {
+    snapshotRow(doc, win); return;
+  }
+  if (tries > 100) { document.body.setAttribute('data-ready', 'TIMEOUT'); return; }
+  setTimeout(function () { waitForResult(doc, win, tries + 1); }, 100);
+}
+
+function snapshotRow(doc, win) {
+  var ve  = doc.getElementById('dp-out-ve');
+  var row = ve.closest('div.grid');
+  var clone = row.cloneNode(true);
+
+  var srcAll = [row].concat([].slice.call(row.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+
+  // Window onto cells 2-3 (Erosional Ve, Erosion Check). Measure the offset from the LIVE row
+  // rather than assuming a gap width — the grid gap is a computed value, not a round number.
+  var rowRect  = row.getBoundingClientRect();
+  var cellRect = row.children[2].getBoundingClientRect();
+  var shift    = cellRect.left - rowRect.left;
+
+  // A frozen width is a pixel-exact fit measured in THIS browser. The capture runs a separate
+  // Chrome (fresh profile, --disable-gpu) whose text metrics differ by a fraction of a pixel,
+  // and "WITHIN LIMIT" — which fits 79.075px here to the decimal — wrapped to two lines there.
+  // Let the row's leaf text size itself instead of inheriting a measurement.
+  [].forEach.call(clone.querySelectorAll('*'), function (el) {
+    if (el.children.length) { return; }                    // leaf text nodes only
+    el.style.whiteSpace = 'nowrap';
+    if (el.style.display === 'inline-block') { el.style.width = 'auto'; }
+  });
+
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = '';
+  slot.appendChild(clone);
+  slot.style.left = (-shift) + 'px';
+  // The row has a top border + padding from the card; drop them so the window sits flush.
+  clone.style.borderTopWidth = '0px';
+  clone.style.paddingTop = '0px';
+  clone.style.marginTop = '0px';
+
+  fillPanels(doc, win, slot, shift, rowRect.width);
+}
+
+function fillPanels(doc, win, slot, shift, rowWidth) {
+  var api = win.__api;
+
+  // Both constants DERIVED from the defining conversions, not typed.
+  var LB = 0.45359237, FT = 0.3048;
+  var conv  = LB / Math.pow(FT, 3);        // lb/ft3 -> kg/m3  = 16.0184634...
+  var right = FT * Math.sqrt(conv);        // 1.2199032517...
+  var wrong = Math.sqrt(1.5);              // 1.2247448714...
+
+  document.getElementById('wrong').textContent = wrong.toFixed(10);
+  document.getElementById('right').textContent = right.toFixed(10);
+  document.getElementById('pct').textContent   = ((wrong / right - 1) * 100).toFixed(2) + ' %';
+
+  var rho = api.rho_mix, vel = api.vel, C = api.cfactor;
+  var veNow = api.v_ero;                   // the app's own value
+  var veOld = wrong * C / Math.sqrt(rho);  // same rho, old constant only
+
+  var rows = [
+    ['V<sub>e</sub> (API RP 14E)', veOld.toFixed(3) + ' m/s', veNow.toFixed(3) + ' m/s', true],
+    ['v / V<sub>e</sub>',          (vel / veOld).toFixed(4),  (vel / veNow).toFixed(4),  true],
+    ['Verdict',                    'WITHIN LIMIT',            'WITHIN LIMIT',            false]
+  ];
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i], last = (i === rows.length - 1);
+    html += '<div style="display:flex;align-items:baseline;padding:9px 2px;'
+          + (last ? '' : 'border-bottom:1px solid rgba(148,163,184,.10);') + '">'
+          + '<span style="flex:1 1 auto;color:#cbd5e1;font-size:13.5px;">' + r[0] + '</span>'
+          + '<span style="width:150px;text-align:right;font-size:14.5px;'
+          +   'font-variant-numeric:tabular-nums;color:' + (r[3] ? '#fb7185' : '#64748b') + ';">'
+          +   r[1] + '</span>'
+          + '<span style="width:150px;text-align:right;font-size:14.5px;font-weight:600;'
+          +   'font-variant-numeric:tabular-nums;color:' + (r[3] ? '#6ee7b7' : '#64748b') + ';">'
+          +   r[2] + '</span>'
+          + '</div>';
+  }
+  document.getElementById('shift-rows').innerHTML = html;
+
+  // Kept to ONE line — it wrapped into the "CONSTANT AUTOPSY" heading below it. ρ_mix and C
+  // are repeated in the comparison table's own header, so they come out of here.
+  document.getElementById('conditions').textContent =
+    'Vector 2 · 4″ ID · two-phase HEM · v = ' + vel.toFixed(4) + ' m/s';
+
+  document.getElementById('ntests').textContent = window.__nTests || '310';
+
+  drawArrows();
+
+  document.body.setAttribute('data-ready', [
+    've_now=' + veNow,
+    've_old=' + veOld,
+    'pct=' + ((wrong / right - 1) * 100).toFixed(4),
+    'right=' + right,
+    'wrong=' + wrong,
+    'is_sqrt1p5=' + (wrong === Math.sqrt(1.5)),
+    'rho=' + rho,
+    'dom_ve=' + slot.querySelector('#dp-out-ve').textContent.trim(),
+    'dom_badge=' + slot.querySelector('#dp-out-ero-badge').textContent.trim(),
+    'shift=' + Math.round(shift) + '/' + Math.round(rowWidth)
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY.
+  //
+  // The tempting connector runs from the struck-through constant on the left to the "v2.4 -
+  // v2.8" column on the right, to show which number produced which. It would cross the whole
+  // frame through the cloned card row — the one piece of live evidence in the image. The
+  // before/after columns are already labelled with the versions, so the link reads without a
+  // line. Days 1, 3, 4, 5 and 6 each dropped a connector for the same reason.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+// ---------------------------------------------------------------------------------------------
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 7 — the RP 14E constant that looked precise</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/day07-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
