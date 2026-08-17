@@ -62,7 +62,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/ | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ☐ | | |
+| 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
 | 9 | Fri 21 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
 | 10 | Mon 24 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
@@ -91,9 +91,9 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Next up (Day 7, Wed 19 Aug): "The constant that looked precise and was wrong" — draft is in `### Day 7`.**
+> **Next up (Day 8, Thu 20 Aug): "Your fittings are worth 30 m of pipe, not 23 m" — draft is in `### Day 8`.**
 >
-> *Days 5 and 6 are both queued in LinkedIn (Mon 17 and Tue 18, 08:00 JST). Neither has a URL yet.*
+> *Days 5, 6 and 7 are queued in LinkedIn (Mon 17, Tue 18, Wed 19 — all 08:00 JST). None has a URL yet.*
 
 **Weekly themes**
 
@@ -1175,7 +1175,13 @@ difference matter — I want the counter-argument."
 
 ---
 
-### Day 7 — Thu 20 Aug 2026
+### Day 7 — *tracker **Day 7**, Wed 19 Aug 2026* · 🕗 SCHEDULED
+
+> **Scheduled 2026-08-17 for Wed 19 Aug 08:00 JST.** One bilingual post, **2,947 characters**,
+> graphic attached, `engineering-converter.com` in the body of both language sections. Queued
+> alongside Days 5 and 6. No first comment, per the standing choice on the Day 3 sheet.
+>
+> Sheet number matches the tracker for this day (C12 affects Days 3, 5, 16, 17, 18, 20).
 
 **Title:** The constant that looked precise and was wrong
 **Lens:** story-community · **Format:** teardown · **Feature:** Advanced → ΔP erosional-velocity row
@@ -1195,10 +1201,46 @@ public, specific, self-reported error with the fix and the reference value that 
 tell."*; beside it 1.2199032517 with its derivation. Arrow between: *"+0.40 %, in the
 non-conservative direction"*. Bottom: the ΔP erosion row before/after, V_e 7.72 → **7.689 m/s**.
 
+**Verified against the running app 2026-08-17, on v3.4.** Both constants are **derived** in the
+generator from the defining conversions rather than typed, so "= √1.5 exactly" is shown by
+comparison, not asserted:
+
+| | value | note |
+|---|---|---|
+| Shipped v2.4–v2.8 | **1.224744871391589** | `Math.sqrt(1.5)` reproduces it bit-for-bit |
+| Correct, since v2.8 | **1.2199032517251331** | `0.3048·√(0.45359237/0.3048³)`; the code carries the truncated literal `1.2199032517` |
+| Error | **+0.3969 %** | quoted as 0.40 %, high → non-conservative |
+
+On the live endpoint at C = 100, ρ_mix = 251.6891891891892 kg/m³: **V_e 7.720 → 7.689 m/s**,
+**v/V_e 0.1314 → 0.1319**, verdict **WITHIN LIMIT both ways**. The old figures are recomputed from
+the app's *own current* ρ_mix with the old constant, so the constant is the only thing that differs.
+
+> **There is nothing to screenshot for the "before" state** — the wrong constant was removed in
+> v2.8 and exists only in git history. Reconstructing it from the app's own density is the honest
+> option and is more checkable than a screenshot of an old build. Say so if this copy is reused.
+
+**Test count is 310, not 242.** The campaign quoted 242 up to Day 6; v3.0–v3.4 added tests. Re-read
+it from `pytest` for every remaining day rather than copying the previous post.
+
+**The three guards** (`tests/test_dp_calculator.py`): `test_erosional_velocity_constant_is_the_exact_unit_conversion`
+derives the constant from the pound and the foot rather than hard-coding it, and separately asserts
+the old value cannot return; `test_erosional_velocity_round_trips_through_field_units` computes V_e
+in ft/s from lb/ft³ and converts, requiring both unit paths to agree — **that one catches any wrong
+constant**, which is the post's real point; `test_cfactor_scales_erosional_velocity` pins C = 125 →
+exactly 1.25×.
+
+**No share link.** The ΔP card's default case again, and it is server-backed, so a pre-filled link
+would carry nothing.
+
+**Mockup files.** `day07-mockup.html` → `day07-standalone.html` → `day07.png`. The right panel
+clips a **window onto cells 2–3 of the real erosion row** rather than scaling the whole 885 px row:
+scaling would put its 10 px labels at ~6 px. The window offset is measured from the live row, never
+assumed, because the grid gap is a computed fraction.
+
 **CTA.** "What do you actually do when a line screens above V_e — override with a corrosion study,
 upsize, or change material? And does your company have a standing C-factor?"
 
-**Hashtags:** `#FlowAssurance #API14E #ProcessSafety #Traceability`
+**Hashtags:** `#FlowAssurance #API14E #ProcessSafety #Traceability #プロセスエンジニアリング`
 
 ---
 
