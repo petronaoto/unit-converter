@@ -1,0 +1,51 @@
+🚢 One LNG carrier. Your gas composition. → tonnes, kNm³ and TBtu. In one click.
+
+O&G Engineering Converter just shipped v3.5 → v3.6, and I'm genuinely excited about this one 🎉
+
+🆕 LNG Cargo Estimator
+Pick one of 36 representative LNG carriers — Q-Max, Q-Flex, conventional, Arc7 icebreakers, FSRUs — or type any capacity. Set the loading limit, heel and boil-off. The card reads ρ_liq (ISO 6578), ρ_std and HHV (JIS K 2301) live from your composition and gives you the cargo loaded → delivered:
+
+📦 LNG Endeavour, 174,000 m³ at 98.5 %, Australia NWS gas (45.32 MJ/Nm³ HHV), 3,000 m³ heel:
+171,390 → 168,390 m³ · 80,093 → 78,691 t · 96,373 → 94,686 kNm³ · 4.140 → 4.067 TBtu (HHV)
+⚡ …and, cross-linked to the GT Fuel card, ≈ 6.8 such cargoes a year would fuel one M701JAC plant (28.00 TBtu/yr).
+
+Every vessel row cites its own public source, and the photos are Wikimedia Commons works with the author credited on screen. 📸
+
+🆕 The Advanced tab is now two-layer 🗂️
+Gas Quality & LNG Cargo · Hydraulics · GT Fuel — three sub-tabs on one strip. It remembers where you were, share links open the exact sub-tab, and every old link still lands in the right place.
+
+🆕 GT Fuel now speaks MMBtu, scf and lb/scf too (16.9307, not 16.0185 — standard volume, not actual 😉).
+
+Free, no sign-up, no ads, 10 languages, open source (MIT), 343 tests green.
+👉 https://engineering-converter.com
+
+Which vessel should I add next? Tell me in the comments 👇
+
+#LNG #OilAndGas #NaturalGas #ProcessEngineering #LNGShipping #Engineering #OpenSource
+
+──────────
+
+🚢 LNG船を1隻選ぶ。ガス組成を入れる。→ トン・kNm³・TBtu がワンクリックで出ます。
+
+O&G Engineering Converter を v3.5 → v3.6 に更新しました。今回は特に思い入れのあるアップデートです 🎉
+
+🆕 LNGカーゴ推算
+Q-Max、Q-Flex、在来船、Arc7砕氷船、FSRU など代表的なLNG船36隻から選ぶか、容量を直接入力。積載制限・ヒール・ボイルオフを設定すると、組成カードの ρ_liq（ISO 6578）、ρ_std と HHV（JIS K 2301）をそのまま使って、積載量 → 受渡量を計算します。
+
+📦 LNG Endeavour 174,000 m³・98.5 %・豪州NWSガス（HHV 45.32 MJ/Nm³）・ヒール 3,000 m³:
+171,390 → 168,390 m³ · 80,093 → 78,691 t · 96,373 → 94,686 kNm³ · 4.140 → 4.067 TBtu（HHV）
+⚡ さらにGT燃料カードと連動して、「このカーゴ約6.8隻分で M701JAC 1基を1年間運転できる（28.00 TBtu/年）」まで表示。
+
+船舶データは1行ずつ公開情報の出典付き、写真は Wikimedia Commons の作品を著作者クレジット付きで掲載しています 📸
+
+🆕 詳細計算タブが2層構造に 🗂️
+「ガス性状・LNGカーゴ」「水力計算」「GT燃料」の3つのサブタブ。最後に開いた場所を記憶し、共有リンクは該当サブタブを直接開き、以前のリンクもそのまま使えます。
+
+🆕 GT燃料は MMBtu・scf・lb/scf にも対応（換算は 16.9307 — 標準体積なので 16.0185 ではありません 😉）。
+
+無料・登録不要・広告なし・10言語・オープンソース（MIT）・テスト343件グリーン。
+👉 https://engineering-converter.com
+
+次に追加してほしい船があれば、コメントで教えてください 👇
+
+#LNG #天然ガス #プロセスエンジニアリング #LNG船 #エンジニアリング #オープンソース
