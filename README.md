@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.5
+# O&G Engineering Converter — v3.6
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -47,6 +47,8 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 
 ### 2. Advanced Process Engineering (serverless-backed)
 
+*(v3.6)* The Advanced tab is two-layered: a segmented strip with three sub-tabs — **Gas Quality & LNG Cargo**, **Hydraulics** and **GT Fuel** (formerly its own top-level tab). Your last sub-tab is remembered and share links open the exact one.
+
 - **Compositional GHV & Flow Calculator**
   - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
@@ -76,7 +78,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Gas Property Estimator** *(Basic Eng)* — gas viscosity (Lee-Gonzalez-Eakin 1966), sonic velocity and the Joule-Thomson coefficient from one gravity / pressure / temperature / k input set, all chained to the same Papay Z as the Z-Factor card.
 - **Crane TP-410 fittings** *(ΔP card)* — twelve fitting types; ΣK·ρv²/2 added to the pressure drop, with the equivalent length reported alongside. Optional and off by default.
 - **NORSOK P-001 line-sizing screen** — velocity and frictional ΔP/100 m against per-service criteria, with a WITHIN / NEAR / EXCEEDS verdict.
-- **Mobile navigation** — the nine-tab bar becomes a dropdown below tablet width.
+- **Mobile navigation** — the nine-tab bar becomes a dropdown below tablet width (the three Advanced sub-tabs appear as indented rows).
 - **Share links carry custom modules** — state format v:2, behind a sanitizing import boundary.
 - **Automated regression suite** — 242 pytest tests across 13 modules, plus GitHub Actions, guarding every documented reference vector on each change.
 
