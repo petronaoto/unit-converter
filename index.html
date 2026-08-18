@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.5</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.6</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -136,7 +136,6 @@
         <button id="btn-basic" onclick="switchTab('basic')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.basic">Basic Eng</button>
         <button id="btn-advanced" onclick="switchTab('advanced')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.advanced">Advanced</button>
         <button id="btn-safety" onclick="switchTab('safety')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-red-400 text-red-500/70 transition-colors uppercase" data-i18n="nav.safety">Safety</button>
-        <button id="btn-gtfuel" onclick="switchTab('gtfuel')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.gtfuel">GT Fuel</button>
         <button id="btn-howto" onclick="switchTab('howto')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.howto">How To Use</button>
         <button id="btn-theory" onclick="switchTab('theory')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.theory">Theory</button>
         <button id="btn-terms" onclick="switchTab('terms')" class="pb-3 whitespace-nowrap border-b-2 border-transparent hover:text-slate-200 transition-colors uppercase" data-i18n="nav.terms">Terms of Use</button>
@@ -847,7 +846,24 @@
     </div>
 
     <div id="tab-advanced" class="hidden">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- v3.6 — second-layer navigation. The three sub-panes below (adv-sub-gasq / adv-sub-hyd /
+           adv-sub-gtfuel) are toggled by switchAdvSub(); the strip is a different shape from the
+           top bar (pills, not underlines) on purpose. Card markup inside each pane is unchanged. -->
+      <div id="adv-subnav" class="flex flex-wrap gap-1.5 p-1.5 mb-6 rounded-xl bg-slate-900/80 border border-slate-800">
+        <button type="button" id="advbtn-gasq" onclick="switchAdvSub('gasq')" class="flex-1 min-w-[9rem] text-left rounded-lg px-4 py-2 border transition-colors bg-amber-500/10 border-amber-500/40 text-amber-400">
+          <span class="block text-[11px] font-bold tracking-widest uppercase" data-i18n="nav.adv.gasq">Gas Quality &amp; LNG Cargo</span>
+          <span class="hidden lg:block text-[10px] mt-0.5 opacity-70" data-i18n="nav.adv.gasqDesc">Heating value · density · flow · LNG Cargo Estimator</span>
+        </button>
+        <button type="button" id="advbtn-hyd" onclick="switchAdvSub('hyd')" class="flex-1 min-w-[9rem] text-left rounded-lg px-4 py-2 border transition-colors border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <span class="block text-[11px] font-bold tracking-widest uppercase" data-i18n="nav.adv.hyd">Hydraulics</span>
+          <span class="hidden lg:block text-[10px] mt-0.5 opacity-70" data-i18n="nav.adv.hydDesc">Pipe ΔP (Darcy-Weisbach) · Flow Regime</span>
+        </button>
+        <button type="button" id="advbtn-gtfuel" onclick="switchAdvSub('gtfuel')" class="flex-1 min-w-[9rem] text-left rounded-lg px-4 py-2 border transition-colors border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+          <span class="block text-[11px] font-bold tracking-widest uppercase" data-i18n="nav.gtfuel">GT Fuel</span>
+          <span class="hidden lg:block text-[10px] mt-0.5 opacity-70" data-i18n="nav.adv.gtfuelDesc">Turbine selection · fuel gas estimator · catalogue</span>
+        </button>
+      </div>
+      <div id="adv-sub-gasq" class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <div class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4">
@@ -1222,7 +1238,7 @@
                   <div>
                     <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.heelLabel">Heel retained</label>
                     <div class="flex">
-                      <input type="number" step="any" id="lc-heel" value="0" oninput="calcLNGCargo()" min="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <input type="number" step="any" id="lc-heel" value="3000" oninput="calcLNGCargo()" min="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
                       <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500">m³</span>
                     </div>
                   </div>
@@ -1344,7 +1360,9 @@
           </div>
         </div>
         <!-- ══════════ /LNG CARGO ESTIMATOR ══════════ -->
-        <div class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6">
+      </div>
+      <div id="adv-sub-hyd" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse"></span>
@@ -1634,6 +1652,264 @@
           </div>
         </div>
       </div>
+      <!-- v3.1 — GT FUEL: gas-turbine fuel gas estimator + catalogue (v3.6: a sub-pane of the Advanced tab) -->
+      <div id="adv-sub-gtfuel" class="hidden">
+        <div class="space-y-8">
+
+          <!-- G1 — Gas Turbine Selection -->
+          <div id="gt-select" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+            <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.sel.title">Gas Turbine Selection</span></h2>
+            </div>
+            <div class="p-6 space-y-5">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.vendorLabel">VENDOR</label>
+                  <select id="gt-vendor" onchange="gtVendorChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="mhi">MHI (Mitsubishi Power)</option>
+                    <option value="ge">GE Vernova</option>
+                    <option value="sie">Siemens Energy</option>
+                    <option value="manual" data-i18n="gtfuel.sel.vendorManual">Manual input</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.modelLabel">MODEL</label>
+                  <select id="gt-model" onchange="selectGTModel(this.value)" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="" data-i18n="gtfuel.sel.modelManual">— manual input —</option>
+                    <optgroup label="MHI">
+                      <option value="h25">H-25 — 41.03 MW</option>
+                      <option value="h100-50">H-100 (50 Hz) — 116.45 MW</option>
+                      <option value="h100-60">H-100 (60 Hz) — 105.78 MW</option>
+                      <option value="m701da">M701DA — 144.09 MW</option>
+                      <option value="m701f">M701F — 385 MW</option>
+                      <option value="m701jac" selected>M701JAC (448) — 448 MW</option>
+                      <option value="m701jac574">M701JAC (574) — 574 MW</option>
+                      <option value="m501gac">M501GAC — 283 MW</option>
+                      <option value="m501jac">M501JAC — 453 MW</option>
+                      <option value="ft8-50">FT8 (50 Hz) — 28.53 MW</option>
+                      <option value="ft8-60">FT8 (60 Hz) — 30.94 MW</option>
+                      <option value="ft4000-70">FT4000 SWIFTPAC 70 (50 Hz) — 70.15 MW</option>
+                      <option value="ft4000-140">FT4000 SWIFTPAC 140 (50 Hz) — 140.5 MW</option>
+                      <option value="ft4000-72">FT4000 SWIFTPAC 70 (60 Hz) — 71.93 MW</option>
+                      <option value="ft4000-144">FT4000 SWIFTPAC 140 (60 Hz) — 144.24 MW</option>
+                    </optgroup>
+                    <optgroup label="GE Vernova">
+                      <option value="9ha01">9HA.01 — 448 MW</option>
+                      <option value="9ha02">9HA.02 — 571 MW</option>
+                      <option value="7ha01">7HA.01 — 290 MW</option>
+                      <option value="7ha02">7HA.02 — 384 MW</option>
+                      <option value="7ha03">7HA.03 — 430 MW</option>
+                      <option value="9f04">9F.04 — 294 MW</option>
+                      <option value="7f05">7F.05 — 239 MW</option>
+                      <option value="lm2500xg4">LM2500XPRESS +G4 — 34.5 MW</option>
+                      <option value="lm6000pf">LM6000VELOX PF+ Sprint — 56.9 MW</option>
+                      <option value="lms100">LMS100 PA+ — 112.9 MW</option>
+                    </optgroup>
+                    <optgroup label="Siemens Energy">
+                      <option value="sgt5-9000hl">SGT5-9000HL — 593 MW</option>
+                      <option value="sgt6-9000hl">SGT6-9000HL — 440 MW</option>
+                      <option value="sgt5-8000h">SGT5-8000H — 450 MW</option>
+                      <option value="sgt6-8000h">SGT6-8000H — 310 MW</option>
+                      <option value="sgt5-4000f">SGT5-4000F — 385 MW</option>
+                      <option value="sgt800">SGT-800 — 62.5 MW</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.cycleLabel">CYCLE</label>
+                  <select id="gt-cycle" onchange="gtCycleChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="sc" data-i18n="gtfuel.sel.cycleSC">Simple cycle (GT only)</option>
+                    <option value="cc" data-i18n="gtfuel.sel.cycleCC">Combined cycle (GTCC plant)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 text-[11px]">
+                <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipIso">Rating</span> <span id="gt-spec-mw" class="text-amber-500 font-mono">—</span></span>
+                <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">η <span id="gt-spec-eff" class="text-amber-500 font-mono">—</span></span>
+                <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipHR">Heat rate</span> <span id="gt-spec-hr" class="text-amber-500 font-mono">—</span></span>
+                <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">TIT <span id="gt-spec-tit" class="text-amber-500 font-mono">—</span></span>
+                <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipExh">Exhaust</span> <span id="gt-spec-exh" class="text-amber-500 font-mono">—</span></span>
+              </div>
+              <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.sel.prefillNote">Selecting a model pre-fills the estimator below with its ISO rating and efficiency (simple-cycle GT, or GTCC plant values in Combined cycle mode). All figures are indicative vendor catalogue data at ISO conditions (15 °C, 101.325 kPa, 60% RH), natural gas. You can overwrite any input.</p>
+            </div>
+          </div>
+
+          <!-- G2 — Fuel Gas Rate Estimator -->
+          <div id="gt-est" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+            <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.est.title">Fuel Gas Rate Estimator</span></h2>
+            </div>
+            <div class="p-6 space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.powerLabel">POWER OUTPUT</label>
+                  <div class="flex">
+                    <input type="number" step="any" id="gt-power" value="448" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                    <select id="gt-power-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">MW</option><option value="0.001">kW</option></select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.effLabel">EFFICIENCY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.effHint">— %-LHV basis</span></label>
+                  <div class="flex">
+                    <input type="number" step="any" id="gt-eff" value="44.0" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                    <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.hvLabel">FUEL HEATING VALUE</label>
+                  <div class="flex">
+                    <input type="number" step="any" id="gt-hv" value="40.25" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                    <select id="gt-hv-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="mj">MJ/Nm³</option><option value="btu">Btu/scf</option></select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.basisLabel">HEATING VALUE BASIS</label>
+                  <select id="gt-hv-basis" onchange="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="lhv" data-i18n="gtfuel.est.basisLHV">LHV (net)</option>
+                    <option value="hhv" data-i18n="gtfuel.est.basisHHV">HHV (gross)</option>
+                  </select>
+                  <div id="gt-ratio-wrap" class="hidden mt-2">
+                    <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.ratioLabel">HHV/LHV RATIO</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.ratioHint">— to convert to LHV</span></label>
+                    <input type="number" step="any" id="gt-hhv-ratio" value="1.108" oninput="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.rhoLabel">GAS DENSITY</span> (ρ<sub>std</sub>)</label>
+                  <div class="flex">
+                    <input type="number" step="any" id="gt-rho" value="0.8193" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                    <select id="gt-rho-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="kgnm3">kg/Nm³</option><option value="lbscf">lb/scf</option></select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.availLabel">AVAILABILITY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.availHint">— for monthly/yearly totals</span></label>
+                  <div class="flex">
+                    <input type="number" step="any" id="gt-avail" value="92" min="0" max="100" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
+                    <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button id="gt-import" onclick="importGHVToGT()" class="text-xs px-3 py-1.5 rounded border border-dashed border-amber-500/50 text-amber-400 hover:bg-amber-500/10 transition-colors" data-i18n="gtfuel.est.importBtn">⇩ Import LHV/HHV &amp; ρ_std from Advanced tab composition</button>
+                <button id="gt-send-mf" onclick="sendGTToMassVol()" class="text-xs px-3 py-1.5 rounded border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-400 transition-colors" data-i18n="gtfuel.est.sendBtn">⇨ Send result to Mass↔Vol card (Basic Eng)</button>
+              </div>
+              <div id="gt-warn" class="hidden bg-orange-500/10 border border-orange-500/20 rounded p-2 text-[10px] text-orange-400"></div>
+
+              <div class="pt-4 border-t border-slate-800 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                    <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.energyLabel">Fuel energy input</span>
+                    <div class="flex items-center gap-3">
+                      <span id="gt-out-q" class="text-2xl font-bold font-mono text-white">—</span><select id="gt-out-q-u" onchange="calcGTFuel()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="mwth">MW-th</option><option value="mmbtuh">MMBtu/h</option><option value="gjh">GJ/h</option></select>
+                      <button onclick="copyText(document.getElementById('gt-out-q').innerText, this)" data-unit-src="gt-out-q-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                    <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.hrLabel">Heat rate</span>
+                    <div class="flex items-center gap-3">
+                      <span id="gt-out-hr" class="text-2xl font-bold font-mono text-white">—</span><span class="text-xs text-slate-400">kJ/kWh</span>
+                      <span class="text-xs text-slate-500 font-mono"><span id="gt-out-hr-btu">—</span> Btu/kWh</span>
+                      <button onclick="copyText(document.getElementById('gt-out-hr').innerText, this)" data-copy-unit="kJ/kWh" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                    <select id="gt-out-vol-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="knm3h">kNm³/h</option><option value="nm3h">Nm³/h</option><option value="knm3d">kNm³/d</option><option value="scfh">scf/h</option><option value="mmscfh">MMscf/h</option><option value="mmscfd">MMSCFD</option></select>
+                    <div class="flex items-center gap-3">
+                      <span id="gt-out-vol" class="text-2xl font-bold font-mono text-white">—</span>
+                      <button onclick="copyText(document.getElementById('gt-out-vol').innerText, this)" data-unit-src="gt-out-vol-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
+                    <select id="gt-out-mass-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="th">t/h</option><option value="td">t/d</option><option value="kgh">kg/h</option><option value="kgs">kg/s</option><option value="lbh">lb/h</option></select>
+                    <div class="flex items-center gap-3">
+                      <span id="gt-out-mass" class="text-2xl font-bold font-mono text-white">—</span>
+                      <button onclick="copyText(document.getElementById('gt-out-mass').innerText, this)" data-unit-src="gt-out-mass-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.out.totalsTitle">CONSUMPTION TOTALS</span> <span class="text-slate-600 font-normal" id="gt-avail-note"></span></label>
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-[11px] font-mono border-collapse">
+                      <thead>
+                        <tr class="text-slate-400 text-left">
+                          <th class="py-1.5 px-2 border-b border-slate-700 font-semibold" data-i18n="gtfuel.out.colPeriod">Period</th>
+                          <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colVol">Fuel volume</span> <select id="gt-tot-vol-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel volume unit"><option value="nm3">Nm³</option><option value="scf">scf</option></select></th>
+                          <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colMass">Fuel mass</th>
+                          <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colFuelEnergy">Fuel energy in</span> <select id="gt-tot-q-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel energy unit"><option value="gj">GJ</option><option value="mmbtu">MMBtu</option><option value="mwh">MWh</option></select></th>
+                          <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colEnergy">Power sent out</span> <select id="gt-tot-e-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Power sent out unit"><option value="mwh">MWh</option><option value="gj">GJ</option><option value="mmbtu">MMBtu</option></select></th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-slate-200">
+                        <tr><td class="py-1.5 px-2 border-b border-slate-800"><span data-i18n="gtfuel.out.rowHour">Hourly</span> <span class="text-slate-600" data-i18n="gtfuel.out.rowHourNote">(continuous)</span></td><td id="gt-tot-h-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-h-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                        <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowDay">Daily</td><td id="gt-tot-d-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-d-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                        <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowMonth">Monthly (730 h)</td><td id="gt-tot-m-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-m-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                        <tr><td class="py-1.5 px-2" data-i18n="gtfuel.out.rowYear">Yearly (8,760 h)</td><td id="gt-tot-y-vol" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-mass" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-q" class="py-1.5 px-2 text-right text-emerald-300">—</td><td id="gt-tot-y-e" class="py-1.5 px-2 text-right">—</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.est.screeningNote">Screening estimate: Q_fuel = P / η (LHV basis); V = 3600·Q / LHV; ṁ = V·ρ_std. Daily/monthly/yearly totals apply the availability factor; the hourly row is the instantaneous rate at load. Efficiency and heat-rate definitions per ISO 3977-2 / ASME PTC 22 convention (HR = 3600/η). Actual fuel consumption varies with site conditions, degradation, part load and fuel composition — verify against vendor performance data before commercial use.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- G3 — Gas Turbine Catalogue -->
+          <div id="gt-cat" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+            <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.cat.title">Gas Turbine Catalogue</span></h2>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-[11px] text-slate-500" data-i18n="gtfuel.cat.subtitle">Indicative ISO ratings from public vendor catalogues (natural gas). Click a card to load the model into the estimator.</p>
+              <div class="flex flex-wrap gap-2 text-[10px] font-mono">
+                <button id="gt-filt-all" onclick="gtSetCatFilter('vendor','all',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAll">All vendors</button>
+                <button id="gt-filt-mhi" onclick="gtSetCatFilter('vendor','MHI',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">MHI</button>
+                <button id="gt-filt-ge" onclick="gtSetCatFilter('vendor','GE Vernova',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">GE Vernova</button>
+                <button id="gt-filt-sie" onclick="gtSetCatFilter('vendor','Siemens Energy',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">Siemens Energy</button>
+                <span class="w-px bg-slate-700 mx-1"></span>
+                <button id="gt-filt-any" onclick="gtSetCatFilter('attr','all',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAny">All types</button>
+                <button id="gt-filt-50" onclick="gtSetCatFilter('attr','50',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">50 Hz</button>
+                <button id="gt-filt-60" onclick="gtSetCatFilter('attr','60',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">60 Hz</button>
+                <button id="gt-filt-hd" onclick="gtSetCatFilter('attr','HD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classHD">Heavy duty</button>
+                <button id="gt-filt-ad" onclick="gtSetCatFilter('attr','AD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classAD">Aeroderivative</button>
+                <button id="gt-filt-ind" onclick="gtSetCatFilter('attr','IND',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classIND">Industrial</button>
+              </div>
+              <svg width="0" height="0" class="absolute" aria-hidden="true">
+                <defs>
+                  <symbol id="gt-svg-hd" viewBox="0 0 160 54">
+                    <path d="M8 20 L30 8 L30 46 L8 34 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M30 12 L74 18 L74 36 L30 42 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                    <circle cx="84" cy="16" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <circle cx="84" cy="38" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M94 20 L122 12 L122 42 L94 34 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                    <path d="M122 16 L152 10 L152 44 L122 38 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  </symbol>
+                  <symbol id="gt-svg-ad" viewBox="0 0 160 54">
+                    <ellipse cx="26" cy="27" rx="14" ry="13" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <ellipse cx="26" cy="27" rx="5" ry="4.5" fill="none" stroke="#94a3b8" stroke-width="1"/>
+                    <path d="M40 18 L100 21 L100 33 L40 36 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                    <path d="M100 22 L120 19 L120 35 L100 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M120 21 L148 25 L148 29 L120 33 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                  </symbol>
+                  <symbol id="gt-svg-ind" viewBox="0 0 160 54">
+                    <rect x="8" y="10" width="144" height="36" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                    <rect x="16" y="2" width="22" height="14" rx="2" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M27 16 L27 24" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M22 26 L44 22 L44 34 L22 30 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M44 24 L86 26 L86 30 L44 32 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                    <path d="M86 24 L104 21 L104 35 L86 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                    <path d="M104 25 L138 27 L138 29 L104 31 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                    <rect x="130" y="4" width="10" height="24" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                  </symbol>
+                </defs>
+              </svg>
+              <div id="gt-cat-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+              <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.cat.srcNote">Thumbnails are original schematic illustrations (not vendor imagery). Data sources: MHI GTCC brochure METP-11GT01E1-E-0; GE Vernova fact sheets GEA35750/GEA35768 and product pages; Siemens Energy product pages. Ratings are net or gross per each vendor's published convention and change with catalogue revisions — always confirm against the current vendor datasheet.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
 
@@ -1792,269 +2068,11 @@
       </div>
     </div>
 
-    <!-- v3.1 — GT FUEL: gas-turbine fuel gas estimator + catalogue -->
-    <div id="tab-gtfuel" class="hidden">
-      <div class="space-y-8">
-
-        <!-- G1 — Gas Turbine Selection -->
-        <div id="gt-select" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
-          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.sel.title">Gas Turbine Selection</span></h2>
-          </div>
-          <div class="p-6 space-y-5">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.vendorLabel">VENDOR</label>
-                <select id="gt-vendor" onchange="gtVendorChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
-                  <option value="mhi">MHI (Mitsubishi Power)</option>
-                  <option value="ge">GE Vernova</option>
-                  <option value="sie">Siemens Energy</option>
-                  <option value="manual" data-i18n="gtfuel.sel.vendorManual">Manual input</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.modelLabel">MODEL</label>
-                <select id="gt-model" onchange="selectGTModel(this.value)" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
-                  <option value="" data-i18n="gtfuel.sel.modelManual">— manual input —</option>
-                  <optgroup label="MHI">
-                    <option value="h25">H-25 — 41.03 MW</option>
-                    <option value="h100-50">H-100 (50 Hz) — 116.45 MW</option>
-                    <option value="h100-60">H-100 (60 Hz) — 105.78 MW</option>
-                    <option value="m701da">M701DA — 144.09 MW</option>
-                    <option value="m701f">M701F — 385 MW</option>
-                    <option value="m701jac" selected>M701JAC (448) — 448 MW</option>
-                    <option value="m701jac574">M701JAC (574) — 574 MW</option>
-                    <option value="m501gac">M501GAC — 283 MW</option>
-                    <option value="m501jac">M501JAC — 453 MW</option>
-                    <option value="ft8-50">FT8 (50 Hz) — 28.53 MW</option>
-                    <option value="ft8-60">FT8 (60 Hz) — 30.94 MW</option>
-                    <option value="ft4000-70">FT4000 SWIFTPAC 70 (50 Hz) — 70.15 MW</option>
-                    <option value="ft4000-140">FT4000 SWIFTPAC 140 (50 Hz) — 140.5 MW</option>
-                    <option value="ft4000-72">FT4000 SWIFTPAC 70 (60 Hz) — 71.93 MW</option>
-                    <option value="ft4000-144">FT4000 SWIFTPAC 140 (60 Hz) — 144.24 MW</option>
-                  </optgroup>
-                  <optgroup label="GE Vernova">
-                    <option value="9ha01">9HA.01 — 448 MW</option>
-                    <option value="9ha02">9HA.02 — 571 MW</option>
-                    <option value="7ha01">7HA.01 — 290 MW</option>
-                    <option value="7ha02">7HA.02 — 384 MW</option>
-                    <option value="7ha03">7HA.03 — 430 MW</option>
-                    <option value="9f04">9F.04 — 294 MW</option>
-                    <option value="7f05">7F.05 — 239 MW</option>
-                    <option value="lm2500xg4">LM2500XPRESS +G4 — 34.5 MW</option>
-                    <option value="lm6000pf">LM6000VELOX PF+ Sprint — 56.9 MW</option>
-                    <option value="lms100">LMS100 PA+ — 112.9 MW</option>
-                  </optgroup>
-                  <optgroup label="Siemens Energy">
-                    <option value="sgt5-9000hl">SGT5-9000HL — 593 MW</option>
-                    <option value="sgt6-9000hl">SGT6-9000HL — 440 MW</option>
-                    <option value="sgt5-8000h">SGT5-8000H — 450 MW</option>
-                    <option value="sgt6-8000h">SGT6-8000H — 310 MW</option>
-                    <option value="sgt5-4000f">SGT5-4000F — 385 MW</option>
-                    <option value="sgt800">SGT-800 — 62.5 MW</option>
-                  </optgroup>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.sel.cycleLabel">CYCLE</label>
-                <select id="gt-cycle" onchange="gtCycleChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
-                  <option value="sc" data-i18n="gtfuel.sel.cycleSC">Simple cycle (GT only)</option>
-                  <option value="cc" data-i18n="gtfuel.sel.cycleCC">Combined cycle (GTCC plant)</option>
-                </select>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2 text-[11px]">
-              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipIso">Rating</span> <span id="gt-spec-mw" class="text-amber-500 font-mono">—</span></span>
-              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">η <span id="gt-spec-eff" class="text-amber-500 font-mono">—</span></span>
-              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipHR">Heat rate</span> <span id="gt-spec-hr" class="text-amber-500 font-mono">—</span></span>
-              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300">TIT <span id="gt-spec-tit" class="text-amber-500 font-mono">—</span></span>
-              <span class="bg-slate-950/70 border border-slate-700 rounded px-2.5 py-1.5 text-slate-300"><span data-i18n="gtfuel.sel.chipExh">Exhaust</span> <span id="gt-spec-exh" class="text-amber-500 font-mono">—</span></span>
-            </div>
-            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.sel.prefillNote">Selecting a model pre-fills the estimator below with its ISO rating and efficiency (simple-cycle GT, or GTCC plant values in Combined cycle mode). All figures are indicative vendor catalogue data at ISO conditions (15 °C, 101.325 kPa, 60% RH), natural gas. You can overwrite any input.</p>
-          </div>
-        </div>
-
-        <!-- G2 — Fuel Gas Rate Estimator -->
-        <div id="gt-est" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
-          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.est.title">Fuel Gas Rate Estimator</span></h2>
-          </div>
-          <div class="p-6 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.powerLabel">POWER OUTPUT</label>
-                <div class="flex">
-                  <input type="number" step="any" id="gt-power" value="448" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <select id="gt-power-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="1">MW</option><option value="0.001">kW</option></select>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.effLabel">EFFICIENCY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.effHint">— %-LHV basis</span></label>
-                <div class="flex">
-                  <input type="number" step="any" id="gt-eff" value="44.0" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.hvLabel">FUEL HEATING VALUE</label>
-                <div class="flex">
-                  <input type="number" step="any" id="gt-hv" value="40.25" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <select id="gt-hv-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="mj">MJ/Nm³</option><option value="btu">Btu/scf</option></select>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2" data-i18n="gtfuel.est.basisLabel">HEATING VALUE BASIS</label>
-                <select id="gt-hv-basis" onchange="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
-                  <option value="lhv" data-i18n="gtfuel.est.basisLHV">LHV (net)</option>
-                  <option value="hhv" data-i18n="gtfuel.est.basisHHV">HHV (gross)</option>
-                </select>
-                <div id="gt-ratio-wrap" class="hidden mt-2">
-                  <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.ratioLabel">HHV/LHV RATIO</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.ratioHint">— to convert to LHV</span></label>
-                  <input type="number" step="any" id="gt-hhv-ratio" value="1.108" oninput="calcGTFuel()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.rhoLabel">GAS DENSITY</span> (ρ<sub>std</sub>)</label>
-                <div class="flex">
-                  <input type="number" step="any" id="gt-rho" value="0.8193" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <select id="gt-rho-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="kgnm3">kg/Nm³</option><option value="lbscf">lb/scf</option></select>
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.availLabel">AVAILABILITY</span> <span class="text-slate-600 font-normal" data-i18n="gtfuel.est.availHint">— for monthly/yearly totals</span></label>
-                <div class="flex">
-                  <input type="number" step="any" id="gt-avail" value="92" min="0" max="100" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">%</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <button id="gt-import" onclick="importGHVToGT()" class="text-xs px-3 py-1.5 rounded border border-dashed border-amber-500/50 text-amber-400 hover:bg-amber-500/10 transition-colors" data-i18n="gtfuel.est.importBtn">⇩ Import LHV/HHV &amp; ρ_std from Advanced tab composition</button>
-              <button id="gt-send-mf" onclick="sendGTToMassVol()" class="text-xs px-3 py-1.5 rounded border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-400 transition-colors" data-i18n="gtfuel.est.sendBtn">⇨ Send result to Mass↔Vol card (Basic Eng)</button>
-            </div>
-            <div id="gt-warn" class="hidden bg-orange-500/10 border border-orange-500/20 rounded p-2 text-[10px] text-orange-400"></div>
-
-            <div class="pt-4 border-t border-slate-800 space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.energyLabel">Fuel energy input</span>
-                  <div class="flex items-center gap-3">
-                    <span id="gt-out-q" class="text-2xl font-bold font-mono text-white">—</span><select id="gt-out-q-u" onchange="calcGTFuel()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="mwth">MW-th</option><option value="mmbtuh">MMBtu/h</option><option value="gjh">GJ/h</option></select>
-                    <button onclick="copyText(document.getElementById('gt-out-q').innerText, this)" data-unit-src="gt-out-q-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                  </div>
-                </div>
-                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.hrLabel">Heat rate</span>
-                  <div class="flex items-center gap-3">
-                    <span id="gt-out-hr" class="text-2xl font-bold font-mono text-white">—</span><span class="text-xs text-slate-400">kJ/kWh</span>
-                    <span class="text-xs text-slate-500 font-mono"><span id="gt-out-hr-btu">—</span> Btu/kWh</span>
-                    <button onclick="copyText(document.getElementById('gt-out-hr').innerText, this)" data-copy-unit="kJ/kWh" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                  </div>
-                </div>
-                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <select id="gt-out-vol-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="knm3h">kNm³/h</option><option value="nm3h">Nm³/h</option><option value="knm3d">kNm³/d</option><option value="scfh">scf/h</option><option value="mmscfh">MMscf/h</option><option value="mmscfd">MMSCFD</option></select>
-                  <div class="flex items-center gap-3">
-                    <span id="gt-out-vol" class="text-2xl font-bold font-mono text-white">—</span>
-                    <button onclick="copyText(document.getElementById('gt-out-vol').innerText, this)" data-unit-src="gt-out-vol-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                  </div>
-                </div>
-                <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <select id="gt-out-mass-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="th">t/h</option><option value="td">t/d</option><option value="kgh">kg/h</option><option value="kgs">kg/s</option><option value="lbh">lb/h</option></select>
-                  <div class="flex items-center gap-3">
-                    <span id="gt-out-mass" class="text-2xl font-bold font-mono text-white">—</span>
-                    <button onclick="copyText(document.getElementById('gt-out-mass').innerText, this)" data-unit-src="gt-out-mass-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.out.totalsTitle">CONSUMPTION TOTALS</span> <span class="text-slate-600 font-normal" id="gt-avail-note"></span></label>
-                <div class="overflow-x-auto">
-                  <table class="w-full text-[11px] font-mono border-collapse">
-                    <thead>
-                      <tr class="text-slate-400 text-left">
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold" data-i18n="gtfuel.out.colPeriod">Period</th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colVol">Fuel volume</span> <select id="gt-tot-vol-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel volume unit"><option value="nm3">Nm³</option><option value="scf">scf</option></select></th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colMass">Fuel mass</th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colFuelEnergy">Fuel energy in</span> <select id="gt-tot-q-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel energy unit"><option value="gj">GJ</option><option value="mmbtu">MMBtu</option><option value="mwh">MWh</option></select></th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colEnergy">Power sent out</span> <select id="gt-tot-e-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Power sent out unit"><option value="mwh">MWh</option><option value="gj">GJ</option><option value="mmbtu">MMBtu</option></select></th>
-                      </tr>
-                    </thead>
-                    <tbody class="text-slate-200">
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800"><span data-i18n="gtfuel.out.rowHour">Hourly</span> <span class="text-slate-600" data-i18n="gtfuel.out.rowHourNote">(continuous)</span></td><td id="gt-tot-h-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-h-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowDay">Daily</td><td id="gt-tot-d-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-d-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowMonth">Monthly (730 h)</td><td id="gt-tot-m-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-m-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2" data-i18n="gtfuel.out.rowYear">Yearly (8,760 h)</td><td id="gt-tot-y-vol" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-mass" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-q" class="py-1.5 px-2 text-right text-emerald-300">—</td><td id="gt-tot-y-e" class="py-1.5 px-2 text-right">—</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.est.screeningNote">Screening estimate: Q_fuel = P / η (LHV basis); V = 3600·Q / LHV; ṁ = V·ρ_std. Daily/monthly/yearly totals apply the availability factor; the hourly row is the instantaneous rate at load. Efficiency and heat-rate definitions per ISO 3977-2 / ASME PTC 22 convention (HR = 3600/η). Actual fuel consumption varies with site conditions, degradation, part load and fuel composition — verify against vendor performance data before commercial use.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- G3 — Gas Turbine Catalogue -->
-        <div id="gt-cat" class="scroll-mt-64 md:scroll-mt-40 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
-          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span><span data-i18n="gtfuel.cat.title">Gas Turbine Catalogue</span></h2>
-          </div>
-          <div class="p-6 space-y-4">
-            <p class="text-[11px] text-slate-500" data-i18n="gtfuel.cat.subtitle">Indicative ISO ratings from public vendor catalogues (natural gas). Click a card to load the model into the estimator.</p>
-            <div class="flex flex-wrap gap-2 text-[10px] font-mono">
-              <button id="gt-filt-all" onclick="gtSetCatFilter('vendor','all',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAll">All vendors</button>
-              <button id="gt-filt-mhi" onclick="gtSetCatFilter('vendor','MHI',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">MHI</button>
-              <button id="gt-filt-ge" onclick="gtSetCatFilter('vendor','GE Vernova',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">GE Vernova</button>
-              <button id="gt-filt-sie" onclick="gtSetCatFilter('vendor','Siemens Energy',this)" class="gt-vpill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">Siemens Energy</button>
-              <span class="w-px bg-slate-700 mx-1"></span>
-              <button id="gt-filt-any" onclick="gtSetCatFilter('attr','all',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-amber-400 border border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.filterAny">All types</button>
-              <button id="gt-filt-50" onclick="gtSetCatFilter('attr','50',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">50 Hz</button>
-              <button id="gt-filt-60" onclick="gtSetCatFilter('attr','60',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors">60 Hz</button>
-              <button id="gt-filt-hd" onclick="gtSetCatFilter('attr','HD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classHD">Heavy duty</button>
-              <button id="gt-filt-ad" onclick="gtSetCatFilter('attr','AD',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classAD">Aeroderivative</button>
-              <button id="gt-filt-ind" onclick="gtSetCatFilter('attr','IND',this)" class="gt-apill px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="gtfuel.cat.classIND">Industrial</button>
-            </div>
-            <svg width="0" height="0" class="absolute" aria-hidden="true">
-              <defs>
-                <symbol id="gt-svg-hd" viewBox="0 0 160 54">
-                  <path d="M8 20 L30 8 L30 46 L8 34 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M30 12 L74 18 L74 36 L30 42 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-                  <circle cx="84" cy="16" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <circle cx="84" cy="38" r="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M94 20 L122 12 L122 42 L94 34 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-                  <path d="M122 16 L152 10 L152 44 L122 38 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                </symbol>
-                <symbol id="gt-svg-ad" viewBox="0 0 160 54">
-                  <ellipse cx="26" cy="27" rx="14" ry="13" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <ellipse cx="26" cy="27" rx="5" ry="4.5" fill="none" stroke="#94a3b8" stroke-width="1"/>
-                  <path d="M40 18 L100 21 L100 33 L40 36 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-                  <path d="M100 22 L120 19 L120 35 L100 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M120 21 L148 25 L148 29 L120 33 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-                </symbol>
-                <symbol id="gt-svg-ind" viewBox="0 0 160 54">
-                  <rect x="8" y="10" width="144" height="36" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-                  <rect x="16" y="2" width="22" height="14" rx="2" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M27 16 L27 24" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M22 26 L44 22 L44 34 L22 30 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M44 24 L86 26 L86 30 L44 32 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-                  <path d="M86 24 L104 21 L104 35 L86 32 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <path d="M104 25 L138 27 L138 29 L104 31 Z" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-                  <rect x="130" y="4" width="10" height="24" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-                </symbol>
-              </defs>
-            </svg>
-            <div id="gt-cat-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="gtfuel.cat.srcNote">Thumbnails are original schematic illustrations (not vendor imagery). Data sources: MHI GTCC brochure METP-11GT01E1-E-0; GE Vernova fact sheets GEA35750/GEA35768 and product pages; Siemens Energy product pages. Ratings are net or gross per each vendor's published convention and change with catalogue revisions — always confirm against the current vendor datasheet.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
 
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.5</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.6</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
@@ -2076,8 +2094,8 @@
             <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 ΔP</a>
             <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Fittings</a>
             <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Flow Regime</a>
-            <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 PRV</a>
-            <a href="#howto-21" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">21 GT Fuel</a>
+            <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 GT Fuel</a>
+            <a href="#howto-21" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">21 PRV</a>
             <a href="#howto-22" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">22 Report</a>
             <a href="#howto-releases" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ Releases</a>
           </nav>
@@ -2087,23 +2105,29 @@
 
         <section>
           <h3 id="howto-1" class="text-sm font-bold text-amber-500 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b007">1. Application Header &amp; Tab Navigation</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b008">The dark header bar contains all navigational tabs. Click any tab to switch context. The active tab shows an amber underline.</p>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b008">The dark header bar contains the main navigation tabs. Click any tab to switch context; the active tab shows an amber underline. The <strong class="text-slate-200">Advanced</strong> tab has a second layer: a segmented strip directly under the bar with three sub-tabs — <strong class="text-slate-200">Gas Quality &amp; LNG Cargo</strong> (heating value, density, flow conversions and the LNG Cargo Estimator), <strong class="text-slate-200">Hydraulics</strong> (Pipe ΔP and Flow Regime) and <strong class="text-slate-200">GT Fuel</strong> (turbine selection, fuel-gas estimator and catalogue). The strip remembers your last choice, and a share link opens the exact sub-tab.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2" data-i18n-html="docs.howto.b009">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
-              <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-              <span class="text-slate-500 text-[10px]">v2.4 • Hybrid</span>
+            <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
+            <span class="text-slate-500 text-[10px]">v3.6 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">General</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Basic Eng</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Advanced</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">How To Use</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Theory</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Terms of Use</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Privacy</span>
-              <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Report</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">General</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Basic Eng</span>
+            <span class="px-3 py-1 bg-amber-600/30 border border-amber-500 rounded text-amber-400 text-[10px] font-bold">Advanced</span>
+            <span class="px-3 py-1 border border-red-900/60 rounded text-red-400/70 text-[10px]">Safety</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">How To Use</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Theory</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Terms of Use</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Privacy</span>
+            <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">Report</span>
             </div>
-            <div class="text-[10px] text-slate-500 pl-2">▲ amber = active tab &nbsp;|&nbsp; grey = inactive</div>
+            <div class="flex gap-1.5 flex-wrap p-1 ml-2 rounded-lg bg-slate-900/80 border border-slate-800">
+            <span class="px-3 py-1 rounded bg-amber-500/10 border border-amber-500/40 text-amber-400 text-[10px] font-bold">Gas Quality & LNG Cargo</span>
+            <span class="px-3 py-1 rounded border border-transparent text-slate-500 text-[10px]">Hydraulics</span>
+            <span class="px-3 py-1 rounded border border-transparent text-slate-500 text-[10px]">GT Fuel</span>
+            </div>
+            <div class="text-[10px] text-slate-500 pl-2">▲ amber = active tab &nbsp;|&nbsp; grey = inactive &nbsp;|&nbsp; second row = Advanced sub-tabs</div>
           </div>
         </section>
 
@@ -2324,7 +2348,7 @@
 
         <!-- 11. ADVANCED TAB (SECTION 1) — GAS COMPOSITION INPUT -->
         <section>
-          <h3 id="howto-11" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b031">11. Advanced Tab (Section 1) — Gas Composition Input</h3>
+          <h3 id="howto-11" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b031">11. Advanced › Gas Quality &amp; LNG Cargo (Section 1) — Gas Composition Input</h3>
           <div data-i18n-html="docs.howto.b032">
             <p class="text-sm text-slate-400 leading-relaxed">This one block feeds everything else on the Advanced tab. Heating value, specific gravity, Wobbe index, molecular weight, MCP, the LNG liquid density and every mass&nbsp;↔&nbsp;volume flow conversion further down the page are all derived from the fourteen numbers you enter here — nothing on the tab has an independent input. Two settings decide how those numbers are read: the <strong class="text-slate-200">Input Mode</strong> selector in the card header, and the <strong class="text-slate-200">Reference Composition</strong> pull-down at the top of the block.</p>
             <div class="flex flex-wrap items-center gap-2 mt-4 text-[10px] font-mono">
@@ -2424,7 +2448,7 @@
         </section>
 
         <section>
-          <h3 id="howto-13" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b034">13. Advanced Tab (Section 2) — Operating Conditions</h3>
+          <h3 id="howto-13" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b034">13. Advanced › Gas Quality &amp; LNG Cargo (Section 2) — Operating Conditions</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b035">Override standard conditions (0°C, 0 MPaG) to compute actual volumetric flows at operating pressure and temperature. LNG liquid temp is only used for liquid density calculation.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3" data-i18n-html="docs.howto.b036">
             <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2">2. CONDITIONS &amp; OPERATING STATE</div>
@@ -2450,7 +2474,7 @@
         </section>
 
         <section>
-          <h3 id="howto-14" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b037">14. Advanced Tab (Section 3) — Physical &amp; Combustion Properties</h3>
+          <h3 id="howto-14" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b037">14. Advanced › Gas Quality &amp; LNG Cargo (Section 3) — Physical &amp; Combustion Properties</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b038">All outputs computed per JIS K 2301 (2011) using Z-corrected mole fractions. Use the <strong class="text-orange-400">HHV / LHV</strong> toggle inside the Section 3 header row to switch between Higher (総発熱量) and Lower (真発熱量) Heating Value modes. Results update automatically. Note: Wobbe Index always uses HHV per JIS K 2301 §7 regardless of mode.</p>
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs" data-i18n-html="docs.howto.b039">
             <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-2 mb-3">3. PHYSICAL &amp; COMBUSTION PROPERTIES</div>
@@ -2497,7 +2521,7 @@
         </section>
 
         <section>
-          <h3 id="howto-15" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b040">15. Advanced Tab (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
+          <h3 id="howto-15" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b040">15. Advanced › Gas Quality &amp; LNG Cargo (Section 4) — Mass &amp; Volumetric Flow Conversions</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b041">Two independent sub-panels: (A) Given Mass → Calculated Output and (B) Given Volume → Calculated Output. Each output panel has a toggle button (VOL/MOL for panel A; MASS/MOL for panel B) to switch between the standard flow output and Molar Flow. Available units: Mass: kg/s, kg/h, ton/h, ton/d, lb/h, lb/d. Molar: kmol/h or mol/s.</p>
           <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 text-xs text-blue-300 mb-4" data-i18n-html="docs.howto.b042">
             <strong>🔵 VOL/MOL and MASS/MOL Toggles:</strong> When MOL mode is selected, the output panel displays Molar Flow calculated as ṁ[kg/h] ÷ MW[g/mol] = n_dot[kmol/h]. Select kmol/h or mol/s from the unit dropdown. These molar flow values are useful for combustion air calculations, pipe sizing, and heat exchanger duties.
@@ -2547,7 +2571,7 @@
         </section>
 
         <section>
-          <h3 id="howto-16" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b102">16. Advanced Tab — LNG Cargo Estimator</h3>
+          <h3 id="howto-16" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b102">16. Advanced › Gas Quality &amp; LNG Cargo — LNG Cargo Estimator</h3>
           <div data-i18n-html="docs.howto.b103">
             <p class="text-sm text-slate-400 leading-relaxed">Sits directly under the compositional card and answers the procurement question its outputs make possible: <strong class="text-slate-200">how much LNG is on this ship?</strong> Pick a vessel from a curated catalogue (or type a tank capacity), set the loading limit, and the card returns the cargo as liquid volume, mass, standard gas volume and energy — <strong class="text-slate-200">TBtu on the HHV basis used in custody transfer</strong>, with LHV alongside. It never recomputes anything itself: ρ<sub>liq</sub> (ISO 6578 at the LNG temperature set in Section 13), ρ<sub>std</sub>, HHV and LHV all arrive live from the composition above, so changing a preset, a component or the LNG temperature re-prices the cargo instantly.</p>
             <div class="flex flex-wrap items-center gap-2 mt-4 text-[10px] font-mono">
@@ -2576,15 +2600,15 @@
                 <div class="text-orange-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-0.5">2. CARGO</div>
                 <div class="text-[9px] text-slate-500 uppercase">Cargo tank capacity</div><div class="flex"><div class="w-2/3 bg-slate-950 border border-slate-700 rounded-l px-2 py-0.5 text-slate-200">174000</div><div class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-center text-amber-500 text-[9px] py-0.5">m³</div></div>
                 <div class="text-[9px] text-slate-500 uppercase">Loading limit</div><div class="flex"><div class="w-2/3 bg-slate-950 border border-slate-700 rounded-l px-2 py-0.5 text-slate-200">98.5</div><div class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-center text-amber-500 text-[9px] py-0.5">%</div></div>
-                <div class="text-[9px] text-slate-500 uppercase">Heel retained · Boil-off rate · Voyage</div><div class="flex gap-1"><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0 m³</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0.10 %/day</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0 days</div></div>
+                <div class="text-[9px] text-slate-500 uppercase">Heel retained · Boil-off rate · Voyage</div><div class="flex gap-1"><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">3,000 m³</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0.10 %/day</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0 days</div></div>
               </div>
               <div class="space-y-1">
                 <div class="text-orange-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-0.5">3. CARGO QUANTITIES <span class="text-slate-500 font-normal normal-case tracking-normal">— loaded → delivered</span></div>
-                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Liquid volume</span><span><span class="text-white font-bold">171,390</span> <span class="text-amber-500 text-[9px]">m³</span></span></div>
-                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Mass</span><span><span class="text-white font-bold">80,093</span> <span class="text-amber-500 text-[9px]">t ▾</span></span></div>
-                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Gas volume (std)</span><span><span class="text-white font-bold">96,373</span> <span class="text-amber-500 text-[9px]">kNm³ ▾</span></span></div>
-                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, HHV basis</span><span><span class="text-amber-400 font-bold">4.140</span> <span class="text-amber-500 text-[9px]">TBtu ▾</span></span></div>
-                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, LHV basis</span><span><span class="text-slate-300 font-bold">3.739</span> <span class="text-amber-500 text-[9px]">TBtu</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Liquid volume</span><span><span class="text-white font-bold">171,390</span> <span class="text-slate-500 text-[9px]">→ 168,390</span> <span class="text-amber-500 text-[9px]">m³</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Mass</span><span><span class="text-white font-bold">80,093</span> <span class="text-slate-500 text-[9px]">→ 78,691</span> <span class="text-amber-500 text-[9px]">t ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Gas volume (std)</span><span><span class="text-white font-bold">96,373</span> <span class="text-slate-500 text-[9px]">→ 94,686</span> <span class="text-amber-500 text-[9px]">kNm³ ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, HHV basis</span><span><span class="text-amber-400 font-bold">4.140</span> <span class="text-slate-500 text-[9px]">→ 4.067</span> <span class="text-amber-500 text-[9px]">TBtu ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, LHV basis</span><span><span class="text-slate-300 font-bold">3.739</span> <span class="text-slate-500 text-[9px]">→ 3.673</span> <span class="text-amber-500 text-[9px]">TBtu</span></span></div>
                 <div class="flex flex-wrap gap-1 pt-1 text-[9px]"><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Energy density <span class="text-amber-500">51.69</span> MMBtu/t</span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Expansion <span class="text-amber-500">562</span> Nm³/m³</span></div>
               </div>
             </div>
@@ -2598,7 +2622,7 @@
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">② LOADING LIMIT, HEEL AND BOIL-OFF</div>
-              <p class="text-slate-400 leading-relaxed"><strong class="text-slate-200">Loaded</strong> = capacity × loading limit. The IGC Code Ch. 15 filling limit is 98 % unless a higher limit is approved for the ship — many carriers load to 98.5 %, so use the vessel's certificate; the card warns above 98.5 %. <strong class="text-slate-200">Delivered</strong> = loaded − heel retained − boil-off rate × voyage days (a linear screening model: BOG is taken as a constant fraction of the <em>loaded</em> volume per day; real boil-off depends on tank pressure, ambient and whether it is burnt as fuel). Leave heel and days at zero and only loaded quantities are shown.</p>
+              <p class="text-slate-400 leading-relaxed"><strong class="text-slate-200">Loaded</strong> = capacity × loading limit. The IGC Code Ch. 15 filling limit is 98 % unless a higher limit is approved for the ship — many carriers load to 98.5 %, so use the vessel's certificate; the card warns above 98.5 %. <strong class="text-slate-200">Delivered</strong> = loaded − heel retained − boil-off rate × voyage days (a linear screening model: BOG is taken as a constant fraction of the <em>loaded</em> volume per day; real boil-off depends on tank pressure, ambient and whether it is burnt as fuel). The heel defaults to 3,000 m³ (a typical figure for a large carrier), so the delivered column is shown from the start; set heel and days to zero and only loaded quantities are shown.</p>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">③ WHAT THE UNITS MEAN</div>
@@ -2606,7 +2630,7 @@
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">④ CROSS-LINKS, SHARING, PHOTOS</div>
-              <p class="text-slate-400 leading-relaxed">If the GT Fuel tab holds a plant, a green line shows how many such cargoes would fuel it for a year (from that tab's yearly fuel energy — see Section 21). Vessel, capacity, limits and unit selections travel in Share links and are restored. Thumbnails are Wikimedia Commons photographs (author and licence shown under each; full list in <span class="font-mono">assets/vessels/CREDITS.json</span>) or an original schematic by containment type — no MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every copy button is unit-aware.</p>
+              <p class="text-slate-400 leading-relaxed">If the GT Fuel tab holds a plant, a green line shows how many such cargoes would fuel it for a year (from that tab's yearly fuel energy — see Section 20). Vessel, capacity, limits and unit selections travel in Share links and are restored. Thumbnails are Wikimedia Commons photographs (author and licence shown under each; full list in <span class="font-mono">assets/vessels/CREDITS.json</span>) or an original schematic by containment type — no MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every copy button is unit-aware.</p>
             </div>
           </div>
           <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3 text-xs text-orange-300 mt-3" data-i18n-html="docs.howto.b106">
@@ -2615,7 +2639,7 @@
         </section>
 
         <section>
-          <h3 id="howto-17" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">17. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
+          <h3 id="howto-17" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">17. Advanced › Hydraulics — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b053">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b054">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -2660,7 +2684,7 @@
         </section>
 
         <section>
-          <h3 id="howto-19" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">19. Advanced Tab — Flow Regime Visualizer</h3>
+          <h3 id="howto-19" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">19. Advanced › Hydraulics — Flow Regime Visualizer</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b057">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b058">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -2699,35 +2723,7 @@
         </section>
 
         <section>
-          <h3 id="howto-20" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">20. Safety Tab — PRV Sizing (API 520 Part I)</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
-              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
-              <div class="space-y-1.5 text-slate-400">
-                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.6</span><span>Gas / Vapor — Critical (Eq. 2/5) or Subcritical (Eq. 12/15); flow regime auto-detected vs. Pcf</span></div>
-                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.7</span><span>Steam — Napier equation (Eq. 21/22) with KN and KSH corrections</span></div>
-                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.8</span><span>Liquid, Certified PRV — iterative viscosity correction Kv (Eq. 28/29)</span></div>
-                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.9</span><span>Liquid, Non-Certified — Kp overpressure correction (Eq. 38/39)</span></div>
-                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.10</span><span>Two-Phase — Omega Method, Annex C.2.2 (Eq. C.12–C.21)</span></div>
-              </div>
-            </div>
-            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
-              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">KEY OUTPUTS</div>
-              <div class="space-y-1 text-slate-400">
-                <div>Required effective area A <span class="text-slate-200">[in² or mm²]</span></div>
-                <div>API 526 orifice letter <span class="text-slate-200">[D through T]</span></div>
-                <div>API 526 orifice standard area <span class="text-slate-200">[next size ≥ A]</span></div>
-                <div>Flow regime <span class="text-slate-200">[Critical / Subcritical]</span></div>
-                <div>Intermediate values <span class="text-slate-200">[C, Pcf, KN, ω, η_c, G, Kv, Re]</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300" data-i18n-html="docs.howto.b066"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
-        </section>
-
-        <section>
-          <h3 id="howto-21" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">21. GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
+          <h3 id="howto-20" class="text-sm font-bold text-rose-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">20. Advanced › GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
           <div data-i18n-html="docs.howto.b091">
             <div class="flex flex-wrap items-center gap-2 mb-4 text-[10px] font-mono">
               <span class="px-2 py-1 rounded bg-rose-500/15 border border-rose-500/40 text-rose-300">① Pick a turbine (pull-down or catalogue)</span><span class="text-slate-600">→</span>
@@ -2802,6 +2798,35 @@
         </section>
 
         <section>
+          <h3 id="howto-21" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">21. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
+              <div class="space-y-1.5 text-slate-400">
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.6</span><span>Gas / Vapor — Critical (Eq. 2/5) or Subcritical (Eq. 12/15); flow regime auto-detected vs. Pcf</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.7</span><span>Steam — Napier equation (Eq. 21/22) with KN and KSH corrections</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.8</span><span>Liquid, Certified PRV — iterative viscosity correction Kv (Eq. 28/29)</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.9</span><span>Liquid, Non-Certified — Kp overpressure correction (Eq. 38/39)</span></div>
+                <div class="flex items-start gap-2"><span class="text-red-400 font-bold w-12 flex-shrink-0">§5.10</span><span>Two-Phase — Omega Method, Annex C.2.2 (Eq. C.12–C.21)</span></div>
+              </div>
+            </div>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
+              <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">KEY OUTPUTS</div>
+              <div class="space-y-1 text-slate-400">
+                <div>Required effective area A <span class="text-slate-200">[in² or mm²]</span></div>
+                <div>API 526 orifice letter <span class="text-slate-200">[D through T]</span></div>
+                <div>API 526 orifice standard area <span class="text-slate-200">[next size ≥ A]</span></div>
+                <div>Flow regime <span class="text-slate-200">[Critical / Subcritical]</span></div>
+                <div>Intermediate values <span class="text-slate-200">[C, Pcf, KN, ω, η_c, G, Kv, Re]</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-xs text-red-300" data-i18n-html="docs.howto.b066"><strong>⚠ Engineering Disclaimer:</strong> Results are for preliminary sizing only. Final PRV selection requires independent review by a qualified engineer, confirmation of rated Kd with the valve manufacturer, and compliance with applicable codes.</div>
+        </section>
+
+
+        <section>
           <h3 id="howto-22" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b067">22. Report Tab — Bug Reports &amp; Feature Requests</h3>
           <p class="text-sm text-slate-400" data-i18n-html="docs.howto.b068">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
@@ -2812,11 +2837,16 @@
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b095">What changed in each release, newest first. Everything listed here is documented properly in the numbered sections above — this appendix is the history, not the manual. Click a release to expand it.</p>
           <div class="space-y-2">
 
-            <details id="howto-new35" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+            <details id="howto-new36" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+              <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b110">★ New in Version 3.6</span></summary>
+              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b111"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Two-layer Advanced tab</strong> — the Advanced tab now opens on a segmented strip with three sub-tabs: <strong>Gas Quality &amp; LNG Cargo</strong> (the compositional GHV card and the LNG Cargo Estimator), <strong>Hydraulics</strong> (Pipe ΔP and Flow Regime) and <strong>GT Fuel</strong>, which leaves the top bar. Nothing inside any card changed; the strip remembers your last choice, share links open the exact sub-tab, and old <span class="font-mono">tab=gtfuel</span> links still land on GT Fuel. See Section 1.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Documentation in the new tab order</strong> — How To Use Sections 11–19 carry their sub-tab in the heading, GT Fuel is now Section 20 (before Safety, Section 21) and Theory Part XI is Gas Turbine Fuel Estimation, Part XII PRV Sizing — renumbered in all ten languages.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Heel retained defaults to 3,000 m³</strong> — the LNG Cargo Estimator starts with a realistic heel, so the delivered column is visible immediately; set it to zero to see loaded quantities only. Section 16, Theory §9.3.</div></div>
+            </details>
+
+            <details id="howto-new35" class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
               <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b108">★ New in Version 3.5</span></summary>
               <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b109"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">LNG Cargo Estimator</strong> — a new card under the compositional suite: pick one of 36 representative LNG carriers (or type a capacity), set the loading limit, and read the cargo as t, kNm³/MMscf and TBtu on the HHV custody-transfer basis, loaded and delivered after heel and boil-off. ρ<sub>liq</sub>, ρ<sub>std</sub> and HHV come live from the composition above. Section 16, Theory Part IX, reference Vector 13.</div>
                 <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">A catalogue that cites its sources</strong> — every vessel row carries its own public source URL and links out to MarineTraffic / VesselFinder by IMO; thumbnails are Wikimedia Commons photographs with the author and licence shown, or original schematics. The IGU World LNG Report 2026 is cited for fleet context only — its Appendix 3 is not reproduced.</div>
-                <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">GT Fuel unit switches</strong> — fuel volume in scf/MMscf/Bscf, energy in MMBtu/TBtu or GJ/TJ/PJ, a Fuel-energy-in column on the totals table, MMBtu/h and GJ/h on the fuel-energy tile, and gas density in lb/scf (16.9307, not 16.0185 — see Section 21).</div>
+                <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">GT Fuel unit switches</strong> — fuel volume in scf/MMscf/Bscf, energy in MMBtu/TBtu or GJ/TJ/PJ, a Fuel-energy-in column on the totals table, MMBtu/h and GJ/h on the fuel-energy tile, and gas density in lb/scf (16.9307, not 16.0185 — see Section 20).</div>
                 <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Documentation</strong> — Section 16 and Theory Part IX added in tab order; the sections they displace renumbered in all ten languages, and three stale "Section 9 / 10" cross-references in the translations corrected in passing.</div>
               </div>
             </details>
@@ -2902,7 +2932,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.5. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.6. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Real Gas</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Steam</a>
@@ -2914,8 +2944,8 @@
             <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII LNG Density</a>
             <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX LNG Cargo</a>
             <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-green-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X Hydraulics</a>
-            <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI PRV Sizing</a>
-            <a href="#theory-p12" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XII GT Fuel</a>
+            <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI GT Fuel</a>
+            <a href="#theory-p12" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XII PRV Sizing</a>
             <a href="#theory-p13" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">XIII Data Sources</a>
           </nav>
         </div>
@@ -3364,7 +3394,7 @@
         </section>
 
         <section>
-          <h3 id="theory-p10" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6" data-i18n-html="docs.theory.b034">Part X — Pipe Hydraulics (Advanced Tab)</h3>
+          <h3 id="theory-p10" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6" data-i18n-html="docs.theory.b034">Part X — Pipe Hydraulics (Advanced › Hydraulics)</h3>
 
           <div class="mb-8" data-i18n-html="docs.theory.b021">
 			<h4 class="text-sm font-bold text-green-300 mb-3">10.1 Pressure Drop: Darcy-Weisbach + Colebrook-White Friction Factor</h4>
@@ -3454,10 +3484,34 @@
         </section>
 
         <section>
-          <h3 id="theory-p11" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6" data-i18n-html="docs.theory.b024">Part XI — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
+          <h3 id="theory-p11" class="text-lg font-bold text-rose-400 uppercase tracking-widest border-b border-rose-900 pb-2 mb-6" data-i18n-html="docs.theory.b046">Part XI — Gas Turbine Fuel Estimation</h3>
+
+          <div data-i18n-html="docs.theory.b047"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.1 Governing relations</h4>
+          <p class="text-sm leading-relaxed">A gas turbine converting fuel energy to electrical output at thermal efficiency η absorbs fuel energy <strong class="text-slate-200">Q_fuel = P / η</strong>. Vendor catalogue efficiencies are quoted on a lower-heating-value basis at ISO conditions (15 °C, 101.325 kPa, 60 % RH), per the ISO 3977-2 / ASME PTC 22 convention, so the heat rate follows directly as HR = 3600/η. The volumetric fuel demand at standard conditions and the mass flow are then closure arithmetic:</p>
+          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
+            <div>Q_fuel [MW]&nbsp;&nbsp;&nbsp;= P [MW] / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;η in fraction, LHV basis</div>
+            <div>HR [kJ/kWh]&nbsp;&nbsp;= 3600 / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Btu/kWh: ÷ 1.055056)</div>
+            <div>V̇ [Nm³/h]&nbsp;&nbsp;&nbsp;= 3600 · Q_fuel / LHV&nbsp;&nbsp;&nbsp;LHV in MJ/Nm³</div>
+            <div>ṁ [kg/h]&nbsp;&nbsp;&nbsp;&nbsp; = V̇ · ρ_std&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ρ_std in kg/Nm³</div>
+            <div class="text-slate-500">Totals: hours × availability — 24 h/day, 730 h/month (= 8,760/12), 8,760 h/year; the hourly figure is the instantaneous rate</div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">In <strong class="text-slate-200">GTCC plant mode</strong> the same relation runs on the published plant output and plant efficiency: all fuel is fired in the gas turbine (the steam cycle recovers exhaust heat), so plant fuel = plant output ÷ plant η. This is why a &gt;64 % LHV combined-cycle plant burns ~31 % less gas per MWh than its 44 % simple-cycle turbine alone.</p></div>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.2 Heating-value basis and unit conversions</h4>
+          <p class="text-sm leading-relaxed">Turbine efficiencies are LHV-based, but commercial gas is often specified in HHV. When the estimator's basis selector is set to HHV, the input is divided by the <strong class="text-slate-200">HHV/LHV ratio</strong> (default 1.108, the app's reference composition 44.59/40.25; the Import button recomputes it from the live Advanced-tab composition). Heating-value units interconvert with the same constants as the General-tab converter: 1 Nm³ = 37.3258 scf (0 °C ↔ 60 °F standard-volume basis) and 1 Btu = 1,055.056 J, giving <strong class="text-slate-200">Btu/scf = MJ/Nm³ ÷ (0.001055056 × 37.3258) = MJ/Nm³ × 25.393</strong>. Standard-volume flows convert likewise: MMSCFD = Nm³/h × 37.3258 × 24 / 10⁶.</p></div>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.3 Dataset, consistency and scope</h4>
+          <p class="text-sm leading-relaxed">The embedded catalogue holds 31 machines with published ISO ratings: MHI heavy-duty, H-series industrial and FT-series aeroderivative units transcribed from the MHI GTCC brochure (METP-11GT01E1-E-0, performance tables); GE Vernova HA-class from fact sheets GEA35750/GEA35768 plus F-class and aeroderivatives from product pages; Siemens Energy HL/H/F-class and SGT-800 from product pages. Every entry records its source, and CI asserts the internal consistency <strong class="text-slate-200">|HR − 3600/η| ≤ 30 kJ/kWh</strong> for each machine (vendors round HR and η independently) and that combined-cycle output and efficiency always exceed the simple-cycle values. Ratings are net or gross per each vendor's own publication convention — the estimate is a screening number, not a performance guarantee; degradation, ambient conditions, part load and fuel composition all move real-world fuel burn.</p>
+          <div class="bg-rose-500/10 border border-rose-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 11)</strong> — M701JAC (448): P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 %. Q_fuel = 448/0.44 = <strong>1,018.18 MW-th</strong>; HR = 3600/0.44 = <strong>8,182 kJ/kWh</strong> = 7,755 Btu/kWh — reproducing MHI's published 8,182 kJ/kWh exactly. V̇ = 1,018.18 × 3600 / 40.25 = <strong>91,067 Nm³/h</strong> = 91.07 kNm³/h; ṁ = 91,067 × 0.8193 = <strong>74,611 kg/h</strong> = 74.61 t/h; 91,067 × 37.3258 × 24/10⁶ = <strong>81.58 MMSCFD</strong>. Yearly at 92 %: 91,067 × 8,760 × 0.92 = <strong>733.93 MMNm³</strong> (601,308 t), delivering 3,610.5 GWh.</div></div>
+          </div></div>
+          <div class="mt-6" data-i18n-html="docs.theory.b052"><h4 class="text-base font-semibold text-rose-400 mb-2">11.4 Unit switches (v3.5)</h4>
+          <p class="text-sm leading-relaxed">The consumption totals convert with the same named constants as the cargo card: MWh × 3.6 = GJ, GJ ÷ 1.055056 = MMBtu, and each family auto-scales (kNm³ → MMNm³, MMscf → Bscf, MWh → GWh, GJ → TJ → PJ, MMBtu → TBtu). Two energies are tabulated: <em>fuel energy in</em> (Q × hours — what the plant buys) and <em>power sent out</em> (P × hours — what it sells); their ratio is the efficiency, and the yearly fuel energy in TBtu is directly comparable to LNG cargoes (Part IX). Fuel volume in scf uses the mandated 37.3258 scf/Nm³ of Part VII. For the M701JAC example: 733.93 MMNm³ = 27.394 Bscf, fuel energy 29.54 PJ = 28.00 TBtu, sent out 3,610.5 GWh = 13.00 PJ = 12.32 TBtu, fuel-energy input 1,018.18 MW-th = 3,665.5 GJ/h = 3,474.2 MMBtu/h. Gas density in lb/scf converts with 16.9307 kg/Nm³ per lb/scf — see Part IX §9.2 for why that is not 16.0185.</p></div>
+        </section>
+
+        <section>
+          <h3 id="theory-p12" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6" data-i18n-html="docs.theory.b024">Part XII — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
 
           <div class="mb-8" data-i18n-html="docs.theory.b025">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Critical check: P2 ≤ Pcf = P1 × (2/(k+1))^(k/(k−1)) &nbsp;[Eq. 1]</div>
               <div class="text-2xl text-center text-green-300 py-1">A = W / (C · Kd · P1 · Kb · Kc) × √(T·Z/M)</div>
@@ -3469,7 +3523,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b026">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-blue-300 py-1">F2 = √[ k/(k−1) · r^(2/k) · (1−r^((k−1)/k)) / (1−r) ] &nbsp; r = P2/P1</div>
               <div class="text-slate-200">USC: A = W / (735 · F2 · Kd · Kc) × √(T·Z / (M·P1·(P1−P2)))</div>
@@ -3477,7 +3531,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b027">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.3 Steam (§5.7, Eq. 21/22)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.3 Steam (§5.7, Eq. 21/22)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = W / (51.5 · P1 · Kd · Kb · Kc · KN · KSH)</div>
               <div class="text-slate-200">SI: A = 190.5·W / (P1 · Kd · Kb · Kc · KN · KSH)</div>
@@ -3488,7 +3542,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b028">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-cyan-300 py-1">USC: A = Q / (38 · Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
               <div class="text-slate-200">SI: A = 11.78·Q / (Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
@@ -3500,14 +3554,14 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b029">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = Q / (38 · Kd · Kw · Kc · Kv · Kp) × √(Gl / (1.25·Ps−P2))</div>
               <div class="text-[10px] text-slate-400">Kp = 1.0 at 25% overpressure; Kp ≈ 0.6 at 10% overpressure (Fig. 38). Default Kd = 0.62.</div>
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b030">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Step 1: ω = 9·(v9/vo − 1) &nbsp;[Eq. C.12] &nbsp; v9 = spec. vol. at isenthalpic flash to 0.9·Po</div>
               <div class="text-slate-200">Step 2: η_c ≈ [1 + (1.0446−0.0093431·√ω)·ω^(−0.56261)]^(−0.70356+0.014685·lnω) &nbsp;[Eq. C.15]</div>
@@ -3516,7 +3570,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b031">
-            <h4 class="text-sm font-bold text-red-300 mb-3">11.7 API 526 Standard Effective Orifice Areas</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">12.7 API 526 Standard Effective Orifice Areas</h4>
             <div class="overflow-x-auto">
               <table class="w-full text-xs font-mono border-collapse">
                 <thead><tr class="bg-slate-800 text-amber-400"><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th></tr></thead>
@@ -3536,29 +3590,6 @@
           </div>
         </section>
 
-        <section>
-          <h3 id="theory-p12" class="text-lg font-bold text-rose-400 uppercase tracking-widest border-b border-rose-900 pb-2 mb-6" data-i18n-html="docs.theory.b046">Part XII — Gas Turbine Fuel Estimation</h3>
-
-          <div data-i18n-html="docs.theory.b047"><div class="space-y-8">
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.1 Governing relations</h4>
-          <p class="text-sm leading-relaxed">A gas turbine converting fuel energy to electrical output at thermal efficiency η absorbs fuel energy <strong class="text-slate-200">Q_fuel = P / η</strong>. Vendor catalogue efficiencies are quoted on a lower-heating-value basis at ISO conditions (15 °C, 101.325 kPa, 60 % RH), per the ISO 3977-2 / ASME PTC 22 convention, so the heat rate follows directly as HR = 3600/η. The volumetric fuel demand at standard conditions and the mass flow are then closure arithmetic:</p>
-          <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
-            <div>Q_fuel [MW]&nbsp;&nbsp;&nbsp;= P [MW] / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;η in fraction, LHV basis</div>
-            <div>HR [kJ/kWh]&nbsp;&nbsp;= 3600 / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Btu/kWh: ÷ 1.055056)</div>
-            <div>V̇ [Nm³/h]&nbsp;&nbsp;&nbsp;= 3600 · Q_fuel / LHV&nbsp;&nbsp;&nbsp;LHV in MJ/Nm³</div>
-            <div>ṁ [kg/h]&nbsp;&nbsp;&nbsp;&nbsp; = V̇ · ρ_std&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ρ_std in kg/Nm³</div>
-            <div class="text-slate-500">Totals: hours × availability — 24 h/day, 730 h/month (= 8,760/12), 8,760 h/year; the hourly figure is the instantaneous rate</div>
-          </div>
-          <p class="text-sm leading-relaxed mt-3">In <strong class="text-slate-200">GTCC plant mode</strong> the same relation runs on the published plant output and plant efficiency: all fuel is fired in the gas turbine (the steam cycle recovers exhaust heat), so plant fuel = plant output ÷ plant η. This is why a &gt;64 % LHV combined-cycle plant burns ~31 % less gas per MWh than its 44 % simple-cycle turbine alone.</p></div>
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.2 Heating-value basis and unit conversions</h4>
-          <p class="text-sm leading-relaxed">Turbine efficiencies are LHV-based, but commercial gas is often specified in HHV. When the estimator's basis selector is set to HHV, the input is divided by the <strong class="text-slate-200">HHV/LHV ratio</strong> (default 1.108, the app's reference composition 44.59/40.25; the Import button recomputes it from the live Advanced-tab composition). Heating-value units interconvert with the same constants as the General-tab converter: 1 Nm³ = 37.3258 scf (0 °C ↔ 60 °F standard-volume basis) and 1 Btu = 1,055.056 J, giving <strong class="text-slate-200">Btu/scf = MJ/Nm³ ÷ (0.001055056 × 37.3258) = MJ/Nm³ × 25.393</strong>. Standard-volume flows convert likewise: MMSCFD = Nm³/h × 37.3258 × 24 / 10⁶.</p></div>
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.3 Dataset, consistency and scope</h4>
-          <p class="text-sm leading-relaxed">The embedded catalogue holds 31 machines with published ISO ratings: MHI heavy-duty, H-series industrial and FT-series aeroderivative units transcribed from the MHI GTCC brochure (METP-11GT01E1-E-0, performance tables); GE Vernova HA-class from fact sheets GEA35750/GEA35768 plus F-class and aeroderivatives from product pages; Siemens Energy HL/H/F-class and SGT-800 from product pages. Every entry records its source, and CI asserts the internal consistency <strong class="text-slate-200">|HR − 3600/η| ≤ 30 kJ/kWh</strong> for each machine (vendors round HR and η independently) and that combined-cycle output and efficiency always exceed the simple-cycle values. Ratings are net or gross per each vendor's own publication convention — the estimate is a screening number, not a performance guarantee; degradation, ambient conditions, part load and fuel composition all move real-world fuel burn.</p>
-          <div class="bg-rose-500/10 border border-rose-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 11)</strong> — M701JAC (448): P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 %. Q_fuel = 448/0.44 = <strong>1,018.18 MW-th</strong>; HR = 3600/0.44 = <strong>8,182 kJ/kWh</strong> = 7,755 Btu/kWh — reproducing MHI's published 8,182 kJ/kWh exactly. V̇ = 1,018.18 × 3600 / 40.25 = <strong>91,067 Nm³/h</strong> = 91.07 kNm³/h; ṁ = 91,067 × 0.8193 = <strong>74,611 kg/h</strong> = 74.61 t/h; 91,067 × 37.3258 × 24/10⁶ = <strong>81.58 MMSCFD</strong>. Yearly at 92 %: 91,067 × 8,760 × 0.92 = <strong>733.93 MMNm³</strong> (601,308 t), delivering 3,610.5 GWh.</div></div>
-          </div></div>
-          <div class="mt-6" data-i18n-html="docs.theory.b052"><h4 class="text-base font-semibold text-rose-400 mb-2">12.4 Unit switches (v3.5)</h4>
-          <p class="text-sm leading-relaxed">The consumption totals convert with the same named constants as the cargo card: MWh × 3.6 = GJ, GJ ÷ 1.055056 = MMBtu, and each family auto-scales (kNm³ → MMNm³, MMscf → Bscf, MWh → GWh, GJ → TJ → PJ, MMBtu → TBtu). Two energies are tabulated: <em>fuel energy in</em> (Q × hours — what the plant buys) and <em>power sent out</em> (P × hours — what it sells); their ratio is the efficiency, and the yearly fuel energy in TBtu is directly comparable to LNG cargoes (Part IX). Fuel volume in scf uses the mandated 37.3258 scf/Nm³ of Part VII. For the M701JAC example: 733.93 MMNm³ = 27.394 Bscf, fuel energy 29.54 PJ = 28.00 TBtu, sent out 3,610.5 GWh = 13.00 PJ = 12.32 TBtu, fuel-energy input 1,018.18 MW-th = 3,665.5 GJ/h = 3,474.2 MMBtu/h. Gas density in lb/scf converts with 16.9307 kg/Nm³ per lb/scf — see Part IX §9.2 for why that is not 16.0185.</p></div>
-        </section>
 
         <section>
           <h3 id="theory-p13" class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-6" data-i18n-html="docs.theory.b032">Part XIII — Data Sources &amp; Standards</h3>
@@ -3998,8 +4029,11 @@
 
     let currentTab = 'general';
     function switchTab(tabId) {
+      // v3.6 — 'gtfuel' is no longer a top-level tab; legacy share links and callers land on
+      // Advanced › GT Fuel (switchAdvSub with quiet=true: switchTab does the scroll + mobile nav).
+      if (tabId === 'gtfuel') { tabId = 'advanced'; switchAdvSub('gtfuel', true); }
       currentTab = tabId;
-      const tabs = ['general', 'basic', 'advanced', 'safety', 'gtfuel', 'howto', 'theory', 'terms', 'privacy', 'report'];
+      const tabs = ['general', 'basic', 'advanced', 'safety', 'howto', 'theory', 'terms', 'privacy', 'report'];
       tabs.forEach(t => {
         const pane = document.getElementById('tab-' + t);
         if(pane) pane.classList.add('hidden');
@@ -4029,6 +4063,37 @@
       if (typeof toggleMobileNav === 'function') toggleMobileNav(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // v3.6 — second-layer navigation inside the Advanced tab. Three sub-panes, one strip.
+    // The sub-tab is remembered (STATE_KEY 'advSub') and travels in share links; switchTab('gtfuel')
+    // maps onto it so every pre-v3.6 link still opens GT Fuel.
+    const ADV_SUBS = ['gasq', 'hyd', 'gtfuel'];
+    const ADV_SUB_KEYS = { gasq: 'nav.adv.gasq', hyd: 'nav.adv.hyd', gtfuel: 'nav.gtfuel' };
+    const ADV_SUB_ON  = ['bg-amber-500/10', 'border-amber-500/40', 'text-amber-400'];
+    const ADV_SUB_OFF = ['border-transparent', 'text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/60'];
+    let currentAdvSub = 'gasq';
+    function switchAdvSub(sub, quiet) {
+      if (ADV_SUBS.indexOf(sub) < 0) sub = 'gasq';
+      currentAdvSub = sub;
+      ADV_SUBS.forEach(sId => {
+        const pane = document.getElementById('adv-sub-' + sId);
+        if (pane) pane.classList.toggle('hidden', sId !== sub);
+        const btn = document.getElementById('advbtn-' + sId);
+        if (btn) {
+          const on = sId === sub;
+          btn.classList.remove(...(on ? ADV_SUB_OFF : ADV_SUB_ON));
+          btn.classList.add(...(on ? ADV_SUB_ON : ADV_SUB_OFF));
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        }
+      });
+      if (quiet) return;
+      if (typeof buildMobileNav === 'function') buildMobileNav();
+      if (typeof toggleMobileNav === 'function') toggleMobileNav(false);
+      if (typeof scheduleSave === 'function') scheduleSave();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Mobile dropdown rows: pick the sub-pane first (quietly), then switch the top-level tab.
+    function gotoAdvSub(sub) { switchAdvSub(sub, true); switchTab('advanced'); }
 
     document.getElementById('report-form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -6701,6 +6766,18 @@
                 ' onclick="switchTab(\'' + tab + '\')"' +
                 ' class="w-full text-left px-3 py-2 text-sm uppercase tracking-wide flex items-center justify-between hover:bg-slate-800 transition-colors ' + tone + '">' +
                 '<span>' + label + '</span>' + (active ? '<span>✓</span>' : '') + '</button>';
+        // v3.6 — the Advanced sub-tabs as indented rows directly under their parent
+        if (tab === 'advanced') {
+          ADV_SUBS.forEach(sId => {
+            const on = active && sId === currentAdvSub;
+            html += '<button type="button" role="tab" data-tab="advanced" data-sub="' + sId + '"' +
+                    ' aria-controls="adv-sub-' + sId + '" aria-selected="' + (on ? 'true' : 'false') + '"' +
+                    ' onclick="gotoAdvSub(\'' + sId + '\')"' +
+                    ' class="w-full text-left pl-8 pr-3 py-1.5 text-xs uppercase tracking-wide flex items-center justify-between hover:bg-slate-800 transition-colors ' +
+                    (on ? 'text-amber-400 font-semibold' : 'text-slate-400') + '">' +
+                    '<span>› ' + tr(ADV_SUB_KEYS[sId]) + '</span>' + (on ? '<span>✓</span>' : '') + '</button>';
+          });
+        }
       });
       menu.innerHTML = html;
       menu.setAttribute('role', 'tablist');
@@ -6709,6 +6786,7 @@
         const activeBtn = document.getElementById('btn-' + currentTab);
         const k = activeBtn && activeBtn.getAttribute('data-i18n');
         current.innerText = k ? tr(k) : (activeBtn ? activeBtn.innerText : '');
+        if (currentTab === 'advanced') current.innerText += ' › ' + tr(ADV_SUB_KEYS[currentAdvSub]);   // v3.6
       }
     }
     function updateLangSwitcherUI() {
@@ -6775,7 +6853,7 @@
       return { v: 2, inputs: collectInputs(),
                mods: savedModules.map(m => ({id: m.id, t: m.t, u1: m.u1, u2: m.u2, f: m.f})),
                hv: hvMode, fa: flowAMode, fb: flowBMode,
-               p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
+               p1: pressMode1, p2: pressMode2, tab: currentTab, advSub: currentAdvSub, lang: currentLang };
     }
     function recomputeAll() {
       [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, calcGTFuel, calcLNGCargo, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
@@ -6789,6 +6867,9 @@
       if (s.p1) setPressMode(1, s.p1);
       if (s.p2) setPressMode(2, s.p2);
       recomputeAll();
+      // v3.6 — the Advanced sub-tab is restored on every visit (it is a position inside a tab, not a
+      // landing choice); the top-level tab itself still follows the v2.5.1 rule below.
+      if (s.advSub) switchAdvSub(s.advSub, true);
       // v2.5.1 — only share links open on their saved tab; normal visits land on General
       if (restoreTab && s.tab && s.tab !== 'general') switchTab(s.tab);
     }
@@ -6890,6 +6971,14 @@
         b.setAttribute('aria-selected', b.id === 'btn-' + currentTab ? 'true' : 'false');
         const pane = document.getElementById(paneId);
         if (pane) { pane.setAttribute('role', 'tabpanel'); pane.setAttribute('aria-labelledby', b.id); }
+      });
+      // v3.6 — the Advanced sub-tab strip carries the same semantics one level down
+      const subnav = document.getElementById('adv-subnav');
+      if (subnav) { subnav.setAttribute('role', 'tablist'); subnav.setAttribute('aria-label', tr('nav.adv.ariaLabel')); }
+      ADV_SUBS.forEach(sId => {
+        const b = document.getElementById('advbtn-' + sId), pane = document.getElementById('adv-sub-' + sId);
+        if (b) { b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', 'adv-sub-' + sId); b.setAttribute('aria-selected', sId === currentAdvSub ? 'true' : 'false'); }
+        if (pane && b) { pane.setAttribute('role', 'tabpanel'); pane.setAttribute('aria-labelledby', b.id); }
       });
       const modal = document.getElementById('module-modal');
       if (modal) { modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); }
@@ -7065,7 +7154,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.5', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.6', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}${gt}${lc}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
@@ -7183,6 +7272,7 @@
     }
 
     vaWrap('switchTab',          tab  => trackEvent('Tab View', { tab: String(tab) }));
+    vaWrap('switchAdvSub',       sub  => trackEvent('Tab View', { tab: 'advanced/' + String(sub) }));
     vaWrap('setLanguage',        code => trackEvent('Language', { lang: String(code) }));
     vaWrap('calcDeltaPressure',  ()   => trackEvent('Calculation', { tool: 'pipe-dp' }));
     vaWrap('calcPSV',            ()   => trackEvent('Calculation', { tool: 'prv-sizing' }));

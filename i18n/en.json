@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.5"
+    "pageTitle": "O&G Unit Converter V3.6"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -40,7 +40,15 @@
     "theory": "Theory",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
-    "report": "Report"
+    "report": "Report",
+    "adv": {
+      "gasq": "Gas Quality & LNG Cargo",
+      "gasqDesc": "Heating value · density · flow · LNG Cargo Estimator",
+      "hyd": "Hydraulics",
+      "hydDesc": "Pipe ΔP (Darcy-Weisbach) · Flow Regime",
+      "gtfuelDesc": "Turbine selection · fuel gas estimator · catalogue",
+      "ariaLabel": "Advanced sub-sections"
+    }
   },
   "header": {
     "title": "O&G Engineering Converter",
@@ -608,7 +616,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.5"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.6"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -623,7 +631,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.5"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.6"
   },
   "moduleModal": {
     "title": "Configure Module",

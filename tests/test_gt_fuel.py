@@ -180,9 +180,15 @@ def test_gt_functions_exist_and_are_wired(html):
         assert fn in html, f"{fn} missing"
     m = re.search(r"\[calcGHV,.*?\]\.forEach", html)
     assert m and "calcGTFuel" in m.group(0), "calcGTFuel missing from recomputeAll()"
-    assert "'gtfuel'" in html[html.index("const tabs = ["):
-                              html.index("const tabs = [") + 200], (
-        "gtfuel missing from the switchTab tabs array")
+    # v3.6 — GT Fuel is a sub-pane of the Advanced tab, not a top-level tab. The legacy
+    # 'gtfuel' tab id must keep working (pre-v3.6 share links) by mapping onto the sub-tab.
+    tabs_src = html[html.index("const tabs = ["):html.index("const tabs = [") + 200]
+    assert "'gtfuel'" not in tabs_src, "gtfuel must not be a top-level tab from v3.6"
+    assert "if (tabId === 'gtfuel') { tabId = 'advanced'; switchAdvSub('gtfuel', true); }" in html, (
+        "legacy switchTab('gtfuel') mapping missing")
+    for needle in ('id="adv-sub-gtfuel"', 'id="advbtn-gtfuel"', "function switchAdvSub(",
+                   "ADV_SUBS = ['gasq', 'hyd', 'gtfuel']", "advSub: currentAdvSub"):
+        assert needle in html, f"{needle} missing"
 
 
 def test_last_ghv_bridge(html):
