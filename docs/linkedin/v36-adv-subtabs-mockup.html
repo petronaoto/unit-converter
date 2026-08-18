@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>v3.6 announcement mockup — two-layer Advanced tab + LNG Cargo Estimator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn / X 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: position:absolute + inset:0 does not stretch it, so it keeps
+     its intrinsic 300x150 and silently clips every connector drawn beyond that. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe must have a REAL desktop viewport. At 1px wide the app lays out in its
+     mobile form and every computed width collapses. */
+  #app{position:absolute;width:1280px;height:2200px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  v3.6 announcement — the Advanced tab is now two-layer, and the LNG Cargo Estimator (v3.5)
+  finally gets its post.
+
+  ROW 1 : the REAL sub-tab strip (adv-subnav) — Gas Quality & LNG Cargo · Hydraulics · GT Fuel.
+  ROW 2 : the REAL three-column body of the LNG Cargo Estimator card — vessel panel (Wikimedia
+          Commons photo + particulars), cargo inputs (heel 3,000 m³ default), and the cargo
+          quantities, loaded → delivered.
+
+  Every figure is what the app computes for the Australia — North West Shelf preset (mol %) at
+  −160 °C with LNG Endeavour, 174,000 m³ at 98.5 %: reference Vector 13. Nothing is typed by hand.
+
+  Serve the repo root over HTTP and open /docs/linkedin/v36-adv-subtabs-mockup.html, then
+  buildStandalone() + headless Chrome --screenshot of the standalone file.
+-->
+<iframe id="app" src="../../index.html"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-5 left-[52px] flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-orange-400 font-semibold">v3.6</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Gas Quality &amp; LNG Cargo <span class="text-slate-600">▸</span> LNG Cargo Estimator</span>
+    <span class="text-[10px] font-bold tracking-widest text-orange-300 border border-orange-500/50 bg-orange-500/10 rounded px-2 py-[3px]">NEW</span>
+  </div>
+  <div class="absolute top-[46px] left-[52px] right-[52px] z-30">
+    <div id="subcap" class="text-slate-500 text-[12.5px] leading-snug">&nbsp;</div>
+  </div>
+
+  <div id="stack" class="absolute" style="left:52px;top:74px;transform-origin:top left;">
+    <div id="slot-strip"></div>
+    <div class="text-slate-600 text-sm p-8" id="loading">loading the live card…</div>
+  </div>
+  <div id="stack2" class="absolute" style="left:52px;transform-origin:top left;">
+    <div id="slot-body"></div>
+  </div>
+
+  <!-- Right-hand takeaway column: the headline figures, read from the app, at a size that
+       survives LinkedIn's ~600 px feed render; plus the three release bullets. -->
+  <div id="side" class="absolute" style="left:780px;width:368px;top:180px;">
+    <div id="side-head" class="text-slate-400 text-[12px] leading-snug">&nbsp;</div>
+    <div id="side-nums" class="mt-2.5 space-y-[4px]"></div>
+    <div id="side-new" class="mt-3 pt-2.5 space-y-[5px] text-[12px] leading-snug text-slate-400" style="border-top:1px solid rgba(148,163,184,.14);"></div>
+    <div id="side-foot" class="mt-2 text-[10px] text-slate-500 leading-snug"></div>
+  </div>
+
+  <div class="absolute" style="left:52px;right:52px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:52px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no ads &middot; 10 languages &middot; open source (MIT)</div>
+  </div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+// Copied from day03/v31 — the complete list. Grid properties are NOT optional: Tailwind writes
+// columns via `md:`/`lg:` MEDIA QUERIES, and freezing without them collapses every cell into one
+// column. The component grid here is `grid-cols-3 md:grid-cols-4 lg:grid-cols-7`.
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','flex-wrap','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'border-collapse','border-spacing','table-layout',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    // `display:none` MUST be written. The freeze strips the class that hid the element, so
+    // skipping `none` as noise makes every hidden node appear. comp-warn and out-liq-warn are
+    // both hidden in this frame; Day 2 shipped two empty amber rectangles exactly this way.
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    // A ZERO BORDER WIDTH MUST STILL BE WRITTEN — Tailwind preflight sets border-style:solid with
+    // width 0, and dropping the 0px falls back to `medium`, painting a 3px box around every node.
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function setIn(doc, win, id, v) {
+  var e = doc.getElementById(id);
+  if (!e) return;
+  e.value = v;
+  e.dispatchEvent(new win.Event('input',  { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function snapshot(node, win) {
+  var clone = node.cloneNode(true);
+  var src = node.querySelectorAll('input,select');
+  var dst = clone.querySelectorAll('input,select');
+  // <img src> is relative to index.html; the clone lives under docs/linkedin/. Absolutise it.
+  var si = node.querySelectorAll('img'), di = clone.querySelectorAll('img');
+  for (var q = 0; q < si.length; q++) { if (si[q].src) { di[q].setAttribute('src', si[q].src); } }
+  for (var j = 0; j < src.length; j++) {
+    var s = src[j], d = dst[j];
+    if (s.tagName === 'INPUT') { d.setAttribute('value', s.value); }
+    else {
+      for (var k = 0; k < d.options.length; k++) { d.options[k].removeAttribute('selected'); }
+      if (s.selectedIndex >= 0 && d.options[s.selectedIndex]) {
+        d.options[s.selectedIndex].setAttribute('selected', 'selected');
+      }
+    }
+  }
+  // Freeze INSIDE the iframe, where the app's own Tailwind build is applied. The CDN JIT does
+  // not style markup injected into THIS document after load.
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  return clone;
+}
+
+function buildCard() {
+  var frame = document.getElementById('app');
+  var doc = frame.contentDocument, win = frame.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  // The vessel photo is loading="lazy"; parked at left:-20000px the iframe never scrolls it into
+  // view, so it never loads and the gate below waits forever. Make it eager before selecting.
+  var lazyImg = doc.getElementById('lc-thumb-img'); if (lazyImg) { lazyImg.loading = 'eager'; }
+  try { win.localStorage.removeItem('og_lang'); win.localStorage.removeItem('og_converter_state'); } catch (e) {}
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+  win.fetch('i18n/en.json?cachebust=' + encodeURIComponent(String(new Date().getTime())), { cache: 'no-store' })
+     .then(function (r) { return r.json(); })
+     .then(function (dict) {
+       win.eval('(function(d){ translationsCache.en = d; currentLang = "en"; applyTranslations(); })(' + JSON.stringify(dict) + ')');
+     })
+     .catch(function (e) { window._i18nErr = String(e); });
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    if (typeof win.switchAdvSub === 'function') { win.switchAdvSub('gasq', true); }
+    // Drive it as a user would: the NWS preset fills the composition (mol % basis, HHV shown),
+    // then LNG Endeavour is picked from the vessel list; heel stays at its 3,000 m³ default.
+    setIn(doc, win, 'comp-preset', 'au-nws');
+    if (typeof win.applyLNGPreset === 'function') { win.applyLNGPreset('au-nws'); }
+    if (typeof win.setHVMode === 'function') { win.setHVMode('hhv'); }
+    setIn(doc, win, 'lc-vessel', '9893606');
+    if (typeof win.lcVesselChanged === 'function') { win.lcVesselChanged(); }
+    setTimeout(function () { mount(doc, win); }, 500);
+  }, 900);
+}
+
+function mount(doc, win) {
+  // Gate on the dictionary: the strip labels come from nav.adv.* (v3.6) and the vessel heading
+  // from advanced.lngCargo.* (v3.5) — a stale cached en.json would bake either as a raw key.
+  var probe = doc.querySelector('[data-i18n="nav.adv.gasq"]');
+  var probe2 = doc.querySelector('[data-i18n="advanced.lngCargo.vesselHeading"]');
+  var raw = !probe || /^nav\./.test((probe.textContent || '').trim())
+         || !probe2 || /^advanced\./.test((probe2.textContent || '').trim());
+  var img = doc.getElementById('lc-thumb-img');
+  var imgOk = img && !img.classList.contains('hidden') && img.complete && img.naturalWidth > 0;
+  var vd = (doc.getElementById('lc-out-vliq-dv') || {}).textContent || '';
+  if (raw || !imgOk || !/\d/.test(vd)) {
+    if ((mount._tries = (mount._tries || 0) + 1) < 20) { setTimeout(function () { mount(doc, win); }, 400); return; }
+    document.body.setAttribute('data-ready', 'ERROR|raw=' + raw + '|img=' + imgOk + '|vd=' + vd + '|fetch=' + (window._i18nErr || 'ok'));
+    return;
+  }
+
+  // ROW 1 — the real second-layer strip.
+  var strip = doc.getElementById('adv-subnav');
+  // ROW 2 — the card body: the three-column grid that holds Vessel / Cargo / Cargo quantities.
+  var body = doc.getElementById('lc-vessel');
+  while (body && !(body.querySelector('#lc-heel') && body.querySelector('#lc-out-e'))) { body = body.parentElement; }
+
+  var stripClone = snapshot(strip, win);
+  var bodyClone  = snapshot(body, win);
+  // The 10 px source / credit / link lines are texture at feed size; the credit is repeated
+  // legibly in the band and the copy carries the citation.
+  ['lc-src', 'lc-credit'].forEach(function (id) {
+    var e = bodyClone.querySelector('#' + id); var p = e && e.closest('p'); if (p) { p.parentElement.removeChild(p); }
+  });
+  var gt = bodyClone.querySelector('#lc-out-gt'); if (gt) { gt.parentElement.removeChild(gt); }
+  // Every 10 px explanatory paragraph (fleet context, capacity note, loaded/delivered legend) is
+  // texture at feed size — drop them all; the copy carries the words. The energy-density /
+  // expansion chip row wraps badly once frozen, and both figures are in the side column.
+  bodyClone.querySelectorAll('p').forEach(function (pEl) {
+    if (/font-size:\s*10px/.test(pEl.getAttribute('style') || '')) { pEl.parentElement.removeChild(pEl); }
+  });
+  var dens = bodyClone.querySelector('#lc-out-dens'); var chipRow = dens && dens.closest('div');
+  if (chipRow && chipRow.parentElement) { chipRow.parentElement.removeChild(chipRow); }
+  bodyClone.style.height = 'auto';
+  bodyClone.querySelectorAll('div').forEach(function (d) { if (d.style.height && d.querySelector('#lc-vessel, #lc-heel, #lc-out-e')) { d.style.height = 'auto'; } });
+
+  document.getElementById('loading').remove();
+  document.getElementById('slot-strip').appendChild(stripClone);
+  document.getElementById('slot-body').appendChild(bodyClone);
+  document.querySelectorAll('#shot [onclick]').forEach(function (el) { el.removeAttribute('onclick'); });
+
+  document.getElementById('subcap').innerHTML =
+    'One tab, three sub-tabs — and under Gas Quality &amp; LNG Cargo, a cargo estimator that turns a vessel + your gas composition into t, kNm³ and TBtu.';
+
+  var sel = doc.getElementById('lc-vessel'), vname = sel.options[sel.selectedIndex].text.split(' — ')[0];
+  var pre = doc.getElementById('comp-preset'), pname = pre.options[pre.selectedIndex].text;
+  var g = function (id) { var e = doc.getElementById(id); return e ? e.innerText.trim() : '?'; };
+  var unit = function (id) { var e = doc.getElementById(id); return e ? e.options[e.selectedIndex].text : ''; };
+  document.getElementById('side-head').innerHTML =
+    '<span class="text-slate-100 font-semibold text-[13.5px]">' + vname + '</span> · ' + Number(doc.getElementById('lc-cap').value).toLocaleString('en-US') + ' m³<br>'
+    + pname + ' · ' + g('lc-comp-hhv') + ' MJ/Nm³ HHV · ' + doc.getElementById('lc-fill').value + ' % · heel ' + Number(doc.getElementById('lc-heel').value).toLocaleString('en-US') + ' m³';
+  var row = function (label, a, b, u, hot) {
+    return '<div class="flex items-baseline justify-between gap-3">'
+      + '<span class="text-slate-500 text-[11px] uppercase tracking-wider">' + label + '</span>'
+      + '<span class="font-mono whitespace-nowrap"><span class="' + (hot ? 'text-amber-400' : 'text-slate-100') + ' font-bold text-[20px]">' + a + '</span>'
+      + '<span class="text-slate-500 text-[12px]"> → ' + b + '</span> <span class="text-amber-500 text-[11px] font-bold">' + u + '</span></span></div>';
+  };
+  document.getElementById('side-nums').innerHTML =
+      row('Loaded → delivered', g('lc-out-vliq'), g('lc-out-vliq-dv'), 'm³', false)
+    + row('Mass', g('lc-out-mass'), g('lc-out-mass-dv'), unit('lc-out-mass-u'), false)
+    + row('Std. gas volume', g('lc-out-gas'), g('lc-out-gas-dv'), unit('lc-out-gas-u'), false)
+    + row('Energy · HHV', g('lc-out-e'), g('lc-out-e-dv'), unit('lc-out-e-u'), true)
+    + row('Energy · LHV', g('lc-out-el'), g('lc-out-el-dv'), g('lc-out-el-u'), false)
+    + '<div class="text-[11px] text-slate-500 pt-1">' + g('lc-out-dens') + ' MMBtu/t · ' + g('lc-out-exp') + ' Nm³ per m³ liquid · ρ<sub>liq</sub> ISO 6578, ρ<sub>std</sub> &amp; HHV JIS K 2301, all live from the composition</div>';
+  var tag = '<span class="text-[9px] font-bold tracking-widest text-orange-300 border border-orange-500/50 bg-orange-500/10 rounded px-1.5 py-[1px] mr-1.5 align-middle">NEW</span>';
+  document.getElementById('side-new').innerHTML =
+      '<div>' + tag + '<span class="text-slate-200 font-semibold">v3.6</span> Advanced tab is two-layer: Gas Quality &amp; LNG Cargo · Hydraulics · GT Fuel — old links still land right</div>'
+    + '<div>' + tag + '<span class="text-slate-200 font-semibold">v3.5</span> LNG Cargo Estimator — 36 source-cited carriers, Wikimedia Commons photos with credit, loaded → delivered</div>'
+    + '<div>' + tag + '<span class="text-slate-200 font-semibold">v3.5</span> GT Fuel in MMBtu, scf and lb/scf too</div>';
+  document.getElementById('side-foot').innerHTML =
+    'photo: ' + (doc.getElementById('lc-credit') || {}).textContent + ' · 343 tests · 10 languages';
+
+  function fit(id, maxW, maxH) {
+    var el = document.getElementById(id), r = el.getBoundingClientRect();
+    var h = r.height / (el._s || 1), w = r.width / (el._s || 1);
+    var s = Math.min(1, maxW / w, maxH / h); el._s = s; el.style.transform = 'scale(' + s + ')';
+    return { s: s, h: h * s, w: w * s };
+  }
+  var TOP = 74, BOTTOM = 604;                        // 604 clears the footer rule at 620
+  var fA = fit('stack', 1096, 92);
+  var row2 = TOP + fA.h + 16;
+  document.getElementById('stack2').style.top = row2 + 'px';
+  document.getElementById('side').style.top = (row2 - 12) + 'px';
+  var fB = fit('stack2', 716, BOTTOM - row2);         // 52 + 716 = 768 < side column at 790
+  document.getElementById('arrows').innerHTML = '';
+
+  var q = function (id) { var e = document.querySelector('#shot #' + id); return e ? e.innerText.trim() : 'MISSING'; };
+  document.body.setAttribute('data-ready', ['vl=' + q('lc-out-vliq'), 'vd=' + q('lc-out-vliq-dv'), 'mass=' + q('lc-out-mass'), 'massd=' + q('lc-out-mass-dv'),
+    'gas=' + q('lc-out-gas'), 'e=' + q('lc-out-e'), 'ed=' + q('lc-out-e-dv'), 'el=' + q('lc-out-el'), 'dens=' + q('lc-out-dens'), 'strip=' + q('advbtn-gasq').replace(/\s+/g, ' '),
+    'sStrip=' + fA.s.toFixed(3), 'sBody=' + fB.s.toFixed(3), 'row2=' + row2.toFixed(0), 'bodyH=' + fB.h.toFixed(0)].join('|'));
+}
+
+// ---------------------------------------------------------------------------------------------
+// Standalone export — freezing every node in #shot the same way makes the frame self-contained:
+// no network, no scripts, renders identically anywhere. Skip the <svg> subtree; freezing computed
+// styles onto SVG geometry rewrites presentation attributes and drops the connectors.
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }   // already frozen
+    freezeStyle(s, d, window);
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>v3.6 — two-layer Advanced tab + LNG Cargo Estimator</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+
+  return fetch('/__save?to=docs/linkedin/v36-adv-subtabs-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 350); });
+</script>
+</body>
+</html>

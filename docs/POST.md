@@ -128,6 +128,8 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 | Sat 15 Aug 2026 | **v3.1 launch — GT Fuel estimator** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088499375039447394> |
 | Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7494421563887247360/> |
 | Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088656797607547322> |
+| Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7495603696488177664/> |
+| Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2089838802542186931> |
 
 **v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
 a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
@@ -205,6 +207,17 @@ in the body and the same image.
 > back out with ← and nothing is lost — but it looks like a failed post.
 
 ---
+
+**v3.5 + v3.6 launch — what went out (2026-08-19).** One bilingual LinkedIn post (EN then JA, 2,455
+chars, emoji-forward at Naoto's request) and a three-tweet X thread (EN + image / JA / detail with the
+GitHub link). Both carry `https://engineering-converter.com/` in the body and the same 1200 × 675 image.
+Figures are reference **Vector 13** re-read from the running app before writing: LNG Endeavour
+174,000 m³ at 98.5 %, Australia NWS (45.32 MJ/Nm³ HHV), heel 3,000 m³ → 171,390 → 168,390 m³ ·
+80,093 → 78,691 t · 96,373 → 94,686 kNm³ · 4.140 → 4.067 TBtu; ≈ 6.8 cargoes/yr vs the M701JAC
+example (28.00 TBtu/yr). Assets: `docs/linkedin/v36-adv-subtabs-mockup.html` (generator — clones the
+real sub-tab strip and the LNG Cargo card body; note the vessel photo is `loading="lazy"` and must be
+forced eager in the off-screen iframe), `-standalone.html`, `v36-adv-subtabs.png`, `-body.txt` (LinkedIn),
+`-x.txt` (thread). v3.5 had shipped without an announcement, so this post covers both releases.
 
 ## 3. The compact share-link recipe — *use this, never the Share button*
 
