@@ -151,7 +151,11 @@ def test_every_translated_policy_discloses_the_analytics(code):
     with open(I18N_DIR / f"{code}.json", encoding="utf-8") as handle:
         privacy = json.load(handle)["docs"]["privacy"]
     assert "Vercel Web Analytics" in privacy["b009"], f"{code}: §7 does not name the product"
-    assert "3.2" in privacy["b002"], f"{code}: policy version was not bumped"
+    # The header carries the version at which the policy text last changed: 3.2 when the
+    # analytics disclosure shipped, 3.6 when the Advanced sub-tab wording was added. Anything
+    # below 3.2 means the language is still on the pre-analytics text.
+    m = re.search(r"(\d+)\.(\d+)", privacy["b002"])
+    assert m and (int(m.group(1)), int(m.group(2))) >= (3, 2), f"{code}: policy version was not bumped"
     # §7 must keep pointing at Vercel's own privacy documentation.
     assert "vercel.com/docs/analytics/privacy-policy" in privacy["b009"], code
 
