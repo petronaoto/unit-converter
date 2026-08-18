@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.4</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.5</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -1096,6 +1096,254 @@
           </div>
         </div>
 
+
+
+
+        <!-- ══════════ v3.5 — LNG CARGO ESTIMATOR (Advanced tab, under the GHV card) ══════════ -->
+        <!-- Reads rho_liq / rho_std / HHV / LHV from the composition card through lastLNGProps.
+             The vessel <option> list is STATIC (never rebuilt): a share-link restore sets lc-vessel
+             before any event fires — same rule as gt-model and comp-preset. Every LNG_VESSELS entry
+             carries its own public source; the IGU report is cited only for fleet-level context. -->
+        <div id="adv-lng-cargo" class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6 scroll-mt-64 md:scroll-mt-40">
+          <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col lg:flex-row lg:justify-between items-start lg:items-center gap-3">
+            <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2 whitespace-nowrap shrink-0">
+              <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+              <span data-i18n="advanced.lngCargo.title">LNG Cargo Estimator</span>
+            </h2>
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <span class="text-[10px] text-slate-400 font-bold tracking-widest uppercase" data-i18n="advanced.lngCargo.compLabel">Composition:</span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span id="lc-comp-name">—</span> <span id="lc-comp-tier" class="font-bold ml-1"></span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300">ρ<sub>liq</sub> <span id="lc-comp-rhol" class="font-mono text-amber-500">—</span> kg/m³ @ <span id="lc-comp-t" class="font-mono">—</span></span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300">ρ<sub>std</sub> <span id="lc-comp-rhos" class="font-mono text-amber-500">—</span> kg/Nm³</span>
+              <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300">HHV <span id="lc-comp-hhv" class="font-mono text-amber-500">—</span> · LHV <span id="lc-comp-lhv" class="font-mono text-amber-500">—</span> MJ/Nm³</span>
+            </div>
+          </div>
+          <div class="p-6 space-y-5">
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-1" data-i18n="advanced.lngCargo.filtType">Class</span>
+              <button id="lc-filt-t-all" onclick="lcSetFilter('t','all',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-amber-400 border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtAll">filtAll</button> <button id="lc-filt-t-conv" onclick="lcSetFilter('t','conv',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtConv">filtConv</button> <button id="lc-filt-t-qflex" onclick="lcSetFilter('t','qflex',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtQflex">filtQflex</button> <button id="lc-filt-t-qmax" onclick="lcSetFilter('t','qmax',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtQmax">filtQmax</button> <button id="lc-filt-t-ice" onclick="lcSetFilter('t','ice',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtIce">filtIce</button> <button id="lc-filt-t-fsru" onclick="lcSetFilter('t','fsru',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtFsru">filtFsru</button> <button id="lc-filt-t-small" onclick="lcSetFilter('t','small',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtSmall">filtSmall</button>
+              <span class="w-px h-4 bg-slate-700 mx-1"></span>
+              <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-1" data-i18n="advanced.lngCargo.filtCont">Containment</span>
+              <button id="lc-filt-c-all" onclick="lcSetFilter('c','all',this)" class="lc-cpill px-2 py-1 rounded bg-slate-800 border text-amber-400 border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtAllCont">filtAllCont</button> <button id="lc-filt-c-membrane" onclick="lcSetFilter('c','membrane',this)" class="lc-cpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtMembrane">filtMembrane</button> <button id="lc-filt-c-moss" onclick="lcSetFilter('c','moss',this)" class="lc-cpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtMoss">filtMoss</button> <button id="lc-filt-c-other" onclick="lcSetFilter('c','other',this)" class="lc-cpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtOtherCont">filtOtherCont</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr_1.35fr] gap-6">
+              <!-- 1. VESSEL -->
+              <div class="space-y-3">
+                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 uppercase" data-i18n="advanced.lngCargo.vesselHeading">1. Vessel</h3>
+                <select id="lc-vessel" onchange="lcVesselChanged()" class="w-full px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-lg text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500">
+                    <option value="" data-i18n="advanced.lngCargo.manualOption">Manual capacity entry</option>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpQmax" label="Q-Max">
+                      <option value="9443413">Rasheeda — 266,276 m³ · Nakilat</option>
+                      <option value="9337755">Mozah — 266,253 m³ · Nakilat</option>
+                      <option value="9443401">Aamira — 266,000 m³ · Nakilat</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpQflex" label="Q-Flex">
+                      <option value="9337743">Al Hamla — 216,200 m³ · Nakilat / OSG</option>
+                      <option value="9338266">Al Aamriya — 210,168 m³ · Nakilat / MOL</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpConv" label="Conventional">
+                      <option value="9831220">Adriano Knutsen — 180,000 m³ · Knutsen OAS</option>
+                      <option value="9796793">Bushu Maru — 180,000 m³ · Trans Pacific Shipping 6 Ltd (JERA / NYK JV)</option>
+                      <option value="9958286">Aktoras — 174,000 m³ · Capital Gas Ship Management</option>
+                      <option value="9873852">BW Helios — 174,000 m³ · BW LNG</option>
+                      <option value="9958640">Emei — 174,000 m³ · Cosco Shipping Energy Transportation</option>
+                      <option value="9864916">GasLog Georgetown — 174,000 m³ · GasLog Ltd</option>
+                      <option value="9748899">GasLog Houston — 174,000 m³ · GasLog Ltd</option>
+                      <option value="9893606">LNG Endeavour — 174,000 m³ · France LNG Shipping (NYK / Geogas LNG JV)</option>
+                      <option value="9401295">Barcelona Knutsen — 173,400 m³ · Knutsen OAS</option>
+                      <option value="9766542">British Achiever — 173,400 m³ · BP</option>
+                      <option value="9752565">Energy Glory — 166,686 m³ · NYK Line, Tokyo Gas</option>
+                      <option value="9691137">Bishu Maru — 164,700 m³ · Kawasaki Kisen Kaisha (K Line)</option>
+                      <option value="9606950">Asia Energy — 160,000 m³ · Chevron (Chevron Shipping Company)</option>
+                      <option value="9298399">Al Thakhira — 145,000 m³ · K Line / MOL / NYK / Qatar Shipping consortium (Peninsula LNG Transport No. 2), managed by K Line LNG Shipping (UK)</option>
+                      <option value="9269180">Energy Advance — 145,000 m³ · Tokyo LNG Tanker Co., Ltd. (Tokyo Gas group)</option>
+                      <option value="9338955">Grand Aniva — 145,000 m³ · NYK Line / Sovcomflot (SCF Group) joint ownership</option>
+                      <option value="9276389">Arctic Discoverer — 140,000 m³ · K Line, Equinor (Statoil), Mitsui, Iino</option>
+                      <option value="9275335">Arctic Voyager — 140,000 m³ · K Line, Statoil (now Equinor), Mitsui &amp; Co., Iino Kaiun (co-owned); 20-yr charter to Snohvit Sellers</option>
+                      <option value="9256597">Berge Arzew — 138,000 m³ · BW</option>
+                      <option value="9030802">American Energy (ex-Puteri Intan) — 130,400 m³ · Crowley (ex-MISC)</option>
+                      <option value="7390181">LNG Aquarius — 125,000 m³ · Hanochem</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpIce" label="Icebreaker">
+                      <option value="9904546">Alexey Kosygin — 172,906 m³ · Sovcomflot</option>
+                      <option value="9737187">Christophe De Margerie — 172,600 m³ · Sovcomflot</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpFsru" label="FSRU / FSU">
+                      <option value="9713105">Bauhinia Spirit (ex-MOL FSRU Challenger) — 263,000 m³ · MOL</option>
+                      <option value="9780354">Hoegh Esperanza — 170,000 m³ · Hoegh</option>
+                      <option value="9629536">Independence — 170,000 m³ · KN Energies (ex-Klaipedos Nafta)</option>
+                      <option value="9239616">Excelsior — 138,000 m³ · Excelerate Energy</option>
+                      <option value="8608872">Karadeniz LNGT Antarctica (ex-Northwest Sanderling) — 125,000 m³ · KARMOL (Karpowership / MOL JV)</option>
+                      <option value="8125868">Armada LNG Mediterrana — 123,780 m³ · Bumi Armada Berhad</option>
+                    </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpSmall" label="Small & mid-scale">
+                      <option value="9905980">Lagenda Serenity — 80,000 m³ · K Line</option>
+                      <option value="9919890">Coral Nordic — 30,000 m³ · Anthony Veder</option>
+                    </optgroup>
+                </select>
+                <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-950/70" style="aspect-ratio: 320 / 120;">
+                  <img id="lc-thumb-img" src="" alt="" class="hidden w-full h-full object-cover" loading="lazy" />
+                  <svg id="lc-thumb-svg" viewBox="0 0 320 96" class="w-full h-full" aria-hidden="true"><use id="lc-thumb-use" href="#lc-svg-membrane"></use></svg>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-snug"><span data-i18n="advanced.lngCargo.photoCredit">Photo:</span> <a id="lc-credit" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-sky-400 underline decoration-slate-700">—</a></p>
+                <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipImo">IMO</span> <span id="lc-spec-imo" class="font-mono text-amber-500">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipDelivered">Delivered</span> <span id="lc-spec-year" class="font-mono text-amber-500">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300 col-span-2"><span data-i18n="advanced.lngCargo.chipOwner">Owner</span> <span id="lc-spec-owner" class="text-slate-100">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300 col-span-2"><span data-i18n="advanced.lngCargo.chipBuilder">Builder</span> <span id="lc-spec-builder" class="text-slate-100">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipCont">Containment</span> <span id="lc-spec-cont" class="text-slate-100">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipProp">Propulsion</span> <span id="lc-spec-prop" class="text-slate-100">—</span></span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300 col-span-2"><span data-i18n="advanced.lngCargo.chipType">Type</span> <span id="lc-spec-type" class="text-slate-100">—</span> · <span id="lc-spec-cap" class="font-mono text-amber-500">—</span> m³</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-snug"><span data-i18n="advanced.lngCargo.srcPrefix">Source:</span> <a id="lc-src" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-sky-400 underline decoration-slate-700">—</a><br>
+                  <a id="lc-link-mt" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-sky-400 hover:underline" data-i18n="advanced.lngCargo.linkMt">View on MarineTraffic ↗</a> · <a id="lc-link-vf" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-sky-400 hover:underline" data-i18n="advanced.lngCargo.linkVf">VesselFinder ↗</a> <span class="text-slate-600" data-i18n="advanced.lngCargo.linkNote">(links by IMO, new tab — nothing fetched or embedded)</span></p>
+                <p class="text-[10px] text-slate-600 leading-snug" data-i18n="advanced.lngCargo.fleetContext">Fleet context: IGU World LNG Report 2026, Appendix 3 (Rystad Energy data) — 804 active LNG carriers at end-2025. The vessels here are representative examples, not the fleet register.</p>
+              </div>
+
+              <!-- 2. CARGO -->
+              <div class="space-y-3">
+                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 uppercase" data-i18n="advanced.lngCargo.cargoHeading">2. Cargo</h3>
+                <div class="grid grid-cols-1 gap-3">
+                  <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.capLabel">Cargo tank capacity</label>
+                    <div class="flex">
+                      <input type="number" step="any" id="lc-cap" value="174000" oninput="calcLNGCargo()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500">m³</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.fillLabel">Loading limit</label>
+                    <div class="flex">
+                      <input type="number" step="any" id="lc-fill" value="98.5" oninput="calcLNGCargo()" min="0" max="100" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500">%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.heelLabel">Heel retained</label>
+                    <div class="flex">
+                      <input type="number" step="any" id="lc-heel" value="0" oninput="calcLNGCargo()" min="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500">m³</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.borLabel">Boil-off rate</label>
+                    <div class="flex">
+                      <input type="number" step="any" id="lc-bor" value="0.10" oninput="calcLNGCargo()" min="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500">%/day</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 mb-1 uppercase" data-i18n="advanced.lngCargo.daysLabel">Voyage</label>
+                    <div class="flex">
+                      <input type="number" step="any" id="lc-days" value="0" oninput="calcLNGCargo()" min="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l focus:border-orange-500 text-slate-200 outline-none" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] font-bold text-amber-500" data-i18n="advanced.lngCargo.daysUnit">days</span>
+                    </div>
+                  </div>
+                </div>
+                <div id="lc-warn" class="hidden text-[11px] text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded p-2 leading-snug"></div>
+                <p class="text-[10px] text-slate-500 leading-snug" data-i18n="advanced.lngCargo.inputNote">Capacity pre-fills from the vessel and stays editable. Loading limit: the IGC Code Ch. 15 filling limit is 98 % unless a higher limit is approved for the ship; 98.5 % is common practice — use the vessel's certificate. Heel, boil-off rate and voyage days are optional; at zero the card shows loaded quantities only.</p>
+              </div>
+
+              <!-- 3. QUANTITIES -->
+              <div class="space-y-1">
+                <h3 class="text-xs font-bold tracking-widest text-orange-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="advanced.lngCargo.outHeading">3. Cargo quantities</span> <span class="text-slate-500 normal-case tracking-normal font-normal" data-i18n="advanced.lngCargo.outSub">— loaded → delivered</span></h3>
+                  <div class="flex justify-between items-center py-2 border-b border-slate-800/70">
+                    <span class="text-xs text-slate-400 whitespace-nowrap mr-2" data-i18n="advanced.lngCargo.outVliq">Liquid volume</span>
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                      <span id="lc-out-vliq" class="text-lg font-bold font-mono text-white">—</span><span id="lc-out-vliq-d" class="hidden text-xs font-mono text-slate-500">→ <span id="lc-out-vliq-dv">—</span></span>
+                      <span class="text-[10px] font-bold text-amber-500 w-12">m³</span>
+                      <button onclick="copyText(document.getElementById('lc-out-vliq').innerText, this)" data-copy-unit="m³" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center py-2 border-b border-slate-800/70">
+                    <span class="text-xs text-slate-400 whitespace-nowrap mr-2" data-i18n="advanced.lngCargo.outMass">Mass</span>
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                      <span id="lc-out-mass" class="text-lg font-bold font-mono text-white">—</span><span id="lc-out-mass-d" class="hidden text-xs font-mono text-slate-500">→ <span id="lc-out-mass-dv">—</span></span>
+                      <select id="lc-out-mass-u" onchange="calcLNGCargo()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-bold outline-none cursor-pointer"><option value="t">t</option><option value="kt">kt</option></select>
+                      <button onclick="copyText(document.getElementById('lc-out-mass').innerText, this)" data-unit-src="lc-out-mass-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center py-2 border-b border-slate-800/70">
+                    <span class="text-xs text-slate-400 whitespace-nowrap mr-2" data-i18n="advanced.lngCargo.outGas">Gas volume (std)</span>
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                      <span id="lc-out-gas" class="text-lg font-bold font-mono text-white">—</span><span id="lc-out-gas-d" class="hidden text-xs font-mono text-slate-500">→ <span id="lc-out-gas-dv">—</span></span>
+                      <select id="lc-out-gas-u" onchange="calcLNGCargo()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-bold outline-none cursor-pointer"><option value="knm3">kNm³</option><option value="mmnm3">MMNm³</option><option value="mmscf">MMscf</option><option value="bscf">Bscf</option></select>
+                      <button onclick="copyText(document.getElementById('lc-out-gas').innerText, this)" data-unit-src="lc-out-gas-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center py-2 border-b border-slate-800/70">
+                    <span class="text-xs text-slate-400 whitespace-nowrap mr-2" data-i18n="advanced.lngCargo.outEnergyHHV">Energy, HHV basis</span>
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                      <span id="lc-out-e" class="text-lg font-bold font-mono text-amber-400">—</span><span id="lc-out-e-d" class="hidden text-xs font-mono text-slate-500">→ <span id="lc-out-e-dv">—</span></span>
+                      <select id="lc-out-e-u" onchange="calcLNGCargo()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-bold outline-none cursor-pointer"><option value="tbtu">TBtu</option><option value="mmbtu">MMBtu</option><option value="gj">GJ</option><option value="tj">TJ</option><option value="mwh">MWh</option><option value="gwh">GWh</option></select>
+                      <button onclick="copyText(document.getElementById('lc-out-e').innerText, this)" data-unit-src="lc-out-e-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center py-2 border-b border-slate-800/70">
+                    <span class="text-xs text-slate-400 whitespace-nowrap mr-2" data-i18n="advanced.lngCargo.outEnergyLHV">Energy, LHV basis</span>
+                    <div class="flex items-center gap-2 flex-wrap justify-end">
+                      <span id="lc-out-el" class="text-lg font-bold font-mono text-slate-300">—</span><span id="lc-out-el-d" class="hidden text-xs font-mono text-slate-500">→ <span id="lc-out-el-dv">—</span></span>
+                      <span id="lc-out-el-u" class="text-[10px] font-bold text-amber-500 w-12">TBtu</span>
+                      <button onclick="copyText(document.getElementById('lc-out-el').innerText, this)" data-unit-src="lc-out-e-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    </div>
+                  </div>
+                <div class="flex flex-wrap gap-1.5 pt-2 text-[11px]">
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipDens">Energy density</span> <span id="lc-out-dens" class="font-mono text-amber-500">—</span> MMBtu/t</span>
+                  <span class="bg-slate-950/70 border border-slate-700 rounded px-2 py-1 text-slate-300"><span data-i18n="advanced.lngCargo.chipExp">Expansion</span> <span id="lc-out-exp" class="font-mono text-amber-500">—</span> <span data-i18n="advanced.lngCargo.chipExpNote">Nm³/m³ (0 °C)</span></span>
+                </div>
+                <p id="lc-out-gt" class="hidden text-[10px] text-emerald-400 leading-snug pt-1"></p>
+                <p class="text-[10px] text-slate-500 leading-snug pt-1" data-i18n="advanced.lngCargo.method">Loaded = capacity × loading limit. Delivered = loaded − heel − BOR × days. Mass = V × ρ_liq (ISO 6578 at the LNG temperature set above); standard volume = mass ÷ ρ_std; energy = standard volume × HHV — the custody-transfer basis; LHV is shown for reference. Copy buttons are unit-aware.</p>
+              </div>
+            </div>
+
+            <!-- Fleet catalogue (collapsed by default) -->
+            <details id="lc-cat" class="rounded-lg border border-slate-800 bg-slate-950/40">
+              <summary class="cursor-pointer select-none px-3 py-2 flex items-center justify-between text-[11px]">
+                <span><span class="font-bold tracking-widest uppercase text-slate-400" data-i18n="advanced.lngCargo.catTitle">Fleet catalogue</span> <span class="text-slate-600" data-i18n="advanced.lngCargo.catSub">— representative vessels, one or more per class</span></span>
+                <span id="lc-cat-count" class="text-slate-500"></span>
+              </summary>
+              <div class="px-3 pb-3">
+                <div id="lc-cat-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2"></div>
+                <p class="text-[10px] text-slate-600 leading-relaxed mt-2" data-i18n="advanced.lngCargo.catSrcNote">Thumbnails: Wikimedia Commons photographs where a CC-licensed one exists (author and licence under each — full list in assets/vessels/CREDITS.json), otherwise an original schematic by containment type. No MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every vessel carries its own public source; fleet-level context from IGU World LNG Report 2026, Appendix 3 (Rystad Energy data).</p>
+              </div>
+            </details>
+
+            <svg width="0" height="0" class="absolute" aria-hidden="true">
+              <defs>
+                <!-- Original schematic silhouettes by containment type — not vendor or photographer imagery. -->
+                <symbol id="lc-svg-membrane" viewBox="0 0 320 96">
+                  <path d="M8 66 L26 46 H292 L312 66 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="60" y="34" width="180" height="12" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                  <rect x="250" y="20" width="34" height="26" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="262" y="12" width="6" height="8" fill="#94a3b8"/>
+                  <path d="M0 72 Q40 64 80 72 T160 72 T240 72 T320 72" fill="none" stroke="#334155" stroke-width="1.5"/>
+                </symbol>
+                <symbol id="lc-svg-moss" viewBox="0 0 320 96">
+                  <path d="M8 66 L26 46 H292 L312 66 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <g fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"><circle cx="70" cy="42" r="19"/><circle cx="118" cy="42" r="19"/><circle cx="166" cy="42" r="19"/><circle cx="214" cy="42" r="19"/></g>
+                  <rect x="252" y="20" width="32" height="26" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="263" y="12" width="6" height="8" fill="#94a3b8"/>
+                  <path d="M0 72 Q40 64 80 72 T160 72 T240 72 T320 72" fill="none" stroke="#334155" stroke-width="1.5"/>
+                </symbol>
+                <symbol id="lc-svg-ssp" viewBox="0 0 320 96">
+                  <path d="M8 66 L26 46 H292 L312 66 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <g fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"><path d="M50 46 V36 L60 30 H96 L106 36 V46Z"/><path d="M114 46 V36 L124 30 H160 L170 36 V46Z"/><path d="M178 46 V36 L188 30 H224 L234 36 V46Z"/></g>
+                  <rect x="252" y="20" width="32" height="26" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <rect x="263" y="12" width="6" height="8" fill="#94a3b8"/>
+                  <path d="M0 72 Q40 64 80 72 T160 72 T240 72 T320 72" fill="none" stroke="#334155" stroke-width="1.5"/>
+                </symbol>
+                <symbol id="lc-svg-typec" viewBox="0 0 320 96">
+                  <path d="M60 66 L74 48 H250 L266 66 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <g fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"><rect x="92" y="34" width="60" height="16" rx="8"/><rect x="160" y="34" width="60" height="16" rx="8"/></g>
+                  <rect x="226" y="26" width="22" height="22" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+                  <path d="M0 72 Q40 64 80 72 T160 72 T240 72 T320 72" fill="none" stroke="#334155" stroke-width="1.5"/>
+                </symbol>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <!-- ══════════ /LNG CARGO ESTIMATOR ══════════ -->
         <div class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
@@ -1669,7 +1917,7 @@
                 <label class="block text-xs font-semibold tracking-wider text-slate-400 mb-2"><span data-i18n="gtfuel.est.rhoLabel">GAS DENSITY</span> (ρ<sub>std</sub>)</label>
                 <div class="flex">
                   <input type="number" step="any" id="gt-rho" value="0.8193" oninput="calcGTFuel()" class="w-2/3 px-3 py-2.5 bg-slate-950/70 border border-slate-700 rounded-l focus:ring-2 focus:ring-amber-500 text-slate-100 outline-none" />
-                  <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500">kg/Nm³</span>
+                  <select id="gt-rho-u" onchange="calcGTFuel()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer"><option value="kgnm3">kg/Nm³</option><option value="lbscf">lb/scf</option></select>
                 </div>
               </div>
               <div>
@@ -1691,8 +1939,8 @@
                 <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
                   <span class="text-sm font-semibold text-amber-500" data-i18n="gtfuel.out.energyLabel">Fuel energy input</span>
                   <div class="flex items-center gap-3">
-                    <span id="gt-out-q" class="text-2xl font-bold font-mono text-white">—</span><span class="text-xs text-slate-400">MW-th</span>
-                    <button onclick="copyText(document.getElementById('gt-out-q').innerText, this)" data-copy-unit="MW" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
+                    <span id="gt-out-q" class="text-2xl font-bold font-mono text-white">—</span><select id="gt-out-q-u" onchange="calcGTFuel()" class="bg-transparent text-xs font-semibold text-amber-500 outline-none cursor-pointer"><option value="mwth">MW-th</option><option value="mmbtuh">MMBtu/h</option><option value="gjh">GJ/h</option></select>
+                    <button onclick="copyText(document.getElementById('gt-out-q').innerText, this)" data-unit-src="gt-out-q-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
                 <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
@@ -1704,14 +1952,14 @@
                   </div>
                 </div>
                 <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <select id="gt-out-vol-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="knm3h">kNm³/h</option><option value="nm3h">Nm³/h</option><option value="scfh">scf/h</option><option value="mmscfd">MMSCFD</option></select>
+                  <select id="gt-out-vol-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="knm3h">kNm³/h</option><option value="nm3h">Nm³/h</option><option value="knm3d">kNm³/d</option><option value="scfh">scf/h</option><option value="mmscfh">MMscf/h</option><option value="mmscfd">MMSCFD</option></select>
                   <div class="flex items-center gap-3">
                     <span id="gt-out-vol" class="text-2xl font-bold font-mono text-white">—</span>
                     <button onclick="copyText(document.getElementById('gt-out-vol').innerText, this)" data-unit-src="gt-out-vol-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
                   </div>
                 </div>
                 <div class="flex justify-between items-center bg-slate-950/80 p-4 rounded-lg border border-slate-700 ring-1 ring-orange-500/20">
-                  <select id="gt-out-mass-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="th">t/h</option><option value="kgh">kg/h</option><option value="kgs">kg/s</option></select>
+                  <select id="gt-out-mass-u" onchange="calcGTFuel()" class="bg-transparent text-sm font-semibold text-amber-500 outline-none cursor-pointer"><option value="th">t/h</option><option value="td">t/d</option><option value="kgh">kg/h</option><option value="kgs">kg/s</option><option value="lbh">lb/h</option></select>
                   <div class="flex items-center gap-3">
                     <span id="gt-out-mass" class="text-2xl font-bold font-mono text-white">—</span>
                     <button onclick="copyText(document.getElementById('gt-out-mass').innerText, this)" data-unit-src="gt-out-mass-u" class="text-slate-400 hover:text-orange-500 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -1726,16 +1974,17 @@
                     <thead>
                       <tr class="text-slate-400 text-left">
                         <th class="py-1.5 px-2 border-b border-slate-700 font-semibold" data-i18n="gtfuel.out.colPeriod">Period</th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colVol">Fuel volume</th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colVol">Fuel volume</span> <select id="gt-tot-vol-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel volume unit"><option value="nm3">Nm³</option><option value="scf">scf</option></select></th>
                         <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colMass">Fuel mass</th>
-                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right" data-i18n="gtfuel.out.colEnergy">Power sent out</th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colFuelEnergy">Fuel energy in</span> <select id="gt-tot-q-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Fuel energy unit"><option value="gj">GJ</option><option value="mmbtu">MMBtu</option><option value="mwh">MWh</option></select></th>
+                        <th class="py-1.5 px-2 border-b border-slate-700 font-semibold text-right"><span data-i18n="gtfuel.out.colEnergy">Power sent out</span> <select id="gt-tot-e-u" onchange="calcGTFuel()" class="bg-slate-800 border border-slate-700 rounded text-amber-500 text-[10px] font-semibold outline-none cursor-pointer" aria-label="Power sent out unit"><option value="mwh">MWh</option><option value="gj">GJ</option><option value="mmbtu">MMBtu</option></select></th>
                       </tr>
                     </thead>
                     <tbody class="text-slate-200">
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800"><span data-i18n="gtfuel.out.rowHour">Hourly</span> <span class="text-slate-600" data-i18n="gtfuel.out.rowHourNote">(continuous)</span></td><td id="gt-tot-h-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowDay">Daily</td><td id="gt-tot-d-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowMonth">Monthly (730 h)</td><td id="gt-tot-m-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
-                      <tr><td class="py-1.5 px-2" data-i18n="gtfuel.out.rowYear">Yearly (8,760 h)</td><td id="gt-tot-y-vol" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-mass" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-e" class="py-1.5 px-2 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800"><span data-i18n="gtfuel.out.rowHour">Hourly</span> <span class="text-slate-600" data-i18n="gtfuel.out.rowHourNote">(continuous)</span></td><td id="gt-tot-h-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-h-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-h-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowDay">Daily</td><td id="gt-tot-d-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-d-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-d-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2 border-b border-slate-800" data-i18n="gtfuel.out.rowMonth">Monthly (730 h)</td><td id="gt-tot-m-vol" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-mass" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td><td id="gt-tot-m-q" class="py-1.5 px-2 border-b border-slate-800 text-right text-emerald-300">—</td><td id="gt-tot-m-e" class="py-1.5 px-2 border-b border-slate-800 text-right">—</td></tr>
+                      <tr><td class="py-1.5 px-2" data-i18n="gtfuel.out.rowYear">Yearly (8,760 h)</td><td id="gt-tot-y-vol" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-mass" class="py-1.5 px-2 text-right">—</td><td id="gt-tot-y-q" class="py-1.5 px-2 text-right text-emerald-300">—</td><td id="gt-tot-y-e" class="py-1.5 px-2 text-right">—</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -1805,7 +2054,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.4</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.5</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
@@ -1823,12 +2072,13 @@
             <a href="#howto-13" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">13 Conditions</a>
             <a href="#howto-14" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">14 Properties</a>
             <a href="#howto-15" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">15 Flow</a>
-            <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 ΔP</a>
-            <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 Fittings</a>
-            <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Flow Regime</a>
-            <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 PRV</a>
-            <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 GT Fuel</a>
-            <a href="#howto-21" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">21 Report</a>
+            <a href="#howto-16" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">16 LNG Cargo</a>
+            <a href="#howto-17" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">17 ΔP</a>
+            <a href="#howto-18" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">18 Fittings</a>
+            <a href="#howto-19" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors">19 Flow Regime</a>
+            <a href="#howto-20" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">20 PRV</a>
+            <a href="#howto-21" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">21 GT Fuel</a>
+            <a href="#howto-22" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">22 Report</a>
             <a href="#howto-releases" class="px-2 py-1 rounded bg-slate-800 text-amber-400 border border-slate-700 hover:border-amber-500/50 transition-colors">★ Releases</a>
           </nav>
         </div>
@@ -2026,7 +2276,7 @@
             </div>
           </div>
           <div class="mt-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300" data-i18n-html="docs.howto.b030">
-            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API) — see <strong>Section 16</strong> for the full walkthrough. Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 18 below).
+            <strong>ℹ Pipe Delta Pressure Calculator</strong> is located in the <strong>Advanced tab</strong>, not here. It supports single-phase and two-phase (HEM) flow, with server-side computation via Colebrook-White iterative friction factor (Python / Vercel API) — see <strong>Section 17</strong> for the full walkthrough. Since v2.3, a <strong>Flow Regime</strong> visualizer card sits directly beneath it (see Section 19 below).
           </div>
         </section>
 
@@ -2297,7 +2547,75 @@
         </section>
 
         <section>
-          <h3 id="howto-16" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">16. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
+          <h3 id="howto-16" class="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b102">16. Advanced Tab — LNG Cargo Estimator</h3>
+          <div data-i18n-html="docs.howto.b103">
+            <p class="text-sm text-slate-400 leading-relaxed">Sits directly under the compositional card and answers the procurement question its outputs make possible: <strong class="text-slate-200">how much LNG is on this ship?</strong> Pick a vessel from a curated catalogue (or type a tank capacity), set the loading limit, and the card returns the cargo as liquid volume, mass, standard gas volume and energy — <strong class="text-slate-200">TBtu on the HHV basis used in custody transfer</strong>, with LHV alongside. It never recomputes anything itself: ρ<sub>liq</sub> (ISO 6578 at the LNG temperature set in Section 13), ρ<sub>std</sub>, HHV and LHV all arrive live from the composition above, so changing a preset, a component or the LNG temperature re-prices the cargo instantly.</p>
+            <div class="flex flex-wrap items-center gap-2 mt-4 text-[10px] font-mono">
+              <span class="px-2 py-1 rounded bg-orange-500/15 border border-orange-500/40 text-orange-300">① Set the composition and LNG temperature above</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-orange-500/15 border border-orange-500/40 text-orange-300">② Pick a vessel — or type a capacity</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-orange-500/15 border border-orange-500/40 text-orange-300">③ Loading limit; optionally heel, BOR, voyage days</span><span class="text-slate-600">→</span>
+              <span class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-400">④ Read t · kNm³ · TBtu, loaded → delivered</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-3 mt-4" data-i18n-html="docs.howto.b104">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800 pb-2">
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest">LNG CARGO ESTIMATOR</div>
+              <div class="flex flex-wrap items-center gap-1.5 text-[10px]"><span class="text-slate-500 uppercase tracking-widest">Composition:</span><span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-slate-300">Australia — North West Shelf <span class="text-emerald-400 font-bold">PUBLISHED</span></span><span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-slate-300">ρ<sub>liq</sub> <span class="text-amber-500">467.32</span> kg/m³ @ −160.0 °C</span><span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-slate-300">ρ<sub>std</sub> <span class="text-amber-500">0.83108</span></span><span class="bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-slate-300">HHV <span class="text-amber-500">45.32</span> · LHV <span class="text-amber-500">40.93</span></span></div>
+            </div>
+            <div class="flex flex-wrap gap-1 text-[9px]"><span class="text-slate-500 uppercase tracking-widest mr-1">Class</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-amber-500/50 text-amber-400">All</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Conventional</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Q-Flex</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Q-Max</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Icebreaker</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">FSRU / FSU</span><span class="text-slate-500 uppercase tracking-widest mx-1">Containment</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-amber-500/50 text-amber-400">All</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Membrane</span><span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">Moss</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="space-y-1.5">
+                <div class="text-orange-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-0.5">1. VESSEL</div>
+                <div class="flex items-center justify-between bg-slate-900 border border-slate-700 rounded px-2 py-1 text-amber-500 text-[10px]">LNG Endeavour — 174,000 m³ · NYK Line <span class="text-slate-500">▾</span></div>
+                <div class="h-10 rounded border border-slate-700 bg-slate-800/60 flex items-center justify-center text-[9px] text-slate-500">photo · kees torn, CC BY-SA 2.0, via Wikimedia Commons</div>
+                <div class="grid grid-cols-2 gap-1 text-[9px]"><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">IMO <span class="text-amber-500">9893606</span></span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Delivered <span class="text-amber-500">2021</span></span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Builder Samsung</span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Membrane · X-DF</span></div>
+                <div class="text-[9px] text-slate-500">Source: NYK Line fleet page · <span class="text-sky-400">View on MarineTraffic ↗</span></div>
+              </div>
+              <div class="space-y-1.5">
+                <div class="text-orange-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-0.5">2. CARGO</div>
+                <div class="text-[9px] text-slate-500 uppercase">Cargo tank capacity</div><div class="flex"><div class="w-2/3 bg-slate-950 border border-slate-700 rounded-l px-2 py-0.5 text-slate-200">174000</div><div class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-center text-amber-500 text-[9px] py-0.5">m³</div></div>
+                <div class="text-[9px] text-slate-500 uppercase">Loading limit</div><div class="flex"><div class="w-2/3 bg-slate-950 border border-slate-700 rounded-l px-2 py-0.5 text-slate-200">98.5</div><div class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-center text-amber-500 text-[9px] py-0.5">%</div></div>
+                <div class="text-[9px] text-slate-500 uppercase">Heel retained · Boil-off rate · Voyage</div><div class="flex gap-1"><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0 m³</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0.10 %/day</div><div class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-0.5 text-slate-200">0 days</div></div>
+              </div>
+              <div class="space-y-1">
+                <div class="text-orange-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-0.5">3. CARGO QUANTITIES <span class="text-slate-500 font-normal normal-case tracking-normal">— loaded → delivered</span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Liquid volume</span><span><span class="text-white font-bold">171,390</span> <span class="text-amber-500 text-[9px]">m³</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Mass</span><span><span class="text-white font-bold">80,093</span> <span class="text-amber-500 text-[9px]">t ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Gas volume (std)</span><span><span class="text-white font-bold">96,373</span> <span class="text-amber-500 text-[9px]">kNm³ ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, HHV basis</span><span><span class="text-amber-400 font-bold">4.140</span> <span class="text-amber-500 text-[9px]">TBtu ▾</span></span></div>
+                <div class="flex justify-between border-b border-slate-800/70 py-0.5"><span class="text-slate-400">Energy, LHV basis</span><span><span class="text-slate-300 font-bold">3.739</span> <span class="text-amber-500 text-[9px]">TBtu</span></span></div>
+                <div class="flex flex-wrap gap-1 pt-1 text-[9px]"><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Energy density <span class="text-amber-500">51.69</span> MMBtu/t</span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Expansion <span class="text-amber-500">562</span> Nm³/m³</span></div>
+              </div>
+            </div>
+            <div class="border-t border-slate-800 pt-2 text-[9px] text-slate-500 flex justify-between"><span>▸ Fleet catalogue — representative vessels, one or more per class</span><span>36 vessels</span></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs" data-i18n-html="docs.howto.b105">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">① THE VESSEL CATALOGUE — REPRESENTATIVE, NOT THE REGISTER</div>
+              <p class="text-slate-400 leading-relaxed">36 ships chosen for coverage: every class (Q-Max, Q-Flex, conventional, Arc7 icebreaker, FSRU, FSU, mid- and small-scale), all four containment systems (membrane, Moss spherical, SPB prismatic, Type C) and all nine propulsion families, from the oldest ship in the active fleet (LNG Aquarius, 1977) to 2025 deliveries. <strong class="text-slate-200">Every row carries its own public source</strong> — an owner's fleet page, a shipbuilder release, a class-society register or Wikipedia — and links out to MarineTraffic and VesselFinder by IMO. The IGU World LNG Report 2026 is cited for fleet-level context only (804 active carriers at end-2025); its Appendix 3 is deliberately <em>not</em> reproduced. Filter with the pills, or expand the catalogue for the card grid.</p>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">② LOADING LIMIT, HEEL AND BOIL-OFF</div>
+              <p class="text-slate-400 leading-relaxed"><strong class="text-slate-200">Loaded</strong> = capacity × loading limit. The IGC Code Ch. 15 filling limit is 98 % unless a higher limit is approved for the ship — many carriers load to 98.5 %, so use the vessel's certificate; the card warns above 98.5 %. <strong class="text-slate-200">Delivered</strong> = loaded − heel retained − boil-off rate × voyage days (a linear screening model: BOG is taken as a constant fraction of the <em>loaded</em> volume per day; real boil-off depends on tank pressure, ambient and whether it is burnt as fuel). Leave heel and days at zero and only loaded quantities are shown.</p>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">③ WHAT THE UNITS MEAN</div>
+              <p class="text-slate-400 leading-relaxed">Mass = volume × ρ<sub>liq</sub> (Klosek-McKinley at the LNG temperature you set — colder LNG is denser, so the same tank holds more). Standard volume = mass ÷ ρ<sub>std</sub>, shown in kNm³ or MMNm³ (0 °C) and MMscf or Bscf (60 °F, via the mandated 37.3258). <strong class="text-slate-200">Energy = standard volume × HHV</strong>, in TBtu (10⁶ MMBtu; 1 MMBtu = 1.055056 GJ), MMBtu, GJ, TJ, MWh or GWh; the LHV figure is for reference. The <em>energy density</em> chip (MMBtu per tonne) and the <em>expansion ratio</em> (Nm³ of gas per m³ of liquid, at 0 °C — the ≈600 often quoted is at 15 °C) are the two numbers traders and terminal operators sanity-check first.</p>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">④ CROSS-LINKS, SHARING, PHOTOS</div>
+              <p class="text-slate-400 leading-relaxed">If the GT Fuel tab holds a plant, a green line shows how many such cargoes would fuel it for a year (from that tab's yearly fuel energy — see Section 21). Vessel, capacity, limits and unit selections travel in Share links and are restored. Thumbnails are Wikimedia Commons photographs (author and licence shown under each; full list in <span class="font-mono">assets/vessels/CREDITS.json</span>) or an original schematic by containment type — no MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every copy button is unit-aware.</p>
+            </div>
+          </div>
+          <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3 text-xs text-orange-300 mt-3" data-i18n-html="docs.howto.b106">
+            <strong>ℹ Worked example (Vector 13)</strong> — Australia — North West Shelf preset (mol %) at −160 °C: ρ<sub>liq</sub> 467.32 kg/m³, ρ<sub>std</sub> 0.83108 kg/Nm³, HHV 45.32 / LHV 40.93 MJ/Nm³. LNG Endeavour, 174,000 m³ at 98.5 %: <strong>171,390 m³</strong> → <strong>80,093 t</strong> → <strong>96,373 kNm³</strong> (3,597 MMscf) → <strong>4.140 TBtu</strong> HHV (3.739 TBtu LHV) — <strong>51.69 MMBtu/t</strong>, expansion 562 Nm³/m³. With 3,000 m³ heel and 0.10 %/day over 15 days, delivered = 165,819 m³ → 4.005 TBtu. Every figure is what the card displays; the Theory tab (Part IX) reproduces the chain by hand.
+          </div>
+        </section>
+
+        <section>
+          <h3 id="howto-17" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">17. Advanced Tab — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b053">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b054">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -2322,7 +2640,7 @@
                 <div>Reynolds number + regime <span class="text-slate-200">[Laminar / Transitional / Turbulent]</span></div>
                 <div>Darcy friction factor f <span class="text-slate-200">(Colebrook–White)</span></div>
                 <div>Erosional velocity V<sub>e</sub> = C/√ρ, ratio v/V<sub>e</sub>, with badge <span class="text-green-400">WITHIN</span> / <span class="text-amber-400">NEAR</span> / <span class="text-red-400">EXCEEDS</span></div>
-                <div class="text-cyan-300">→ A visualised two-phase regime is echoed here (see Section 18)</div>
+                <div class="text-cyan-300">→ A visualised two-phase regime is echoed here (see Section 19)</div>
               </div>
             </div>
           </div>
@@ -2332,7 +2650,7 @@
         </section>
 
         <section>
-          <h3 id="howto-17" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b073">17. ΔP Card — Fittings, Valves &amp; Line Sizing</h3>
+          <h3 id="howto-18" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b073">18. ΔP Card — Fittings, Valves &amp; Line Sizing</h3>
           <div data-i18n-html="docs.howto.b074"><p class="text-sm text-slate-400 leading-relaxed">Two additions sit either side of the CALCULATE button. Both are optional and neither changes an existing calculation unless you use it.</p>
           <p class="text-sm text-slate-400 leading-relaxed mt-3"><strong class="text-slate-200">2C. Fittings &amp; valves</strong> — expand the block and enter how many of each fitting the run contains. The card looks up Crane TP-410 resistance coefficients (K = n·f<sub>T</sub>, where f<sub>T</sub> is the fully-turbulent friction factor for the nearest nominal size — shown beneath the grid so you can audit it) and sums them into ΣK. The pressure drop gains ΣK·ρv²/2, reported as its own output alongside the equivalent straight length L<sub>eq</sub>. <strong>Every count starts at 0</strong>, so an untouched block leaves the result byte-identical to v2.7.</p>
           <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300 mt-3"><strong>ℹ Worked example</strong> — on the default 4-inch line (f<sub>T</sub> = 0.017), four 90° standard elbows + one gate valve + one swing check + entrance + exit give <strong>ΣK = 5.376</strong>, adding <strong>0.696 kPa</strong> and an equivalent length of <strong>29.76 m</strong>. Total ΔP moves 176.9 → 177.6 kPa.</div>
@@ -2342,7 +2660,7 @@
         </section>
 
         <section>
-          <h3 id="howto-18" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">18. Advanced Tab — Flow Regime Visualizer</h3>
+          <h3 id="howto-19" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">19. Advanced Tab — Flow Regime Visualizer</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b057">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b058">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -2381,7 +2699,7 @@
         </section>
 
         <section>
-          <h3 id="howto-19" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">19. Safety Tab — PRV Sizing (API 520 Part I)</h3>
+          <h3 id="howto-20" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">20. Safety Tab — PRV Sizing (API 520 Part I)</h3>
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. Select the sizing mode and unit system, enter process inputs, then click CALCULATE ORIFICE SIZE to obtain the required effective discharge area and the recommended API 526 orifice letter designation (D–T).</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
@@ -2409,7 +2727,7 @@
         </section>
 
         <section>
-          <h3 id="howto-20" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">20. GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
+          <h3 id="howto-21" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b089">21. GT Fuel — Turbine Selection &amp; Fuel Gas Estimator</h3>
           <div data-i18n-html="docs.howto.b091">
             <div class="flex flex-wrap items-center gap-2 mb-4 text-[10px] font-mono">
               <span class="px-2 py-1 rounded bg-rose-500/15 border border-rose-500/40 text-rose-300">① Pick a turbine (pull-down or catalogue)</span><span class="text-slate-600">→</span>
@@ -2477,10 +2795,14 @@
           <p class="text-sm text-slate-400 leading-relaxed mt-3">The <strong class="text-slate-200">Fuel Gas Rate Estimator</strong> needs five numbers: power output (MW/kW), efficiency (%-LHV), fuel heating value (MJ/Nm³ or Btu/scf; if you set the basis to HHV, an HHV/LHV ratio field appears — default 1.108, the reference-composition value), standard gas density, and availability. The dashed <em>Import</em> button pulls LHV/HHV and ρ_std from the last Advanced-tab compositional run; the <em>Send</em> button pushes the computed mass flow and density into the Basic Eng Mass↔Vol card and jumps there. Outputs update live: fuel energy input (MW-th), heat rate in kJ/kWh and Btu/kWh, volumetric flow (kNm³/h · Nm³/h · scf/h · MMSCFD) and mass flow (t/h · kg/h · kg/s), each with a unit-aware copy button, plus a totals table — the hourly row is the instantaneous rate, while daily, monthly (730 h) and yearly (8,760 h) rows are multiplied by the availability factor.</p>
           <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3 text-xs text-rose-300 mt-3"><strong>ℹ Worked example</strong> — M701JAC (448) at 448 MW and η = 44.0 %-LHV: fuel energy <strong>1,018.18 MW-th</strong>, heat rate <strong>8,182 kJ/kWh</strong> (7,755 Btu/kWh). With LHV 40.25 MJ/Nm³ and ρ_std 0.8193 kg/Nm³ the fuel flow is <strong>91.07 kNm³/h</strong> (74.61 t/h, 81.58 MMSCFD); at 92 % availability the yearly total is <strong>733.93 MMNm³</strong> (601,308 t).</div>
           <p class="text-xs text-slate-500 leading-relaxed mt-3"><strong class="text-amber-400">Screening, not a guarantee.</strong> Catalogue figures are indicative vendor data at ISO conditions; real fuel burn moves with ambient conditions, degradation, part load and fuel composition. Every dataset entry carries its source, and CI re-verifies that each machine's published heat rate equals 3600/η within rounding.</p></div>
+          <div class="mt-3 bg-slate-950 rounded-lg border border-slate-700 p-3 text-xs" data-i18n-html="docs.howto.b107">
+            <div class="text-rose-400 font-bold text-[10px] tracking-widest mb-1">UNIT SWITCHES (v3.5)</div>
+            <p class="text-slate-400 leading-relaxed">The consumption-totals table now has a unit select on each column header — <strong class="text-slate-200">Fuel volume</strong> in Nm³ (auto kNm³/MMNm³) or scf (auto MMscf/Bscf), a new <strong class="text-slate-200">Fuel energy in</strong> column (Q × hours) and <strong class="text-slate-200">Power sent out</strong> each in MWh/GWh, GJ/TJ/PJ or MMBtu/TBtu — and the fuel-energy tile switches between MW-th, MMBtu/h and GJ/h. Fuel-rate selects gain kNm³/d, MMscf/h, t/d and lb/h. Defaults are unchanged. <strong class="text-slate-200">Gas density accepts lb/scf</strong>: because ρ<sub>std</sub> is mass per <em>standard</em> volume, the factor is 0.45359237 × 37.3258 = 16.9307 kg/Nm³ per lb/scf — not the 16.0185 that converts an actual-condition lb/ft³ elsewhere in the app; 0.8193 kg/Nm³ ↔ 0.04839 lb/scf. The yearly fuel energy in TBtu (28.00 for the M701JAC example) is what the LNG Cargo card in Section 16 compares its cargoes against.</p>
+          </div>
         </section>
 
         <section>
-          <h3 id="howto-21" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b067">21. Report Tab — Bug Reports &amp; Feature Requests</h3>
+          <h3 id="howto-22" class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b067">22. Report Tab — Bug Reports &amp; Feature Requests</h3>
           <p class="text-sm text-slate-400" data-i18n-html="docs.howto.b068">Select report type, enter your name and description, then click <strong class="text-amber-400">GENERATE EMAIL TO DEVELOPER</strong>. Your default email client will open with a pre-filled message addressed to the developer.</p>
 		</section>
 
@@ -2490,7 +2812,16 @@
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b095">What changed in each release, newest first. Everything listed here is documented properly in the numbered sections above — this appendix is the history, not the manual. Click a release to expand it.</p>
           <div class="space-y-2">
 
-            <details id="howto-new33" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+            <details id="howto-new35" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+              <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b108">★ New in Version 3.5</span></summary>
+              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b109"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">LNG Cargo Estimator</strong> — a new card under the compositional suite: pick one of 36 representative LNG carriers (or type a capacity), set the loading limit, and read the cargo as t, kNm³/MMscf and TBtu on the HHV custody-transfer basis, loaded and delivered after heel and boil-off. ρ<sub>liq</sub>, ρ<sub>std</sub> and HHV come live from the composition above. Section 16, Theory Part IX, reference Vector 13.</div>
+                <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">A catalogue that cites its sources</strong> — every vessel row carries its own public source URL and links out to MarineTraffic / VesselFinder by IMO; thumbnails are Wikimedia Commons photographs with the author and licence shown, or original schematics. The IGU World LNG Report 2026 is cited for fleet context only — its Appendix 3 is not reproduced.</div>
+                <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">GT Fuel unit switches</strong> — fuel volume in scf/MMscf/Bscf, energy in MMBtu/TBtu or GJ/TJ/PJ, a Fuel-energy-in column on the totals table, MMBtu/h and GJ/h on the fuel-energy tile, and gas density in lb/scf (16.9307, not 16.0185 — see Section 21).</div>
+                <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Documentation</strong> — Section 16 and Theory Part IX added in tab order; the sections they displace renumbered in all ten languages, and three stale "Section 9 / 10" cross-references in the translations corrected in passing.</div>
+              </div>
+            </details>
+
+            <details id="howto-new33" class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
               <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b096">★ New in Version 3.3</span></summary>
               <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b097"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">LNG Reference Compositions</strong> — a source-cited pull-down on the Advanced composition card fills all fourteen components in one click and applies each entry's own fraction basis. Nine entries in three clearly separated tiers: five published GIIGNL origins, this calculator's own JIS reference case, and three archetypes badged ASSUMED so they can never be mistaken for measured data. See Section 12.</div>
                 <div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Live cross-check against published data</strong> — GIIGNL prints a gross calorific value and Wobbe index beside each composition, so every published entry doubles as an external verification vector: chips compare the source's figure with this calculator's own result, and the largest deviation across the five origins is 0.02 MJ/Nm³.</div>
@@ -2571,7 +2902,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.4. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.5. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Real Gas</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Steam</a>
@@ -2581,10 +2912,11 @@
             <a href="#theory-p6" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VI LNG Refs</a>
             <a href="#theory-p7" class="px-2 py-1 rounded bg-slate-800 text-fuchsia-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VII Density &amp; Flow</a>
             <a href="#theory-p8" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors">VIII LNG Density</a>
-            <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-green-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX Hydraulics</a>
-            <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X PRV Sizing</a>
-            <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI GT Fuel</a>
-            <a href="#theory-p12" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">XII Data Sources</a>
+            <a href="#theory-p9" class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700 hover:border-amber-500/50 transition-colors">IX LNG Cargo</a>
+            <a href="#theory-p10" class="px-2 py-1 rounded bg-slate-800 text-green-400 border border-slate-700 hover:border-amber-500/50 transition-colors">X Hydraulics</a>
+            <a href="#theory-p11" class="px-2 py-1 rounded bg-slate-800 text-red-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XI PRV Sizing</a>
+            <a href="#theory-p12" class="px-2 py-1 rounded bg-slate-800 text-rose-400 border border-slate-700 hover:border-amber-500/50 transition-colors">XII GT Fuel</a>
+            <a href="#theory-p13" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">XIII Data Sources</a>
           </nav>
         </div>
 
@@ -3000,10 +3332,42 @@
         </section>
 
         <section>
-          <h3 id="theory-p9" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6" data-i18n-html="docs.theory.b034">Part IX — Pipe Hydraulics (Advanced Tab)</h3>
+          <h3 id="theory-p9" class="text-lg font-bold text-orange-400 uppercase tracking-widest border-b border-orange-900 pb-2 mb-6" data-i18n-html="docs.theory.b050">Part IX — LNG Cargo Quantities</h3>
+          <div data-i18n-html="docs.theory.b051"><div class="space-y-8">
+            <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.1 The chain</h4>
+          <p class="text-sm leading-relaxed">A cargo is bought and sold as energy, but a ship is filled by volume. The card converts one into the other with nothing but the quantities the compositional suite already produces:</p>
+          <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-1.5 mt-3">
+            <div>V<sub>loaded</sub> = C<sub>tank</sub> × f<sub>fill</sub></div>
+            <div>V<sub>delivered</sub> = V<sub>loaded</sub> − V<sub>heel</sub> − V<sub>loaded</sub> × BOR × t<sub>voyage</sub></div>
+            <div>m = V × ρ<sub>liq</sub>(T<sub>LNG</sub>, composition) &nbsp;&nbsp; <span class="text-slate-500">— ISO 6578 Klosek-McKinley, Part VIII</span></div>
+            <div>V<sub>std</sub> = m / ρ<sub>std</sub> &nbsp;&nbsp; <span class="text-slate-500">— ρ<sub>std</sub> from Part VII, Z<sub>rounded</sub></span></div>
+            <div>E<sub>HHV</sub> = V<sub>std</sub> × HHV &nbsp;&nbsp;|&nbsp;&nbsp; E<sub>LHV</sub> = V<sub>std</sub> × LHV &nbsp;&nbsp; <span class="text-slate-500">— Part V, JIS K 2301</span></div>
+          </div>
+          <p class="text-sm leading-relaxed mt-3">Custody transfer is on the <strong class="text-slate-200">gross</strong> (HHV) basis — the GIIGNL LNG Custody Transfer Handbook's energy formula multiplies the volume unloaded, the density and the gross calorific value — so HHV is the headline figure and LHV is shown for reference. The card owns none of the physics: ρ<sub>liq</sub>, ρ<sub>std</sub>, HHV and LHV are read from the composition card through one bridge object, so a change to any JIS or ISO 6578 rule propagates here automatically and the two cards can never disagree.</p></div>
+
+            <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.2 Units, and the one factor that is easy to get wrong</h4>
+          <p class="text-sm leading-relaxed">1 TBtu = 10⁶ MMBtu; 1 MMBtu = 1.055056 GJ (the same factor the General-tab energy module has carried since v1.3), so 1 TBtu = 1.055056 PJ = 293.07 GWh. Standard gas volume is offered on both bases the industry uses — Nm³ at 0 °C and scf at 60 °F — related by the mandated 37.3258 scf/Nm³ (Part VII), which is why the "expansion ratio" the card shows (Nm³ of gas per m³ of liquid) reads about 562 rather than the ≈600 quoted at 15 °C: same cargo, different reference temperature. <strong class="text-slate-200">Energy density</strong> in MMBtu per tonne is composition-driven and sits between ≈48 (lean, high-N₂) and ≈52 (rich Australian or Qatari) — a quick plausibility check on any cargo figure.</p>
+          <p class="text-sm leading-relaxed mt-3">The GT Fuel tab's gas-density input now accepts <strong class="text-slate-200">lb/scf</strong> (v3.5). A <em>standard</em> density is mass per <em>standard</em> volume, and this application's standard bases are 0 °C for Nm³ and 60 °F for scf, so the conversion is <span class="font-mono text-slate-300">0.45359237 kg/lb × 37.3258 scf/Nm³ = 16.9307 kg/Nm³ per lb/scf</span> — <em>not</em> the 16.0185 that converts an actual-condition lb/ft³ (same physical volume) on the Mass↔Vol and ΔP cards. Using the wrong one reads 5.7 % high: 0.8193 kg/Nm³ is 0.04839 lb/scf, and 16.0185 would call it 0.05115. The factor is derived and named in the code, and a test pins it.</p></div>
+
+            <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.3 Loading limit, heel and boil-off</h4>
+          <p class="text-sm leading-relaxed">The IGC Code (Ch. 15) sets the tank filling limit at 98 % at the reference temperature unless the Administration approves a higher limit for the specific ship and tank; many modern carriers are approved to 98.5 %, so the card defaults to 98.5 % and warns above it — the vessel's certificate governs. <em>Heel</em> is the liquid deliberately left on board so the tanks stay cold for the ballast voyage (typically a few thousand m³ on a large carrier). <em>Boil-off</em> is modelled as a constant fraction of the loaded volume per day (0.10 %/day is representative of a modern membrane ship; steam-era Moss carriers were nearer 0.15 %) multiplied by the voyage days — a linear screening approximation. Real boil-off varies with tank pressure, ambient conditions and cargo composition, and on most ships it is burnt as fuel or reliquefied rather than lost; treat "delivered" as an order-of-magnitude view, and use the discharge port's custody-transfer figures for anything commercial.</p></div>
+
+            <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.4 The vessel dataset — provenance by design</h4>
+          <p class="text-sm leading-relaxed">The catalogue holds <strong class="text-slate-200">36 representative vessels</strong>, chosen for coverage rather than completeness: every vessel type in the active fleet (Q-Max, Q-Flex, conventional, Arc7 icebreaker, FSRU, FSU, mid-scale, small-scale), all four containment systems (membrane, Moss spherical, SPB self-supporting prismatic, Type C), all nine propulsion families (steam, steam reheat, STaGE, DFDE, TFDE, SSD, X-DF, ME-GI, ME-GA) and a dozen shipyards. Each entry's particulars are confirmed against a public primary page — the owner's or operator's fleet list, a shipbuilder delivery release, a classification-society register or, as a last resort, an English Wikipedia article — and that page is the row's cited source in the app. The IGU World LNG Report 2026 (Rystad Energy data) is cited only for fleet-level context — 804 active carriers at end-2025 — and its Appendix 3 table is deliberately not reproduced: the report is all-rights-reserved and, as a compiled database, protected in the UK and EU independently of copyright. Nothing is scraped from AIS platforms; the "View on MarineTraffic / VesselFinder" links are ordinary hyperlinks by IMO number, opened in a new tab.</p>
+          <p class="text-sm leading-relaxed mt-3">Photographs come from Wikimedia Commons only, each under CC BY-SA or public domain, downloaded once as Commons-rendered thumbnails and committed with a credits file that the card renders under every image; ShareAlike attaches to the photograph, not to the surrounding MIT-licensed application (Creative Commons' own "collection" interpretation). Where no free-licensed photograph of a ship exists, an original schematic silhouette by containment type stands in. Spotter-site photographs (MarineTraffic, VesselFinder, ShipSpotting) are photographer-owned with no licence to third parties and are not used or hot-linked.</p></div>
+
+            <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.5 Worked example (Vector 13)</h4>
+          <div class="bg-orange-500/10 border border-orange-500/30 rounded p-3 text-xs"><strong>Australia — North West Shelf</strong> preset (mol %; GIIGNL Table 1) at T<sub>LNG</sub> = −160 °C: ρ<sub>liq</sub> = 467.32 kg/m³ (ISO 6578; the card uses the unrounded 467.3168), ρ<sub>std</sub> = 0.83108 kg/Nm³, HHV = 45.32, LHV = 40.93 MJ/Nm³. Vessel LNG Endeavour, 174,000 m³, loading limit 98.5 %.<br>
+          V<sub>loaded</sub> = 174,000 × 0.985 = <strong>171,390 m³</strong> · m = 171,390 × 467.3168 / 1000 = <strong>80,093 t</strong> · V<sub>std</sub> = 80,093,422 / 0.83108 = 96,372,923 Nm³ = <strong>96,373 kNm³</strong> = 96.373 MMNm³ = 3,597 MMscf · E<sub>HHV</sub> = 96,372,923 × 45.32 = 4,367,621 GJ = 4,368 TJ = <strong>4.140 TBtu</strong> (÷ 1.055056 ÷ 10⁶) · E<sub>LHV</sub> = <strong>3.739 TBtu</strong> · energy density = 4,139,705 MMBtu / 80,093 t = <strong>51.69 MMBtu/t</strong> · expansion = 96,372,923 / 171,390 = <strong>562</strong> Nm³/m³.<br>
+          Delivered with 3,000 m³ heel and 0.10 %/day × 15 days (2,571 m³ boil-off): 165,819 m³ → 77,490 t → 4.005 TBtu. GT cross-link: the M701JAC example burns 28.00 TBtu/yr, so ≈ 6.8 such cargoes a year.</div></div>
+          </div></div>
+        </section>
+
+        <section>
+          <h3 id="theory-p10" class="text-lg font-bold text-green-400 uppercase tracking-widest border-b border-green-900 pb-2 mb-6" data-i18n-html="docs.theory.b034">Part X — Pipe Hydraulics (Advanced Tab)</h3>
 
           <div class="mb-8" data-i18n-html="docs.theory.b021">
-			<h4 class="text-sm font-bold text-green-300 mb-3">9.1 Pressure Drop: Darcy-Weisbach + Colebrook-White Friction Factor</h4>
+			<h4 class="text-sm font-bold text-green-300 mb-3">10.1 Pressure Drop: Darcy-Weisbach + Colebrook-White Friction Factor</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">ΔP = f·(L/D)·(ρ·v²/2) + ρ·g·Δz &nbsp; [Pa]</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
@@ -3023,7 +3387,7 @@
             </div>
           </div>
 
-            <div data-i18n-html="docs.theory.b038"><h4 class="text-base font-semibold text-amber-400 mb-2">9.2 Fitting Losses — Crane TP-410</h4>
+            <div data-i18n-html="docs.theory.b038"><h4 class="text-base font-semibold text-amber-400 mb-2">10.2 Fitting Losses — Crane TP-410</h4>
           <p class="text-sm leading-relaxed">Crane expresses each valve and fitting as a resistance coefficient K, a fixed number of velocity heads:</p>
           <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
             <div>K = n · f<sub>T</sub>       ΔP = ΣK · ρ·v² / 2       L<sub>eq</sub> = ΣK · D / f</div>
@@ -3033,7 +3397,7 @@
           <p class="text-sm leading-relaxed mt-3">Note that f<sub>T</sub> and f are different quantities. f<sub>T</sub> characterises the <em>fitting</em> and depends only on nominal size; f characterises the <em>flow</em> and depends on Reynolds number and roughness. The application applies the <strong>K method</strong> and reports L<sub>eq</sub> as derived information, because a fitting's loss is a property of its geometry while the equivalent length that produces that loss depends on the pipe's operating point. The alternative L/D shortcut (L<sub>eq</sub> = n·D) implicitly assumes f = f<sub>T</sub> — that the line is in fully-rough flow — which is false for most process piping.</p>
           <div class="bg-amber-500/10 border border-amber-500/30 rounded p-3 text-xs mt-3"><strong>Worked example</strong> — 4-inch line, f<sub>T</sub> = 0.017, flowing f = 0.018354, ρ = 251.69 kg/m³, v = 1.0142 m/s. Four 90° elbows (4×30×0.017 = 2.040) + gate valve (8×0.017 = 0.136) + swing check (100×0.017 = 1.700) + entrance (0.500) + exit (1.000) → <strong>ΣK = 5.376</strong>. Velocity head = 129.437 Pa, so <strong>ΔP = 695.85 Pa</strong> and <strong>L<sub>eq</sub> = 29.759 m</strong>. Cross-check: extending the straight run by L<sub>eq</sub> raises the friction term by exactly 695.85 Pa — the two methods agree by construction. The L/D shortcut would give 23.16 m, <strong>22 % lower</strong>, and cannot represent entrance or exit at all.</div></div>
 
-            <div data-i18n-html="docs.theory.b039"><h4 class="text-base font-semibold text-blue-400 mb-2">9.3 Line-Sizing Criteria — NORSOK P-001</h4>
+            <div data-i18n-html="docs.theory.b039"><h4 class="text-base font-semibold text-blue-400 mb-2">10.3 Line-Sizing Criteria — NORSOK P-001</h4>
           <p class="text-sm leading-relaxed">Screening limits for process piping, applied to the <strong>frictional</strong> pressure drop only. Static head is a real pressure change but not a sizing criterion — a vertical line is not undersized because it is tall.</p>
           <div class="overflow-x-auto mt-3">
             <table class="w-full text-xs border-collapse">
@@ -3055,7 +3419,7 @@
           <p class="text-xs text-slate-500 leading-relaxed mt-3">Only NORSOK P-001 criteria are implemented. Velocity and ΔP tables attributed to other sources circulate widely but could not be verified against primary text, and this application does not cite a standard it has not checked. These limits screen a line size; they do not replace a hydraulic study, a surge analysis, or a vibration assessment.</p></div>
 
           <div class="mb-8" data-i18n-html="docs.theory.b023">
-            <h4 class="text-sm font-bold text-green-300 mb-3">9.4 Erosional Velocity Limit (API RP 14E)</h4>
+            <h4 class="text-sm font-bold text-green-300 mb-3">10.4 Erosional Velocity Limit (API RP 14E)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-2xl text-center text-green-300 py-2">V<sub>e</sub> = C / √ρ<sub>m</sub></div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
@@ -3068,7 +3432,7 @@
           </div>
 
           <div class="mb-8" data-i18n-html="docs.theory.b022">
-            <h4 class="text-sm font-bold text-green-300 mb-3">9.5 Two-Phase Flow Regime Maps (Flow Regime Card)</h4>
+            <h4 class="text-sm font-bold text-green-300 mb-3">10.5 Two-Phase Flow Regime Maps (Flow Regime Card)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Inclination: θ = asin(Δz / L) &nbsp;|&nbsp; Cross-section: A = π·D²/4 [m²]</div>
               <div class="text-slate-200">Superficial fluxes: j<sub>G</sub> = W<sub>G</sub>/(ρ<sub>G</sub>·A), &nbsp;j<sub>L</sub> = W<sub>L</sub>/(ρ<sub>L</sub>·A) [m/s] &nbsp;|&nbsp; Mass fluxes: G<sub>G</sub> = W<sub>G</sub>/A, &nbsp;G<sub>L</sub> = W<sub>L</sub>/A [kg/s·m²]</div>
@@ -3090,10 +3454,10 @@
         </section>
 
         <section>
-          <h3 id="theory-p10" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6" data-i18n-html="docs.theory.b024">Part X — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
+          <h3 id="theory-p11" class="text-lg font-bold text-red-400 uppercase tracking-widest border-b border-red-900 pb-2 mb-6" data-i18n-html="docs.theory.b024">Part XI — PRV Sizing Theory (API 520 §5.6–§5.10)</h3>
 
           <div class="mb-8" data-i18n-html="docs.theory.b025">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.1 Gas/Vapor — Critical Flow (§5.6.3, Eq. 2/5)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Critical check: P2 ≤ Pcf = P1 × (2/(k+1))^(k/(k−1)) &nbsp;[Eq. 1]</div>
               <div class="text-2xl text-center text-green-300 py-1">A = W / (C · Kd · P1 · Kb · Kc) × √(T·Z/M)</div>
@@ -3105,7 +3469,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b026">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.2 Gas/Vapor — Subcritical Flow (§5.6.4, Eq. 12/15)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-blue-300 py-1">F2 = √[ k/(k−1) · r^(2/k) · (1−r^((k−1)/k)) / (1−r) ] &nbsp; r = P2/P1</div>
               <div class="text-slate-200">USC: A = W / (735 · F2 · Kd · Kc) × √(T·Z / (M·P1·(P1−P2)))</div>
@@ -3113,7 +3477,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b027">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.3 Steam (§5.7, Eq. 21/22)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.3 Steam (§5.7, Eq. 21/22)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = W / (51.5 · P1 · Kd · Kb · Kc · KN · KSH)</div>
               <div class="text-slate-200">SI: A = 190.5·W / (P1 · Kd · Kb · Kc · KN · KSH)</div>
@@ -3124,7 +3488,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b028">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.4 Liquid — Certified PRV (§5.8, Eq. 28/29)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-xl text-center text-cyan-300 py-1">USC: A = Q / (38 · Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
               <div class="text-slate-200">SI: A = 11.78·Q / (Kd · Kw · Kc · Kv) × √(Gl / (P1−P2))</div>
@@ -3136,14 +3500,14 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b029">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.5 Liquid — Non-Certified PRV (§5.9, Eq. 38/39)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">USC: A = Q / (38 · Kd · Kw · Kc · Kv · Kp) × √(Gl / (1.25·Ps−P2))</div>
               <div class="text-[10px] text-slate-400">Kp = 1.0 at 25% overpressure; Kp ≈ 0.6 at 10% overpressure (Fig. 38). Default Kd = 0.62.</div>
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b030">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.6 Two-Phase — Omega Method (§5.10 / Annex C.2.2)</h4>
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
               <div class="text-slate-200">Step 1: ω = 9·(v9/vo − 1) &nbsp;[Eq. C.12] &nbsp; v9 = spec. vol. at isenthalpic flash to 0.9·Po</div>
               <div class="text-slate-200">Step 2: η_c ≈ [1 + (1.0446−0.0093431·√ω)·ω^(−0.56261)]^(−0.70356+0.014685·lnω) &nbsp;[Eq. C.15]</div>
@@ -3152,7 +3516,7 @@
             </div>
           </div>
           <div class="mb-8" data-i18n-html="docs.theory.b031">
-            <h4 class="text-sm font-bold text-red-300 mb-3">10.7 API 526 Standard Effective Orifice Areas</h4>
+            <h4 class="text-sm font-bold text-red-300 mb-3">11.7 API 526 Standard Effective Orifice Areas</h4>
             <div class="overflow-x-auto">
               <table class="w-full text-xs font-mono border-collapse">
                 <thead><tr class="bg-slate-800 text-amber-400"><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th><th class="px-2 py-1 border border-slate-700">Letter</th><th class="px-2 py-1 border border-slate-700">in²</th><th class="px-2 py-1 border border-slate-700">mm²</th></tr></thead>
@@ -3173,10 +3537,10 @@
         </section>
 
         <section>
-          <h3 id="theory-p11" class="text-lg font-bold text-rose-400 uppercase tracking-widest border-b border-rose-900 pb-2 mb-6" data-i18n-html="docs.theory.b046">Part XI — Gas Turbine Fuel Estimation</h3>
+          <h3 id="theory-p12" class="text-lg font-bold text-rose-400 uppercase tracking-widest border-b border-rose-900 pb-2 mb-6" data-i18n-html="docs.theory.b046">Part XII — Gas Turbine Fuel Estimation</h3>
 
           <div data-i18n-html="docs.theory.b047"><div class="space-y-8">
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.1 Governing relations</h4>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.1 Governing relations</h4>
           <p class="text-sm leading-relaxed">A gas turbine converting fuel energy to electrical output at thermal efficiency η absorbs fuel energy <strong class="text-slate-200">Q_fuel = P / η</strong>. Vendor catalogue efficiencies are quoted on a lower-heating-value basis at ISO conditions (15 °C, 101.325 kPa, 60 % RH), per the ISO 3977-2 / ASME PTC 22 convention, so the heat rate follows directly as HR = 3600/η. The volumetric fuel demand at standard conditions and the mass flow are then closure arithmetic:</p>
           <div class="bg-slate-950 rounded-lg border border-slate-700 p-4 font-mono text-xs space-y-1 mt-3">
             <div>Q_fuel [MW]&nbsp;&nbsp;&nbsp;= P [MW] / η&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;η in fraction, LHV basis</div>
@@ -3186,16 +3550,18 @@
             <div class="text-slate-500">Totals: hours × availability — 24 h/day, 730 h/month (= 8,760/12), 8,760 h/year; the hourly figure is the instantaneous rate</div>
           </div>
           <p class="text-sm leading-relaxed mt-3">In <strong class="text-slate-200">GTCC plant mode</strong> the same relation runs on the published plant output and plant efficiency: all fuel is fired in the gas turbine (the steam cycle recovers exhaust heat), so plant fuel = plant output ÷ plant η. This is why a &gt;64 % LHV combined-cycle plant burns ~31 % less gas per MWh than its 44 % simple-cycle turbine alone.</p></div>
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.2 Heating-value basis and unit conversions</h4>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.2 Heating-value basis and unit conversions</h4>
           <p class="text-sm leading-relaxed">Turbine efficiencies are LHV-based, but commercial gas is often specified in HHV. When the estimator's basis selector is set to HHV, the input is divided by the <strong class="text-slate-200">HHV/LHV ratio</strong> (default 1.108, the app's reference composition 44.59/40.25; the Import button recomputes it from the live Advanced-tab composition). Heating-value units interconvert with the same constants as the General-tab converter: 1 Nm³ = 37.3258 scf (0 °C ↔ 60 °F standard-volume basis) and 1 Btu = 1,055.056 J, giving <strong class="text-slate-200">Btu/scf = MJ/Nm³ ÷ (0.001055056 × 37.3258) = MJ/Nm³ × 25.393</strong>. Standard-volume flows convert likewise: MMSCFD = Nm³/h × 37.3258 × 24 / 10⁶.</p></div>
-            <div><h4 class="text-base font-semibold text-rose-400 mb-2">11.3 Dataset, consistency and scope</h4>
+            <div><h4 class="text-base font-semibold text-rose-400 mb-2">12.3 Dataset, consistency and scope</h4>
           <p class="text-sm leading-relaxed">The embedded catalogue holds 31 machines with published ISO ratings: MHI heavy-duty, H-series industrial and FT-series aeroderivative units transcribed from the MHI GTCC brochure (METP-11GT01E1-E-0, performance tables); GE Vernova HA-class from fact sheets GEA35750/GEA35768 plus F-class and aeroderivatives from product pages; Siemens Energy HL/H/F-class and SGT-800 from product pages. Every entry records its source, and CI asserts the internal consistency <strong class="text-slate-200">|HR − 3600/η| ≤ 30 kJ/kWh</strong> for each machine (vendors round HR and η independently) and that combined-cycle output and efficiency always exceed the simple-cycle values. Ratings are net or gross per each vendor's own publication convention — the estimate is a screening number, not a performance guarantee; degradation, ambient conditions, part load and fuel composition all move real-world fuel burn.</p>
           <div class="bg-rose-500/10 border border-rose-500/30 rounded p-3 text-xs mt-3"><strong>Worked example (Vector 11)</strong> — M701JAC (448): P = 448 MW, η = 44.0 %-LHV, LHV = 40.25 MJ/Nm³, ρ_std = 0.8193 kg/Nm³, availability 92 %. Q_fuel = 448/0.44 = <strong>1,018.18 MW-th</strong>; HR = 3600/0.44 = <strong>8,182 kJ/kWh</strong> = 7,755 Btu/kWh — reproducing MHI's published 8,182 kJ/kWh exactly. V̇ = 1,018.18 × 3600 / 40.25 = <strong>91,067 Nm³/h</strong> = 91.07 kNm³/h; ṁ = 91,067 × 0.8193 = <strong>74,611 kg/h</strong> = 74.61 t/h; 91,067 × 37.3258 × 24/10⁶ = <strong>81.58 MMSCFD</strong>. Yearly at 92 %: 91,067 × 8,760 × 0.92 = <strong>733.93 MMNm³</strong> (601,308 t), delivering 3,610.5 GWh.</div></div>
           </div></div>
+          <div class="mt-6" data-i18n-html="docs.theory.b052"><h4 class="text-base font-semibold text-rose-400 mb-2">12.4 Unit switches (v3.5)</h4>
+          <p class="text-sm leading-relaxed">The consumption totals convert with the same named constants as the cargo card: MWh × 3.6 = GJ, GJ ÷ 1.055056 = MMBtu, and each family auto-scales (kNm³ → MMNm³, MMscf → Bscf, MWh → GWh, GJ → TJ → PJ, MMBtu → TBtu). Two energies are tabulated: <em>fuel energy in</em> (Q × hours — what the plant buys) and <em>power sent out</em> (P × hours — what it sells); their ratio is the efficiency, and the yearly fuel energy in TBtu is directly comparable to LNG cargoes (Part IX). Fuel volume in scf uses the mandated 37.3258 scf/Nm³ of Part VII. For the M701JAC example: 733.93 MMNm³ = 27.394 Bscf, fuel energy 29.54 PJ = 28.00 TBtu, sent out 3,610.5 GWh = 13.00 PJ = 12.32 TBtu, fuel-energy input 1,018.18 MW-th = 3,665.5 GJ/h = 3,474.2 MMBtu/h. Gas density in lb/scf converts with 16.9307 kg/Nm³ per lb/scf — see Part IX §9.2 for why that is not 16.0185.</p></div>
         </section>
 
         <section>
-          <h3 id="theory-p12" class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-6" data-i18n-html="docs.theory.b032">Part XII — Data Sources &amp; Standards</h3>
+          <h3 id="theory-p13" class="text-lg font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700 pb-2 mb-6" data-i18n-html="docs.theory.b032">Part XIII — Data Sources &amp; Standards</h3>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-400" data-i18n-html="docs.theory.b033">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
@@ -3457,7 +3823,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.4</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.5</div>
     </div>
   </footer>
 
@@ -4001,6 +4367,9 @@
         liqWarn.classList.toggle('hidden', !oob);
         if (oob) liqWarn.innerText = '⚠ ' + tr('advanced.ghv.warnLngTempOutOfRange', {temp: tLiqK.toFixed(1)});
       }
+      // v3.5 — everything the LNG Cargo card needs from this run, in one place. Kept separate
+      // from lastGHV (whose exact shape is test-pinned by tests/test_gt_fuel.py).
+      lastLNGProps = { rhoLiq: rho_liq, tLiqK: tLiqK, rhoStd: rho_std, hhv: hhv_mix, lhv: lhv_mix, mw: mw_mix };
 
       // Operating conditions  ───────────────────────────────────────────────────
       const opT=parseFloat(document.getElementById('op-temp').value)||0;
@@ -4055,6 +4424,7 @@
         const mOutU=parseFloat(document.getElementById('flow-mass-out-u').value);
         document.getElementById('out-mass-flow').innerText=fmtN(massB_kgh/mOutU,3);
       }
+      calcLNGCargo();   // v3.5 — the cargo card follows every composition change
     }
 
     // --- ADVANCED ENG & HYDRAULICS ---
@@ -4733,6 +5103,17 @@
     ]`);
     const GT_HV_FACTOR = 0.001055056 * 37.3258;   // Btu/scf → MJ/Nm³ (same convention as the General-tab HV card)
     const GT_H_YEAR = 8760, GT_H_MONTH = 730;     // availability basis hours (8760/yr, 8760/12 per month)
+    // v3.5 — energy/mass unit factors shared by the GT totals and the LNG cargo card. Named and
+    // derived rather than typed, and pinned by tests: 1 MMBtu = 1.055056 GJ is the same factor
+    // the General-tab custom-module "energy" preset has carried since v1.3; 1 MWh = 3600 MJ.
+    const GJ_PER_MMBTU = 1.055056;
+    const MJ_PER_MWH = 3600;
+    const KG_PER_LB = 0.45359237;
+    // lb/scf → kg/Nm³. A STANDARD density is mass per standard volume, and this app's standard
+    // bases are 0 °C for Nm³ and 60 °F for scf (1 Nm³ = 37.3258 scf, mandated), so the factor is
+    // KG_PER_LB × 37.3258 = 16.9307 — NOT the 16.0185 that converts an actual-condition lb/ft³
+    // (same physical volume) elsewhere in the app. Using 16.0185 here would read 5.7 % high.
+    const RHO_LBSCF_TO_KGNM3 = KG_PER_LB * 37.3258;
     const GT_VENDOR_KEY = { 'MHI': 'mhi', 'GE Vernova': 'ge', 'Siemens Energy': 'sie' };
     let gtCatVendor = 'all', gtCatAttr = 'all', gtLastResult = null;
 
@@ -4792,7 +5173,8 @@
       const isBtu = document.getElementById('gt-hv-u').value === 'btu';
       document.getElementById('gt-hv').value = isBtu ? (hvMJ / GT_HV_FACTOR).toFixed(1) : hvMJ.toFixed(2);
       document.getElementById('gt-hhv-ratio').value = lastGHV.lhv > 0 ? (lastGHV.hhv / lastGHV.lhv).toFixed(3) : '1.108';
-      document.getElementById('gt-rho').value = lastGHV.rho.toFixed(5);
+      const rhoU = document.getElementById('gt-rho-u').value;
+      document.getElementById('gt-rho').value = (rhoU === 'lbscf' ? lastGHV.rho / RHO_LBSCF_TO_KGNM3 : lastGHV.rho).toFixed(5);
       calcGTFuel();
     }
     function sendGTToMassVol() {
@@ -4833,7 +5215,9 @@
       if (gv('gt-hv-u') === 'btu') hv = hv * GT_HV_FACTOR;                                  // → MJ/Nm³
       const ratio = parseValue(gv('gt-hhv-ratio')) || 1.108;
       const lhv = gv('gt-hv-basis') === 'hhv' ? hv / ratio : hv;                            // MJ/Nm³ (LHV)
-      const rho = parseValue(gv('gt-rho')) || 0;
+      // ρ_std → kg/Nm³ whatever the select says; gtLastResult.rho stays kg/Nm³ so the
+      // Basic-Eng bridge (sendGTToMassVol) keeps writing SI into mf-rho.
+      const rho = (parseValue(gv('gt-rho')) || 0) * (gv('gt-rho-u') === 'lbscf' ? RHO_LBSCF_TO_KGNM3 : 1);
       const avail = Math.min(100, Math.max(0, parseValue(gv('gt-avail')) || 0)) / 100;
       document.getElementById('gt-avail-note').innerText = '— ' + tr('gtfuel.out.availNote', { pct: (avail * 100).toFixed(0) });
 
@@ -4847,7 +5231,8 @@
 
       const outIds = ['gt-out-q', 'gt-out-hr', 'gt-out-hr-btu', 'gt-out-vol', 'gt-out-mass',
                       'gt-tot-h-vol', 'gt-tot-h-mass', 'gt-tot-h-e', 'gt-tot-d-vol', 'gt-tot-d-mass', 'gt-tot-d-e',
-                      'gt-tot-m-vol', 'gt-tot-m-mass', 'gt-tot-m-e', 'gt-tot-y-vol', 'gt-tot-y-mass', 'gt-tot-y-e'];
+                      'gt-tot-m-vol', 'gt-tot-m-mass', 'gt-tot-m-e', 'gt-tot-y-vol', 'gt-tot-y-mass', 'gt-tot-y-e',
+                      'gt-tot-h-q', 'gt-tot-d-q', 'gt-tot-m-q', 'gt-tot-y-q'];
       if (P <= 0 || eff <= 0 || lhv <= 0) {
         gtLastResult = null;
         outIds.forEach(id => { document.getElementById(id).innerText = '—'; });
@@ -4860,29 +5245,47 @@
       const mkg = V * rho;               // kg/h
       gtLastResult = { P: P, Q: Q, V: V, mkg: mkg, rho: rho, avail: avail };
 
-      document.getElementById('gt-out-q').innerText = fmt(Q, 2);
+      const qU = gv('gt-out-q-u');
+      const qVal = qU === 'mmbtuh' ? Q * MJ_PER_MWH / 1000 / GJ_PER_MMBTU : qU === 'gjh' ? Q * MJ_PER_MWH / 1000 : Q;   // MW-th × 3.6 = GJ/h
+      document.getElementById('gt-out-q').innerText = fmt(qVal, qU === 'mwth' ? 2 : 1);
       document.getElementById('gt-out-hr').innerText = fmt(hr, 0);
       document.getElementById('gt-out-hr-btu').innerText = fmt(hr / 1.055056, 0);
       const volU = gv('gt-out-vol-u');
-      const volVal = volU === 'knm3h' ? V / 1000 : volU === 'scfh' ? V * 37.3258 : volU === 'mmscfd' ? V * 37.3258 * 24 / 1e6 : V;
+      const volVal = volU === 'knm3h' ? V / 1000 : volU === 'knm3d' ? V * 24 / 1000 : volU === 'scfh' ? V * 37.3258
+                   : volU === 'mmscfh' ? V * 37.3258 / 1e6 : volU === 'mmscfd' ? V * 37.3258 * 24 / 1e6 : V;
       document.getElementById('gt-out-vol').innerText = fmt(volVal, volVal >= 1000 ? 0 : 2);
       const masU = gv('gt-out-mass-u');
-      const masVal = masU === 'th' ? mkg / 1000 : masU === 'kgs' ? mkg / 3600 : mkg;
+      const masVal = masU === 'th' ? mkg / 1000 : masU === 'td' ? mkg * 24 / 1000 : masU === 'kgs' ? mkg / 3600 : masU === 'lbh' ? mkg / KG_PER_LB : mkg;
       document.getElementById('gt-out-mass').innerText = fmt(masVal, masVal >= 1000 ? 0 : 2);
 
       // Totals: hourly = instantaneous rate; daily/monthly/yearly apply availability.
+      // v3.5 — the column-header selects choose the unit family; each family auto-scales
+      // (kNm³→MMNm³, MMscf→Bscf, MWh→GWh, GJ→TJ→PJ, MMBtu→TBtu). The defaults (Nm³, MWh)
+      // reproduce the pre-v3.5 strings byte-for-byte — Vector 11 pins them.
+      const tvU = gv('gt-tot-vol-u'), tqU = gv('gt-tot-q-u'), teU = gv('gt-tot-e-u');
+      const fmtVol = v => {
+        if (tvU === 'scf') { const s = v * 37.3258; return s >= 1e9 ? fmt(s / 1e9, 3) + ' Bscf' : fmt(s / 1e6, 2) + ' MMscf'; }
+        return v >= 1e6 ? fmt(v / 1e6, 2) + ' MMNm³' : fmt(v / 1000, 2) + ' kNm³';
+      };
+      const fmtEnergy = (mwh, u) => {
+        if (u === 'gj') { const gj = mwh * MJ_PER_MWH / 1000; return gj >= 1e6 ? fmt(gj / 1e6, 2) + ' PJ' : gj >= 1e4 ? fmt(gj / 1000, 1) + ' TJ' : fmt(gj, 0) + ' GJ'; }
+        if (u === 'mmbtu') { const mm = mwh * MJ_PER_MWH / 1000 / GJ_PER_MMBTU; return mm >= 1e6 ? fmt(mm / 1e6, 2) + ' TBtu' : fmt(mm, 0) + ' MMBtu'; }
+        return mwh >= 1e5 ? fmt(mwh / 1000, 1) + ' GWh' : fmt(mwh, 0) + ' MWh';
+      };
       const totRow = (key, hours, withAvail) => {
         const f = withAvail ? avail : 1;
-        const vol = V * hours * f, mass = mkg * hours * f / 1000, e = P * hours * f;
-        document.getElementById('gt-tot-' + key + '-vol').innerText = vol >= 1e6 ? fmt(vol / 1e6, 2) + ' MMNm³' : fmt(vol / 1000, 2) + ' kNm³';
+        const vol = V * hours * f, mass = mkg * hours * f / 1000, e = P * hours * f, q = Q * hours * f;   // e, q in MWh
+        document.getElementById('gt-tot-' + key + '-vol').innerText = fmtVol(vol);
         document.getElementById('gt-tot-' + key + '-mass').innerText = fmt(mass, mass >= 1000 ? 0 : 1) + ' t';
-        document.getElementById('gt-tot-' + key + '-e').innerText = e >= 1e5 ? fmt(e / 1000, 1) + ' GWh' : fmt(e, 0) + ' MWh';
+        document.getElementById('gt-tot-' + key + '-q').innerText = fmtEnergy(q, tqU);
+        document.getElementById('gt-tot-' + key + '-e').innerText = fmtEnergy(e, teU);
       };
       totRow('h', 1, false);
       totRow('d', 24, true);
       totRow('m', GT_H_MONTH, true);
       totRow('y', GT_H_YEAR, true);
       gtRenderCatalogueIfStale();
+      if (typeof calcLNGCargo === 'function') calcLNGCargo();   // v3.5 — cargoes-per-year chip
     }
     // Catalogue rendering. Cards are built from GT_MODELS (static app data, no user input).
     // Re-renders when the translation sentinel changes (language switch runs recomputeAll()).
@@ -4931,6 +5334,266 @@
       }).join('') || '<p class="text-xs text-slate-500 col-span-full">' + tr('gtfuel.cat.noMatch') + '</p>';
       grid.dataset.sentinel = tr('gtfuel.cat.useBtn') + '|' + gtCatVendor + '|' + gtCatAttr;
     }
+
+    // ── v3.5 — LNG CARGO ESTIMATOR ────────────────────────────────────────────
+    // Cargo quantities from vessel capacity and the composition card above. The card never
+    // recomputes any JIS/ISO 6578 quantity itself: rho_liq, rho_std, HHV and LHV arrive through
+    // lastLNGProps, assigned inside calcGHV() (kept separate from lastGHV, whose exact shape is
+    // test-pinned). Every LNG_VESSELS entry carries its own public source; the IGU World LNG
+    // Report 2026 is cited for fleet-level context only and its Appendix 3 is NOT reproduced.
+    const LNG_VESSELS = JSON.parse(`[
+      {"id": "9796793", "name": "Bushu Maru", "owner": "Trans Pacific Shipping 6 Ltd (JERA / NYK JV)", "builder": "Mitsubishi Shipbuilding", "cap": 180000, "cont": "moss", "type": "conv", "prop": "STaGE", "year": 2019, "src": "MHI press release (christening, 2019)", "srcUrl": "https://www.mhi.com/news/190515.html", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9893606", "name": "LNG Endeavour", "owner": "France LNG Shipping (NYK / Geogas LNG JV)", "builder": "Samsung Heavy Industries", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "X-DF", "year": 2021, "src": "NYK Line press release (delivery, 2021)", "srcUrl": "https://www.nyk.com/english/news/2021/20211021_01.html", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_ENDEAVOUR_(52169430001).jpg"},
+      {"id": "9864916", "name": "GasLog Georgetown", "owner": "GasLog Ltd", "builder": "Samsung Heavy Industries", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "X-DF", "year": 2020, "src": "GasLog fleet list", "srcUrl": "https://www.gaslogltd.com/about-us/our-fleet/", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:GASLOG_GEORGETOWN_(52477243531).jpg"},
+      {"id": "9748899", "name": "GasLog Houston", "owner": "GasLog Ltd", "builder": "Hyundai Heavy Industries", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "X-DF", "year": 2018, "src": "GasLog Q1 2018 results release", "srcUrl": "https://www.gaslogltd.com/gaslog-ltd-reports-financial-results-for-the-quarter-ended-march-31-2018/", "photo": 1, "credit": "Photographs by Radosław Drożdżewski (User:Zwiadowca21), CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:%C5%9Awinouj%C5%9Bcie_-_Gaslog_Houston_-_03.01.2026_14-07-24.NEF.jpg"},
+      {"id": "9958286", "name": "Aktoras", "owner": "Capital Gas Ship Management", "builder": "Hyundai Samho Heavy Industries", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "ME-GA", "year": 2024, "src": "Capital Gas fleet page", "srcUrl": "https://www.capitalgas.gr/our-fleet/lng-carrier/12-aktoras", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9873852", "name": "BW Helios", "owner": "BW LNG", "builder": "DSME", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "ME-GI", "year": 2021, "src": "BW Group fleet page", "srcUrl": "https://bw-group.com/about-us/our-fleet/", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:BW_HELIOS_(53509514133).jpg"},
+      {"id": "9337755", "name": "Mozah", "owner": "Nakilat", "builder": "Samsung Heavy Industries", "cap": 266253, "cont": "membrane", "type": "qmax", "prop": "SSD", "year": 2009, "src": "Nakilat Q-Max fleet page", "srcUrl": "https://www.nakilat.com/fleet-list-q-max/", "photo": 1, "credit": "Nakilat, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:Mozah,_Nakilat%27s_flagship_vessel.JPG"},
+      {"id": "9443401", "name": "Aamira", "owner": "Nakilat", "builder": "Samsung Heavy Industries", "cap": 266000, "cont": "membrane", "type": "qmax", "prop": "SSD", "year": 2010, "src": "Nakilat Q-Max fleet page", "srcUrl": "https://www.nakilat.com/fleet-list-q-max/", "photo": 1, "credit": "Jonathan Thacker, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:Floating_down_the_Cleddau_in_the_rain_-_Aamira_at_a_jetty_-_geograph.org.uk_-_5010988.jpg"},
+      {"id": "9443413", "name": "Rasheeda", "owner": "Nakilat", "builder": "Samsung Heavy Industries", "cap": 266276, "cont": "membrane", "type": "qmax", "prop": "ME-GI", "year": 2010, "src": "Nakilat Q-Max fleet page", "srcUrl": "https://www.nakilat.com/fleet-list-q-max/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9337743", "name": "Al Hamla", "owner": "Nakilat / OSG", "builder": "Samsung Heavy Industries", "cap": 216200, "cont": "membrane", "type": "qflex", "prop": "SSD", "year": 2008, "src": "Nakilat Q-Flex fleet page", "srcUrl": "https://www.nakilat.com/fleet-list-q-flex/", "photo": 1, "credit": "Vslv, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_carrier_Al_Hamla.jpg"},
+      {"id": "9338266", "name": "Al Aamriya", "owner": "Nakilat / MOL", "builder": "Hanwha Ocean (ex-DSME)", "cap": 210168, "cont": "membrane", "type": "qflex", "prop": "SSD", "year": 2008, "src": "Nakilat Q-Flex fleet page", "srcUrl": "https://www.nakilat.com/fleet-list-q-flex/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9831220", "name": "Adriano Knutsen", "owner": "Knutsen OAS", "builder": "HD Hyundai", "cap": 180000, "cont": "membrane", "type": "conv", "prop": "ME-GI", "year": 2019, "src": "Knutsen fleet page", "srcUrl": "https://knutsenoas.com/ship/adriano-knutsen/", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:ADRIANO_KNUTSEN_(52715095022).jpg"},
+      {"id": "9629536", "name": "Independence", "owner": "KN Energies (ex-Klaipedos Nafta)", "builder": "Hyundai Heavy Industries", "cap": 170000, "cont": "membrane", "type": "fsru", "prop": "DFDE", "year": 2014, "src": "KN Energies terminal page", "srcUrl": "https://knenergies.lt/en/terminal/klaipeda-lng-terminal/", "photo": 1, "credit": "AB Klaipėdos Nafta, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:FSRU_Independence_in_the_port_of_Klaip%C4%97da,_Lithuania.jpg"},
+      {"id": "8608872", "name": "Karadeniz LNGT Antarctica (ex-Northwest Sanderling)", "owner": "KARMOL (Karpowership / MOL JV)", "builder": "Mitsubishi Heavy Industries", "cap": 125000, "cont": "moss", "type": "fsru", "prop": "Steam", "year": 1989, "src": "Baird Maritime vessel review", "srcUrl": "https://www.bairdmaritime.com/offshore/vessels-rigs/fposfpsos/vessel-conversion-karmol-lngt-powership-antarctica-fsru-to-support-power-generation-in-remote-coastal-areas", "photo": 1, "credit": "Calistemon, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_Tanker_Northwest_Sanderling_at_anchor_in_Cockburn_Sound,_October_2021_01.jpg"},
+      {"id": "8125868", "name": "Armada LNG Mediterrana", "owner": "Bumi Armada Berhad", "builder": "Mitsui", "cap": 123780, "cont": "moss", "type": "fsu", "prop": "Steam", "year": 1985, "src": "Bumi Armada asset page", "srcUrl": "https://www.bumiarmada.com/armada-lng-mediterrana/", "photo": 1, "credit": "Rios, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:Armada_LNG_Mediterrana_-_front_view.jpg"},
+      {"id": "9905980", "name": "Lagenda Serenity", "owner": "K Line", "builder": "Hudong-Zhonghua", "cap": 80000, "cont": "membrane", "type": "mid", "prop": "X-DF", "year": 2022, "src": "K Marine Ship Management fleet page", "srcUrl": "https://kmsm.kline.com.sg/fleet/lagenda-serenity/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9919890", "name": "Coral Nordic", "owner": "Anthony Veder", "builder": "Jiangnan", "cap": 30000, "cont": "typec", "type": "small", "prop": "X-DF", "year": 2022, "src": "Anthony Veder fleet page", "srcUrl": "https://anthonyveder.com/blog/vessel/coral-nordic/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9239616", "name": "Excelsior", "owner": "Excelerate Energy", "builder": "Hanwha Ocean", "cap": 138000, "cont": "membrane", "type": "fsru", "prop": "Steam", "year": 2005, "src": "Excelerate Energy fleet page", "srcUrl": "https://excelerateenergy.com/our-operations/floating-lng-terminals/", "photo": 1, "credit": "Ein Dahmer, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:EXCELSIOR_7217.jpg"},
+      {"id": "9958640", "name": "Emei", "owner": "Cosco Shipping Energy Transportation", "builder": "Hudong-Zhonghua", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "X-DF", "year": 2023, "src": "CSSC (Hudong-Zhonghua parent) delivery news", "srcUrl": "http://www.cssc.net.cn/n5/n24/c28667/content.html", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9766542", "name": "British Achiever", "owner": "BP", "builder": "Hanwha Ocean", "cap": 173400, "cont": "membrane", "type": "conv", "prop": "ME-GI", "year": 2018, "src": "Wikipedia (BP Shipping)", "srcUrl": "https://en.wikipedia.org/wiki/BP_Shipping", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9401295", "name": "Barcelona Knutsen", "owner": "Knutsen OAS", "builder": "Hanwha Ocean", "cap": 173400, "cont": "membrane", "type": "conv", "prop": "DFDE", "year": 2010, "src": "Knutsen Group fleet page", "srcUrl": "https://knutsenoas.com/ship/barcelona-knutsen/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9737187", "name": "Christophe De Margerie", "owner": "Sovcomflot", "builder": "Hanwha Ocean", "cap": 172600, "cont": "membrane", "type": "ice", "prop": "DFDE", "year": 2016, "src": "Aker Arctic — Yamalmax reference page", "srcUrl": "https://railotech.fi/reference/yamalmax/", "photo": 1, "credit": "kremlin.ru website team, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_tanker_Christophe_de_Margerie.jpg"},
+      {"id": "9904546", "name": "Alexey Kosygin", "owner": "Sovcomflot", "builder": "Zvezda Shipbuilding Complex", "cap": 172906, "cont": "membrane", "type": "ice", "prop": "TFDE", "year": 2025, "src": "Wikipedia", "srcUrl": "https://en.wikipedia.org/wiki/Alexey_Kosygin_(2025_ship)", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9752565", "name": "Energy Glory", "owner": "NYK Line, Tokyo Gas", "builder": "Japan Marine", "cap": 166686, "cont": "ssp", "type": "conv", "prop": "DFDE", "year": 2019, "src": "ClassNK Register of Ships", "srcUrl": "https://www.classnk.or.jp/register/regships/one_dsp.aspx?imo=9752565", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9691137", "name": "Bishu Maru", "owner": "Kawasaki Kisen Kaisha (K Line)", "builder": "Kawasaki Heavy Industries", "cap": 164700, "cont": "moss", "type": "conv", "prop": "Steam reheat", "year": 2017, "src": "Kawasaki Heavy Industries delivery release", "srcUrl": "https://global.kawasaki.com/en/corp/newsroom/news/detail/?f=20171226_8852", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9606950", "name": "Asia Energy", "owner": "Chevron (Chevron Shipping Company)", "builder": "Samsung Heavy Industries", "cap": 160000, "cont": "membrane", "type": "conv", "prop": "DFDE", "year": 2014, "src": "LNG Prime (Chevron reliquefaction upgrade)", "srcUrl": "https://lngprime.com/asia/chevrons-lng-carriers-to-get-reliquefaction-units/105447/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9269180", "name": "Energy Advance", "owner": "Tokyo LNG Tanker Co., Ltd. (Tokyo Gas group)", "builder": "Kawasaki Shipbuilding Corporation", "cap": 145000, "cont": "moss", "type": "conv", "prop": "Steam", "year": 2005, "src": "Kawasaki Heavy Industries delivery release", "srcUrl": "https://global.kawasaki.com/en/corp/newsroom/news/detail/ba0503-11.html", "photo": 1, "credit": "とまりん♪, CC BY-SA 2.1 JP, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_carrier_Energy_Advance.jpg"},
+      {"id": "9338955", "name": "Grand Aniva", "owner": "NYK Line / Sovcomflot (SCF Group) joint ownership", "builder": "Mitsubishi Heavy Industries", "cap": 145000, "cont": "moss", "type": "conv", "prop": "Steam", "year": 2008, "src": "Mitsubishi Heavy Industries product page", "srcUrl": "https://www.mhi.com/products/ship/lng_grandaniva.html", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9298399", "name": "Al Thakhira", "owner": "K Line / MOL / NYK / Qatar Shipping consortium (Peninsula LNG Transport No. 2), managed by K Line LNG Shipping (UK)", "builder": "Samsung Heavy Industries", "cap": 145000, "cont": "membrane", "type": "conv", "prop": "Steam", "year": 2005, "src": "K Line LNG delivery release (Arctic Discoverer)", "srcUrl": "https://www.kline.com/LNG-Services/060215-Artic-Discoverer-Delivery.html", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9275335", "name": "Arctic Voyager", "owner": "K Line, Statoil (now Equinor), Mitsui & Co., Iino Kaiun (co-owned); 20-yr charter to Snohvit Sellers", "builder": "Kawasaki Shipbuilding Corporation, Sakaide", "cap": 140000, "cont": "moss", "type": "conv", "prop": "Steam", "year": 2006, "src": "K Line delivery release", "srcUrl": "https://www.kline.com/LNG-Services/060714-LNG-Carrier-Artic-Voyager-Delivery.html", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_tanker_ARCTIC_VOYAGER_(43943098242).jpg"},
+      {"id": "9256597", "name": "Berge Arzew", "owner": "BW", "builder": "Hanwha Ocean", "cap": 138000, "cont": "membrane", "type": "conv", "prop": "Steam", "year": 2004, "src": "BW Group fleet page", "srcUrl": "https://bw-group.com/about-us/our-fleet/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9030802", "name": "American Energy (ex-Puteri Intan)", "owner": "Crowley (ex-MISC)", "builder": "Chantiers de l'Atlantique", "cap": 130400, "cont": "membrane", "type": "conv", "prop": "Steam", "year": 1994, "src": "Crowley press release", "srcUrl": "https://www.crowley.com/news-and-media/press-releases/crowley-and-naturgy-deploy-first-u-s-lng-carrier-american-energy-to-serve-puerto-rico/", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "7390181", "name": "LNG Aquarius", "owner": "Hanochem", "builder": "General Dynamics", "cap": 125000, "cont": "moss", "type": "conv", "prop": "Steam", "year": 1977, "src": "Maritime Reporter (July 1977)", "srcUrl": "https://magazines.marinelink.com/Magazines/MaritimeReporter/197707/content/aquarius-general-dynamics-210509", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9713105", "name": "Bauhinia Spirit (ex-MOL FSRU Challenger)", "owner": "MOL", "builder": "Hanwha Ocean", "cap": 263000, "cont": "membrane", "type": "fsru", "prop": "DFDE", "year": 2017, "src": "MOL press release", "srcUrl": "https://www.mol.co.jp/en/pr/2017/17068.html", "photo": 0, "credit": "", "creditUrl": ""},
+      {"id": "9780354", "name": "Hoegh Esperanza", "owner": "Hoegh", "builder": "HD Hyundai", "cap": 170000, "cont": "membrane", "type": "fsru", "prop": "DFDE", "year": 2018, "src": "Hoegh Evi fleet page", "srcUrl": "https://hoeghevi.com/about/fleet/", "photo": 1, "credit": "JoachimKohler-HB, CC BY-SA 4.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:FSRU-Schiff_%22H%C3%B6egh_Esperanza%22_in_Wilhelmshaven_(2024).jpg"},
+      {"id": "9276389", "name": "Arctic Discoverer", "owner": "K Line, Equinor (Statoil), Mitsui, Iino", "builder": "Mitsui Engineering & Shipbuilding (Chiba)", "cap": 140000, "cont": "moss", "type": "conv", "prop": "Steam", "year": 2006, "src": "K Line delivery release (2006)", "srcUrl": "https://www.kline.com/LNG-Services/060215-Artic-Discoverer-Delivery.html", "photo": 0, "credit": "", "creditUrl": ""}
+    ]`);
+    const LC_TYPES = ['qmax', 'qflex', 'conv', 'ice', 'fsru', 'fsu', 'mid', 'small'];
+    let lastLNGProps = null, lastLNGCargoResult = null;
+    let lcFilt = { t: 'all', c: 'all' };
+
+    function lcVesselById(id) { return LNG_VESSELS.find(v => v.id === id) || null; }
+    function lcTypeMatch(v) {
+      if (lcFilt.t === 'all') return true;
+      if (lcFilt.t === 'fsru') return v.type === 'fsru' || v.type === 'fsu';
+      if (lcFilt.t === 'small') return v.type === 'small' || v.type === 'mid';
+      return v.type === lcFilt.t;
+    }
+    function lcContMatch(v) {
+      if (lcFilt.c === 'all') return true;
+      if (lcFilt.c === 'other') return v.cont === 'ssp' || v.cont === 'typec';
+      return v.cont === lcFilt.c;
+    }
+    // Options are never rebuilt (share-link restore sets lc-vessel before any event fires) —
+    // the filters only hide/disable, exactly like gtFilterModelOptions().
+    function lcFilterVesselOptions() {
+      const sel = document.getElementById('lc-vessel');
+      if (!sel) return;
+      sel.querySelectorAll('optgroup').forEach(g => {
+        let any = false;
+        g.querySelectorAll('option').forEach(o => {
+          const v = lcVesselById(o.value);
+          const show = !!v && lcTypeMatch(v) && lcContMatch(v);
+          o.hidden = !show; o.disabled = !show; if (show) any = true;
+        });
+        g.hidden = !any;
+      });
+    }
+    function lcSetFilter(kind, val, btn) {
+      lcFilt[kind] = val;
+      document.querySelectorAll('.lc-' + kind + 'pill').forEach(b => {
+        b.classList.remove('text-amber-400', 'border-amber-500/50');
+        b.classList.add('text-slate-400', 'border-slate-700', 'hover:border-amber-500/50');
+      });
+      if (btn) { btn.classList.add('text-amber-400', 'border-amber-500/50'); btn.classList.remove('text-slate-400', 'border-slate-700', 'hover:border-amber-500/50'); }
+      lcFilterVesselOptions();
+      renderLNGCatalogue();
+    }
+    function selectLNGVessel(id) {
+      const v = lcVesselById(id);
+      const sel = document.getElementById('lc-vessel');
+      sel.value = v ? id : '';
+      if (v) document.getElementById('lc-cap').value = v.cap;
+      calcLNGCargo();
+    }
+    function lcVesselChanged() { selectLNGVessel(document.getElementById('lc-vessel').value); }
+
+    // Explicit maps rather than key concatenation, so every dictionary key appears literally in
+    // the source (tests/test_i18n_parity.py's dead-key sweep) and a typo fails loudly.
+    const LC_TYPE_KEYS = { qmax: 'advanced.lngCargo.type.qmax', qflex: 'advanced.lngCargo.type.qflex', conv: 'advanced.lngCargo.type.conv',
+                           ice: 'advanced.lngCargo.type.ice', fsru: 'advanced.lngCargo.type.fsru', fsu: 'advanced.lngCargo.type.fsu',
+                           mid: 'advanced.lngCargo.type.mid', small: 'advanced.lngCargo.type.small' };
+    const LC_CONT_KEYS = { membrane: 'advanced.lngCargo.cont.membrane', moss: 'advanced.lngCargo.cont.moss',
+                           ssp: 'advanced.lngCargo.cont.ssp', typec: 'advanced.lngCargo.cont.typec' };
+    function lcVesselTypeLabel(v) { return tr(LC_TYPE_KEYS[v.type] || 'advanced.lngCargo.type.conv'); }
+    function lcContLabel(v) { return tr(LC_CONT_KEYS[v.cont] || 'advanced.lngCargo.cont.membrane'); }
+
+    // Vessel panel: thumbnail (Commons photo with its credit, or an original schematic by
+    // containment type), spec chips, per-vessel source, and IMO deep-links to two public trackers.
+    // Built with textContent / attributes only — no innerHTML anywhere in this function.
+    function lcRenderVessel(v) {
+      const img = document.getElementById('lc-thumb-img'), svg = document.getElementById('lc-thumb-svg');
+      const credit = document.getElementById('lc-credit');
+      const set = (id, txt) => { document.getElementById(id).textContent = txt; };
+      if (v && v.photo) {
+        img.src = 'assets/vessels/' + v.id + '.jpg'; img.alt = v.name; img.classList.remove('hidden'); svg.classList.add('hidden');
+        credit.textContent = v.credit; credit.href = v.creditUrl;
+      } else {
+        img.classList.add('hidden'); img.removeAttribute('src'); svg.classList.remove('hidden');
+        document.getElementById('lc-thumb-use').setAttribute('href', '#lc-svg-' + (v ? v.cont : 'membrane'));
+        credit.textContent = v ? tr('advanced.lngCargo.schematicNote') : '—'; credit.removeAttribute('href');
+      }
+      const fmtI = n => n.toLocaleString('en-US');
+      set('lc-spec-imo', v ? v.id : '—');
+      set('lc-spec-year', v ? v.year + ' · ' + (2026 - v.year) + ' y' : '—');
+      set('lc-spec-owner', v ? v.owner : '—');
+      set('lc-spec-builder', v ? v.builder : '—');
+      set('lc-spec-cont', v ? lcContLabel(v) : '—');
+      set('lc-spec-prop', v ? v.prop : '—');
+      set('lc-spec-type', v ? lcVesselTypeLabel(v) : '—');
+      set('lc-spec-cap', v ? fmtI(v.cap) : '—');
+      const src = document.getElementById('lc-src');
+      if (v) { src.textContent = v.src; src.href = v.srcUrl; } else { src.textContent = tr('advanced.lngCargo.manualOption'); src.removeAttribute('href'); }
+      const mt = document.getElementById('lc-link-mt'), vf = document.getElementById('lc-link-vf');
+      mt.href = v ? 'https://www.marinetraffic.com/en/ais/details/ships/imo:' + v.id : '#';
+      vf.href = v ? 'https://www.vesselfinder.com/vessels/details/' + v.id : '#';
+      mt.classList.toggle('hidden', !v); vf.classList.toggle('hidden', !v);
+    }
+
+    function calcLNGCargo() {
+      const gv = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+      const fmt = (n, dp) => isFinite(n) ? n.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp }) : '—';
+      const sel = document.getElementById('lc-vessel');
+      if (!sel) return;
+      lcFilterVesselOptions();
+      const v = lcVesselById(sel.value);
+      lcRenderVessel(v);
+
+      // composition chips — from the composition card, never re-derived here
+      const p = lastLNGProps;
+      const presetSel = document.getElementById('comp-preset');
+      const preset = presetSel && typeof lngPresetById === 'function' ? lngPresetById(presetSel.value) : null;
+      set('lc-comp-name', preset ? presetSel.options[presetSel.selectedIndex].text : tr('advanced.lngCargo.compCustom'));
+      const tierEl = document.getElementById('lc-comp-tier');
+      tierEl.textContent = preset ? tr(preset.tier === 'pub' ? 'advanced.ghv.preset.badgePub' : preset.tier === 'ref' ? 'advanced.ghv.preset.badgeRef' : 'advanced.ghv.preset.badgeAsm') : '';
+      tierEl.className = 'font-bold ml-1 ' + (preset ? (preset.tier === 'pub' ? 'text-emerald-400' : preset.tier === 'ref' ? 'text-orange-400' : 'text-amber-400') : '');
+      set('lc-comp-rhol', p ? fmt(p.rhoLiq, 2) : '—');
+      set('lc-comp-t', p ? fmt(p.tLiqK - 273.15, 1) + ' °C' : '—');
+      set('lc-comp-rhos', p ? fmt(p.rhoStd, 5) : '—');
+      set('lc-comp-hhv', p ? fmt(p.hhv, 2) : '—');
+      set('lc-comp-lhv', p ? fmt(p.lhv, 2) : '—');
+
+      const cap = parseValue(gv('lc-cap')) || 0;
+      const fill = parseValue(gv('lc-fill')) || 0;
+      const heel = Math.max(0, parseValue(gv('lc-heel')) || 0);
+      const bor = Math.max(0, parseValue(gv('lc-bor')) || 0);
+      const days = Math.max(0, parseValue(gv('lc-days')) || 0);
+
+      const warns = [];
+      if (!p || !(p.rhoLiq > 0) || !(p.rhoStd > 0) || !(p.hhv > 0)) warns.push(tr('advanced.lngCargo.warnNoComp'));
+      if (cap <= 0) warns.push(tr('advanced.lngCargo.warnCap'));
+      if (fill <= 0 || fill > 100) warns.push(tr('advanced.lngCargo.warnFill'));
+      else if (fill > 98.5) warns.push(tr('advanced.lngCargo.warnFillHigh'));
+      const Vl = cap * fill / 100;
+      const bog = Vl * bor / 100 * days;
+      let Vd = Vl - heel - bog;
+      const showDeliv = heel > 0 || bog > 0;
+      if (showDeliv && Vd < 0) { warns.push(tr('advanced.lngCargo.warnNeg')); Vd = 0; }
+      const warnEl = document.getElementById('lc-warn');
+      warnEl.classList.toggle('hidden', warns.length === 0);
+      warnEl.textContent = warns.length ? '⚠ ' + warns.join(' ') : '';
+
+      const outIds = ['lc-out-vliq', 'lc-out-mass', 'lc-out-gas', 'lc-out-e', 'lc-out-el', 'lc-out-dens', 'lc-out-exp'];
+      ['lc-out-vliq-d', 'lc-out-mass-d', 'lc-out-gas-d', 'lc-out-e-d', 'lc-out-el-d'].forEach(id => document.getElementById(id).classList.toggle('hidden', !showDeliv));
+      const bad = !p || !(p.rhoLiq > 0) || !(p.rhoStd > 0) || !(p.hhv > 0) || cap <= 0 || fill <= 0 || fill > 100;
+      if (bad) {
+        lastLNGCargoResult = null;
+        outIds.forEach(id => set(id, '—'));
+        document.getElementById('lc-out-gt').classList.add('hidden');
+        lcRenderCatalogueIfStale();
+        return;
+      }
+
+      // The chain: V_liq → mass (ISO 6578 rho_liq) → standard volume (rho_std) → energy (HHV / LHV)
+      const massT = V => V * p.rhoLiq / 1000;             // t
+      const nm3   = V => massT(V) * 1000 / p.rhoStd;       // Nm³
+      const mjHHV = V => nm3(V) * p.hhv;                    // MJ
+      const mjLHV = V => nm3(V) * p.lhv;
+
+      const mU = gv('lc-out-mass-u'), gU = gv('lc-out-gas-u'), eU = gv('lc-out-e-u');
+      const fMass = V => mU === 'kt' ? fmt(massT(V) / 1000, 2) : fmt(massT(V), 0);
+      const fGas = V => { const n = nm3(V); return gU === 'mmnm3' ? fmt(n / 1e6, 3) : gU === 'mmscf' ? fmt(n * 37.3258 / 1e6, 0) : gU === 'bscf' ? fmt(n * 37.3258 / 1e9, 3) : fmt(n / 1000, 0); };
+      const fE = mj => eU === 'mmbtu' ? fmt(mj / 1000 / GJ_PER_MMBTU, 0) : eU === 'gj' ? fmt(mj / 1000, 0) : eU === 'tj' ? fmt(mj / 1e6, 0)
+                     : eU === 'mwh' ? fmt(mj / MJ_PER_MWH, 0) : eU === 'gwh' ? fmt(mj / MJ_PER_MWH / 1000, 1) : fmt(mj / 1000 / GJ_PER_MMBTU / 1e6, 3);   // TBtu default
+      const eUnitText = document.getElementById('lc-out-e-u').options[document.getElementById('lc-out-e-u').selectedIndex].text;
+      set('lc-out-el-u', eUnitText);
+
+      set('lc-out-vliq', fmt(Vl, 0));      set('lc-out-vliq-dv', fmt(Vd, 0));
+      set('lc-out-mass', fMass(Vl));      set('lc-out-mass-dv', fMass(Vd));
+      set('lc-out-gas', fGas(Vl));        set('lc-out-gas-dv', fGas(Vd));
+      set('lc-out-e', fE(mjHHV(Vl)));     set('lc-out-e-dv', fE(mjHHV(Vd)));
+      set('lc-out-el', fE(mjLHV(Vl)));    set('lc-out-el-dv', fE(mjLHV(Vd)));
+      const mmbtuPerT = (mjHHV(Vl) / 1000 / GJ_PER_MMBTU) / massT(Vl);
+      set('lc-out-dens', fmt(mmbtuPerT, 2));
+      set('lc-out-exp', fmt(nm3(Vl) / Vl, 0));
+      lastLNGCargoResult = { Vl: Vl, Vd: Vd, massT: massT(Vl), nm3: nm3(Vl), tbtuHHV: mjHHV(Vl) / 1000 / GJ_PER_MMBTU / 1e6,
+                             tbtuHHVd: mjHHV(Vd) / 1000 / GJ_PER_MMBTU / 1e6, mmbtuPerT: mmbtuPerT, vessel: v ? v.id : '' };
+
+      // Optional cross-link to the GT Fuel tab: how many such cargoes fuel that plant for a year.
+      const gtEl = document.getElementById('lc-out-gt');
+      if (gtLastResult && gtLastResult.Q > 0) {
+        const tbtuYr = gtLastResult.Q * GT_H_YEAR * gtLastResult.avail * MJ_PER_MWH / 1000 / GJ_PER_MMBTU / 1e6;
+        gtEl.textContent = '≈ ' + tr('advanced.lngCargo.gtLink', { n: (tbtuYr / lastLNGCargoResult.tbtuHHV).toFixed(1), tbtu: tbtuYr.toFixed(2) });
+        gtEl.classList.remove('hidden');
+      } else gtEl.classList.add('hidden');
+      lcRenderCatalogueIfStale();
+    }
+
+    // Catalogue: built from LNG_VESSELS only (static app data — no user input reaches this
+    // markup). Re-rendered when the language sentinel or the filters change.
+    function lcRenderCatalogueIfStale() {
+      const grid = document.getElementById('lc-cat-grid');
+      if (!grid) return;
+      const sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c;
+      if (grid.dataset.sentinel !== sentinel) renderLNGCatalogue();
+    }
+    function renderLNGCatalogue() {
+      const grid = document.getElementById('lc-cat-grid');
+      if (!grid) return;
+      const rows = LNG_VESSELS.filter(v => lcTypeMatch(v) && lcContMatch(v));
+      const escH = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      grid.innerHTML = rows.map(v => {
+        const thumb = v.photo
+          ? '<img src="assets/vessels/' + escH(v.id) + '.jpg" alt="' + escH(v.name) + '" loading="lazy" class="w-full h-16 object-cover">'
+          : '<svg viewBox="0 0 320 96" class="w-full h-16" aria-hidden="true"><use href="#lc-svg-' + escH(v.cont) + '"></use></svg>';
+        const credit = v.photo ? '<p class="text-[9px] text-slate-600 leading-tight truncate" title="' + escH(v.credit) + '">' + escH(v.credit) + '</p>' : '';
+        return '<div class="bg-slate-950/70 border border-slate-700 rounded-lg overflow-hidden flex flex-col hover:border-amber-500/40 transition-colors">' +
+          '<div class="bg-slate-900">' + thumb + '</div>' +
+          '<div class="p-2 flex flex-col gap-0.5 flex-1">' +
+          '<p class="text-[11.5px] font-semibold text-slate-100 leading-tight">' + escH(v.name) + '</p>' +
+          '<p class="text-[10px] text-slate-400 leading-tight">' + escH(lcVesselTypeLabel(v)) + ' · <span class="text-slate-200">' + v.cap.toLocaleString('en-US') + ' m³</span> · ' + escH(lcContLabel(v)) + ' · ' + escH(v.prop) + ' · ' + v.year + '</p>' +
+          credit +
+          '<div class="flex justify-between items-center mt-auto pt-1"><span class="text-[9px] text-slate-600 truncate mr-2">' + escH(v.src) + '</span>' +
+          '<button onclick="selectLNGVessel(\'' + escH(v.id) + '\');document.getElementById(\'adv-lng-cargo\').scrollIntoView({behavior:\'smooth\'})" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 whitespace-nowrap">' + escH(tr('advanced.lngCargo.catUse')) + ' ›</button></div>' +
+          '</div></div>';
+      }).join('') || '<p class="text-xs text-slate-500 col-span-full">' + escH(tr('advanced.lngCargo.catNoMatch')) + '</p>';
+      grid.dataset.sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c;
+      document.getElementById('lc-cat-count').textContent = tr('advanced.lngCargo.catCount', { n: String(rows.length) });
+    }
+
+
 
     // B3b — Mass ↔ volumetric flow via density.  Q = ṁ/ρ. All select factors are multiply-to-SI.
     function calcMassVol(src) {
@@ -6115,7 +6778,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, calcGTFuel, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, calcGTFuel, calcLNGCargo, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;
@@ -6359,6 +7022,16 @@
         </tbody></table>`;
 
       // v3.1 — GT Fuel section (only rendered once a valid estimate exists)
+      const lc = lastLNGCargoResult ? `
+        <h3>${esc(tr('js.export.section7Title'))}</h3>
+        <table><tbody>
+          ${row(tr('js.export.lcVesselLabel'), lastLNGCargoResult.vessel ? us('lc-vessel') : tr('advanced.lngCargo.manualOption'))}
+          ${row(tr('js.export.lcCapLabel'), t('lc-cap') + ' m³ × ' + t('lc-fill') + ' % = ' + t('lc-out-vliq') + ' m³')}
+          ${row(tr('js.export.lcMassLabel'), t('lc-out-mass') + ' ' + us('lc-out-mass-u'))}
+          ${row(tr('js.export.lcGasLabel'), t('lc-out-gas') + ' ' + us('lc-out-gas-u'))}
+          ${row(tr('js.export.lcEnergyLabel'), t('lc-out-e') + ' ' + us('lc-out-e-u') + ' (HHV) · ' + t('lc-out-el') + ' ' + us('lc-out-e-u') + ' (LHV)')}
+          ${row(tr('js.export.lcDeliveredLabel'), t('lc-out-vliq-dv') + ' m³ · ' + t('lc-out-e-dv') + ' ' + us('lc-out-e-u'))}
+        </tbody></table>` : '';
       const gt = gtLastResult ? `
         <h3>${esc(tr('js.export.section6Title'))}</h3>
         <table><tbody>
@@ -6370,7 +7043,7 @@
           ${row(tr('js.export.gtVolFlowLabel'), t('gt-out-vol') + ' ' + us('gt-out-vol-u'))}
           ${row(tr('js.export.gtMassFlowLabel'), t('gt-out-mass') + ' ' + us('gt-out-mass-u'))}
           ${row(tr('js.export.gtAvailLabel'), t('gt-avail') + ' %')}
-          ${row(tr('js.export.gtYearlyLabel'), t('gt-tot-y-vol') + ' / ' + t('gt-tot-y-mass'))}
+          ${row(tr('js.export.gtYearlyLabel'), t('gt-tot-y-vol') + ' / ' + t('gt-tot-y-mass') + ' / ' + t('gt-tot-y-q'))}
         </tbody></table>` : '';
 
       const html = `<!DOCTYPE html><html lang="${currentLang}"><head><meta charset="utf-8"/>
@@ -6392,8 +7065,8 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.4', date: now.toLocaleString()}))}</h2>
-        ${ghv}${dp}${regime}${psv}${basic}${gt}
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.5', date: now.toLocaleString()}))}</h2>
+        ${ghv}${dp}${regime}${psv}${basic}${gt}${lc}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
 
@@ -6462,6 +7135,8 @@
       'dp': 'pipe-dp',
       // GT Fuel tab (v3.1)
       'gt': 'gt-fuel',
+      // Advanced tab — LNG Cargo Estimator (v3.5)
+      'lc': 'lng-cargo',
       // Safety tab
       'psv': 'prv-sizing'
       // Deliberately absent: report-* (the bug-report form is never instrumented — it is the

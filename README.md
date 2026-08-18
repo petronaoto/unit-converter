@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.4
+# O&G Engineering Converter — v3.5
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -50,6 +50,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Compositional GHV & Flow Calculator**
   - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
+- **LNG Cargo Estimator** *(new in v3.5)* — pick one of 36 representative LNG carriers (each row cites its own public source; Wikimedia Commons photos with credits) or type a capacity, set the loading limit, and read the cargo as t, kNm³ / MMscf and TBtu (HHV basis) — loaded and delivered after heel and boil-off — straight from the composition above.
 - **Pipe Delta Pressure (Darcy-Weisbach)**
   - Pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
   - Python backend solves the **Colebrook-White** equation implicitly.

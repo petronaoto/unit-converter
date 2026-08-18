@@ -52,5 +52,18 @@ refers to, cites or transcribes. In particular:
   original schematic illustrations created for this project and are not
   manufacturer imagery.
 
+* LNG carrier catalogue and photographs (LNG_VESSELS, assets/vessels/, v3.5).
+  Vessel names, owners, shipbuilders and particulars identify real ships and
+  companies; each catalogue row cites the public page it was confirmed against
+  (an owner's or operator's fleet list, a shipbuilder release, a classification-
+  society register, or Wikipedia). The IGU World LNG Report 2026 (Rystad Energy
+  data) is cited for fleet-level context only; its Appendix 3 table is NOT
+  reproduced. The photographs in assets/vessels/ are third-party works from
+  Wikimedia Commons, each under the Creative Commons licence (or public-domain
+  status) recorded in assets/vessels/CREDITS.json — they are NOT covered by the
+  MIT licence above and must be reused only under their own terms, with the
+  attribution shown. No MarineTraffic, VesselFinder or ShipSpotting imagery is
+  used; those sites are linked by IMO number as ordinary hyperlinks.
+
 Anyone redistributing or building on this project remains responsible for their
 own compliance with the terms attached to that third-party material.

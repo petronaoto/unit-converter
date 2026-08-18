@@ -32,14 +32,21 @@ def test_every_static_unit_src_resolves(html):
 
 
 def test_site_census(html):
-    """21 static dynamic-unit sites + 2 template sites; 6 literal-unit sites.
+    """22 static dynamic-unit sites + 2 template sites; 5 literal-unit sites.
     If this fails after adding a card, extend the survey deliberately — do not
     just bump the number. v3.1 added 2 static (gt-out-vol-u, gt-out-mass-u) and
-    2 literal ("MW" on gt-out-q, "kJ/kWh" on gt-out-hr) on the GT Fuel tab."""
+    2 literal ("MW" on gt-out-q, "kJ/kWh" on gt-out-hr) on the GT Fuel tab.
+    v3.5 moved gt-out-q from the literal "MW" to a unit-aware select
+    (gt-out-q-u: MW-th / MMBtu/h / GJ/h) — one literal site became one static
+    site, so 21+1 static and 6-1 literal. v3.5 also added the LNG Cargo card:
+    4 static (mass, gas, HHV energy and LHV energy — the LHV row shares the
+    lc-out-e-u select) and 1 literal ("m³" on the liquid volume), so 26 / 6."""
     srcs = re.findall(r'data-unit-src="([^"]+)"', html)
-    assert len([s for s in srcs if "${" not in s]) == 21
+    assert len([s for s in srcs if "${" not in s]) == 26
     assert len([s for s in srcs if "${" in s]) == 2
     assert len(re.findall(r'data-copy-unit="([^"]+)"', html)) == 6
+    assert 'data-unit-src="gt-out-q-u"' in html
+    assert srcs.count('data-unit-src="lc-out-e-u"'.split('"')[1]) == 2, "HHV and LHV rows both key off lc-out-e-u"
     # the two mode-dependent flow outputs use the visible-select fallback list
     assert 'data-unit-src="flow-vol-out-u flow-mol-out-u"' in html
     assert 'data-unit-src="flow-mass-out-u flow-mol-out2-u"' in html
