@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 8 mockup — fittings, K method vs the L/D shortcut</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  /* <svg> is a REPLACED element: absolute+inset does not stretch it; it keeps its intrinsic
+     300x150 and silently clips connectors. */
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe needs a REAL desktop viewport or the app lays out mobile. */
+  #app{position:absolute;width:1280px;height:1600px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 8 — "Your fittings are worth 30 m of pipe, not 23 m".
+
+  Two ledgers over the SAME fittings. Every n and every f_T is read out of the app's own
+  CRANE_FITTINGS / craneFT() via win.eval (a top-level `const` is not a window property, so
+  cross-frame property access would silently yield undefined -> NaN). The K column is then
+  cross-checked against the k_total the app actually puts on the wire: if the ledger's total
+  does not equal the payload's 5.376 exactly, the build is wrong and data-ready says so.
+
+  BOTTOM: the real "dP Fittings / Leq" strip cloned out of the live card, so the two headline
+  numbers in the image are the app's own output rather than the ledger's arithmetic.
+
+  Serve the repo root over HTTP and open /docs/linkedin/day08-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.4</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Pipe ΔP
+      <span class="text-slate-600">▸</span> Fittings &amp; Valves (Crane TP-410)</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= K method ================= -->
+  <div class="absolute" style="left:40px;top:86px;width:545px;">
+    <div class="text-emerald-300 text-[12px] tracking-[0.14em]">K METHOD &nbsp;·&nbsp; K = n·f<sub>T</sub></div>
+    <div style="margin-top:10px;display:flex;align-items:baseline;padding:0 2px 5px 2px;
+                border-bottom:1px solid rgba(148,163,184,.20);">
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="flex:1 1 auto;">FITTING</span>
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="width:70px;text-align:right;">n</span>
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="width:110px;text-align:right;">K</span>
+    </div>
+    <div id="k-rows"></div>
+    <div id="k-result" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- ================= L/D shortcut ================= -->
+  <div class="absolute" style="left:615px;top:86px;width:545px;">
+    <div class="text-amber-300 text-[12px] tracking-[0.14em]">THE L/D SHORTCUT &nbsp;·&nbsp; L<sub>eq</sub> = Σn·D</div>
+    <div style="margin-top:10px;display:flex;align-items:baseline;padding:0 2px 5px 2px;
+                border-bottom:1px solid rgba(148,163,184,.20);">
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="flex:1 1 auto;">FITTING</span>
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="width:70px;text-align:right;">n</span>
+      <span class="text-slate-500 text-[10.5px] tracking-[0.10em]" style="width:110px;text-align:right;">n·D  [m]</span>
+    </div>
+    <div id="s-rows"></div>
+    <div id="s-result" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- ================= reconciliation ================= -->
+  <div class="absolute rounded-lg px-4 py-3" style="left:40px;top:406px;width:1120px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:6px;">
+      Two errors, pointing opposite ways — which is why the shortcut looks plausible.</div>
+    <div id="recon" class="text-slate-400 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <!-- ================= the real card strip ================= -->
+  <div class="absolute" style="left:40px;top:524px;width:1120px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]" style="margin-bottom:6px;">STRAIGHT FROM THE CARD</div>
+    <div id="strip-window" style="overflow:hidden;height:58px;position:relative;">
+      <div id="card-slot" style="position:absolute;left:0;top:0;">
+        <div class="text-slate-600 text-sm">loading the live row…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer strip -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:634px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <div class="absolute" style="left:52px;right:56px;top:620px;height:1px;background:rgba(148,163,184,.18);"></div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  win.__api = null; win.__req = null;
+  var of = win.fetch;
+  win.fetch = function (u, o) {
+    if (String(u).indexOf('dp_calculator') >= 0) { win.__req = o && o.body; }
+    return of.apply(this, arguments).then(function (r) {
+      var c = r.clone();
+      c.json().then(function (j) { win.__api = j; }).catch(function () {});
+      return r;
+    });
+  };
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    var set = function (id, v) { var e = doc.getElementById(id); if (!e) return; e.value = v;
+      e.dispatchEvent(new win.Event('input', {bubbles: true}));
+      e.dispatchEvent(new win.Event('change', {bubbles: true})); };
+    set('dp-fit-elbow90', '4'); set('dp-fit-gate', '1'); set('dp-fit-checkswing', '1');
+    set('dp-fit-entrance', '1'); set('dp-fit-exit', '1');
+    if (typeof win.updateFittingSum === 'function') { win.updateFittingSum(); }
+    if (typeof win.calcDeltaPressure === 'function') { win.calcDeltaPressure(); }
+    waitForResult(doc, win, 0);
+  }, 900);
+}
+
+function waitForResult(doc, win, tries) {
+  if (win.__api && win.__api.error === false && doc.getElementById('dp-out-leq').textContent.trim() !== '—') {
+    snapshotStrip(doc, win); return;
+  }
+  if (tries > 120) { document.body.setAttribute('data-ready', 'TIMEOUT'); return; }
+  setTimeout(function () { waitForResult(doc, win, tries + 1); }, 100);
+}
+
+function snapshotStrip(doc, win) {
+  var node = doc.getElementById('dp-out-dpfit').parentElement.parentElement;
+  var clone = node.cloneNode(true);
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  // A frozen width is a pixel-exact fit measured HERE; the capture browser's text metrics differ
+  // by a fraction of a pixel and short labels wrapped on Day 7. Let leaf text size itself.
+  [].forEach.call(clone.querySelectorAll('*'), function (el) {
+    if (el.children.length) { return; }
+    el.style.whiteSpace = 'nowrap';
+    if (el.style.display === 'inline-block') { el.style.width = 'auto'; }
+  });
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = ''; slot.appendChild(clone);
+  fillPanels(doc, win, slot);
+}
+
+function fillPanels(doc, win, slot) {
+  var api = win.__api, req = JSON.parse(win.__req || '{}');
+
+  // n values and f_T come from the APP's own tables. A top-level `const` never becomes a window
+  // property, so this must go through eval in the iframe's scope, not win.CRANE_FITTINGS.
+  var env = win.eval('(function(){'
+    + 'var D = parseFloat(document.getElementById("dp-id").value) * parseFloat(document.getElementById("dp-id-unit").value);'
+    + 'var map = {}; CRANE_FITTINGS.forEach(function(f){ map[f.id] = {n: f.n, k: f.k}; });'
+    + 'var ft = craneFT(D);'   // returns {nominal, fT}, NOT a bare number
+    + 'return {D: D, fT: ft.fT, nominal: ft.nominal, map: map};})()');
+
+  var D = env.D, fT = env.fT;
+  var ROWS = [
+    {id: 'dp-fit-elbow90',    label: '90 deg elbow, standard', count: 4},
+    {id: 'dp-fit-gate',       label: 'Gate valve, full open',  count: 1},
+    {id: 'dp-fit-checkswing', label: 'Swing check valve',      count: 1},
+    {id: 'dp-fit-entrance',   label: 'Entrance, sharp-edged',  count: 1},
+    {id: 'dp-fit-exit',       label: 'Pipe exit',              count: 1}
+  ];
+
+  var kHtml = '', sHtml = '', kSum = 0, nSum = 0;
+  for (var i = 0; i < ROWS.length; i++) {
+    var r = ROWS[i], e = env.map[r.id];
+    var hasN = (e.n !== undefined && e.n !== null);
+    var K = hasN ? r.count * e.n * fT : r.count * e.k;
+    kSum += K;
+    if (hasN) { nSum += r.count * e.n; }
+    var cnt = r.count > 1 ? r.count + '× ' : '';
+    var nCell = hasN ? (r.count > 1 ? r.count + '×' + e.n : String(e.n)) : 'direct K';
+    kHtml += '<div style="display:flex;align-items:baseline;padding:6px 2px;'
+           + 'border-bottom:1px solid rgba(148,163,184,.08);">'
+           + '<span style="flex:1 1 auto;color:#cbd5e1;font-size:12.5px;">' + cnt + r.label + '</span>'
+           + '<span style="width:70px;text-align:right;color:#94a3b8;font-size:12.5px;'
+           +   'font-variant-numeric:tabular-nums;">' + nCell + '</span>'
+           + '<span style="width:110px;text-align:right;color:#6ee7b7;font-size:13.5px;font-weight:600;'
+           +   'font-variant-numeric:tabular-nums;">' + K.toFixed(4) + '</span>'
+           + '</div>';
+    var muted = !hasN;
+    sHtml += '<div style="display:flex;align-items:baseline;padding:6px 2px;'
+           + 'border-bottom:1px solid rgba(148,163,184,.08);' + (muted ? 'opacity:.55;' : '') + '">'
+           + '<span style="flex:1 1 auto;color:' + (muted ? '#64748b' : '#cbd5e1') + ';font-size:12.5px;">'
+           +   cnt + r.label + '</span>'
+           + '<span style="width:70px;text-align:right;color:#94a3b8;font-size:12.5px;'
+           +   'font-variant-numeric:tabular-nums;">' + (hasN ? nCell : '—') + '</span>'
+           + '<span style="width:110px;text-align:right;font-size:13.5px;font-weight:600;'
+           +   'font-variant-numeric:tabular-nums;color:' + (muted ? '#f43f5e' : '#fcd34d') + ';">'
+           +   (hasN ? (r.count * e.n * D).toFixed(3) : 'no n exists') + '</span>'
+           + '</div>';
+  }
+  document.getElementById('k-rows').innerHTML = kHtml;
+  document.getElementById('s-rows').innerHTML = sHtml;
+
+  // THE CROSS-CHECK: the ledger must reproduce the k_total the app put on the wire.
+  var kMatches = Math.abs(kSum - req.k_total) < 1e-12;
+
+  var vh   = api.dpFittings / req.k_total;   // velocity head, from the endpoint
+  var LeqK = api.L_eq;                       // K method, at the FLOWING f
+  var LeqS = nSum * D;                       // shortcut
+
+  document.getElementById('k-result').innerHTML =
+    '<div style="display:flex;align-items:baseline;padding:7px 2px;border-top:1px solid rgba(16,185,129,.35);">'
+    + '<span style="flex:1 1 auto;color:#6ee7b7;font-size:13px;font-weight:600;">ΣK</span>'
+    + '<span style="width:110px;text-align:right;color:#6ee7b7;font-size:16px;font-weight:700;'
+    +   'font-variant-numeric:tabular-nums;">' + kSum.toFixed(4) + '</span></div>'
+    + '<div style="color:#94a3b8;font-size:12px;margin-top:5px;line-height:1.6;">'
+    + 'ΔP = ΣK·ρv²/2 = ' + kSum.toFixed(4) + ' × ' + vh.toFixed(3)
+    +   ' = <b style="color:#6ee7b7;">' + api.dpFittings.toFixed(2) + ' Pa</b><br>'
+    + 'L<sub>eq</sub> = ΣK·D/f at the <b>flowing</b> f = <b style="color:#6ee7b7;">'
+    +   LeqK.toFixed(4) + ' m</b></div>';
+
+  document.getElementById('s-result').innerHTML =
+    '<div style="display:flex;align-items:baseline;padding:7px 2px;border-top:1px solid rgba(245,158,11,.35);">'
+    + '<span style="flex:1 1 auto;color:#fcd34d;font-size:13px;font-weight:600;">Σn·D</span>'
+    + '<span style="width:110px;text-align:right;color:#fcd34d;font-size:16px;font-weight:700;'
+    +   'font-variant-numeric:tabular-nums;">' + LeqS.toFixed(3) + '</span></div>'
+    + '<div style="color:#94a3b8;font-size:12px;margin-top:5px;line-height:1.6;">'
+    + 'Σn = ' + nSum + ' &nbsp;·&nbsp; D = ' + D.toFixed(4) + ' m<br>'
+    + '<b style="color:#f43f5e;">' + (LeqS - LeqK).toFixed(3) + ' m</b> against the K method — '
+    + '<b style="color:#f43f5e;">' + ((LeqS / LeqK - 1) * 100).toFixed(1) + ' %</b></div>';
+
+  // Decomposition: the n-based fittings vs the direct-K ones, both at the flowing f.
+  var K_ee = 1.5, K_n = kSum - K_ee;
+  var Leq_n  = K_n  * D / api.f;
+  var Leq_ee = K_ee * D / api.f;
+  document.getElementById('recon').innerHTML =
+    '<b style="color:#fda4af;">Entrance and exit have no n at all.</b> They are direct-K terms — '
+    + K_ee.toFixed(2) + ' of the ΣK, worth <b>' + Leq_ee.toFixed(1) + ' m</b> of equivalent length '
+    + 'and <b>' + (K_ee * vh).toFixed(0) + ' Pa</b>. The shortcut cannot represent them, so it loses '
+    + 'all of that.<br>'
+    + '<b style="color:#fcd34d;">Separately, and the other way:</b> n assumes fully-rough turbulent '
+    + 'flow (f<sub>T</sub> = ' + fT + ' at ' + (D / 0.0254).toFixed(0) + '″ nominal), but this line '
+    + 'runs at f = ' + api.f.toFixed(6) + '. Since L<sub>eq</sub> = ΣK·D/f, the shortcut '
+    + '<b>over</b>-states the elbows and valves: ' + LeqS.toFixed(2) + ' m against ' + Leq_n.toFixed(2)
+    + ' m, <b>+' + ((LeqS / Leq_n - 1) * 100).toFixed(1) + ' %</b>.';
+
+  document.getElementById('conditions').textContent =
+    D.toFixed(4) + ' m (4″) · ρ_mix = ' + api.rho_mix.toFixed(2) + ' kg/m³ · v = '
+    + api.vel.toFixed(4) + ' m/s · velocity head ρv²/2 = ' + vh.toFixed(3)
+    + ' Pa · straight run 100 m';
+
+  drawArrows();
+
+  document.body.setAttribute('data-ready', [
+    'ledger_SigmaK=' + kSum.toFixed(6),
+    'payload_k_total=' + req.k_total,
+    'k_matches=' + kMatches,
+    'fT=' + fT,
+    'Sigma_n=' + nSum,
+    'Leq_K=' + LeqK,
+    'Leq_shortcut=' + LeqS,
+    'dpFittings=' + api.dpFittings,
+    'dom_dpfit=' + slot.querySelector('#dp-out-dpfit').textContent.trim(),
+    'dom_leq=' + slot.querySelector('#dp-out-leq').textContent.trim()
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY. The tempting connector links the two totals across the gutter, but they
+  // sit at the same y already and the reconciliation band directly below names both numbers.
+  // Days 1, 3, 4, 5, 6 and 7 each dropped a connector for the same reason.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 8 — fittings, K method vs the L/D shortcut</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day08-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
