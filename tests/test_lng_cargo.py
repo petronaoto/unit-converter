@@ -305,3 +305,28 @@ def test_theory_subheadings_are_arabic_and_match_their_part(fname):
         for part, want in ((10, 5), (11, 4), (12, 7)):
             got = [f"{a}.{b}" for a, b in heads if a == str(part)]
             assert len(got) == want, f"Part {part}: expected {want} sub-headings, got {got}"
+
+
+# ── v3.6 Advanced sub-panes: every card must sit inside exactly one pane ─────────
+
+def test_advanced_sub_panes_are_div_balanced_and_own_their_cards():
+    """v3.6.1: a stray </div> that had closed the ΔP card's NORSOK line-sizing grid on the very
+    next line since v2.8 made the ΔP card end one level early, so the Flow Regime card became a
+    sibling of the sub-panes and stayed visible on every sub-tab. Pin each pane to a balanced
+    <div> count and each headline card to its pane."""
+    html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+    bounds = ['<div id="adv-sub-gasq"', '<div id="adv-sub-hyd"', '<div id="adv-sub-gtfuel"', '<div id="tab-safety"']
+    idx = [html.index(b) for b in bounds]
+    assert idx == sorted(idx), "sub-panes out of order"
+    owner = {"advanced.ghv.title": "gasq", "advanced.lngCargo.title": "gasq",
+             "advanced.deltaP.title": "hyd", "advanced.flowRegime.title": "hyd", "gtfuel.sel.title": "gtfuel"}
+    for pane, start, end in zip(("gasq", "hyd", "gtfuel"), idx, idx[1:]):
+        region = html[start:end]
+        # the pane's own <div> is the +1 that its final </div> cancels; a card leaking out shows as ≠ 0
+        opens, closes = len(re.findall(r"<div\b", region)), region.count("</div>")
+        extra = 1 if pane == "gtfuel" else 0          # the last region also holds tab-advanced's own </div>
+        assert opens + extra == closes, f"{pane}: {opens} <div> vs {closes} </div> — a card is leaking out of the pane"
+        for key, want in owner.items():
+            if f'data-i18n="{key}"' in region:
+                assert want == pane, f"{key} found in pane {pane}, expected {want}"
+    assert 'data-i18n="advanced.flowRegime.title"' in html[idx[1]:idx[2]]
