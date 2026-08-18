@@ -229,8 +229,17 @@ Attaching the image: **only the OS clipboard works, and only two things make it 
 > This is not theoretical: the browser-tool tab is often **not** the active tab (check with
 > `document.visibilityState` — "hidden" means a real Ctrl+V goes to whatever tab *is* active).
 > On Day 3 the guard caught the maintainer's own PR page in front and refused to paste.
-> `SendKeys("^9")` jumps to the window's last tab, which is the one this session created; send it,
-> then re-verify before pasting.
+> `SendKeys("^9")` jumps to the window's LAST tab — **which is only the session's tab if nothing
+> else was opened afterwards.** On Day 8 the maintainer had opened an X tab later, so `^9` landed
+> there and the guard refused; a bounded `Ctrl+Tab` sweep did not find the LinkedIn tab either
+> (the window title lags the switch, so title-polling a cycle is unreliable). Do not keep hunting:
+> if `^9` does not land on LinkedIn, **stop and hand the composer step over**, especially when
+> `GetLastInputInfo` shows the maintainer is at the keyboard. Two guarded aborts cost nothing;
+> cycling someone's tabs while they work is the thing to avoid.
+>
+> `Get-Process chrome | ? MainWindowTitle` reports **one** window even when several exist, and the
+> Claude desktop app is itself a `Chrome_WidgetWin_1` window — enumerate by class name if you need
+> the true picture.
 >
 > **Check whether the maintainer is actually using the machine** before grabbing focus:
 > `GetLastInputInfo` gives idle seconds. If it is ~0 they are typing right now — make one atomic,

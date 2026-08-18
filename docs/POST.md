@@ -60,10 +60,10 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 2 | Wed 12 Aug 2026 | Why your HHV and the plant's HHV disagree in the second decimal | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493067132373499904/ | |
 | 3 | Thu 13 Aug 2026 | The steam spreadsheet nobody owns | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493228666642923520/ | |
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/ | |
-| 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493984270407901184/ | |
+| 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494192232460382209/ | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ☐ | | |
+| 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ✎ **ready — needs scheduling** | | |
 | 9 | Fri 21 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
 | 10 | Mon 24 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
 | 11 | Tue 25 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
@@ -91,9 +91,11 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Next up (Day 8, Thu 20 Aug): "Your fittings are worth 30 m of pipe, not 23 m" — draft is in `### Day 8`.**
+> **Day 8 is BUILT but NOT scheduled** — graphic, copy and numbers all done; only the LinkedIn
+> composer step is outstanding. See `### Day 8`.
+> **Next to build (Day 9, Fri 21 Aug): "The pressure drop was fine. The flow regime wasn't." — draft is in `### Day 9`.**
 >
-> *Days 5, 6 and 7 are queued in LinkedIn (Mon 17, Tue 18, Wed 19 — all 08:00 JST). None has a URL yet.*
+> *Day 7 is queued for Wed 19 Aug 08:00 JST; its URL exists only once it publishes.*
 
 **Weekly themes**
 
@@ -374,6 +376,7 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = **56.000621** → **56.00**. Do not publish an intermediate. |
 | C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
 | C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** Tracker Day 18 appeared to have no sheet at all. | ✅ **Resolved 2026-08-12** (Naoto). No topic was lost — tracker Day 18 is the material in `### Day 20`, which editorial decision 2 had already moved out of the closing slot. The mapping table under §2 is now complete, and the `### Day 20` sheet has been reframed as a Day 18 capability tour (the "twenty posts in" retrospective framing was cut, since the campaign is not over on Day 18). The sheets keep their pre-reflow numbers deliberately: renumbering twenty headings would break every cross-reference in this file for no gain. **Read sheets by title, via the §2 mapping.** |
+| C13 | 8 | §4's Crane row records `ΔP_fittings 695.853 Pa` | Wrong in the last digit: the endpoint returns **695.8543508168549**, which rounds to **695.854**. Found 2026-08-18 while grounding Day 8. The post quotes **695.85** (2 d.p.), which is correct either way, so publishing was not blocked. `CLAUDE.md` and `api/CLAUDE.md` carry the same stale digit — correct them in a later pass. |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1100,9 +1103,12 @@ enthalpy and entropy values. The left panel quotes the STATE chip's own wording 
 
 ---
 
-### Day 6 — *tracker **Day 6**, Tue 18 Aug 2026* · 🕗 SCHEDULED
+### Day 6 — *tracker **Day 6**, Tue 18 Aug 2026* · ✅ POSTED
 
-> **Scheduled 2026-08-15 for Tue 18 Aug 08:00 JST.** One bilingual post, **2,959 characters**,
+> **Published Tue 18 Aug 2026 08:00 JST**, as scheduled on 2026-08-15.
+> https://www.linkedin.com/feed/update/urn:li:share:7494192232460382209/
+>
+> *(original scheduling record)* One bilingual post, **2,959 characters**,
 > graphic attached, `engineering-converter.com` in the body of both language sections. Confirmed in
 > *Scheduled posts* alongside Day 5. No first comment, per the standing choice on the Day 3 sheet.
 >
@@ -1244,7 +1250,17 @@ upsize, or change material? And does your company have a standing C-factor?"
 
 ---
 
-### Day 8 — Fri 21 Aug 2026
+### Day 8 — *tracker **Day 8**, Thu 20 Aug 2026* · ✎ READY, NOT YET SCHEDULED
+
+> **Built 2026-08-18. Graphic, copy and numbers are done and verified; only the LinkedIn step is
+> outstanding.** One bilingual post, **2,798 characters**, `engineering-converter.com` in both
+> language sections. Body text: `<scratchpad>/day08_body.txt`; image: `docs/linkedin/day08.png`.
+>
+> The image paste was abandoned deliberately, not by failure: the maintainer was at the keyboard
+> (idle 0 s), `Ctrl+9` landed on an unrelated tab because the session tab was **not** last in the
+> strip, and a bounded `Ctrl+Tab` search did not find the LinkedIn tab either. Both guarded
+> attempts refused to paste rather than posting into the wrong window. Finish it when the machine
+> is free — open the composer, paste `day08.png` into it **empty**, then type the body.
 
 **Title:** Your fittings are worth 30 m of pipe, not 23 m
 **Lens:** teach-theory · **Format:** worked example · **Feature:** Advanced → ΔP fittings block
@@ -1269,9 +1285,37 @@ swing check 1.7000; entrance 0.5000; exit 1.0000; ΣK = 5.3760; ΔP_fittings = 5
 695.85 Pa; L_eq = 29.75863 m at flowing f. Right, L/D SHORTCUT: Σn·D = 228 × 0.1016 = 23.16 m, with
 entrance and exit greyed out and marked *"no n exists"*.
 
-**Numbers.** §4 Crane row.
+**Numbers.** §4 Crane row — **re-verified live on v3.4, 2026-08-18.** The ledger in the graphic is
+built from the app's own `CRANE_FITTINGS` and `craneFT()` (via `win.eval`; a top-level `const` is
+not a window property) and is then **cross-checked against the `k_total` the app actually puts on
+the wire** — `k_matches=true` in the generator's `data-ready`, i.e. the ledger reproduces 5.376
+exactly. Endpoint values: ΔP_fittings **695.8543508168549 Pa**, L_eq **29.758637189491434 m**,
+ΔP_total **177624.65735431717 Pa**, f **0.01835438889630599**, velocity head **129.43719 Pa**.
 
-**Hashtags:** `#PipingDesign #Hydraulics #CraneTP410 #LineSizing`
+> ⚠️ **§4 says `ΔP_fittings 695.853 Pa`; the endpoint returns 695.8543…, which rounds to
+> **695.854**.** The last digit in the register is wrong. The Theory tab's 2-d.p. `695.85` is fine,
+> and CLAUDE.md / api/CLAUDE.md carry the same `695.853` — worth correcting there in a later pass.
+> Logged as C13 below. The post quotes **695.85**, which is right either way.
+
+**Display precision:** the card shows ΔP Fittings as **0.69585 kPa** (not 695.85 Pa) and ΣK as
+**5.38** (not 5.3760). The graphic's ledger shows the exact ΣK; the cloned strip shows the card's
+own rounding. Quote whichever the reader will see.
+
+**The decomposition, all at the flowing f:**
+
+| | |
+|---|---|
+| Entrance + exit (direct K, no n) | 1.50 of ΣK → **8.3 m** and **194 Pa**, invisible to L/D |
+| Elbows + valves, K method | 21.46 m |
+| Elbows + valves, L/D shortcut | 23.16 m — **+8.0 %**, because n assumes f_T = 0.017, not f = 0.018354 |
+| Net | 23.165 vs 29.759 m — **−6.594 m, −22.2 %** |
+
+**Mockup files.** `day08-mockup.html` → `day08-standalone.html` → `day08.png`. Two ledgers plus the
+real "ΔP Fittings / L_eq" strip cloned from the live card. **Captured with headless Chrome**
+(`--headless=new --screenshot`), which lands exactly 1200×675 with no crop and leaves no window
+behind — use this, not the old PrintWindow recipe.
+
+**Hashtags:** `#PipingDesign #Hydraulics #CraneTP410 #LineSizing #プロセスエンジニアリング`
 
 ---
 
@@ -1473,9 +1517,12 @@ the breakdown boxed term by term and an arrow to the empty space where a verdict
 
 ---
 
-### Day 16 — *this sheet runs as tracker **Day 5**, Mon 17 Aug 2026* · 🕗 SCHEDULED
+### Day 16 — *this sheet runs as tracker **Day 5**, Mon 17 Aug 2026* · ✅ POSTED
 
-> **Scheduled 2026-08-14 for Mon 17 Aug 08:00 JST.** One bilingual post, **2,972 characters**
+> **Published Mon 17 Aug 2026 08:00 JST**, as scheduled on 2026-08-14.
+> https://www.linkedin.com/feed/update/urn:li:share:7493984270407901184/
+>
+> *(original scheduling record)* One bilingual post, **2,972 characters**
 > (the longest of the campaign so far — 28 under the limit), graphic attached,
 > `engineering-converter.com` in the body of both language sections. Confirmed in *Scheduled posts*
 > as "Posting Mon, Aug 17 at 8:00 AM". No first comment, per the standing choice recorded on the

@@ -1,0 +1,61 @@
+Four elbows, a gate valve, a swing check, an entrance and an exit on a 4-inch line.
+
+The L/D shortcut says 23.16 m of equivalent length. The K method says 29.76 m. The shortcut is 22 % short — and the reason is more interesting than the number.
+
+Crane TP-410 writes each fitting as K = n·f_T, where n is a fixed L/D for the fitting type and f_T is the fully-turbulent friction factor for the nominal size, not the flowing one. Here f_T = 0.017 at 4″:
+
+4× 90° elbow — n = 30 — K = 2.0400
+Gate valve, full open — n = 8 — K = 0.1360
+Swing check valve — n = 100 — K = 1.7000
+Entrance, sharp-edged — direct K — 0.5000
+Pipe exit — direct K — 1.0000
+ΣK = 5.3760
+
+ΔP = ΣK·ρv²/2 = 5.376 × 129.437 = 695.85 Pa, moving the line total from 176.93 to 177.62 kPa.
+
+Now the two errors in the shortcut. They point opposite ways.
+
+Entrance and exit have no n at all. They are direct-K terms — 1.50 of that ΣK, worth 8.3 m of equivalent length and 194 Pa. Multiply n by D and there is nothing to multiply, so all of it silently disappears.
+
+Separately, and the other way: n assumes fully-rough turbulent flow. This line runs at f = 0.018354, not 0.017. Since L_eq = ΣK·D/f, the shortcut over-states the elbows and valves — 23.16 m against 21.46 m, +8.0 %.
+
+Minus 8.3 m, plus 1.7 m. They partly cancel, which is exactly why the shortcut's tally looks plausible enough to keep using.
+
+The rule I would take from it: L/D is fine for a first pass on elbows and valves in fully-rough flow. It is not fine when entrances, exits or any other direct-K term are in the run, and it drifts whenever the flowing f is far from f_T.
+
+Reproduce it in Advanced → Pipe ΔP: open Fittings & Valves and enter 4 elbows, 1 gate, 1 swing check, 1 entrance, 1 exit.
+
+https://engineering-converter.com
+
+— — —
+
+4インチ配管に、エルボ4個、ゲート弁1個、スイングチェック弁1個、入口と出口。
+
+L/D 近似では相当長 23.16 m。K法では 29.76 m。近似は 22 % 短く出ますが、面白いのは数字よりその理由です。
+
+Crane TP-410 は各継手を K = n·f_T と書きます。n は継手種類ごとに固定の L/D、f_T は「その呼び径の」完全乱流摩擦係数で、流れている f ではありません。ここでは4インチで f_T = 0.017:
+
+エルボ90° 4個 — n = 30 — K = 2.0400
+ゲート弁（全開） — n = 8 — K = 0.1360
+スイングチェック弁 — n = 100 — K = 1.7000
+入口（角） — 直接K — 0.5000
+出口 — 直接K — 1.0000
+ΣK = 5.3760
+
+ΔP = ΣK·ρv²/2 = 5.376 × 129.437 = 695.85 Pa。配管全体は 176.93 → 177.62 kPa。
+
+さて、近似には誤差が2つあり、向きが逆です。
+
+入口と出口には n がそもそも存在しません。直接K項で、ΣK のうち 1.50、相当長にして 8.3 m、194 Pa 分です。n×D では掛ける相手がないので、この分がまるごと消えます。
+
+もう一方は逆向き。n は完全乱流を前提にしていますが、この配管は f = 0.018354 で流れていて 0.017 ではない。L_eq = ΣK·D/f なので、近似はエルボと弁を過大評価します。23.16 m に対して 21.46 m、+8.0 % です。
+
+−8.3 m と +1.7 m。部分的に打ち消し合う。だからこそ近似の集計は「それらしく」見え、使い続けられてしまう。
+
+持ち帰るなら、こう。完全乱流域のエルボと弁の一次検討には L/D で十分。ただし入口・出口など直接K項が経路にあるときは使えないし、流れている f が f_T から離れるほどずれます。
+
+再現は Advanced → Pipe ΔP で。Fittings & Valves を開いて、エルボ4・ゲート1・チェック1・入口1・出口1 と入れるだけです。
+
+https://engineering-converter.com
+
+#PipingDesign #Hydraulics #CraneTP410 #LineSizing #プロセスエンジニアリング
