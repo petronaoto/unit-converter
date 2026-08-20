@@ -588,3 +588,221 @@ def test_dp_non_object_json_body_is_a_structured_400(dp_module, post_to_handler)
     assert status == 400
     assert data["error"] is True
     assert data["badge"] == "Bad Request"
+
+
+# ── v3.7 selectable two-phase methods (SPECIFICATION.md §9 Vector 14) ──────────────
+#
+# tp_method picks the two-phase FRICTIONAL correlation: hem (default), lm
+# (Lockhart-Martinelli + Chisholm C), msh (Müller-Steinhagen & Heck 1986), friedel
+# (Friedel 1979, consumes `sigma` [N/m], default 0.010). The method changes only
+# dpFric: dpStatic, dpFittings, vel, Re, f and the RP 14E terms stay on the
+# homogeneous no-slip basis. All pins computed independently against the Vector 2
+# hydraulics before implementation (see SPECIFICATION.md §9 Vector 14).
+
+def test_absent_tp_method_reproduces_the_hem_result_exactly(dp_module, post_to_handler,
+                                                            dp_reference_payload):
+    """The absent-field default is load-bearing, exactly like k_total and cfactor:
+    every pre-v3.7 payload and share link must keep producing 176.93 kPa under the
+    'Two-Phase (HEM)' badge, bit-for-bit."""
+    absent = post_to_handler(dp_module, dp_reference_payload)[1]
+    explicit = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="hem"))[1]
+    assert absent["badge"] == "Two-Phase (HEM)"
+    assert absent["tp_method"] == "hem"
+    # WHOLE-response equality (not approx): absent and explicit "hem" must take the
+    # identical code path, so every field is float-identical — that is the contract.
+    assert absent == explicit
+    assert absent["dpPa"] / 1000 == pytest.approx(176.93, abs=0.05)
+    # empty-string and null forms also mean "hem" (defensive share-link tolerance)
+    for empty in ("", None):
+        d = post_to_handler(dp_module, dict(dp_reference_payload, tp_method=empty))[1]
+        assert d == explicit
+
+
+def test_lm_reference_case(dp_module, post_to_handler, dp_reference_payload):
+    """Lockhart-Martinelli on the Vector 2 hydraulics: both phase-alone flows are
+    turbulent (Re_l 2.12e5, Re_g 4.35e4) -> Chisholm C = 20, X = 6.1663,
+    phi_L^2 = 4.2697 -> dpFric 4.843 kPa, total 179.433 kPa."""
+    data = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="lm"))[1]
+    assert data["error"] is False
+    assert data["badge"] == "Two-Phase (Lockhart-Martinelli)"
+    assert data["tp_method"] == "lm"
+    assert data["lm_C"] == 20
+    assert data["lm_X"] == pytest.approx(6.1663, abs=5e-4)
+    assert data["phi2"] == pytest.approx(4.2697, abs=5e-4)
+    assert data["dpFric"] / 1000 == pytest.approx(4.8429, abs=5e-3)
+    assert data["dpPa"] / 1000 == pytest.approx(179.433, abs=0.05)
+
+
+def test_msh_reference_case(dp_module, post_to_handler, dp_reference_payload):
+    """Müller-Steinhagen & Heck on the Vector 2 hydraulics: A = 11.791 Pa/m,
+    B = 529.67 Pa/m -> dpFric 3.243 kPa, total 177.833 kPa."""
+    data = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="msh"))[1]
+    assert data["error"] is False
+    assert data["badge"] == "Two-Phase (Müller-Steinhagen-Heck)"
+    assert data["dpFric"] / 1000 == pytest.approx(3.2429, abs=5e-3)
+    assert data["dpPa"] / 1000 == pytest.approx(177.833, abs=0.05)
+
+
+def test_friedel_reference_case(dp_module, post_to_handler, dp_reference_payload):
+    """Friedel at the default sigma = 0.010 N/m: E = 0.9783, F = 0.0473, H = 21.088,
+    Fr = 1.0320, We = 2630.2 -> phi_LO^2 = 3.4294 -> dpFric 4.0435 kPa,
+    total 178.634 kPa."""
+    data = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="friedel"))[1]
+    assert data["error"] is False
+    assert data["badge"] == "Two-Phase (Friedel)"
+    assert data["sigma"] == pytest.approx(0.010, rel=1e-12)
+    assert data["phi2"] == pytest.approx(3.4294, abs=5e-4)
+    assert data["dpFric"] / 1000 == pytest.approx(4.0435, abs=5e-3)
+    assert data["dpPa"] / 1000 == pytest.approx(178.634, abs=0.05)
+
+
+def test_method_changes_only_the_frictional_term(dp_module, post_to_handler,
+                                                 dp_reference_payload):
+    """The contract that keeps the RP 14E / NORSOK screens comparable across methods:
+    everything except dpFric (and therefore dpPa) is method-independent."""
+    results = {m: post_to_handler(dp_module, dict(dp_reference_payload, tp_method=m,
+                                                  k_total=5.3760))[1]
+               for m in ("hem", "lm", "msh", "friedel")}
+    base = results["hem"]
+    for m, d in results.items():
+        for field in ("dpStatic", "dpFittings", "vel", "Re", "f", "rho_mix",
+                      "v_ero", "ero_ratio", "L_eq"):
+            assert d[field] == pytest.approx(base[field], rel=1e-12), (m, field)
+        assert d["dpPa"] == pytest.approx(d["dpFric"] + d["dpStatic"] + d["dpFittings"],
+                                          rel=1e-12)
+
+
+def test_single_phase_ignores_tp_method(dp_module, post_to_handler,
+                                        dp_reference_payload):
+    """A single-phase flow has no two-phase multiplier: the method is echoed but the
+    numbers are identical to the default path, and the badge stays single-phase."""
+    for override in ({"l_flow": 0}, {"v_flow": 0}):
+        base = post_to_handler(dp_module, dict(dp_reference_payload, **override))[1]
+        lm = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="lm",
+                                             **override))[1]
+        assert lm["badge"] == base["badge"]
+        assert lm["dpPa"] == pytest.approx(base["dpPa"], rel=1e-12)
+        assert lm["tp_method"] == "lm"
+
+
+def test_unknown_tp_method_is_rejected(dp_module, post_to_handler,
+                                       dp_reference_payload):
+    """A PRESENT unknown method is a structured error carrying the harmonized
+    superset — never a silent fallback that would let a typo report HEM numbers
+    under a correlation the caller thinks they chose. Falsy JSON values (0, false,
+    [], {}) are NOT the absent/null/empty-string forms and must be rejected too —
+    an `or "hem"` coercion would silently swallow them (v3.7 review)."""
+    for bad in ("beggs-brill", "HEM", 42, ["lm"], 0, False, [], {}):
+        status, data = post_to_handler(dp_module,
+                                       dict(dp_reference_payload, tp_method=bad))
+        assert status == 200
+        assert data["error"] is True
+        for field in ("error", "message", "badge", "badgeClass"):
+            assert field in data
+        assert data["badge"] == "Invalid Input"
+
+
+def test_sigma_validation_matches_the_cfactor_contract(dp_module, post_to_handler,
+                                                       dp_reference_payload):
+    """Absent sigma -> 0.010 N/m; present non-positive / non-finite / non-numeric ->
+    structured error, regardless of method (same policy as cfactor)."""
+    for bad in (0, -0.01, float("nan"), "abc"):
+        status, data = post_to_handler(dp_module,
+                                       dict(dp_reference_payload, sigma=bad))
+        assert status == 200
+        assert data["error"] is True
+        assert data["badge"] == "Invalid Input"
+    # sigma enters only through We^-0.035 (We = G^2 D / (sigma rho_h)), so a HIGHER
+    # sigma gives a LOWER Weber number and a HIGHER multiplier — pin the sign so a
+    # future refactor cannot silently invert the We exponent.
+    lo = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="friedel",
+                                         sigma=0.005))[1]
+    hi = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="friedel",
+                                         sigma=0.020))[1]
+    assert lo["phi2"] < hi["phi2"]
+
+
+def test_friedel_requires_vapor_viscosity_below_liquid(dp_module, post_to_handler,
+                                                       dp_reference_payload):
+    """mu_v >= mu_l makes Friedel's (1 - mu_v/mu_l)^0.7 term complex-valued; the
+    guard returns a structured error instead of a bare 500."""
+    status, data = post_to_handler(dp_module, dict(dp_reference_payload,
+                                                   tp_method="friedel",
+                                                   v_visc=0.12, l_visc=0.12))
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+    assert "viscosity" in data["message"].lower()
+    # the same viscosities are perfectly legal under the other methods
+    for m in ("hem", "lm", "msh"):
+        ok = post_to_handler(dp_module, dict(dp_reference_payload, tp_method=m,
+                                             v_visc=0.12, l_visc=0.12))[1]
+        assert ok["error"] is False
+
+
+@pytest.mark.parametrize("v_visc_cp, l_visc_cp, expected_c", [
+    (0.012, 0.12, 20),   # both phase-alone flows turbulent           -> tt
+    (0.012, 60.0, 12),   # liquid-alone laminar, gas-alone turbulent  -> vt
+    (0.80,  0.12, 10),   # liquid-alone turbulent, gas-alone laminar  -> tv
+    (0.80,  60.0, 5),    # both laminar                               -> vv
+])
+def test_lm_chisholm_c_follows_the_phase_alone_regimes(dp_module, post_to_handler,
+                                                       dp_reference_payload,
+                                                       v_visc_cp, l_visc_cp,
+                                                       expected_c):
+    """Chisholm's C by the phase-ALONE Reynolds numbers (threshold 2300, matching
+    the friction function): tt 20, vt 12, tv 10, vv 5. Viscosities chosen to move
+    Re_l = 2.12e5/(l_visc/0.12) and Re_g = 4.35e4/(v_visc/0.012) across 2300."""
+    data = post_to_handler(dp_module, dict(dp_reference_payload, tp_method="lm",
+                                           v_visc=v_visc_cp, l_visc=l_visc_cp))[1]
+    assert data["error"] is False
+    assert data["lm_C"] == expected_c
+
+
+def test_lm_degenerate_phase_ratio_returns_the_phase_alone_limit(dp_module,
+                                                                 post_to_handler,
+                                                                 dp_reference_payload):
+    """v3.7 adversarial review: a phase ratio at/below machine epsilon collapses
+    x to exactly 0.0/1.0 (or underflows a phase-alone gradient to 0.0) while both
+    flows still pass the Wv>0/Wl>0 gates. The LM multiplier is undefined there;
+    its physical limit is the surviving phase flowing alone — which must come back
+    as a normal 200 with finite JSON and no phi2/lm_X/lm_C diagnostics, never a
+    bare ZeroDivisionError 500 (the v3.0 PR-1 contract)."""
+    # all-gas limit: x rounds to exactly 1.0
+    status, gas = post_to_handler(dp_module, dict(dp_reference_payload,
+                                                  v_flow=1e6, l_flow=1e-10,
+                                                  tp_method="lm"))
+    assert status == 200
+    assert gas["error"] is False
+    assert math.isfinite(gas["dpPa"]) and gas["dpFric"] > 0
+    assert "phi2" not in gas and "lm_X" not in gas and "lm_C" not in gas
+
+    # all-liquid limit: (G*x)^2 underflows to 0.0 with Wv still > 0
+    status, liq = post_to_handler(dp_module, dict(dp_reference_payload,
+                                                  v_flow=1e-300,
+                                                  tp_method="lm"))
+    assert status == 200
+    assert liq["error"] is False
+    assert math.isfinite(liq["dpPa"]) and liq["dpFric"] > 0
+    assert "phi2" not in liq
+
+
+def test_msh_rejects_a_negative_frictional_gradient(dp_module, post_to_handler,
+                                                    dp_reference_payload):
+    """v3.7 adversarial review: with swapped-label densities (vapor > ~2x liquid)
+    the MSH interpolation term goes negative and would silently SUBTRACT friction
+    from dpPa under a normal badge — the Known-Issue-#3 defect class. It is now a
+    structured error; the same inputs stay legal under HEM (which has no density-
+    ordering assumption)."""
+    inverted = dict(dp_reference_payload, tp_method="msh", elev=0,
+                    v_flow=9000, v_den=900, v_visc=0.5,
+                    l_flow=1000, l_den=100, l_visc=0.3)
+    status, data = post_to_handler(dp_module, inverted)
+    assert status == 200
+    assert data["error"] is True
+    assert data["badge"] == "Invalid Input"
+    for field in ("error", "message", "badge", "badgeClass"):
+        assert field in data
+    ok = post_to_handler(dp_module, dict(inverted, tp_method="hem"))[1]
+    assert ok["error"] is False
+    assert ok["dpFric"] > 0

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.6</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.7</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -1423,6 +1423,17 @@
                     <select id="dp-cfactor-info" disabled class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-slate-500 outline-none"><option>C</option></select>
                   </div>
                 </div>
+                <!-- v3.7 — selectable two-phase frictional correlation. Static option list
+                     (share-restore rule); "hem" reproduces every pre-v3.7 result exactly. -->
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1" data-i18n-title="advanced.deltaP.tpMethodTooltip" title="Two-phase frictional pressure-drop correlation. HEM reproduces pre-v3.7 results; the alternatives replace the frictional term only — static head and fittings stay on the homogeneous (no-slip) basis."><span data-i18n="advanced.deltaP.tpMethodLabel">TWO-PHASE METHOD</span> <span class="text-slate-600 font-normal">(ΔP<sub>fric</sub>)</span></label>
+                  <select id="dp-tp-method" onchange="updateTpMethodUI()" class="w-full px-2 py-2 bg-slate-950/70 border border-slate-700 rounded focus:ring-1 focus:ring-fuchsia-500 text-sm text-amber-500 outline-none cursor-pointer">
+                    <option value="hem" data-i18n="advanced.deltaP.tpmHem">HEM — homogeneous (default)</option>
+                    <option value="lm" data-i18n="advanced.deltaP.tpmLm">Lockhart-Martinelli</option>
+                    <option value="msh" data-i18n="advanced.deltaP.tpmMsh">Müller-Steinhagen-Heck</option>
+                    <option value="friedel" data-i18n="advanced.deltaP.tpmFriedel">Friedel</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -1476,6 +1487,16 @@
                     <div class="flex">
                       <input type="number" step="any" id="dp-l-visc" value="0.12" placeholder="0" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
                       <select id="dp-l-visc-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none"><option value="0.001">cP</option><option value="1">Pa·s</option></select>
+                    </div>
+                  </div>
+                  <!-- v3.7 — gas-liquid surface tension, consumed by the Friedel correlation
+                       only, so it is shown only while Friedel is selected (updateTpMethodUI).
+                       Fixed unit chip per the UI consistency rules — the unit is not editable. -->
+                  <div id="dp-sigma-wrap" class="hidden">
+                    <label class="block text-[10px] text-slate-500 mb-1" data-i18n-title="advanced.deltaP.sigmaTooltip" title="Gas-liquid surface tension — used by the Friedel correlation only. 10 mN/m is representative of light hydrocarbons; water-air is about 72 mN/m."><span data-i18n="advanced.deltaP.sigmaLabel">SURFACE TENSION</span> <span class="text-slate-600">σ (Friedel)</span></label>
+                    <div class="flex">
+                      <input type="number" step="any" id="dp-sigma" value="10" placeholder="10" class="w-2/3 px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-l text-sm text-slate-200 outline-none focus:border-amber-500" />
+                      <span class="w-1/3 flex items-center justify-center bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-slate-400">mN/m</span>
                     </div>
                   </div>
                 </div>
@@ -1614,6 +1635,7 @@
 
               <div id="dp-out-regime-note" class="hidden mt-4 text-[11px] text-cyan-300/80 bg-cyan-500/5 border border-cyan-500/20 rounded p-2 leading-relaxed"></div>
               <p class="mt-3 text-[10px] text-slate-600 leading-relaxed" data-i18n="advanced.deltaP.lineSizingFootnote">Line-sizing limits are NORSOK P-001 §6.3.2/§6.4 and Tables 3–4, applied to the frictional ΔP only (static head is excluded — it is not a sizing criterion). Gas: v_max = min(175·ρ^−0.43, 60) m/s. Two-phase: v_max = min(183·ρ_mix^−0.5, 25) m/s non-corrosive, 10 m/s corrosive. Liquid velocity bands are material-dependent; Cu-Ni is the lowest at 3 m/s because of seawater erosion. Pump-circuit limits are ΔP-based. Screening guidance for line sizing — not a substitute for a full hydraulic study, and independent of the API RP 14E erosional check above.</p>
+              <p class="mt-2 text-[10px] text-slate-600 leading-relaxed" data-i18n="advanced.deltaP.tpMethodFootnote">The TWO-PHASE METHOD selector changes the frictional term only: Lockhart-Martinelli uses the Chisholm C constants (20/12/10/5 by the phase-alone flow regimes), Müller-Steinhagen-Heck (1986) interpolates between the all-liquid and all-gas gradients, and Friedel (1979) additionally uses the surface tension input. Static head, fittings ΔP and the velocity / Reynolds / friction-factor readouts always stay on the homogeneous no-slip mixture, which keeps the API RP 14E and NORSOK screens comparable across methods. All are screening-level correlations — see Theory Part X.</p>
             </div>
           </div>
         </div>
@@ -1641,10 +1663,42 @@
                   <h3 class="text-xs font-bold tracking-widest text-cyan-400" data-i18n="advanced.flowRegime.animation3dHeading">3D FLOW ANIMATION</h3>
                   <span id="fr-3d-caption" class="text-[10px] font-mono text-slate-500"></span>
                 </div>
+                <!-- v3.7 — animation mode strip. Static option lists (share-restore rule);
+                     the ids live inside <main>, so selections persist and travel in share
+                     links automatically via collectInputs(). Drag the canvas to orbit,
+                     scroll to zoom (Exterior / Cutaway views). -->
+                <div id="fr-3d-controls" class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-2 text-[10px]">
+                  <label class="text-slate-500 uppercase tracking-wider" for="fr-3d-view" data-i18n="advanced.flowRegime.viewLabel">View</label>
+                  <select id="fr-3d-view" onchange="rebuildFlow3D()" class="bg-slate-900 border border-slate-700 rounded text-[11px] text-amber-500 px-1 py-1 outline-none cursor-pointer">
+                    <option value="exterior" data-i18n="advanced.flowRegime.viewExterior">Exterior</option>
+                    <option value="cutaway" data-i18n="advanced.flowRegime.viewCutaway">Cutaway</option>
+                    <option value="inside" data-i18n="advanced.flowRegime.viewInside">Inside the pipe</option>
+                  </select>
+                  <label class="text-slate-500 uppercase tracking-wider ml-2" for="fr-3d-regime" data-i18n="advanced.flowRegime.regimeLabel">Regime</label>
+                  <select id="fr-3d-regime" onchange="rebuildFlow3D()" class="bg-slate-900 border border-slate-700 rounded text-[11px] text-amber-500 px-1 py-1 outline-none cursor-pointer">
+                    <option value="auto" data-i18n="advanced.flowRegime.regimeAuto">Auto (calculated)</option>
+                    <option value="bubbly" data-i18n="advanced.flowRegime.rgBubbly">Bubbly (vertical)</option>
+                    <option value="churn_slug" data-i18n="advanced.flowRegime.rgChurnSlug">Churn / Slug (vertical)</option>
+                    <option value="annular" data-i18n="advanced.flowRegime.rgAnnular">Annular</option>
+                    <option value="disperse" data-i18n="advanced.flowRegime.rgMist">Mist / Disperse</option>
+                    <option value="stratified" data-i18n="advanced.flowRegime.rgStratified">Stratified (horizontal)</option>
+                    <option value="wavy" data-i18n="advanced.flowRegime.rgWavy">Wavy (horizontal)</option>
+                    <option value="slug" data-i18n="advanced.flowRegime.rgSlug">Slug (horizontal)</option>
+                    <option value="bubble" data-i18n="advanced.flowRegime.rgBubble">Bubble (horizontal)</option>
+                  </select>
+                  <label class="text-slate-500 uppercase tracking-wider ml-2" for="fr-3d-speed" data-i18n="advanced.flowRegime.speedLabel">Speed</label>
+                  <select id="fr-3d-speed" onchange="setFlow3DSpeed()" class="bg-slate-900 border border-slate-700 rounded text-[11px] text-amber-500 px-1 py-1 outline-none cursor-pointer">
+                    <option value="0.25">0.25×</option>
+                    <option value="0.5">0.5×</option>
+                    <option value="1" selected>1×</option>
+                    <option value="2">2×</option>
+                  </select>
+                  <button id="fr-3d-pause" onclick="toggleFlow3DPause()" data-i18n-aria="advanced.flowRegime.pauseAria" aria-label="Pause or resume the animation" class="ml-2 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] text-slate-300 hover:text-amber-400 transition-colors">⏸</button>
+                </div>
                 <div id="fr-3d-wrap" class="bg-slate-950 border border-slate-700 rounded-lg overflow-hidden h-80 relative">
                   <div id="fr-3d-overlay" class="absolute bottom-2 left-3 text-[10px] font-mono text-slate-400 pointer-events-none z-10"></div>
                 </div>
-                <p class="text-[10px] text-slate-600 mt-2" data-i18n="advanced.flowRegime.animation3dCaption">Conceptual animation — phase distribution, speed and inclination are schematic, scaled from jG, jL and θ. Not a CFD result.</p>
+                <p class="text-[10px] text-slate-600 mt-2" data-i18n="advanced.flowRegime.animation3dCaption">Conceptual animation — phase distribution, layer depths, speeds and inclination are schematic, scaled from jG, jL, the no-slip holdup λL and θ. Drag to orbit, scroll to zoom. Not a CFD result.</p>
               </div>
             </div>
           </div>
@@ -2070,7 +2124,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.6</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.7</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
@@ -2107,7 +2161,7 @@
           <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs text-slate-400 space-y-2" data-i18n-html="docs.howto.b009">
             <div class="flex items-center justify-between bg-slate-900 rounded px-4 py-2 border border-slate-700">
             <span class="text-amber-400 font-bold">⚙ O&G ENG CONVERTER</span>
-            <span class="text-slate-500 text-[10px]">v3.6 • Hybrid</span>
+            <span class="text-slate-500 text-[10px]">v3.7 • Hybrid</span>
             </div>
             <div class="flex gap-2 flex-wrap">
             <span class="px-3 py-1 border border-slate-700 rounded text-slate-500 text-[10px]">General</span>
@@ -2638,7 +2692,7 @@
 
         <section>
           <h3 id="howto-17" class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b052">17. Advanced › Hydraulics — Pipe Delta Pressure Calculator (Darcy-Weisbach)</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b053">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow; the two-phase case uses the <strong>Homogeneous Equilibrium Model (HEM)</strong>. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase (HEM) — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b053">Computes the pressure drop along a pipe for single-phase (vapor or liquid) and two-phase flow. The iterative <strong>Colebrook–White</strong> friction factor and the full <strong>Darcy–Weisbach</strong> solution run server-side (Python / Vercel API). Since v3.7 the two-phase frictional term is computed by a selectable correlation — <strong>HEM (Homogeneous Equilibrium Model, default)</strong>, <strong>Lockhart–Martinelli</strong>, <strong>Müller-Steinhagen–Heck</strong> or <strong>Friedel</strong> — chosen with the TWO-PHASE METHOD selector; static head and fittings always stay on the homogeneous (no-slip) basis. Enter the pipe geometry and per-phase properties, then click <strong class="text-fuchsia-400">CALCULATE PRESSURE DROP</strong>. The phase regime — Single-Phase Vapor, Single-Phase Liquid, or Two-Phase with the active method — is auto-detected from which mass flows are non-zero and shown as a badge.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b054">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">INPUTS — 1. SYSTEM &amp; PIPE</div>
@@ -2647,10 +2701,12 @@
                 <div>System pressure · Pipe ID · Roughness ε (default 0.045 mm, commercial steel)</div>
                 <div>Pipe length L · Elevation change Δz (sets static head ρ·g·Δz)</div>
                 <div>Erosion C-factor — <span class="text-slate-200">API RP 14E: 100 continuous, 125 intermittent</span></div>
+                <div>Two-phase method — <span class="text-slate-200">HEM (default) / Lockhart-Martinelli / Müller-Steinhagen-Heck / Friedel</span></div>
               </div>
               <div class="text-fuchsia-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1 pt-2">INPUTS — 2A / 2B. PHASE PROPERTIES</div>
               <div class="space-y-1 text-slate-400">
                 <div>Vapor &amp; Liquid each: mass flow · density · dynamic viscosity</div>
+                <div>Surface tension σ [mN/m] — shown for Friedel only (default 10)</div>
                 <div>Leave a phase&rsquo;s mass flow at 0 to model single-phase flow</div>
               </div>
             </div>
@@ -2667,7 +2723,7 @@
             </div>
           </div>
           <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg p-3 text-xs text-fuchsia-300" data-i18n-html="docs.howto.b055">
-            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.69 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The two-phase HEM neglects slip and the acceleration term — treat it as a first-pass estimate.
+            <strong>ℹ Default inputs</strong> (ID = 4 in, L = 100 m, Δz = 70.711 m, vapor 150 kg/h @ 10 kg/m³ / 0.012 cP, liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP) give <strong>ΔP ≈ 176.9 kPa</strong> (≈ 2.3 kPa friction + 174.6 kPa static head), v ≈ 1.01 m/s, Re ≈ 2.2×10⁵ (turbulent), f ≈ 0.018, V<sub>e</sub> ≈ 7.69 m/s at C = 100 → v/V<sub>e</sub> ≈ 0.13 (WITHIN LIMIT). The alternative two-phase methods raise the frictional term to 4.8 kPa (Lockhart-Martinelli), 3.2 kPa (Müller-Steinhagen-Heck) or 4.0 kPa (Friedel, σ = 10 mN/m) — total ΔP 179.4 / 177.8 / 178.6 kPa. Every method neglects slip in the static-head term and the acceleration term — treat results as first-pass estimates.
           </div>
         </section>
 
@@ -2683,7 +2739,7 @@
 
         <section>
           <h3 id="howto-19" class="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b056">19. Advanced › Hydraulics — Flow Regime Visualizer</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b057">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe — phase distribution, relative speed and inclination.</p>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b057">Located directly beneath the Pipe Delta Pressure Calculator and driven by the <strong>same inputs</strong>. Click <strong class="text-cyan-400">VISUALIZE FLOW REGIME</strong> to classify the two-phase flow pattern on a regime map rendered server-side (Python <strong>seaborn</strong> / Vercel API), followed by a conceptual <strong>3D animation</strong> (Three.js) of how the flow would appear inside the pipe. Layer depths, film thicknesses and bubble loading scale with the no-slip holdup λ<sub>L</sub>, and speeds and inclination follow j<sub>G</sub>, j<sub>L</sub> and θ. Since v3.7 the animation has a mode strip: <strong>View</strong> (Exterior / Cutaway / Inside the pipe), a <strong>Regime</strong> override that previews any of the eight patterns under the calculated conditions (flagged <span class="text-amber-400 font-semibold">PREVIEW</span>), playback <strong>Speed</strong> (0.25×–2×) and pause — and the canvas can be orbited by dragging and zoomed by scrolling.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b058">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">MAP SELECTION</div>
@@ -2835,7 +2891,12 @@
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b095">What changed in each release, newest first. Everything listed here is documented properly in the numbered sections above — this appendix is the history, not the manual. Click a release to expand it.</p>
           <div class="space-y-2">
 
-            <details id="howto-new36" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+            <details id="howto-new37" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+              <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b112">★ New in Version 3.7</span></summary>
+              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b113"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Selectable two-phase ΔP methods</strong> — the Pipe ΔP card gains a TWO-PHASE METHOD selector: HEM (default, reproduces every earlier result exactly), Lockhart-Martinelli with the Chisholm C constants, Müller-Steinhagen-Heck (1986), and Friedel (1979) with a new surface-tension input. Only the frictional term changes — static head, fittings and the velocity/Re/f readouts stay on the homogeneous basis. Section 17, Theory §10.6, reference Vector 14.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Richer 3D flow animation with modes</strong> — the Flow Regime animation is rebuilt: holdup-scaled liquid layers and films, bullet-nosed Taylor bubbles with draining wall films, churn oscillation, annular disturbance waves, a flanged pipe over a horizon grid — plus a mode strip with View (Exterior / Cutaway / Inside the pipe), a Regime preview override (flagged PREVIEW), playback Speed and pause. Drag to orbit, scroll to zoom; respects reduced-motion preferences. Section 19.</div></div>
+            </details>
+
+            <details id="howto-new36" class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
               <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b110">★ New in Version 3.6</span></summary>
               <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b111"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Two-layer Advanced tab</strong> — the Advanced tab now opens on a segmented strip with three sub-tabs: <strong>Gas Quality &amp; LNG Cargo</strong> (the compositional GHV card and the LNG Cargo Estimator), <strong>Hydraulics</strong> (Pipe ΔP and Flow Regime) and <strong>GT Fuel</strong>, which leaves the top bar. Nothing inside any card changed; the strip remembers your last choice, share links open the exact sub-tab, and old <span class="font-mono">tab=gtfuel</span> links still land on GT Fuel. See Section 1.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Documentation in the new tab order</strong> — How To Use Sections 11–19 carry their sub-tab in the heading, GT Fuel is now Section 20 (before Safety, Section 21) and Theory Part XI is Gas Turbine Fuel Estimation, Part XII PRV Sizing — renumbered in all ten languages.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Heel retained defaults to 3,000 m³</strong> — the LNG Cargo Estimator starts with a realistic heel, so the delivered column is visible immediately; set it to zero to see loaded quantities only. Section 16, Theory §9.3.</div></div>
             </details>
@@ -2930,7 +2991,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.6. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.7. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Real Gas</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Steam</a>
@@ -3411,6 +3472,7 @@
                 <div>• Mixture viscosity uses the <strong>Cicchitti</strong> mass-weighted average: µ<sub>m</sub> = x·µ<sub>G</sub> + (1−x)·µ<sub>L</sub>.</div>
                 <div>• The static-head term ρ·g·Δz uses the same homogeneous ρ<sub>m</sub> (no void-fraction slip correction).</div>
                 <div>• <strong>No acceleration / momentum pressure term</strong> — HEM under-predicts ΔP for strongly flashing or high-void flows. Treat two-phase ΔP as a first-pass estimate.</div>
+                <div>• Since v3.7, HEM is the <strong>default</strong> of four selectable frictional correlations — Lockhart-Martinelli, Müller-Steinhagen-Heck and Friedel replace the frictional term only (see §10.6).</div>
               </div>
             </div>
           </div>
@@ -3468,7 +3530,7 @@
                 <div>Map selection: |θ| ≥ 30° → vertical-flow map (Hewitt &amp; Roberts 1969 type, j<sub>G</sub> vs j<sub>L</sub>); |θ| &lt; 30° → horizontal-flow map (Baker 1954 type, G<sub>G</sub> vs G<sub>L</sub>)</div>
                 <div>Region boundaries are simplified piecewise-linear approximations in log-log space — they are NOT a mechanistic model (cf. Taitel &amp; Dukler) and are intended for orientation only</div>
                 <div>Operating points outside the plotted range are clamped to the map boundary and flagged on the figure</div>
-                <div>Rendered server-side with Python seaborn/matplotlib (Vercel API <span class="text-slate-100">/api/flowregime</span>); the 3D animation is conceptual, using the no-slip liquid holdup λ<sub>L</sub> = j<sub>L</sub>/(j<sub>G</sub>+j<sub>L</sub>)</div>
+                <div>Rendered server-side with Python seaborn/matplotlib (Vercel API <span class="text-slate-100">/api/flowregime</span>); the 3D animation is conceptual, scaling layer depths, film thicknesses and bubble loading from the no-slip liquid holdup λ<sub>L</sub> = j<sub>L</sub>/(j<sub>G</sub>+j<sub>L</sub>). v3.7 adds view modes (exterior / cutaway / inside the pipe), a regime preview override flagged PREVIEW, and playback speed / pause controls</div>
               </div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
                 <div class="text-green-300 font-bold">Worked example (default inputs):</div>
@@ -3477,6 +3539,36 @@
                 <div>W<sub>L</sub> = 7300 kg/h = 2.028 kg/s, ρ<sub>L</sub> = 500 kg/m³ → j<sub>L</sub> = 0.500 m/s</div>
                 <div class="text-green-300">→ Regime: <strong>Churn / Slug Flow</strong> (v<sub>mix</sub> = j<sub>G</sub>+j<sub>L</sub> = 1.01 m/s)</div>
               </div>
+            </div>
+          </div>
+
+          <div class="mb-8" data-i18n-html="docs.theory.b053">
+            <h4 class="text-sm font-bold text-green-300 mb-3">10.6 Selectable Two-Phase Frictional Correlations (v3.7)</h4>
+            <p class="text-sm leading-relaxed mb-3">The TWO-PHASE METHOD selector on the ΔP card replaces the <strong>frictional term only</strong>. The static head stays ρ<sub>m</sub>·g·Δz on the no-slip density, fittings stay ΣK·ρ<sub>m</sub>·v²/2, and the reported velocity, Reynolds number and friction factor remain the homogeneous-mixture values — so the API RP 14E and NORSOK screens stay comparable across methods. All phase-alone and whole-flow friction factors reuse the Colebrook-White function at the actual pipe roughness (an engineering adaptation; the original correlations were fitted with smooth-pipe Blasius-type factors).</p>
+            <div class="bg-slate-950 rounded-xl border border-slate-700 p-5 font-mono text-xs space-y-3">
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div class="text-green-300 font-bold">Lockhart-Martinelli (1949) + Chisholm (1967):</div>
+                <div>X² = (dP/dz)<sub>L</sub> / (dP/dz)<sub>G</sub> — each phase flowing ALONE in the full bore</div>
+                <div>φ<sub>L</sub>² = 1 + C/X + 1/X² &nbsp; → &nbsp; (dP/dz)<sub>TP</sub> = φ<sub>L</sub>²·(dP/dz)<sub>L</sub></div>
+                <div class="text-amber-300">C = 20 (turb-turb) · 12 (viscous liquid, turb gas) · 10 (turb liquid, viscous gas) · 5 (viscous-viscous); threshold Re = 2300</div>
+              </div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div class="text-green-300 font-bold">Müller-Steinhagen &amp; Heck (1986):</div>
+                <div>A = (dP/dz)<sub>LO</sub>, B = (dP/dz)<sub>GO</sub> — the WHOLE mass flux flowing as liquid / as gas</div>
+                <div>(dP/dz)<sub>TP</sub> = [A + 2(B−A)·x]·(1−x)<sup>1/3</sup> + B·x³</div>
+              </div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div class="text-green-300 font-bold">Friedel (1979):</div>
+                <div>φ<sub>LO</sub>² = E + 3.24·F·H / (Fr<sup>0.045</sup>·We<sup>0.035</sup>) &nbsp; → &nbsp; (dP/dz)<sub>TP</sub> = φ<sub>LO</sub>²·(dP/dz)<sub>LO</sub></div>
+                <div>E = (1−x)² + x²·(ρ<sub>L</sub>·f<sub>GO</sub>)/(ρ<sub>G</sub>·f<sub>LO</sub>) &nbsp;|&nbsp; F = x<sup>0.78</sup>·(1−x)<sup>0.224</sup> &nbsp;|&nbsp; H = (ρ<sub>L</sub>/ρ<sub>G</sub>)<sup>0.91</sup>·(µ<sub>G</sub>/µ<sub>L</sub>)<sup>0.19</sup>·(1−µ<sub>G</sub>/µ<sub>L</sub>)<sup>0.7</sup></div>
+                <div>Fr = G²/(g·D·ρ<sub>m</sub>²) &nbsp;|&nbsp; We = G²·D/(σ·ρ<sub>m</sub>) — σ from the SURFACE TENSION input (default 10 mN/m); requires µ<sub>G</sub> &lt; µ<sub>L</sub></div>
+              </div>
+              <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
+                <div class="text-green-300 font-bold">Worked example (default inputs — x = 0.0201, G = 255.26 kg/s·m²):</div>
+                <div>Frictional term: HEM 2.34 kPa · Lockhart-Martinelli 4.84 kPa (C = 20, X = 6.166, φ<sub>L</sub>² = 4.270) · Müller-Steinhagen-Heck 3.24 kPa · Friedel 4.04 kPa (φ<sub>LO</sub>² = 3.429)</div>
+                <div>Static head 174.59 kPa is method-independent → totals 176.93 / 179.43 / 177.83 / 178.63 kPa</div>
+              </div>
+              <div class="text-slate-500 text-[10px]">Empirical correlations legitimately disagree — a spread of 2× on the frictional term at low quality is normal. None includes the acceleration term; all remain screening-level estimates.</div>
             </div>
           </div>
         </section>
@@ -3630,6 +3722,20 @@
               <div>Sizing, Selection, and Installation of Pressure-relieving Devices — Part I: Sizing and Selection. American Petroleum Institute, Washington D.C. Governs all PRV sizing equations implemented in the Safety tab: §5.6 Gas/Vapor (Eq. 2, 5, 12, 15), §5.7 Steam (Eq. 21, 22), §5.8 Liquid Certified (Eq. 28–30), §5.9 Liquid Non-Certified (Eq. 38, 39), §5.10 Two-Phase Omega Method (Annex C.2.2, Eq. C.12–C.21). API 526 orifice areas (Table 1, D–T) also sourced from this edition.</div>
             </div>
           </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-400 mt-3" data-i18n-html="docs.theory.b054">
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Lockhart &amp; Martinelli (1949) · Chisholm (1967)</div>
+              <div>"Proposed Correlation of Data for Isothermal Two-Phase, Two-Component Flow in Pipes", Chem. Eng. Prog. 45(1):39–48, with the C-constant closure from Chisholm, "A Theoretical Basis for the Lockhart-Martinelli Correlation for Two-Phase Flow", Int. J. Heat Mass Transfer 10:1767–1778. ΔP card two-phase method (§10.6).</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Müller-Steinhagen &amp; Heck (1986)</div>
+              <div>"A Simple Friction Pressure Drop Correlation for Two-Phase Flow in Pipes", Chem. Eng. Process. 20(6):297–308. ΔP card two-phase method (§10.6).</div>
+            </div>
+            <div class="bg-slate-950 rounded-lg border border-slate-700 p-3 space-y-1">
+              <div class="text-amber-400 font-bold">Friedel (1979)</div>
+              <div>"Improved Friction Pressure Drop Correlations for Horizontal and Vertical Two-Phase Pipe Flow", European Two-Phase Flow Group Meeting, Ispra, Paper E2. ΔP card two-phase method (§10.6); consumes the surface-tension input through the Weber number.</div>
+            </div>
+          </div>
         </section>
 </div>
     </div>
@@ -3638,7 +3744,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.terms.b001">Terms of Use</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500" data-i18n-html="docs.terms.b002">Last updated: August 2026 — Version 3.6</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.terms.b002">Last updated: August 2026 — Version 3.7</p>
           <p class="text-xs text-slate-500 italic" data-i18n-html="docs.terms.langNote">Translations of these Terms of Use are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
           <div data-i18n-html="docs.terms.b003">
@@ -3660,7 +3766,7 @@
               <li>Uninterrupted or error-free operation</li>
               <li>Compliance with any specific national or international standard</li>
             </ul>
-            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. Several tools deliberately use simplified or screening-level models and are provided for qualitative orientation only — they <strong>must not be used as a basis for design, operational, or safety decisions</strong>. These include: the Flow Regime visualization (approximate regime-map boundaries + a conceptual 3D animation), the Pipe Delta Pressure two-phase calculation (Homogeneous Equilibrium Model — no slip, no acceleration term), the erosional-velocity check (API RP 14E empirical screening), and the Z-Factor Estimator (Papay correlation, valid only within its stated P<sub>r</sub>/T<sub>r</sub> envelope). Where an input falls outside a method's validated range, the Application flags the result as extrapolated; such results are indicative only.</p>
+            <p class="mt-2">While the calculations are based on JIS K 2301:2011, ISO 6578:1991, and other referenced standards, <strong>users must independently verify all results before applying them to any operational, safety, commercial, or regulatory context</strong>. Several tools deliberately use simplified or screening-level models and are provided for qualitative orientation only — they <strong>must not be used as a basis for design, operational, or safety decisions</strong>. These include: the Flow Regime visualization (approximate regime-map boundaries + a conceptual 3D animation), the Pipe Delta Pressure two-phase calculation (selectable screening correlations — HEM default, Lockhart-Martinelli, Müller-Steinhagen-Heck, Friedel — none with slip in the static head or an acceleration term), the erosional-velocity check (API RP 14E empirical screening), and the Z-Factor Estimator (Papay correlation, valid only within its stated P<sub>r</sub>/T<sub>r</sub> envelope). Where an input falls outside a method's validated range, the Application flags the result as extrapolated; such results are indicative only.</p>
             <p class="mt-2"><strong>Screening tools added in v2.8–v3.1</strong> carry the same qualification: the Gas Property Estimator (Lee-Gonzalez-Eakin viscosity, sonic velocity and Joule-Thomson coefficient on the Papay Z-factor), the Steam Properties card (IAPWS-IF97 industrial formulation, Regions 1/2/4 only), the NPSHa card (available head only — it deliberately issues no margin verdict against the pump vendor's NPSHr), the Compressor card (isentropic and perfect-gas polytropic relations with a one-pass real-gas correction; not a test-code procedure), and the GT Fuel estimator and catalogue. The GT catalogue figures are <strong>indicative ratings transcribed from vendors' publicly available materials at ISO conditions</strong>; they may be superseded by later vendor revisions, are net or gross per each vendor's own convention, and do not constitute a performance guarantee — actual fuel consumption depends on site conditions, degradation, part load and fuel composition. Always confirm against the current vendor datasheet.</p>
           </div>
 
@@ -3711,7 +3817,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8 space-y-6 text-slate-300 max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4" data-i18n-html="docs.privacy.b001">Privacy Policy</h2>
         <div class="space-y-5 text-sm leading-relaxed">
-          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: August 2026 — Version 3.6</p>
+          <p class="text-xs text-slate-500" data-i18n-html="docs.privacy.b002">Last updated: August 2026 — Version 3.7</p>
           <p class="text-xs text-slate-500 italic" data-i18n-html="docs.privacy.langNote">Translations of this Privacy Policy are provided for convenience only. The English version is authoritative and governs in the event of any discrepancy.</p>
 
           <div data-i18n-html="docs.privacy.b003">
@@ -3853,7 +3959,7 @@
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <span data-i18n="footer.statusLine">System Online • Vercel Environment</span>
       </div>
-      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.5</div>
+      <div data-i18n="footer.copyright">© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.7</div>
     </div>
   </footer>
 
@@ -5744,6 +5850,15 @@
       return sumK;
     }
 
+    // v3.7 — two-phase method selector. Only Friedel consumes the surface-tension
+    // input, so the σ field stays hidden for the other methods. Registered in
+    // recomputeAll() so a share link that restores tp_method=friedel re-shows it.
+    function updateTpMethodUI() {
+      const sel = document.getElementById('dp-tp-method');
+      const sigmaWrap = document.getElementById('dp-sigma-wrap');
+      if (sel && sigmaWrap) sigmaWrap.classList.toggle('hidden', sel.value !== 'friedel');
+    }
+
     // ══════════════════════════════════════════════════════════════════════════
     //  3B (v2.8) — NORSOK P-001 LINE-SIZING SCREEN
     //
@@ -5858,6 +5973,11 @@
         l_visc: parseFloat(document.getElementById('dp-l-visc').value) || 1,
         l_visc_m: parseFloat(document.getElementById('dp-l-visc-u').value) || 1,
         cfactor: parseFloat(document.getElementById('dp-cfactor').value) || 100,
+        // v3.7 — two-phase frictional correlation; "hem" reproduces pre-v3.7 results.
+        tp_method: document.getElementById('dp-tp-method').value || 'hem',
+        // v3.7 — σ entered in mN/m, sent in N/m; blank/zero falls back to 10 mN/m
+        // client-side (same pattern as cfactor, so the server can stay strict).
+        sigma: (parseFloat(document.getElementById('dp-sigma').value) || 10) / 1000,
         // v2.8 — ΣK from the Crane fittings block. 0 when the block is untouched, which
         // makes the server's dpFittings exactly 0 and preserves the pinned reference case.
         k_total: updateFittingSum()
@@ -6045,11 +6165,7 @@
           initFlow3D(data);
         } catch (e) {
           // Graceful fallback — the static seaborn regime map above stays fully usable.
-          const wrap = document.getElementById('fr-3d-wrap');
-          wrap.innerHTML = '<div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">' +
-            '<svg class="w-8 h-8 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
-            '<p class="text-xs text-slate-400 font-semibold">' + tr('advanced.flowRegime.animation3dUnavailableTitle') + '</p>' +
-            '<p class="text-[10px] text-slate-500 mt-1 max-w-xs">' + tr('advanced.flowRegime.animation3dUnavailableDesc') + '</p></div>';
+          showFlow3DUnavailable();
           console.error(e);
         }
       } catch (err) {
@@ -6062,12 +6178,56 @@
     }
 
     let fr3d = null;
+
+    // Shared 3D-unavailable notice (CDN blocked, WebGL disabled). Used by the first
+    // visualize AND by mode-strip rebuilds — initFlow3D wipes fr-3d-wrap before the
+    // renderer constructor can throw, so a rebuild failure must restore the notice
+    // rather than leave a permanently blank box (v3.7 review).
+    function showFlow3DUnavailable() {
+      const wrap = document.getElementById('fr-3d-wrap');
+      wrap.innerHTML = '<div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">' +
+        '<svg class="w-8 h-8 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
+        '<p class="text-xs text-slate-400 font-semibold">' + tr('advanced.flowRegime.animation3dUnavailableTitle') + '</p>' +
+        '<p class="text-[10px] text-slate-500 mt-1 max-w-xs">' + tr('advanced.flowRegime.animation3dUnavailableDesc') + '</p></div>';
+    }
+
+    // v3.7 — animation mode strip helpers. View/regime changes rebuild the scene from
+    // the cached server result (no API round-trip); speed and pause act live.
+    function rebuildFlow3D() {
+      if (!lastFlowRegime) return;
+      loadThree().then(() => initFlow3D(lastFlowRegime)).catch(e => {
+        showFlow3DUnavailable();
+        console.error(e);
+      });
+    }
+    function setFlow3DSpeed() {
+      if (fr3d) fr3d.speed = parseFloat(document.getElementById('fr-3d-speed').value) || 1;
+    }
+    function toggleFlow3DPause() {
+      if (!fr3d) return;
+      fr3d.paused = !fr3d.paused;
+      const btn = document.getElementById('fr-3d-pause');
+      if (btn) btn.innerText = fr3d.paused ? '▶' : '⏸';
+    }
+
     function stopFlow3D() {
       if (!fr3d) return;
       cancelAnimationFrame(fr3d.raf);
       window.removeEventListener('resize', fr3d.onResize);
+      // v3.7 — mode switching re-initializes the scene far more often than the old
+      // once-per-visualize flow, so GPU resources are now disposed explicitly
+      // (dispose() is idempotent, so shared geometries are safe to sweep).
+      (fr3d.domHandlers || []).forEach(h => h.el.removeEventListener(h.type, h.fn));
+      fr3d.scene.traverse(o => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose());
+      });
       if (fr3d.renderer.domElement.parentNode) fr3d.renderer.domElement.parentNode.removeChild(fr3d.renderer.domElement);
       fr3d.renderer.dispose();
+      // dispose() alone does not release the GL context in r128; without this, rapid
+      // mode-strip switching accumulates contexts until the browser force-evicts the
+      // oldest ("Too many active WebGL contexts") — v3.7 review.
+      fr3d.renderer.forceContextLoss();
       fr3d = null;
     }
 
@@ -6078,19 +6238,41 @@
       // guarantee the overlay element exists before rendering.
       wrap.innerHTML = '<div id="fr-3d-overlay" class="absolute bottom-2 left-3 text-[10px] font-mono text-slate-400 pointer-events-none z-10"></div>';
       const W = wrap.clientWidth || 640, H = wrap.clientHeight || 320;
+
+      // v3.7 — mode strip: view (exterior/cutaway/inside), regime preview override,
+      // speed and pause. A manual regime is previewed under the CALCULATED θ and
+      // velocities, and is flagged PREVIEW so it can never be mistaken for the result.
+      const view = (document.getElementById('fr-3d-view') || {}).value || 'exterior';
+      const wanted = (document.getElementById('fr-3d-regime') || {}).value || 'auto';
+      const norm = k => k === 'wave' ? 'wavy' : k;   // Baker's 'wave' shares the 'wavy' builder
+      const key = norm(wanted === 'auto' ? d.regime_key : wanted);
+      const preview = wanted !== 'auto' && key !== norm(d.regime_key);
+      const cutaway = view === 'cutaway';
+
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(W, H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.domElement.style.touchAction = 'none';
+      if (view !== 'inside') renderer.domElement.style.cursor = 'grab';
       wrap.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-      camera.position.set(0, 1.2, 16);
-      camera.lookAt(0, 0, 0);
-      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-      const dl = new THREE.DirectionalLight(0xffffff, 0.8);
-      dl.position.set(5, 8, 10);
+      const camera = new THREE.PerspectiveCamera(view === 'inside' ? 62 : 40, W / H, 0.05, 120);
+      scene.add(new THREE.HemisphereLight(0xbfdbfe, 0x0f172a, 0.55));
+      const dl = new THREE.DirectionalLight(0xffffff, 0.85);
+      dl.position.set(6, 10, 8);
       scene.add(dl);
+      const rim = new THREE.PointLight(0x38bdf8, 0.4, 60);
+      rim.position.set(-9, -4, 7);
+      scene.add(rim);
+      if (view !== 'inside') {
+        // world-horizontal reference grid — makes the inclination readable at a glance
+        const grid = new THREE.GridHelper(44, 22, 0x334155, 0x1e293b);
+        grid.position.y = -4.4;
+        grid.material.transparent = true;
+        grid.material.opacity = 0.35;
+        scene.add(grid);
+      }
 
       const theta = d.theta_deg * Math.PI / 180;
       const group = new THREE.Group();
@@ -6101,19 +6283,34 @@
       // visual speed scale [scene units/s] — monotonic with the real velocity [m/s]
       const vis = v => 0.5 + 2.2 * Math.log10(1 + Math.max(v, 0));
       const uGas = vis(d.jG), uLiq = vis(d.jL), uMix = vis(d.v_mix);
+      // no-slip holdup drives layer depths, film thickness and bubble loading
+      const lam = Math.min(Math.max(d.lambda_l !== undefined ? d.lambda_l : 0.5, 0.03), 0.97);
 
-      // transparent pipe shell + end rings
-      const pipe = new THREE.Mesh(
-        new THREE.CylinderGeometry(R, R, LEN, 36, 1, true),
-        new THREE.MeshPhongMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.14, side: THREE.DoubleSide, depthWrite: false })
-      );
-      pipe.rotation.z = Math.PI / 2;
-      group.add(pipe);
+      // pipe shell — Cutaway removes the camera-facing half. After the two rotations
+      // the circumferential angle keeps world z = R·cos(θc), so θc ∈ (π/2, 3π/2) is
+      // the far half and the open side faces the camera.
+      const shellGeo = cutaway
+        ? new THREE.CylinderGeometry(R * 1.03, R * 1.03, LEN, 48, 1, true, Math.PI / 2, Math.PI)
+        : new THREE.CylinderGeometry(R * 1.03, R * 1.03, LEN, 48, 1, true);
+      const shell = new THREE.Mesh(shellGeo, new THREE.MeshPhongMaterial({
+        color: 0x94a3b8, specular: 0x99ccff, shininess: 80, transparent: true,
+        opacity: cutaway ? 0.42 : 0.15, side: THREE.DoubleSide, depthWrite: false }));
+      shell.rotation.z = Math.PI / 2;
+      group.add(shell);
+      // flanged ends with an 8-bolt circle instead of the old bare torus rings
+      const flangeMat = new THREE.MeshPhongMaterial({ color: 0x475569, specular: 0x94a3b8, shininess: 40 });
       [-HALF, HALF].forEach(x => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(R, 0.035, 8, 48), new THREE.MeshBasicMaterial({ color: 0x475569 }));
-        ring.rotation.y = Math.PI / 2;
-        ring.position.x = x;
-        group.add(ring);
+        const fl = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.32, R * 1.32, 0.22, 32), flangeMat);
+        fl.rotation.z = Math.PI / 2;
+        fl.position.x = x;
+        group.add(fl);
+        for (let b = 0; b < 8; b++) {
+          const ang = b / 8 * Math.PI * 2;
+          const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.3, 8), flangeMat);
+          bolt.rotation.z = Math.PI / 2;
+          bolt.position.set(x, Math.sin(ang) * R * 1.17, Math.cos(ang) * R * 1.17);
+          group.add(bolt);
+        }
       });
       // flow direction arrow above the pipe outlet
       const arrow = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.7, 16), new THREE.MeshBasicMaterial({ color: 0xfbbf24 }));
@@ -6121,126 +6318,262 @@
       arrow.position.set(HALF + 0.7, 0, 0);
       group.add(arrow);
 
-      const movers = [];   // {obj, speed, wobAmp, wobFreq, baseY, baseZ}
-      const waveSegs = []; // stratified/wavy surface segments
+      const movers = [];   // {obj, speed, wobAmp, jitter, wobFreq, baseY, baseZ, phase}
+      const updaters = []; // per-frame custom updates (t, dt) — travelling surfaces etc.
       const rnd = (a, b) => a + Math.random() * (b - a);
-      const liquidMat = op => new THREE.MeshPhongMaterial({ color: 0x3b82f6, transparent: true, opacity: op, depthWrite: false });
-      const gasMat = op => new THREE.MeshPhongMaterial({ color: 0xe0f2fe, transparent: true, opacity: op, depthWrite: false });
+      const liquidMat = op => new THREE.MeshPhongMaterial({ color: 0x3b82f6, specular: 0x93c5fd, shininess: 70, transparent: true, opacity: op, depthWrite: false });
+      const gasMat = op => new THREE.MeshPhongMaterial({ color: 0xe0f2fe, specular: 0xffffff, shininess: 90, transparent: true, opacity: op, depthWrite: false });
       const dropMat = () => new THREE.MeshBasicMaterial({ color: 0x7dd3fc });
-      const addMover = (obj, speed, wobAmp) => {
+      const streakMat = () => new THREE.MeshBasicMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.5 });
+      const bubGeo = new THREE.SphereGeometry(1, 10, 8);   // shared unit sphere, scaled per instance
+      const addMover = (obj, speed, wobAmp, jitter) => {
         group.add(obj);
-        movers.push({ obj, speed, wobAmp: wobAmp || 0, wobFreq: rnd(1.5, 4), baseY: obj.position.y, baseZ: obj.position.z, phase: rnd(0, 6.28) });
+        movers.push({ obj, speed, wobAmp: wobAmp || 0, jitter: jitter || 0,
+                      wobFreq: rnd(1.5, 4), baseY: obj.position.y, baseZ: obj.position.z, phase: rnd(0, 6.28) });
       };
-      const addDroplets = (n, rMin, rMax, radMax, speed) => {
+      const addBubble = (r, x, y, z, speed, wob) => {
+        const b = new THREE.Mesh(bubGeo, gasMat(0.85));
+        b.scale.setScalar(r);
+        b.position.set(x, y, z);
+        addMover(b, speed, wob);
+      };
+      const addDroplets = (n, rMin, rMax, radMax, speed, wob, yMin) => {
         for (let i = 0; i < n; i++) {
-          const drop = new THREE.Mesh(new THREE.SphereGeometry(rnd(rMin, rMax), 8, 8), dropMat());
-          const ang = rnd(0, 6.28), rad = rnd(0, radMax);
-          drop.position.set(rnd(-HALF, HALF), Math.sin(ang) * rad, Math.cos(ang) * rad);
-          addMover(drop, speed * rnd(0.85, 1.15), 0.03);
+          const drop = new THREE.Mesh(bubGeo, dropMat());
+          drop.scale.setScalar(rnd(rMin, rMax));
+          if (yMin !== undefined) {
+            drop.position.set(rnd(-HALF, HALF), rnd(yMin, 0.8), rnd(-0.5, 0.5));
+          } else {
+            const ang = rnd(0, 6.28), rad = rnd(0, radMax);
+            drop.position.set(rnd(-HALF, HALF), Math.sin(ang) * rad, Math.cos(ang) * rad);
+          }
+          addMover(drop, speed * rnd(0.85, 1.15), wob);
         }
       };
-      const addLiquidLayer = (heightFrac, nSegs, amp) => {
-        // bottom liquid layer built from segments so the surface can travel as a wave
-        for (let i = 0; i < nSegs; i++) {
-          const seg = new THREE.Mesh(new THREE.BoxGeometry(LEN / nSegs * 0.99, 1, 1.55), liquidMat(0.6));
-          seg.userData = { x: -HALF + (i + 0.5) * LEN / nSegs, h0: heightFrac * 2 * R, amp: amp };
-          seg.position.x = seg.userData.x;
-          group.add(seg);
-          waveSegs.push(seg);
+      const addStreaks = (n, len, radMax, speed, yMin) => {
+        for (let i = 0; i < n; i++) {
+          const s = new THREE.Mesh(new THREE.BoxGeometry(len, 0.02, 0.02), streakMat());
+          if (yMin !== undefined) {
+            s.position.set(rnd(-HALF, HALF), rnd(yMin, 0.85), rnd(-0.5, 0.5));
+          } else {
+            const ang = rnd(0, 6.28), rad = rnd(0, radMax);
+            s.position.set(rnd(-HALF, HALF), Math.sin(ang) * rad, Math.cos(ang) * rad);
+          }
+          addMover(s, speed * rnd(0.9, 1.1), 0);
         }
+      };
+      // half-width of the pipe chord at a liquid surface height h above the invert —
+      // keeps the stratified/wavy layer inside the bore instead of the old fixed box
+      const chordHalf = h => Math.sqrt(Math.max(R * R - (h - R) * (h - R), 0.02));
+      const addLiquidLayer = (heightFrac, nSegs, amp, kWave, cWave) => {
+        const segs = [];
+        const segLen = LEN / nSegs;
+        for (let i = 0; i < nSegs; i++) {
+          const seg = new THREE.Mesh(new THREE.BoxGeometry(segLen * 0.99, 1, 1), liquidMat(0.55));
+          const x0 = -HALF + (i + 0.5) * segLen;
+          seg.position.x = x0;
+          group.add(seg);
+          segs.push({ seg, x0 });
+        }
+        const h0 = heightFrac * 2 * R;
+        updaters.push(t => {
+          for (const s of segs) {
+            const h = Math.min(Math.max(h0 + (amp ? amp * Math.sin(kWave * s.x0 - cWave * t) : 0), 0.06), 1.9);
+            s.seg.scale.y = h;
+            s.seg.scale.z = 2 * chordHalf(h * 0.75) * 0.98;
+            s.seg.position.y = -R + h / 2;
+          }
+        });
       };
 
-      const key = d.regime_key;
-      if (key === 'churn_slug' || key === 'slug') {
-        // thin wall film + alternating liquid slugs and Taylor gas bubbles
-        const film = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24, 1, true), liquidMat(0.18));
+      if (key === 'churn_slug') {
+        // vertical slug/churn: liquid slugs and bullet-nosed Taylor bubbles travel as
+        // one cell train, the wall film between them drains BACKWARD, and churn adds
+        // an axial oscillation that grows with jG/jL.
+        const chaos = Math.min(0.55, 0.18 + 0.3 * Math.min(d.jG / Math.max(d.jL, 0.01), 3) / 3);
+        const film = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 28, 1, true), liquidMat(0.16));
         film.rotation.z = Math.PI / 2;
         group.add(film);
-        const cell = 4.0, nCell = Math.ceil(LEN / cell) + 1;
+        for (let i = 0; i < 6; i++) {   // draining film ripples (fall back relative to the cells)
+          const rip = new THREE.Mesh(new THREE.TorusGeometry(R * 0.965, 0.03, 8, 32), liquidMat(0.5));
+          rip.rotation.y = Math.PI / 2;
+          rip.position.x = -HALF + i * (LEN / 6);
+          addMover(rip, -0.35 * uLiq - 0.2, 0);
+        }
+        const cell = 4.0, nCell = Math.ceil(LEN / cell) + 1, uCell = uMix * 1.12;
         for (let i = 0; i < nCell; i++) {
           const xc = -HALF - cell + i * cell;
-          const slug = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.93, R * 0.93, 2.1, 24), liquidMat(0.65));
+          const slug = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.93, R * 0.93, 1.9, 24), liquidMat(0.66));
           slug.rotation.z = Math.PI / 2;
           slug.position.x = xc;
-          addMover(slug, uMix, 0);
-          for (let b = 0; b < 5; b++) {
-            const bub = new THREE.Mesh(new THREE.SphereGeometry(rnd(0.06, 0.13), 8, 8), gasMat(0.9));
-            bub.position.set(xc + rnd(-0.9, 0.9), rnd(-0.5, 0.5), rnd(-0.5, 0.5));
-            addMover(bub, uMix * rnd(1.0, 1.1), 0.05);
-          }
-          // Taylor bubble (bullet-nosed): cylinder + hemispherical nose
+          addMover(slug, uCell, 0, chaos);
+          for (let b = 0; b < 7; b++)   // aerated slug body
+            addBubble(rnd(0.05, 0.12), xc + rnd(-0.85, 0.85), rnd(-0.55, 0.55), rnd(-0.55, 0.55), uCell * rnd(1.0, 1.08), 0.05);
+          // Taylor bubble: open body + hemispherical nose + flattened rear meniscus
           const tb = new THREE.Group();
-          const body = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.7, R * 0.7, 1.5, 20), gasMat(0.8));
+          const tbR = R * 0.76;
+          const body = new THREE.Mesh(new THREE.CylinderGeometry(tbR, tbR, 1.6, 22, 1, true), gasMat(0.78));
           body.rotation.z = Math.PI / 2;
           tb.add(body);
-          const nose = new THREE.Mesh(new THREE.SphereGeometry(R * 0.7, 20, 16), gasMat(0.8));
-          nose.position.x = 0.75;
+          const nose = new THREE.Mesh(new THREE.SphereGeometry(tbR, 22, 14), gasMat(0.78));
+          nose.position.x = 0.8;
           tb.add(nose);
+          const tail = new THREE.Mesh(new THREE.SphereGeometry(tbR, 22, 14), gasMat(0.7));
+          tail.position.x = -0.8;
+          tail.scale.x = 0.28;
+          tb.add(tail);
           tb.position.x = xc + cell / 2;
-          addMover(tb, uMix * 1.15, 0);
+          addMover(tb, uCell, 0, chaos);
+          for (let w = 0; w < 4; w++)    // wake bubbles shed behind the Taylor tail
+            addBubble(rnd(0.05, 0.1), xc + cell / 2 - rnd(1.0, 1.9), rnd(-0.4, 0.4), rnd(-0.4, 0.4), uCell * rnd(0.9, 1.0), 0.08);
+        }
+      } else if (key === 'slug') {
+        // horizontal slug: aerated liquid slugs bridge the bore between elongated
+        // bubbles riding the top of the pipe over a residual liquid layer
+        addLiquidLayer(Math.min(0.45, 0.25 + 0.35 * lam), 24, 0.05, 2.0, 1.2 * uLiq);
+        const cell = 4.4, nCell = Math.ceil(LEN / cell) + 1, uCell = uMix * 1.05;
+        for (let i = 0; i < nCell; i++) {
+          const xc = -HALF - cell + i * cell;
+          const slug = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.94, R * 0.94, 2.0, 24), liquidMat(0.62));
+          slug.rotation.z = Math.PI / 2;
+          slug.position.x = xc;
+          addMover(slug, uCell, 0);
+          for (let b = 0; b < 6; b++)
+            addBubble(rnd(0.05, 0.11), xc + rnd(-0.9, 0.9), rnd(-0.3, 0.6), rnd(-0.5, 0.5), uCell * rnd(1.0, 1.06), 0.04);
+          const eb = new THREE.Group();  // elongated bubble hugging the top wall
+          const ebR = R * 0.42;
+          const ebBody = new THREE.Mesh(new THREE.CylinderGeometry(ebR, ebR, 1.7, 18, 1, true), gasMat(0.8));
+          ebBody.rotation.z = Math.PI / 2;
+          eb.add(ebBody);
+          const ebNose = new THREE.Mesh(new THREE.SphereGeometry(ebR, 18, 12), gasMat(0.8));
+          ebNose.position.x = 0.85;
+          eb.add(ebNose);
+          const ebTail = new THREE.Mesh(new THREE.SphereGeometry(ebR, 18, 12), gasMat(0.72));
+          ebTail.position.x = -0.85;
+          ebTail.scale.x = 0.4;
+          eb.add(ebTail);
+          eb.position.set(xc + cell / 2, R * 0.45, 0);
+          addMover(eb, uCell * 1.02, 0);
         }
       } else if (key === 'bubbly' || key === 'bubble') {
-        const fill = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.35));
+        const fill = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.3));
         fill.rotation.z = Math.PI / 2;
         group.add(fill);
-        for (let i = 0; i < 80; i++) {
-          const bub = new THREE.Mesh(new THREE.SphereGeometry(rnd(0.07, 0.16), 8, 8), gasMat(0.9));
-          const ang = rnd(0, 6.28), rad = rnd(0, R * 0.75);
-          let y = Math.sin(ang) * rad;
-          if (key === 'bubble') y = rnd(0.15, 0.8) * R; // horizontal: bubbles migrate to the top
-          bub.position.set(rnd(-HALF, HALF), y, Math.cos(ang) * rad);
-          addMover(bub, uGas * rnd(0.9, 1.2), 0.06);
+        // bubble loading scales with the void fraction; small bubbles slip slightly
+        // ahead of the mixture, and migrate to the top wall in horizontal flow
+        const voidFrac = Math.min(Math.max(1 - lam, 0.05), 0.35);
+        const nBub = Math.round(45 + 260 * voidFrac);
+        for (let i = 0; i < nBub; i++) {
+          const ang = rnd(0, 6.28), rad = rnd(0, R * 0.8);
+          let y = Math.sin(ang) * rad, z = Math.cos(ang) * rad;
+          if (key === 'bubble') {
+            y = R * (0.15 + 0.65 * Math.sqrt(Math.random()));
+            z = rnd(-0.6, 0.6) * Math.sqrt(Math.max(1 - (y / R) * (y / R), 0.05));
+          }
+          addBubble(rnd(0.045, 0.15), rnd(-HALF, HALF), y, z, uMix * rnd(1.0, 1.18), rnd(0.04, 0.09));
         }
       } else if (key === 'stratified') {
-        addLiquidLayer(0.45, 24, 0.0);
-        addDroplets(10, 0.03, 0.05, R * 0.3, uGas); // faint gas tracers above
-        movers.forEach(m => { if (m.obj.position.y < 0.2) m.obj.position.y = rnd(0.35, 0.7); });
-      } else if (key === 'wave' || key === 'wavy') {
-        addLiquidLayer(0.42, 24, 0.16);
-        addDroplets(14, 0.03, 0.05, R * 0.3, uGas);
-        movers.forEach(m => { if (m.obj.position.y < 0.2) m.obj.position.y = rnd(0.35, 0.7); });
+        addLiquidLayer(Math.min(Math.max(lam, 0.12), 0.8), 26, 0.02, 2.2, 1.5 * uLiq);
+        addStreaks(10, 0.7, R * 0.35, uGas, 0.35);   // gas streaklines above the surface
+      } else if (key === 'wavy') {
+        const amp = 0.09 + 0.12 * Math.min(uGas / 3, 1);
+        addLiquidLayer(Math.min(Math.max(lam * 0.9, 0.1), 0.7), 26, amp, 2.2, 2.2 * Math.max(uLiq, 0.6));
+        addStreaks(12, 0.7, R * 0.3, uGas, 0.3);
+        addDroplets(12, 0.03, 0.05, 0, uGas * 0.85, 0.09, 0.25);   // spray torn off the crests
       } else if (key === 'annular') {
-        const film = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.94, R * 0.94, LEN, 28, 1, true), liquidMat(0.5));
+        // wall film (thickness from holdup) with disturbance waves riding on it,
+        // and a fast mist-laden gas core
+        const filmTh = Math.min(Math.max(0.05 + 0.13 * lam, 0.05), 0.2);
+        const filmR = R * (1 - filmTh / 2) * 0.97;
+        const film = new THREE.Mesh(new THREE.CylinderGeometry(filmR, filmR, LEN, 30, 1, true), liquidMat(0.4));
         film.rotation.z = Math.PI / 2;
         group.add(film);
-        for (let i = 0; i < 7; i++) { // film ripples travelling at the liquid speed
-          const rip = new THREE.Mesh(new THREE.TorusGeometry(R * 0.94, 0.045, 8, 36), liquidMat(0.85));
-          rip.rotation.y = Math.PI / 2;
-          rip.position.x = -HALF + i * (LEN / 7);
-          addMover(rip, uLiq, 0);
+        for (let i = 0; i < 7; i++) {
+          const dw = new THREE.Mesh(new THREE.TorusGeometry(filmR * 0.99, 0.05 + 0.05 * lam, 10, 36), liquidMat(0.85));
+          dw.rotation.y = Math.PI / 2;
+          dw.position.x = -HALF + i * (LEN / 7);
+          addMover(dw, uLiq * 1.7, 0);
         }
-        addDroplets(110, 0.03, 0.07, R * 0.55, uGas); // fast gas core with entrained mist
-      } else { // disperse
-        const mist = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.15));
-        mist.rotation.z = Math.PI / 2;
-        group.add(mist);
-        addDroplets(180, 0.03, 0.09, R * 0.85, uMix);
+        addDroplets(110, 0.025, 0.06, filmR * 0.8, uGas, 0.03);
+        addStreaks(14, 0.9, filmR * 0.6, uGas * 1.05);
+      } else { // disperse / mist
+        const haze = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.97, R * 0.97, LEN, 24), liquidMat(0.1));
+        haze.rotation.z = Math.PI / 2;
+        group.add(haze);
+        addDroplets(170, 0.025, 0.08, R * 0.85, uMix, 0.07);
+        addStreaks(16, 1.0, R * 0.8, uMix * 1.1);
       }
 
-      document.getElementById('fr-3d-overlay').innerText =
-        d.regime + ' | θ = ' + d.theta_deg.toFixed(1) + '° | jG = ' + d.jG.toFixed(2) + ' m/s | jL = ' + d.jL.toFixed(2) + ' m/s';
+      // overlay: regime + θ + fluxes, with an explicit PREVIEW tag on a manual regime
+      const ov = document.getElementById('fr-3d-overlay');
+      const regimeSel = document.getElementById('fr-3d-regime');
+      const previewLabel = (preview && regimeSel && regimeSel.selectedIndex >= 0)
+        ? regimeSel.options[regimeSel.selectedIndex].text : d.regime;
+      ov.textContent = (preview ? previewLabel : d.regime) + ' | θ = ' + d.theta_deg.toFixed(1) +
+        '° | jG = ' + d.jG.toFixed(2) + ' m/s | jL = ' + d.jL.toFixed(2) + ' m/s';
+      if (preview) {
+        const tag = document.createElement('span');
+        tag.className = 'ml-2 px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold';
+        tag.textContent = tr('advanced.flowRegime.previewTag');
+        ov.appendChild(tag);
+      }
+
+      // camera: user-orbitable (drag) + wheel zoom in Exterior/Cutaway; rail-mounted
+      // just inside the inlet, looking down the bore, in the Inside view
+      const cam = { userAz: 0, userPol: 0.12, radius: 16 };
+      const axis = new THREE.Vector3(Math.cos(theta), Math.sin(theta), 0);
+      const placeCamera = t => {
+        if (view === 'inside') {
+          camera.position.copy(axis).multiplyScalar(-HALF * 0.82);
+          camera.position.y += 0.18 + 0.06 * Math.sin(t * 0.6);
+          camera.lookAt(axis.x * HALF, axis.y * HALF, 0);
+          return;
+        }
+        const az = cam.userAz + Math.sin(t * 0.12) * 0.09;
+        const pol = Math.min(Math.max(cam.userPol, -1.25), 1.25);
+        camera.position.set(Math.sin(az) * Math.cos(pol) * cam.radius,
+                            Math.sin(pol) * cam.radius,
+                            Math.cos(az) * Math.cos(pol) * cam.radius);
+        camera.lookAt(0, 0, 0);
+      };
+      const domHandlers = [];
+      const on = (el, type, fn, opts) => { el.addEventListener(type, fn, opts); domHandlers.push({ el, type, fn }); };
+      if (view !== 'inside') {
+        let dragging = false, px = 0, py = 0;
+        on(renderer.domElement, 'pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; });
+        on(window, 'pointermove', e => {
+          if (!dragging) return;
+          cam.userAz += (e.clientX - px) * 0.008;
+          cam.userPol += (e.clientY - py) * 0.006;
+          px = e.clientX; py = e.clientY;
+        });
+        on(window, 'pointerup', () => { dragging = false; });
+        on(renderer.domElement, 'wheel', e => {
+          e.preventDefault();
+          cam.radius = Math.min(Math.max(cam.radius + e.deltaY * 0.02, 7), 30);
+        }, { passive: false });
+      }
 
       const clock = new THREE.Clock();
       let t = 0;
       function animate() {
         fr3d.raf = requestAnimationFrame(animate);
-        const dt = Math.min(clock.getDelta(), 0.1);
+        let dt = Math.min(clock.getDelta(), 0.1);
+        dt = fr3d.paused ? 0 : dt * fr3d.speed;
         t += dt;
         for (const m of movers) {
-          m.obj.position.x += m.speed * dt;
+          // churn: axial oscillation on top of the mean cell speed (m.jitter > 0)
+          const jm = m.jitter ? (1 + m.jitter * Math.sin(t * 2.3 + m.phase)) : 1;
+          m.obj.position.x += m.speed * jm * dt;
           if (m.obj.position.x > HALF + 2) m.obj.position.x -= LEN + 4;
+          if (m.obj.position.x < -HALF - 2) m.obj.position.x += LEN + 4;
           if (m.wobAmp) {
             m.obj.position.y = m.baseY + Math.sin(t * m.wobFreq + m.phase) * m.wobAmp;
             m.obj.position.z = m.baseZ + Math.cos(t * m.wobFreq + m.phase) * m.wobAmp;
           }
         }
-        for (const seg of waveSegs) {
-          const h = seg.userData.h0 + (seg.userData.amp ? seg.userData.amp * Math.sin(2.2 * seg.userData.x - 2.5 * uLiq * t) : 0);
-          seg.scale.y = h;
-          seg.position.y = -R + h / 2;
-        }
-        camera.position.x = Math.sin(t * 0.12) * 1.2;
-        camera.lookAt(0, 0, 0);
+        for (const u of updaters) u(t, dt);
+        placeCamera(t);
         renderer.render(scene, camera);
       }
       const onResize = () => {
@@ -6251,7 +6584,13 @@
         renderer.setSize(w, h);
       };
       window.addEventListener('resize', onResize);
-      fr3d = { renderer, scene, camera, raf: 0, onResize };
+      // respect prefers-reduced-motion: build the full scene but start it paused
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const speedSel = document.getElementById('fr-3d-speed');
+      fr3d = { renderer, scene, camera, raf: 0, onResize, domHandlers,
+               paused: !!reduced, speed: speedSel ? (parseFloat(speedSel.value) || 1) : 1 };
+      const pauseBtn = document.getElementById('fr-3d-pause');
+      if (pauseBtn) pauseBtn.innerText = fr3d.paused ? '▶' : '⏸';
       animate();
     }
 
@@ -6855,7 +7194,7 @@
                p1: pressMode1, p2: pressMode2, tab: currentTab, advSub: currentAdvSub, lang: currentLang };
     }
     function recomputeAll() {
-      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, calcGTFuel, calcLNGCargo, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
+      [calcGHV, calcPipeVolume, calcZFactor, calcGasProps, calcSteamProps, calcNPSH, calcCompressor, updateTpMethodUI, calcGTFuel, calcLNGCargo, updatePSVMode].forEach(fn => { try { fn(); } catch (e) {} });
     }
     function applyState(s, restoreTab) {
       if (!s) return;
@@ -7062,6 +7401,7 @@
             ${row(tr('js.export.elevationLabel'), t('dp-elev') + ' ' + us('dp-elev-unit'))}
             ${row(tr('js.export.roughnessLabel'), t('dp-rough') + ' ' + us('dp-rough-unit'))}
             ${row(tr('js.export.erosionCFactorLabel'), t('dp-cfactor'))}
+            ${row(tr('js.export.tpMethodLabel'), us('dp-tp-method'))}
             ${row(tr('js.export.vaporFlowLabel'), t('dp-v-flow') + ' ' + us('dp-v-flow-u'))}
             ${row(tr('js.export.liquidFlowLabel'), t('dp-l-flow') + ' ' + us('dp-l-flow-u'))}
           </tbody></table>
@@ -7153,7 +7493,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.6', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.7', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}${gt}${lc}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;

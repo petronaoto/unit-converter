@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.6
+# O&G Engineering Converter — v3.7
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -54,12 +54,14 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
 - **LNG Cargo Estimator** *(new in v3.5)* — pick one of 36 representative LNG carriers (each row cites its own public source; Wikimedia Commons photos with credits) or type a capacity, set the loading limit, and read the cargo as t, kNm³ / MMscf and TBtu (HHV basis) — loaded and delivered after heel and boil-off — straight from the composition above.
 - **Pipe Delta Pressure (Darcy-Weisbach)**
-  - Pressure drop across vapor, liquid, and two-phase (Homogeneous Equilibrium Model) regimes.
+  - Pressure drop across vapor, liquid, and two-phase regimes.
   - Python backend solves the **Colebrook-White** equation implicitly.
   - *(new in v2.4)* Also reports Reynolds number, Darcy friction factor, and an **API RP 14E erosional-velocity** check (configurable C-factor), and cross-links the classified flow regime.
+  - *(new in v3.7)* Selectable two-phase frictional correlation: **HEM** (default), **Lockhart-Martinelli** (Chisholm C), **Müller-Steinhagen-Heck** (1986) or **Friedel** (1979, with a surface-tension input). Static head, fittings and the velocity/Re/f readouts stay on the homogeneous basis.
 - **Flow Regime Visualizer** *(new in v2.3)*
   - Classifies the two-phase flow pattern from the Pipe ΔP inputs on simplified **Hewitt & Roberts** (vertical) / **Baker** (horizontal) regime maps, selected by pipe inclination θ = asin(Δz / L).
   - Maps are rendered server-side with Python **seaborn** (`/api/flowregime`) and paired with a conceptual **Three.js 3D animation** of the flow pattern, speed, and inclination.
+  - *(rebuilt in v3.7)* The animation scales layer depths and film thicknesses from the no-slip holdup, and adds a mode strip — View (Exterior / Cutaway / Inside the pipe), a Regime preview override (flagged PREVIEW), playback speed and pause — with drag-orbit and scroll zoom.
 
 ### 3. Safety
 

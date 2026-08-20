@@ -302,7 +302,8 @@ def test_theory_subheadings_are_arabic_and_match_their_part(fname):
     roman = [f"{a}.{b}" for a, b in heads if not a.isdigit()]
     assert not roman, f"{fname}: Roman-numbered sub-headings {roman}"
     if fname == "index.html":
-        for part, want in ((10, 5), (11, 4), (12, 7)):
+        # v3.7 added §10.6 (selectable two-phase frictional correlations) to Part X.
+        for part, want in ((10, 6), (11, 4), (12, 7)):
             got = [f"{a}.{b}" for a, b in heads if a == str(part)]
             assert len(got) == want, f"Part {part}: expected {want} sub-headings, got {got}"
 

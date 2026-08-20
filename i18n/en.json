@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.6"
+    "pageTitle": "O&G Unit Converter V3.7"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -369,7 +369,16 @@
       "reLaminar": "Laminar",
       "reTransitional": "Transitional",
       "reTurbulent": "Turbulent",
-      "lineSizingFootnote": "Line-sizing limits are NORSOK P-001 §6.3.2/§6.4 and Tables 3–4, applied to the frictional ΔP only (static head is excluded — it is not a sizing criterion). Gas: v_max = min(175·ρ^−0.43, 60) m/s. Two-phase: v_max = min(183·ρ_mix^−0.5, 25) m/s non-corrosive, 10 m/s corrosive. Liquid velocity bands are material-dependent; Cu-Ni is the lowest at 3 m/s because of seawater erosion. Pump-circuit limits are ΔP-based. Screening guidance for line sizing — not a substitute for a full hydraulic study, and independent of the API RP 14E erosional check above."
+      "lineSizingFootnote": "Line-sizing limits are NORSOK P-001 §6.3.2/§6.4 and Tables 3–4, applied to the frictional ΔP only (static head is excluded — it is not a sizing criterion). Gas: v_max = min(175·ρ^−0.43, 60) m/s. Two-phase: v_max = min(183·ρ_mix^−0.5, 25) m/s non-corrosive, 10 m/s corrosive. Liquid velocity bands are material-dependent; Cu-Ni is the lowest at 3 m/s because of seawater erosion. Pump-circuit limits are ΔP-based. Screening guidance for line sizing — not a substitute for a full hydraulic study, and independent of the API RP 14E erosional check above.",
+      "tpMethodLabel": "TWO-PHASE METHOD",
+      "tpMethodTooltip": "Two-phase frictional pressure-drop correlation. HEM reproduces pre-v3.7 results; the alternatives replace the frictional term only — static head and fittings stay on the homogeneous (no-slip) basis.",
+      "tpmHem": "HEM — homogeneous (default)",
+      "tpmLm": "Lockhart-Martinelli",
+      "tpmMsh": "Müller-Steinhagen-Heck",
+      "tpmFriedel": "Friedel",
+      "sigmaLabel": "SURFACE TENSION",
+      "sigmaTooltip": "Gas-liquid surface tension — used by the Friedel correlation only. 10 mN/m is representative of light hydrocarbons; water-air is about 72 mN/m.",
+      "tpMethodFootnote": "The TWO-PHASE METHOD selector changes the frictional term only: Lockhart-Martinelli uses the Chisholm C constants (20/12/10/5 by the phase-alone flow regimes), Müller-Steinhagen-Heck (1986) interpolates between the all-liquid and all-gas gradients, and Friedel (1979) additionally uses the surface tension input. Static head, fittings ΔP and the velocity / Reynolds / friction-factor readouts always stay on the homogeneous no-slip mixture, which keeps the API RP 14E and NORSOK screens comparable across methods. All are screening-level correlations — see Theory Part X."
     },
     "flowRegime": {
       "title": "Flow Regime",
@@ -379,12 +388,29 @@
       "visualizeButton": "VISUALIZE FLOW REGIME",
       "awaitingViz": "Awaiting Visualization...",
       "animation3dHeading": "3D FLOW ANIMATION",
-      "animation3dCaption": "Conceptual animation — phase distribution, speed and inclination are schematic, scaled from jG, jL and θ. Not a CFD result.",
+      "animation3dCaption": "Conceptual animation — phase distribution, layer depths, speeds and inclination are schematic, scaled from jG, jL, the no-slip holdup λL and θ. Drag to orbit, scroll to zoom. Not a CFD result.",
       "renderingServerSide": "Rendering Server-Side...",
       "unableToVisualize": "Unable to visualize flow regime.",
       "caption3dTemplate": "{regime} | θ = {theta}° | v_mix = {vmix} m/s",
       "animation3dUnavailableTitle": "3D animation unavailable",
-      "animation3dUnavailableDesc": "The Three.js library could not be loaded (offline or CDN blocked). The 2D flow-regime map above is unaffected and fully valid."
+      "animation3dUnavailableDesc": "The Three.js library could not be loaded (offline or CDN blocked). The 2D flow-regime map above is unaffected and fully valid.",
+      "viewLabel": "View",
+      "viewExterior": "Exterior",
+      "viewCutaway": "Cutaway",
+      "viewInside": "Inside the pipe",
+      "regimeLabel": "Regime",
+      "regimeAuto": "Auto (calculated)",
+      "rgBubbly": "Bubbly (vertical)",
+      "rgChurnSlug": "Churn / Slug (vertical)",
+      "rgAnnular": "Annular",
+      "rgMist": "Mist / Disperse",
+      "rgStratified": "Stratified (horizontal)",
+      "rgWavy": "Wavy (horizontal)",
+      "rgSlug": "Slug (horizontal)",
+      "rgBubble": "Bubble (horizontal)",
+      "speedLabel": "Speed",
+      "pauseAria": "Pause or resume the animation",
+      "previewTag": "PREVIEW"
     },
     "lngCargo": {
       "title": "LNG Cargo Estimator",
@@ -616,7 +642,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.6"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.7"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -631,7 +657,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.6"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.7"
   },
   "moduleModal": {
     "title": "Configure Module",
@@ -676,6 +702,7 @@
       "elevationLabel": "Elevation Δz",
       "roughnessLabel": "Roughness",
       "erosionCFactorLabel": "Erosion C-factor",
+      "tpMethodLabel": "Two-phase method",
       "vaporFlowLabel": "Vapor flow",
       "liquidFlowLabel": "Liquid flow",
       "totalDpLabel": "Total ΔP",
