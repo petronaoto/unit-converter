@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 9 mockup — the pressure drop was fine, the flow regime wasn't</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe needs a REAL desktop viewport or the app lays out mobile — and the
+     `md:grid-cols-4` strip we clone below is a MEDIA QUERY, so a narrow frame freezes 2 columns. */
+  #app{position:absolute;width:1280px;height:1600px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 9 — "The pressure drop was fine. The flow regime wasn't."
+
+  The hero image is the app's OWN server-rendered regime map (matplotlib/seaborn, returned as a
+  PNG data-URI by /api/flowregime) — not a redraw. Beside it sits the real "hydraulic outputs"
+  strip cloned out of the live ΔP card, which is where the every-check-passes evidence lives:
+  Re, Darcy f, V_e and the green EROSION CHECK badge.
+
+  The bottom band is the teaching point: the inclination gate theta = asin(dz/L), and the fact
+  that it is a HARD threshold at |theta| = 30 deg. We probe the app at dz = 50.000 m and
+  49.999 m and show that the chart AND the regime label change while j_G and j_L do not move at
+  all. That last part is asserted, not assumed — see GATE CROSS-CHECK below. If the fluxes are
+  not bit-identical across the flip, the claim in the post is false and data-ready says so.
+
+  Serve the repo root over HTTP and open /docs/linkedin/day09-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-fuchsia-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.7</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Hydraulics
+      <span class="text-slate-600">▸</span> Flow Regime</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- ================= the app's own rendered map ================= -->
+  <div class="absolute" style="left:28px;top:70px;width:752px;">
+    <img id="map" src="" style="display:block;width:752px;height:402px;">
+  </div>
+
+  <!-- ================= right column ================= -->
+  <div class="absolute" style="left:806px;top:70px;width:368px;">
+    <div class="text-emerald-300 text-[11.5px] tracking-[0.14em]">EVERY HYDRAULIC CHECK PASSES</div>
+    <div id="pass-rows" style="margin-top:9px;"></div>
+
+    <div class="text-fuchsia-300 text-[11.5px] tracking-[0.14em]" style="margin-top:18px;">AND YET THE MAP SAYS</div>
+    <div id="regime-box" style="margin-top:9px;"></div>
+  </div>
+
+  <!-- ================= the real card strip ================= -->
+  <div class="absolute" style="left:28px;top:476px;width:1146px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]" style="margin-bottom:6px;">STRAIGHT FROM THE CARD</div>
+    <div id="strip-window" style="overflow:hidden;height:62px;position:relative;">
+      <div id="card-slot" style="position:absolute;left:0;top:0;width:1146px;">
+        <div class="text-slate-600 text-sm">loading the live row…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= the geometry gate ================= -->
+  <div class="absolute rounded-lg px-4 py-2" style="left:28px;top:562px;width:1146px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:5px;">
+      The geometry gate — θ = asin(Δz / L) — is a hard threshold at |θ| = 30°.</div>
+    <div id="gate" class="text-slate-400 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <!-- Footer strip -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+  <!-- No footer rule on Day 9: the geometry-gate band already ends in a border, and a second
+       hairline 5px below it crossed the band instead of separating anything. -->
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+var GATE = [];          // probe results either side of the 30 deg threshold
+var REF  = null;        // the reference case (dz = 70.711 m)
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  win.__dp = null;
+  var of = win.fetch;
+  win.fetch = function (u, o) {
+    return of.apply(this, arguments).then(function (r) {
+      var c = r.clone();
+      if (String(u).indexOf('dp_calculator') >= 0) {
+        c.json().then(function (j) { win.__dp = j; }).catch(function () {});
+      }
+      return r;
+    });
+  };
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    // v3.6 split Advanced into sub-tabs; the ΔP + Flow Regime cards live under 'hyd'.
+    if (typeof win.switchAdvSub === 'function') { win.switchAdvSub('hyd'); }
+    probeGate(doc, win);
+  }, 900);
+}
+
+// Probe either side of |theta| = 30 deg FIRST, so the reference case is the last thing
+// calculated and the cloned strip is never a stale-flagged result.
+function probeGate(doc, win) {
+  var el = doc.getElementById('dp-elev');
+  var seq = ['50', '49.999'];
+  var step = function (i) {
+    if (i >= seq.length) {
+      el.value = '70.711';
+      win.calcDeltaPressure();
+      win.calcFlowRegime().then(function () {
+        REF = win.lastFlowRegime || win.eval('lastFlowRegime');
+        waitForResult(doc, win, 0);
+      });
+      return;
+    }
+    el.value = seq[i];
+    win.calcFlowRegime().then(function () {
+      // `lastFlowRegime` is a top-level `let`: it lives in the global LEXICAL environment and is
+      // NOT a property of window, so it must be read through eval in the frame's own scope.
+      var r = win.eval('lastFlowRegime');
+      GATE.push({dz: seq[i], theta: r.theta_deg, map: r.map_type, regime: r.regime, jG: r.jG, jL: r.jL});
+      step(i + 1);
+    });
+  };
+  step(0);
+}
+
+function waitForResult(doc, win, tries) {
+  if (win.__dp && win.__dp.error === false && REF &&
+      doc.getElementById('dp-out-ve').textContent.trim() !== '—') {
+    snapshotStrip(doc, win); return;
+  }
+  if (tries > 120) { document.body.setAttribute('data-ready', 'TIMEOUT'); return; }
+  setTimeout(function () { waitForResult(doc, win, tries + 1); }, 100);
+}
+
+function snapshotStrip(doc, win) {
+  // The 4-up grid holding REYNOLDS / DARCY f / EROSIONAL Ve / EROSION CHECK.
+  var node = doc.getElementById('dp-out-ve').parentElement.parentElement.parentElement;
+  var clone = node.cloneNode(true);
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  // A frozen width is a pixel-exact fit measured HERE; the capture browser's text metrics differ
+  // by a fraction of a pixel and short labels wrapped on Day 7. Let leaf text size itself.
+  [].forEach.call(clone.querySelectorAll('*'), function (el) {
+    if (el.children.length) { return; }
+    el.style.whiteSpace = 'nowrap';
+    if (el.style.display === 'inline-block') { el.style.width = 'auto'; }
+  });
+  clone.style.width = '1146px';
+  clone.style.marginTop = '0px';
+  clone.style.paddingTop = '0px';
+  clone.style.borderTopWidth = '0px';
+  var slot = document.getElementById('card-slot');
+  slot.innerHTML = ''; slot.appendChild(clone);
+  fillPanels(doc, win, slot);
+}
+
+function row(label, value, colour) {
+  return '<div style="display:flex;align-items:baseline;padding:5px 2px;'
+       + 'border-bottom:1px solid rgba(148,163,184,.08);">'
+       + '<span style="flex:1 1 auto;color:#94a3b8;font-size:12px;">' + label + '</span>'
+       + '<span style="text-align:right;color:' + (colour || '#e2e8f0') + ';font-size:13px;'
+       + 'font-weight:600;font-variant-numeric:tabular-nums;">' + value + '</span></div>';
+}
+
+function fillPanels(doc, win, slot) {
+  var dp = win.__dp;
+  var g = function (id) { var e = doc.getElementById(id); return e ? e.textContent.trim() : '?'; };
+
+  // Quote what the CARD DISPLAYS, not the raw float — the reader is going to compare.
+  document.getElementById('pass-rows').innerHTML =
+      row('Total ΔP',              g('dp-out-total') + ' kPa')
+    + row('Velocity',              g('dp-out-vel') + ' m/s')
+    + row('Reynolds',              g('dp-out-re') + ' &nbsp;<span style="color:#64748b;font-weight:400;">' + g('dp-out-re-regime') + '</span>')
+    + row('Darcy f',               g('dp-out-f'))
+    + row('V<sub>e</sub> (RP 14E)', g('dp-out-ve') + ' m/s')
+    + row('v / V<sub>e</sub>',      g('dp-out-eratio') + ' &nbsp;<span style="color:#34d399;">' + g('dp-out-ero-badge') + '</span>', '#6ee7b7');
+
+  document.getElementById('regime-box').innerHTML =
+      '<div style="border:1px solid rgba(217,70,239,.35);background:rgba(217,70,239,.10);'
+    + 'border-radius:8px;padding:10px 12px;">'
+    + '<div style="color:#f0abfc;font-size:19px;font-weight:700;">' + REF.regime + '</div>'
+    + '<div style="color:#e879f9;font-size:12.5px;margin-top:3px;font-variant-numeric:tabular-nums;">'
+    +   'θ = +' + REF.theta_deg.toFixed(1) + '° &nbsp;·&nbsp; vertical map &nbsp;·&nbsp; λ<sub>L</sub> = '
+    +   REF.lambda_l.toFixed(4) + '</div>'
+    + '<div style="color:#94a3b8;font-size:12px;margin-top:7px;line-height:1.55;">'
+    +   'j<sub>G</sub> = ' + REF.jG.toFixed(4) + ' m/s &nbsp;·&nbsp; j<sub>L</sub> = ' + REF.jL.toFixed(4) + ' m/s<br>'
+    +   'Slugging is a separator-level and pipe-support problem. No ΔP number predicts it.</div>'
+    + '</div>';
+
+  // ---- GATE CROSS-CHECK -------------------------------------------------------------------
+  // The post claims the FLOW does not change across the flip — only the chart. Assert it.
+  var a = GATE[0], b = GATE[1];
+  var fluxesIdentical = (a.jG === b.jG) && (a.jL === b.jL)
+                     && (a.jG === REF.jG) && (a.jL === REF.jL);
+  var flipped = (a.map === 'vertical') && (b.map === 'horizontal');
+
+  document.getElementById('gate').innerHTML =
+      'Δz = <b style="color:#e2e8f0;">' + a.dz + ' m</b> → θ = ' + a.theta.toFixed(4)
+    + '° → <b style="color:#c4b5fd;">' + a.map + ' map</b> → <b style="color:#f0abfc;">' + a.regime + '</b>'
+    + ' &nbsp;&nbsp;|&nbsp;&nbsp; Δz = <b style="color:#e2e8f0;">' + b.dz + ' m</b> → θ = '
+    + b.theta.toFixed(4) + '° → <b style="color:#c4b5fd;">' + b.map + ' map</b> → '
+    + '<b style="color:#f0abfc;">' + b.regime + '</b><br>'
+    + '<b style="color:#fcd34d;">1 mm of elevation over a 100 m line changes the chart and the '
+    + 'label</b> — while j<sub>G</sub> = ' + a.jG.toFixed(4) + ' and j<sub>L</sub> = '
+    + a.jL.toFixed(4) + ' m/s stay <b>bit-identical</b>. The flow did not change; the chart did.';
+
+  document.getElementById('conditions').textContent =
+    '4″ ID · L = 100 m · Δz = +70.711 m · vapour 150 kg/h @ 10 kg/m³ · liquid 7,300 kg/h @ 500 kg/m³ · '
+    + 'ρ_mix = ' + dp.rho_mix.toFixed(2) + ' kg/m³';
+
+  document.getElementById('map').src = doc.getElementById('fr-map-img').src;
+
+  drawArrows();
+
+  document.body.setAttribute('data-ready', [
+    'regime=' + REF.regime,
+    'map=' + REF.map_type,
+    'theta=' + REF.theta_deg.toFixed(4),
+    'jG=' + REF.jG,
+    'jL=' + REF.jL,
+    'gate_flipped=' + flipped,
+    'fluxes_identical=' + fluxesIdentical,
+    'gate50=' + a.map + '/' + a.regime,
+    'gate49999=' + b.map + '/' + b.regime,
+    'dom_ve=' + g('dp-out-ve'),
+    'dom_ero=' + g('dp-out-ero-badge'),
+    'dom_total=' + g('dp-out-total')
+  ].join('|'));
+}
+
+function drawArrows() {
+  // DELIBERATELY EMPTY. Every earlier day dropped its connector for the same reason: the map
+  // already carries its own OPERATING POINT callout, and the right column sits at the same y.
+  document.getElementById('arrows').innerHTML = '';
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 9 — the pressure drop was fine, the flow regime wasn\'t</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day09-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
