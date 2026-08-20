@@ -7,10 +7,14 @@ in addition to — never instead of — the root rules.
 
 ## Endpoints
 
-- `dp_calculator.py` — pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, HEM two-phase).
+- `dp_calculator.py` — pipe ΔP (Darcy-Weisbach + iterative Colebrook-White, two-phase).
   v2.4: also returns Reynolds number `Re`, `re_regime`, Darcy friction factor `f`, the split
   `dpFric`/`dpStatic` terms, mixture density `rho_mix`, and an **API RP 14E erosional-velocity**
   check (`v_ero`, `ero_ratio`) computed from the payload's `cfactor` (default 100).
+  v3.7: the two-phase FRICTIONAL term is computed by the correlation named in `tp_method`
+  (`hem` default / `lm` Lockhart-Martinelli + Chisholm C / `msh` Müller-Steinhagen-Heck /
+  `friedel` Friedel 1979, which consumes `sigma` [N/m], default 0.010) via `two_phase_dpdz()`.
+  See "v3.7 — Selectable two-phase methods" below.
 - `psv_calculator.py` — API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid,
   §5.10 two-phase Omega method); API 526 orifice letters D–T.
 - `flowregime.py` — two-phase flow regime map (seaborn/matplotlib server-side PNG rendering).
@@ -41,6 +45,11 @@ Re-verify after ANY change to the corresponding file, before committing.
   Re ≈ **2.20×10⁵** (turbulent), Darcy f ≈ **0.0184**, ρ_mix ≈ 251.7 kg/m³,
   V_e ≈ **7.69 m/s** at C=100 (v/V_e ≈ 0.13 → WITHIN LIMIT). *(v2.8: was 7.72 with the
   old √1.5 constant; the SI constant is now the exact 1.2199033 — see the note below.)*
+- **dp_calculator v3.7 methods** (same inputs, `tp_method` set; static head 174.590 kPa in
+  every case — SPECIFICATION.md §9 Vector 14): `lm` → dpFric ≈ **4.843 kPa**, total ≈
+  **179.433 kPa** (C = 20, X = 6.1663, φ_L² = 4.2697); `msh` → **3.243 kPa** / **177.833 kPa**;
+  `friedel` (σ = 0.010) → **4.044 kPa** / **178.634 kPa** (φ_LO² = 3.4294). An ABSENT
+  `tp_method` must stay bit-identical to `hem`.
 - **flowregime** (same inputs): must classify as **Churn / Slug Flow, θ = +45.0°, vertical map**
   (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
 - **psv_calculator** (added v2.8 — five USC cases, one per sizing mode; full inputs in
@@ -141,3 +150,30 @@ pattern with `regime_key`; the other message/error branches across the three fil
 - **Reference case (Vector 7, `docs/SPECIFICATION.md` §9):** ΣK = 5.3760 on the Vector 2
   hydraulics → dpFittings ≈ **695.853 Pa**, L_eq ≈ **29.7586 m**, ΔP_total ≈ **177.625 kPa**.
   Re-verify alongside Vector 2 after touching this file.
+
+## v3.7 — Selectable two-phase methods (dp_calculator.py)
+
+- **`tp_method` (optional, default "hem") is load-bearing** exactly like `k_total` and
+  `cfactor`: absent/empty/null means HEM, which must reproduce every pre-v3.7 payload
+  and share link bit-for-bit (`test_absent_tp_method_reproduces_the_hem_result_exactly`).
+  A PRESENT unknown value is a structured `Invalid Input` error, never a silent fallback.
+- **The method replaces `dpFric` ONLY.** `dpStatic`, `dpFittings`, `vel`, `Re`, `f`,
+  `rho_mix`, `v_ero`, `ero_ratio`, `L_eq` stay on the homogeneous no-slip basis so the
+  RP 14E and NORSOK screens are method-independent — machine-enforced by
+  `test_method_changes_only_the_frictional_term`. Do not "fix" this by feeding a
+  slip-corrected density into the other terms.
+- **`sigma` (optional, default 0.010 N/m)** follows the cfactor contract: absent → default;
+  present non-positive/non-finite/non-numeric → structured error, regardless of method.
+  The UI enters mN/m and sends N/m, mapping blank/zero to 10 mN/m client-side.
+- **Friedel requires mu_v < mu_l** (its (1 − mu_v/mu_l)^0.7 term) and returns a structured
+  error otherwise. The other methods accept equal viscosities.
+- All phase-alone (`lm`) and whole-flow (`msh`/`friedel`) friction factors reuse
+  `get_darcy_friction_factor()` at the actual pipe relative roughness — a deliberate
+  engineering adaptation (the originals used smooth-pipe Blasius-type factors); keep it
+  consistent rather than introducing a second friction model.
+- Chisholm C selection threshold is Re < 2300 ("viscous"), matching the friction
+  function's laminar switch — pinned across all four regime combinations by
+  `test_lm_chisholm_c_follows_the_phase_alone_regimes`.
+- New response fields are additive: `tp_method`, `sigma` (always), `phi2` (lm/friedel),
+  `lm_X`/`lm_C` (lm). The two-phase badge is "Two-Phase (%s)" % TP_METHOD_LABELS[m];
+  the default badge stays exactly "Two-Phase (HEM)".
