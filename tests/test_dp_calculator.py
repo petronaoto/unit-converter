@@ -443,7 +443,7 @@ def test_fit1_reference_case(dp_module, post_to_handler, dp_reference_payload):
     _, data = post_to_handler(dp_module, dict(dp_reference_payload, k_total=5.3760))
 
     assert data["k_total"] == pytest.approx(5.3760)
-    assert data["dpFittings"] == pytest.approx(695.8532, abs=5e-3)      # Pa
+    assert data["dpFittings"] == pytest.approx(695.8544, abs=5e-3)      # Pa
     assert data["L_eq"] == pytest.approx(29.75863, abs=5e-4)            # m
     assert data["L_eff"] == pytest.approx(129.75863, abs=5e-4)
     assert data["dpPa"] / 1000 == pytest.approx(177.6247, abs=5e-3)     # kPa

@@ -23,7 +23,7 @@ Minus 8.3 m, plus 1.7 m. They partly cancel, which is exactly why the shortcut's
 
 The rule I would take from it: L/D is fine for a first pass on elbows and valves in fully-rough flow. It is not fine when entrances, exits or any other direct-K term are in the run, and it drifts whenever the flowing f is far from f_T.
 
-Reproduce it in Advanced → Pipe ΔP: open Fittings & Valves and enter 4 elbows, 1 gate, 1 swing check, 1 entrance, 1 exit.
+Reproduce it in Advanced → Hydraulics → Pipe ΔP: open Fittings & Valves and enter 4 elbows, 1 gate, 1 swing check, 1 entrance, 1 exit.
 
 https://engineering-converter.com
 
@@ -54,7 +54,7 @@ Crane TP-410 は各継手を K = n·f_T と書きます。n は継手種類ご�
 
 持ち帰るなら、こう。完全乱流域のエルボと弁の一次検討には L/D で十分。ただし入口・出口など直接K項が経路にあるときは使えないし、流れている f が f_T から離れるほどずれます。
 
-再現は Advanced → Pipe ΔP で。Fittings & Valves を開いて、エルボ4・ゲート1・チェック1・入口1・出口1 と入れるだけです。
+再現は Advanced → Hydraulics → Pipe ΔP で。Fittings & Valves を開いて、エルボ4・ゲート1・チェック1・入口1・出口1 と入れるだけです。
 
 https://engineering-converter.com
 

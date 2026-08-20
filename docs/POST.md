@@ -361,7 +361,7 @@ j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 
 ### Other verified figures
 
-- Crane TP-410 fittings (Vector 7): ΣK 5.3760 · ΔP_fittings 695.853 Pa · L_eq 29.7586 m · ΔP_total 177.625 kPa
+- Crane TP-410 fittings (Vector 7): ΣK 5.3760 · ΔP_fittings 695.854 Pa · L_eq 29.7586 m · ΔP_total 177.625 kPa
 - Steam IF97 @ 4 MPa abs / 300 °C: Region 2, superheat 49.64248 K · h 2,961.65148 kJ/kg · s 6.36383 kJ/(kg·K) · ρ 16.98717 kg/m³ · T_sat 250.35752 °C
 - Gas properties (SG 0.65, 2,000 psi, 150 °F, k 1.3): Z 0.8646 · μ 0.016663 cP · c 410.0269 m/s · μ_JT 0.3279 K/bar
 - NPSHa (water 80 °C, open tank, z +3 m, h_f 1.2 m): **7.45697 m**; P_v 47.41472 kPa; ρ 971.77879 kg/m³; g = 9.80665 m/s²
@@ -389,7 +389,7 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = **56.000621** → **56.00**. Do not publish an intermediate. |
 | C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
 | C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** Tracker Day 18 appeared to have no sheet at all. | ✅ **Resolved 2026-08-12** (Naoto). No topic was lost — tracker Day 18 is the material in `### Day 20`, which editorial decision 2 had already moved out of the closing slot. The mapping table under §2 is now complete, and the `### Day 20` sheet has been reframed as a Day 18 capability tour (the "twenty posts in" retrospective framing was cut, since the campaign is not over on Day 18). The sheets keep their pre-reflow numbers deliberately: renumbering twenty headings would break every cross-reference in this file for no gain. **Read sheets by title, via the §2 mapping.** |
-| C13 | 8 | §4's Crane row records `ΔP_fittings 695.853 Pa` | Wrong in the last digit: the endpoint returns **695.8543508168549**, which rounds to **695.854**. Found 2026-08-18 while grounding Day 8. The post quotes **695.85** (2 d.p.), which is correct either way, so publishing was not blocked. `CLAUDE.md` and `api/CLAUDE.md` carry the same stale digit — correct them in a later pass. |
+| C13 | 8 | The fittings ΔP was recorded as **695.853 Pa** in §4 and `api/CLAUDE.md`, and as **695.8532 Pa** in `SPECIFICATION.md` and the test nominal | ✅ **Fixed 2026-08-21.** The endpoint returns **695.8543508168549** → **695.854**. The same drift ran through the self-consistency pair: ΔP_fric 2338.3238 → **2338.3273** and 3034.1770 → **3034.1817**, whose difference is exactly the fittings term (verified to 1e-6 Pa against the endpoint). Corrected in `api/CLAUDE.md`, §4 above, `SPECIFICATION.md` (both places) and `tests/test_dp_calculator.py`'s nominal — the test's `abs=5e-3` tolerance had been wide enough to hide it. Day 8's copy quotes **695.85** (2 d.p.), right either way, so nothing published was wrong. |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1305,10 +1305,10 @@ the wire** — `k_matches=true` in the generator's `data-ready`, i.e. the ledger
 exactly. Endpoint values: ΔP_fittings **695.8543508168549 Pa**, L_eq **29.758637189491434 m**,
 ΔP_total **177624.65735431717 Pa**, f **0.01835438889630599**, velocity head **129.43719 Pa**.
 
-> ⚠️ **§4 says `ΔP_fittings 695.853 Pa`; the endpoint returns 695.8543…, which rounds to
-> **695.854**.** The last digit in the register is wrong. The Theory tab's 2-d.p. `695.85` is fine,
-> and CLAUDE.md / api/CLAUDE.md carry the same `695.853` — worth correcting there in a later pass.
-> Logged as C13 below. The post quotes **695.85**, which is right either way.
+> ✅ **The register's figure was stale and is now fixed (C13).** §4, `api/CLAUDE.md`,
+> `SPECIFICATION.md` and the test nominal said 695.853 / 695.8532; the endpoint returns
+> **695.8543508168549 → 695.854**. All corrected 2026-08-21. The post quotes **695.85** (2 d.p.),
+> which was right either way.
 
 **Display precision:** the card shows ΔP Fittings as **0.69585 kPa** (not 695.85 Pa) and ΣK as
 **5.38** (not 5.3760). The graphic's ledger shows the exact ΣK; the cloned strip shows the card's

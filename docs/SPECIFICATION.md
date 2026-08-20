@@ -435,12 +435,12 @@ Cross-check worth keeping: at Z = 1 the sonic velocity would be 441.0 m/s, **7.5
 | Entrance (direct K) / Exit (direct K) | 0.5000 / 1.0000 |
 | **ΣK** | **5.3760** |
 | Velocity head ρv²/2 | 129.4370 Pa |
-| **ΔP_fittings = ΣK·ρv²/2** | **695.8532 Pa = 0.69585 kPa** |
+| **ΔP_fittings = ΣK·ρv²/2** | **695.8544 Pa = 0.69585 kPa** |
 | **L_eq = ΣK·D/f** (f = 0.0183544 flowing) | **29.75863 m** |
 | L_eff | 129.75863 m |
 | **ΔP_total** | **177.6247 kPa** |
 
-**Self-consistency check built into the suite:** re-running the *straight* pipe at L = 129.75863 m with no fittings raises ΔP_fric from 2338.3238 Pa to 3034.1770 Pa — a difference of **695.8532 Pa**, identical to the direct ΣK·ρv²/2 result. The two methods agree by construction because L_eq = ΣK·D/f; if they ever diverge, one has been reimplemented incorrectly.
+**Self-consistency check built into the suite:** re-running the *straight* pipe at L = 129.75863 m with no fittings raises ΔP_fric from 2338.3273 Pa to 3034.1817 Pa — a difference of **695.8544 Pa**, identical to the direct ΣK·ρv²/2 result. The two methods agree by construction because L_eq = ΣK·D/f; if they ever diverge, one has been reimplemented incorrectly.
 
 **Why the K method is primary.** A fitting's loss is a fixed number of velocity heads — a property of its geometry. The equivalent length that produces that loss depends on the pipe's *actual* friction factor. The Crane L/D shortcut (L_eq = n·D) implicitly assumes f = f_T, i.e. that the pipe is in fully-rough flow, which is false for most process lines including this one (Re = 2.20×10⁵, f = 0.01835 > f_T = 0.017). For this fitting set the shortcut gives Σn·D = 228 × 0.1016 = 23.16 m, **22 % below** the K-method's 29.76 m — and entrance and exit have no n at all, so they cannot appear in it.
 
