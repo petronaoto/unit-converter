@@ -15,7 +15,7 @@ Two Theory Parts had to be split, because they straddled tabs: "Hydraulics & Gas
 
 ✅ Then I wrote the rule into the repo's contributor guide. Insert a section at its position, never append — because the rule you write down after the cleanup is the only thing that stops you needing the cleanup again.
 
-Three releases have shipped since. Every one landed in the right place, and it's still 8.
+Four releases have shipped since. Every one landed in the right place, and it's still 8.
 
 Free, no sign-up, no ads, 10 languages, open source (MIT).
 👉 https://engineering-converter.com
@@ -42,7 +42,7 @@ Worst-organised documentation you've worked from? 👇
 
 ✅ そのうえで、並び順のルールをリポジトリの規約に明文化しました。新しい節は末尾ではなく「あるべき位置」に挿入する — 片付けたあとに書き残したルールだけが、次の片付けを不要にします。
 
-以降3リリース、すべて正しい位置に入り、今も 8 のままです。
+以降4リリース、すべて正しい位置に入り、今も 8 のままです。
 
 無料・登録不要・広告なし・10言語・オープンソース（MIT）。
 👉 https://engineering-converter.com

@@ -228,6 +228,9 @@ forced eager in the off-screen iframe), `-standalone.html`, `v36-adv-subtabs.png
 
 **v3.4 documentation restructure — 📝 READY, NOT POSTED.** Copy, graphic and assets are complete
 and approved by Naoto (2026-08-24). Nothing has been published; publish on his word.
+Re-grounded against **v3.8** after a mid-branch rebase: sections (22) and Theory Parts (13) are
+unchanged and the jump strip is byte-identical, so 14 → 8 still holds; "three releases since"
+became **four** in both the copy and the graphic.
 
 - **Not framed as a "v3.4 launch".** v3.4 shipped 2026-08-16 and was never announced; by the time
   this was written the app was on **v3.7** and v3.5+v3.6 had already gone out above. Announcing
@@ -240,10 +243,10 @@ and approved by Naoto (2026-08-24). Nothing has been published; publish on his w
   generator. This replaced an earlier draft that led on "22 sections, 13 Parts"; the image and the
   copy now make the same argument.
 - **The credibility argument is that the rule held.** v3.4 wrote the ordering rule into CLAUDE.md,
-  and the three releases since (v3.5 LNG Cargo, v3.6 sub-tabs, v3.7 ΔP methods) each **inserted**
-  their documentation at the correct position. The run count is still 8. Same role GIIGNL's
+  and the four releases since (v3.5 LNG Cargo, v3.6 sub-tabs, v3.7 ΔP methods, v3.8 Safety pressure
+  inputs) each **inserted** their documentation at the correct position. The run count is still 8. Same role GIIGNL's
   published value played in the v3.3 post.
-- **Figures re-read from the live site on 2026-08-24**, not from the docs: 22 How To Use sections ·
+- **Figures re-read on 2026-08-24, then re-verified against v3.8 after rebase**, not from the docs: 22 How To Use sections ·
   13 Theory Parts · 10 languages. Historical figures (four stacked "★ New in Version" blocks, Basic
   Eng in sections 4/13/16/17/18, Theory printing Part VI before Part V) describe the **pre-v3.4**
   state and are past tense in the copy.
@@ -264,10 +267,14 @@ and approved by Naoto (2026-08-24). Nothing has been published; publish on his w
   pre-fill, so the share-link recipe adds nothing.
 
 > ✅ **Gap closed in the same change: v3.4 now has an entry in its own Release Notes appendix**
-> (`howto-new34`, `docs.howto.b114`/`b115`, translated into all 9 dictionaries). The appendix had
-> listed 3.7, 3.6, 3.5, 3.3, 3.2, 3.1, 3.0, 2.8, 2.5, 2.4 — the release that *created* the appendix
+> (`howto-new34`, `docs.howto.b117`/`b118`, translated into all 9 dictionaries). The appendix had
+> listed 3.8, 3.7, 3.6, 3.5, 3.3, 3.2, 3.1, 3.0, 2.8, 2.5, 2.4 — the release that *created* the appendix
 > was missing from it, which would have been an own-goal in a post that points at the appendix.
-> It now reads 3.7, 3.6, 3.5, **3.4**, 3.3, …
+> It now reads 3.8, 3.7, 3.6, 3.5, **3.4**, 3.3, …
+>
+> ⚠️ **Key-collision trap:** v3.8 (PR #58) claimed `b114`–`b116` while this branch was open, so the
+> v3.4 note was renumbered to `b117`/`b118` on rebase. Take the next free `docs.howto.b*` at the
+> moment you rebase, not when you first write the block.
 >
 > ⚠️ **Still open — v3.7 is unannounced** (selectable two-phase ΔP methods + the rebuilt 3D flow
 > animation). The v3.5+v3.6 precedent is to bundle an un-announced release into the next
