@@ -5,7 +5,10 @@ reviewed and approved by the maintainer in v2.8. Before v2.8 no PSV reference ve
 existed anywhere in the repo, although the roadmap item named "dp/psv cases".
 
 Provenance: the inputs are the placeholder values already shown in the Safety card's own
-fields (index.html `psv-*` placeholders), so they are auditable from the UI. Two
+fields (index.html `psv-*` placeholders), so they are auditable from the UI. Since v3.8 the
+steam / liquid / two-phase panels open pre-filled with exactly these values; the gas panel
+opens on the v3.8 one-click case instead (orifice H — SPECIFICATION §9 Vector 15, pinned in
+tests/test_psv_pressure_inputs.py), so the gas case below is an API-level vector only. Two
 adjustments were made during review:
 
   * §5.10 two-phase W was halved to 238,715 lb/h so the required area (19.01 in²) lands
