@@ -383,7 +383,7 @@
     "flowRegime": {
       "title": "Flow Regime",
       "descPre": "Visualizes the two-phase flow pattern from the inputs of the",
-      "descMid": "above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. |θ| ≥ 30° uses the vertical-flow map (Hewitt & Roberts type); |θ| < 30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python",
+      "descMid": "above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. θ ≥ +30° uses the vertical-flow map (Hewitt & Roberts type); θ < +30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python",
       "descPost": ". Boundaries are simplified — indicative only.",
       "visualizeButton": "VISUALIZE FLOW REGIME",
       "awaitingViz": "Awaiting Visualization...",

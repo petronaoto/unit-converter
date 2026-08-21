@@ -59,7 +59,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
   - *(new in v2.4)* Also reports Reynolds number, Darcy friction factor, and an **API RP 14E erosional-velocity** check (configurable C-factor), and cross-links the classified flow regime.
   - *(new in v3.7)* Selectable two-phase frictional correlation: **HEM** (default), **Lockhart-Martinelli** (Chisholm C), **Müller-Steinhagen-Heck** (1986) or **Friedel** (1979, with a surface-tension input). Static head, fittings and the velocity/Re/f readouts stay on the homogeneous basis.
 - **Flow Regime Visualizer** *(new in v2.3)*
-  - Classifies the two-phase flow pattern from the Pipe ΔP inputs on simplified **Hewitt & Roberts** (vertical) / **Baker** (horizontal) regime maps, selected by pipe inclination θ = asin(Δz / L).
+  - Classifies the two-phase flow pattern from the Pipe ΔP inputs on simplified **Hewitt & Roberts** (vertical) / **Baker** (horizontal) regime maps, selected by pipe inclination θ = asin(Δz / L). *(v3.7.1)* The gate is **directional**: only upward inclination θ ≥ +30° uses the vertical map, which is an upflow correlation; downward flow uses the horizontal map and is flagged as outside both maps' basis.
   - Maps are rendered server-side with Python **seaborn** (`/api/flowregime`) and paired with a conceptual **Three.js 3D animation** of the flow pattern, speed, and inclination.
   - *(rebuilt in v3.7)* The animation scales layer depths and film thicknesses from the no-slip holdup, and adds a mode strip — View (Exterior / Cutaway / Inside the pipe), a Regime preview override (flagged PREVIEW), playback speed and pause — with drag-orbit and scroll zoom.
 
