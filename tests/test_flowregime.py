@@ -47,7 +47,7 @@ def test_every_map_region_key_has_a_colour(flowregime_module):
 
 
 def test_inclination_selects_the_map(flowregime_module, dp_reference_payload):
-    """|theta| >= 30 deg -> vertical (Hewitt & Roberts); otherwise horizontal (Baker)."""
+    """theta >= +30 deg -> vertical (Hewitt & Roberts upflow); otherwise horizontal (Baker)."""
     # theta = asin(dz/L); dz = 10 m over L = 100 m -> 5.7 deg -> horizontal
     shallow = flowregime_module.compute(dict(dp_reference_payload, elev=10))
     assert shallow["map_type"] == "horizontal"
@@ -59,11 +59,71 @@ def test_inclination_selects_the_map(flowregime_module, dp_reference_payload):
     assert steep["theta_deg"] == pytest.approx(math.degrees(math.asin(0.6)), abs=0.05)
 
 
-def test_downward_inclination_is_negative_and_still_vertical(flowregime_module,
-                                                             dp_reference_payload):
-    res = flowregime_module.compute(dict(dp_reference_payload, elev=-70.711))
-    assert res["theta_deg"] == pytest.approx(-45.0, abs=0.05)
-    assert res["map_type"] == "vertical"
+def test_the_gate_is_directional_not_symmetric(flowregime_module, dp_reference_payload):
+    """FLIPPED DEFECT-LOCKING TEST (SPECIFICATION.md section 11 #14).
+
+    This test previously asserted `map_type == "vertical"` for a downhill line, pinning the
+    very defect it now guards against: the gate tested abs(theta_deg), so -45 deg and +45 deg
+    were classified on the same chart. The vertical map is Hewitt & Roberts' UPFLOW map and
+    has no stratified region at all (see the companion test below), which is the regime
+    downward inclination most favours -- so the upflow map could never return the likely
+    answer for a downhill pipe.
+
+    Same magnitude, opposite sign, must now take different maps.
+    """
+    up = flowregime_module.compute(dict(dp_reference_payload, elev=70.711))
+    down = flowregime_module.compute(dict(dp_reference_payload, elev=-70.711))
+
+    assert up["theta_deg"] == pytest.approx(45.0, abs=0.05)
+    assert down["theta_deg"] == pytest.approx(-45.0, abs=0.05)
+
+    assert up["map_type"] == "vertical"
+    assert down["map_type"] == "horizontal"
+
+    # The flow itself is identical -- only the chart differs. j depends on W, rho and D only.
+    assert down["jG"] == up["jG"]
+    assert down["jL"] == up["jL"]
+
+
+def test_downflow_is_flagged_as_out_of_basis(flowregime_module, dp_reference_payload):
+    """Baker is a horizontal correlation, so steep downflow is still outside its basis.
+    The result must say so rather than reading as if it were in range."""
+    down = flowregime_module.compute(dict(dp_reference_payload, elev=-70.711))
+    assert down["downflow_advisory"] is True
+    assert down["advisory"] == flowregime_module.DOWNFLOW_ADVISORY
+
+    for elev in (70.711, 10, -10):          # uphill, shallow up, shallow down
+        res = flowregime_module.compute(dict(dp_reference_payload, elev=elev))
+        assert res["downflow_advisory"] is False, "elev=%s" % elev
+        assert res["advisory"] is None, "elev=%s" % elev
+
+
+def test_the_gate_boundary_is_inclusive_upward_only(flowregime_module,
+                                                    dp_reference_payload):
+    """theta = +30.000 deg is vertical; -30.000 deg is horizontal AND advised."""
+    half = 50.0  # asin(0.5) = 30 deg exactly over L = 100 m
+    up = flowregime_module.compute(dict(dp_reference_payload, elev=half))
+    down = flowregime_module.compute(dict(dp_reference_payload, elev=-half))
+
+    assert up["theta_deg"] == pytest.approx(30.0, abs=1e-9)
+    assert up["map_type"] == "vertical"
+    assert up["downflow_advisory"] is False
+
+    assert down["theta_deg"] == pytest.approx(-30.0, abs=1e-9)
+    assert down["map_type"] == "horizontal"
+    assert down["downflow_advisory"] is True
+
+
+def test_the_vertical_map_has_no_stratified_region(flowregime_module):
+    """The structural reason the gate had to become directional, pinned.
+
+    If a stratified region is ever added to the vertical map, this test fails and the
+    directional gate should be reconsidered -- that is the intent, not a nuisance.
+    """
+    vertical_keys = {r[0] for r in flowregime_module.VERTICAL_MAP["regions"]}
+    horizontal_keys = {r[0] for r in flowregime_module.HORIZONTAL_MAP["regions"]}
+    assert "stratified" not in vertical_keys
+    assert "stratified" in horizontal_keys
 
 
 def test_superficial_velocities_and_fluxes_are_consistent(flowregime_module,
