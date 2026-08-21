@@ -1,0 +1,24 @@
+[1/3 — EN + image]
+📚 14 → 8.
+
+Colour runs in my app's table of contents, one colour per tab. It was 14 because the manual was sorted by release date. 8 is the floor — one contiguous block per tab.
+
+Both doc tabs now follow the tab bar.
+
+👉 https://engineering-converter.com
+
+[2/3 — JA]
+📚 14 → 8。
+
+アプリの目次の「色の連続区間」の数です。色はタブごとに1色。14 だったのはマニュアルがリリース順だったから。8 が下限 — 1タブにつき1ブロック。
+
+両ドキュメントタブをタブバーの並びに組み替えました。
+
+👉 https://engineering-converter.com
+
+[3/3 — the detail + the ask]
+Two Theory Parts straddled tabs. "Hydraulics & Gas Laws" was one Part because those things shipped together — not because anyone reads Papay and Darcy-Weisbach together.
+
+The rule now lives in the contributor guide: insert at position, never append.
+
+https://github.com/petronaoto/unit-converter

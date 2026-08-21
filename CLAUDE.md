@@ -65,7 +65,7 @@ Two rules that outrank convenience:
 
 ## Documentation Tab Structure Rules (v3.4) — How To Use & Theory
 
-These two tabs are reference manuals, not changelogs. v3.4 restructured both because five years of "append the new feature at the bottom" had left them ordered by release date: a reader landed on four stacked *★ New in Version x.x* blocks, and the Basic Eng cards were scattered across sections 4, 13, 16, 17 and 18. The rules below exist so that never happens again.
+These two tabs are reference manuals, not changelogs. v3.4 restructured both because five months and twenty-odd releases of "append the new feature at the bottom" had left them ordered by release date: a reader landed on four stacked *★ New in Version x.x* blocks, and the Basic Eng cards were scattered across sections 4, 13, 16, 17 and 18. The rules below exist so that never happens again.
 
 1. **Order follows the tab bar, never the release date.** How To Use sections and Theory Parts are sequenced Header/global → General → Basic Eng → Advanced (Gas Quality & LNG Cargo → Hydraulics → GT Fuel, the v3.6 sub-tab order) → Safety → Report, matching the order the tabs appear in the header. Within a tab, follow the order the cards appear on screen. **A new feature is inserted at its position in that order — never appended to the end.** Renumbering the sections it displaces is part of the change, not a follow-up.
 2. **A Part or section must not straddle two tabs.** v3.4 split the old Theory Parts IV and VII for exactly this reason (Papay Z and the real-gas correlations belong to Basic Eng; Darcy-Weisbach, Crane, NORSOK and RP 14E belong to the Advanced ΔP card). If new content does not sit wholly inside one tab, it needs its own Part.
