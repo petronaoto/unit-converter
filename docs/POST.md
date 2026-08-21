@@ -63,7 +63,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493984270407901184/ | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494192232460382209/ | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494879955487531008/ | |
-| 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7496333602511585280/ | |
 | 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
 | 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
@@ -100,8 +100,7 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 >
 > **Next to build (Day 10, Tue 25 Aug): "Which roughness did you use?" — draft is in `### Day 10`.**
 >
-> *Days 8 and 9 are queued for 08:00 JST on Fri 21 Aug and Mon 24 Aug; their URLs exist only once
-> they publish.*
+> *Day 9 is queued for Mon 24 Aug 08:00 JST; its URL exists only once it publishes.*
 
 **Weekly themes**
 
@@ -1284,7 +1283,7 @@ upsize, or change material? And does your company have a standing C-factor?"
 
 ---
 
-### Day 8 — *tracker **Day 8**, Fri 21 Aug 2026* · 🕗 SCHEDULED
+### Day 8 — *tracker **Day 8**, Fri 21 Aug 2026* · ✅ POSTED
 
 > **Built 2026-08-18, refreshed for v3.7 and scheduled 2026-08-21 for Fri 21 Aug 08:00 JST.**
 > One bilingual post, **2,824 characters**, `engineering-converter.com` in both language sections.
