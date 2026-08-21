@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.7"
+    "pageTitle": "O&G Unit Converter V3.8"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -531,7 +531,6 @@
       "flowRateLabel": "FLOW RATE",
       "viscosityLabel": "VISCOSITY",
       "hintIgnore": "[0 = ignore]",
-      "hintGauge": "[gauge]",
       "setPressureLabel": "SET PRESSURE",
       "hintBackpressure": "[backpressure]",
       "twophaseHeading": "Two-Phase Inputs — Omega Method",
@@ -539,10 +538,12 @@
       "hintAtPo": "[at Po]",
       "specVolLabel": "SPEC. VOL.",
       "hintFlash": "[flash @ 0.9×Po]",
-      "hintAbsolute": "[absolute]",
       "hintTwophase": "[0.85 two-phase]",
       "hintViscosity": "[viscosity]",
-      "twophaseInfoBox": "v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg; Po/Pa in kPa abs.",
+      "twophaseInfoBox": "v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg. Po/Pa accept any pressure unit and Abs/Gauge basis (converted to kPa abs / psia before sizing).",
+      "importPressTitle": "Import from General tab › Pressure card",
+      "importPressEmpty": "Nothing to import — enter a pressure in the General tab's Pressure card first.",
+      "importPressDone": "Imported {value} {unit} from the General tab Pressure card.",
       "calculateButton": "Calculate Orifice Size",
       "sizingResultsHeading": "Sizing Results",
       "requiredAreaLabel": "REQUIRED AREA A",
@@ -642,7 +643,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.7"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.8"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -657,7 +658,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.7"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.8"
   },
   "moduleModal": {
     "title": "Configure Module",

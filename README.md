@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.7
+# O&G Engineering Converter — v3.8
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -66,6 +66,8 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 ### 3. Safety
 
 - **API 520 PRV Sizing** — required orifice areas for Gas, Liquid, Steam, and Two-Phase (Omega method) relief scenarios per API Standard 520 Part I, with API 526 orifice-letter selection.
+  - *(new in v3.8)* Every pressure input (P1, P2, Ps, Po, Pa) has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an **Abs/Gauge** toggle and a ⇩ button that imports the value from the General tab's Pressure card; the card converts to the absolute (or, for liquid, gauge) basis API 520 expects before sizing.
+  - *(new in v3.8)* The card opens pre-filled — gas/vapor with a case that sizes to **orifice H**, the other modes with their documented reference cases — so CALCULATE ORIFICE SIZE gives a result in one click.
 
 ### 4. Productivity *(new in v2.4)*
 
