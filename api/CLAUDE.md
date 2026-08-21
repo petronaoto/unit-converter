@@ -18,8 +18,13 @@ in addition to — never instead of — the root rules.
 - `psv_calculator.py` — API 520 Part I PRV sizing (§5.6 gas, §5.7 steam, §5.8/§5.9 liquid,
   §5.10 two-phase Omega method); API 526 orifice letters D–T.
 - `flowregime.py` — two-phase flow regime map (seaborn/matplotlib server-side PNG rendering).
-  Vertical map (Hewitt & Roberts type, j_G vs j_L) when |θ| ≥ 30°, horizontal map (Baker type,
-  G_G vs G_L) otherwise; θ = asin(Δz/L). Reads the same payload as dp_calculator. Returns
+  Vertical map (Hewitt & Roberts type, j_G vs j_L) when θ ≥ **+**30°, horizontal map (Baker type,
+  G_G vs G_L) otherwise; θ = asin(Δz/L). **The gate is DIRECTIONAL (v3.8.4)** — it was `abs(θ) ≥ 30°`
+  until then, which sent downhill lines to Hewitt & Roberts' *upflow* map. That map has no
+  stratified region at all, and downward inclination is what most favours stratified flow, so the
+  likeliest answer was unreachable. Steep downflow (θ ≤ −30°) now uses Baker and sets
+  `downflow_advisory: true` + an `advisory` string; Baker is a horizontal correlation, so it is the
+  nearest available basis, not a correct one. Reads the same payload as dp_calculator. Returns
   `regime_key` alongside its English `regime` label (see `docs/SPECIFICATION.md` §5.3).
 
 ## Dependency Rules — DO NOT VIOLATE
@@ -51,7 +56,13 @@ Re-verify after ANY change to the corresponding file, before committing.
   `friedel` (σ = 0.010) → **4.044 kPa** / **178.634 kPa** (φ_LO² = 3.4294). An ABSENT
   `tp_method` must stay bit-identical to `hem`.
 - **flowregime** (same inputs): must classify as **Churn / Slug Flow, θ = +45.0°, vertical map**
-  (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s).
+  (j_G ≈ 0.514 m/s, j_L ≈ 0.500 m/s). *(Uphill, so v3.8.4's directional gate leaves it
+  bit-identical.)*
+- **flowregime downflow (v3.8.4)**: the same inputs with `elev` **negated** (θ = −45.0°) must now
+  classify on the **horizontal** map with `downflow_advisory: true`, NOT on the vertical map.
+  A low-gas downhill case — `v_flow` 5, `l_flow` 2000 kg/h at θ = −45° — must read
+  **Stratified** (G_G ≈ 0.171, G_L ≈ 68.5 kg/s·m²); it read **Bubbly** before the fix, which is
+  the regression this pins.
 - **psv_calculator** (added v2.8 — five USC cases, one per sizing mode; full inputs in
   `docs/SPECIFICATION.md` §9 Vector 4, enforced by `tests/test_psv_calculator.py`):
   §5.6 gas → **5.7047 in²** (orifice P), C = 346.9764, P_cf = 53.045 psia;

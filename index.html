@@ -1649,7 +1649,7 @@
             <span id="fr-badge" class="px-2 py-1 bg-slate-800 text-[10px] rounded text-slate-400">Awaiting Visualization...</span>
           </div>
           <div class="p-6 space-y-6">
-            <p class="text-xs text-slate-500 leading-relaxed"><span data-i18n="advanced.flowRegime.descPre">Visualizes the two-phase flow pattern from the inputs of the</span> <strong class="text-slate-300" data-i18n="advanced.deltaP.title">Pipe Delta Pressure Calculator</strong> <span data-i18n="advanced.flowRegime.descMid">above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. |θ| ≥ 30° uses the vertical-flow map (Hewitt &amp; Roberts type); |θ| &lt; 30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python</span> <strong class="text-slate-300">seaborn</strong><span data-i18n="advanced.flowRegime.descPost">. Boundaries are simplified — indicative only.</span></p>
+            <p class="text-xs text-slate-500 leading-relaxed"><span data-i18n="advanced.flowRegime.descPre">Visualizes the two-phase flow pattern from the inputs of the</span> <strong class="text-slate-300" data-i18n="advanced.deltaP.title">Pipe Delta Pressure Calculator</strong> <span data-i18n="advanced.flowRegime.descMid">above. Inclination θ = asin(Δz / L) is taken from PIPE LENGTH and ELEVATION CHANGE. θ ≥ +30° uses the vertical-flow map (Hewitt &amp; Roberts type); θ &lt; +30° uses the horizontal-flow map (Baker type). The map is rendered server-side with Python</span> <strong class="text-slate-300">seaborn</strong><span data-i18n="advanced.flowRegime.descPost">. Boundaries are simplified — indicative only.</span></p>
             <button onclick="calcFlowRegime()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold tracking-widest rounded-lg shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all" data-i18n="advanced.flowRegime.visualizeButton">
               VISUALIZE FLOW REGIME
             </button>
@@ -2746,8 +2746,9 @@
               <div class="text-cyan-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">MAP SELECTION</div>
               <div class="space-y-1.5 text-slate-400">
                 <div>θ = asin(Δz / L) — from PIPE LENGTH &amp; ELEVATION CHANGE</div>
-                <div>|θ| ≥ 30° → <span class="text-slate-200">Vertical map (Hewitt &amp; Roberts type)</span> — axes j<sub>G</sub> vs j<sub>L</sub> [m/s]</div>
-                <div>|θ| &lt; 30° → <span class="text-slate-200">Horizontal map (Baker type)</span> — axes G<sub>G</sub> vs G<sub>L</sub> [kg/s·m²]</div>
+                <div>θ ≥ +30° → <span class="text-slate-200">Vertical map (Hewitt &amp; Roberts type)</span> — axes j<sub>G</sub> vs j<sub>L</sub> [m/s]</div>
+                <div>θ &lt; +30° → <span class="text-slate-200">Horizontal map (Baker type)</span> — axes G<sub>G</sub> vs G<sub>L</sub> [kg/s·m²]</div>
+                <div class="text-amber-400">θ ≤ −30° (downhill) → Baker map + ⚠ out-of-basis flag</div>
                 <div class="text-cyan-300 mt-1">→ Regimes: Bubbly / Churn-Slug / Wavy / Stratified / Annular / Disperse</div>
               </div>
             </div>
@@ -3542,7 +3543,8 @@
               <div class="text-slate-200">Inclination: θ = asin(Δz / L) &nbsp;|&nbsp; Cross-section: A = π·D²/4 [m²]</div>
               <div class="text-slate-200">Superficial fluxes: j<sub>G</sub> = W<sub>G</sub>/(ρ<sub>G</sub>·A), &nbsp;j<sub>L</sub> = W<sub>L</sub>/(ρ<sub>L</sub>·A) [m/s] &nbsp;|&nbsp; Mass fluxes: G<sub>G</sub> = W<sub>G</sub>/A, &nbsp;G<sub>L</sub> = W<sub>L</sub>/A [kg/s·m²]</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-slate-300 text-[10px] space-y-1">
-                <div>Map selection: |θ| ≥ 30° → vertical-flow map (Hewitt &amp; Roberts 1969 type, j<sub>G</sub> vs j<sub>L</sub>); |θ| &lt; 30° → horizontal-flow map (Baker 1954 type, G<sub>G</sub> vs G<sub>L</sub>)</div>
+                <div>Map selection: θ ≥ +30° → vertical-flow map (Hewitt &amp; Roberts 1969 type, j<sub>G</sub> vs j<sub>L</sub>); θ &lt; +30° → horizontal-flow map (Baker 1954 type, G<sub>G</sub> vs G<sub>L</sub>)</div>
+                <div>The gate is on the <b>signed</b> θ, not |θ| (v3.8.4). Hewitt &amp; Roberts is an <b>upflow</b> map and has no stratified region, whereas downward inclination is what most favours stratified flow — so a downhill line classified there could never reach the likeliest answer. Downflow at θ ≤ −30° therefore uses the Baker map and is flagged: it is the nearest available basis, not a correct one</div>
                 <div>Region boundaries are simplified piecewise-linear approximations in log-log space — they are NOT a mechanistic model (cf. Taitel &amp; Dukler) and are intended for orientation only</div>
                 <div>Operating points outside the plotted range are clamped to the map boundary and flagged on the figure</div>
                 <div>Rendered server-side with Python seaborn/matplotlib (Vercel API <span class="text-slate-100">/api/flowregime</span>); the 3D animation is conceptual, scaling layer depths, film thicknesses and bubble loading from the no-slip liquid holdup λ<sub>L</sub> = j<sub>L</sub>/(j<sub>G</sub>+j<sub>L</sub>). v3.7 adds view modes (exterior / cutaway / inside the pipe), a regime preview override flagged PREVIEW, and playback speed / pause controls</div>
