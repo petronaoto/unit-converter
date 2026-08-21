@@ -62,20 +62,20 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 4 | Fri 14 Aug 2026 | 176.9 kPa of ΔP, and 2.3 kPa of it is friction | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493672957697806337/ | |
 | 5 | Mon 17 Aug 2026 | There are three versions of these coefficients on the internet | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7493984270407901184/ | |
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494192232460382209/ | |
-| 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 8 | Thu 20 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ✎ **ready — needs scheduling** | | |
-| 9 | Fri 21 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ☐ | | |
-| 10 | Mon 24 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
-| 11 | Tue 25 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
-| 12 | Wed 26 Aug 2026 | The bug that was unreachable until I fixed a default | story | ☐ | | |
-| 13 | Thu 27 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | ☐ | | |
-| 14 | Fri 28 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | ☐ | | |
-| 15 | Mon 31 Aug 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
-| 16 | Tue 1 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
-| 17 | Wed 2 Sep 2026 | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | pain | ☐ | | |
-| 18 | Thu 3 Sep 2026 | The whole toolbox on one page, and ten published vectors | story | ☐ | | |
-| 19 | Fri 4 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
-| 20 | Mon 7 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
+| 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494879955487531008/ | |
+| 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
+| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
+| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | ☐ | | |
+| 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | ☐ | | |
+| 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | ☐ | | |
+| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
+| 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
+| 17 | Thu 3 Sep 2026 | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | pain | ☐ | | |
+| 18 | Fri 4 Sep 2026 | The whole toolbox on one page, and ten published vectors | story | ☐ | | |
+| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
+| 20 | Tue 8 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
 
 > ⚠️ **The `### Day N` sheets in §7 were never renumbered after the reflow (C12).** The table
 > above is authoritative for *what runs when*; the sheets below are authoritative for *content*.
@@ -91,11 +91,17 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
-> **Day 8 is BUILT but NOT scheduled** — graphic, copy and numbers all done; only the LinkedIn
-> composer step is outstanding. See `### Day 8`.
-> **Next to build (Day 9, Fri 21 Aug): "The pressure drop was fine. The flow regime wasn't." — draft is in `### Day 9`.**
+> **Schedule shifted one weekday from Day 8 (2026-08-21).** Day 8 was built on Thu 20 Aug but the
+> composer step could not complete that day, so it went out **Fri 21 Aug** instead of Thu 20 Aug.
+> Rather than drop a day, every remaining day moved to the next weekday: each day now carries what
+> was previously the following day's date. Day 20 lands **Tue 8 Sep 2026** — which restores the end
+> date §1 originally stated. No content, lens or ordering changed; the variety rule is unaffected
+> because the sequence itself is untouched.
 >
-> *Day 7 is queued for Wed 19 Aug 08:00 JST; its URL exists only once it publishes.*
+> **Next to build (Day 10, Tue 25 Aug): "Which roughness did you use?" — draft is in `### Day 10`.**
+>
+> *Days 8 and 9 are queued for 08:00 JST on Fri 21 Aug and Mon 24 Aug; their URLs exist only once
+> they publish.*
 
 **Weekly themes**
 
@@ -338,6 +344,21 @@ liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP · C = 100
 **Churn / Slug Flow**, θ = **+45.0°**, vertical (Hewitt & Roberts type) map,
 j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 
+**Inclination gate (Day 9, verified 2026-08-21).** `flowregime.py` selects the map on
+`abs(theta_deg) >= 30.0`, and the two maps do not share axes — vertical plots log₁₀(j_L) vs
+log₁₀(j_G) in m/s, horizontal plots log₁₀(G_L) vs log₁₀(G_G) in kg/s·m². Holding every other
+input at the reference case and varying only Δz over L = 100 m:
+
+| Δz | θ | Map | Regime |
+|---|---|---|---|
+| 50.000 m | 30.0000° | vertical | Churn / Slug Flow |
+| 49.999 m | 29.9993° | horizontal | Slug Flow |
+
+j_G = 0.5139392760964006 m/s and j_L = 0.5002342287338299 m/s are **bit-identical** across the
+flip and equal to the reference case — j depends only on W, ρ and D, never on Δz. The Day 9
+generator asserts this (`fluxes_identical`, `gate_flipped` in its `data-ready` string); if it ever
+fails, the post's central claim is false and the build stops.
+
 ### API 520 PRV sizing (USC)
 
 | Mode | Inputs | Result |
@@ -361,11 +382,11 @@ j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 
 ### Other verified figures
 
-- Crane TP-410 fittings (Vector 7): ΣK 5.3760 · ΔP_fittings 695.853 Pa · L_eq 29.7586 m · ΔP_total 177.625 kPa
+- Crane TP-410 fittings (Vector 7): ΣK 5.3760 · ΔP_fittings 695.854 Pa · L_eq 29.7586 m · ΔP_total 177.625 kPa
 - Steam IF97 @ 4 MPa abs / 300 °C: Region 2, superheat 49.64248 K · h 2,961.65148 kJ/kg · s 6.36383 kJ/(kg·K) · ρ 16.98717 kg/m³ · T_sat 250.35752 °C
 - Gas properties (SG 0.65, 2,000 psi, 150 °F, k 1.3): Z 0.8646 · μ 0.016663 cP · c 410.0269 m/s · μ_JT 0.3279 K/bar
 - NPSHa (water 80 °C, open tank, z +3 m, h_f 1.2 m): **7.45697 m**; P_v 47.41472 kPa; ρ 971.77879 kg/m³; g = 9.80665 m/s²
-- Test suite: **242 tests** (165 test functions, parametrised) across 13 modules; 434 assertions. *(README corrected 2026-08-11 — it had said "183 pytest assertions", wrong in both number and kind.)*
+- Test suite: **358 tests** *(re-counted 2026-08-21 against v3.7; was 242 at v3.0 and 310 at v3.4 — re-run `pytest` before quoting it, never copy the figure from the last post).*
 
 ---
 
@@ -389,7 +410,7 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C10 | 2 | Intermediate Wobbe value "55.997" | Wrong: 44.59/√0.634 = **56.000621** → **56.00**. Do not publish an intermediate. |
 | C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
 | C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** Tracker Day 18 appeared to have no sheet at all. | ✅ **Resolved 2026-08-12** (Naoto). No topic was lost — tracker Day 18 is the material in `### Day 20`, which editorial decision 2 had already moved out of the closing slot. The mapping table under §2 is now complete, and the `### Day 20` sheet has been reframed as a Day 18 capability tour (the "twenty posts in" retrospective framing was cut, since the campaign is not over on Day 18). The sheets keep their pre-reflow numbers deliberately: renumbering twenty headings would break every cross-reference in this file for no gain. **Read sheets by title, via the §2 mapping.** |
-| C13 | 8 | §4's Crane row records `ΔP_fittings 695.853 Pa` | Wrong in the last digit: the endpoint returns **695.8543508168549**, which rounds to **695.854**. Found 2026-08-18 while grounding Day 8. The post quotes **695.85** (2 d.p.), which is correct either way, so publishing was not blocked. `CLAUDE.md` and `api/CLAUDE.md` carry the same stale digit — correct them in a later pass. |
+| C13 | 8 | The fittings ΔP was recorded as **695.853 Pa** in §4 and `api/CLAUDE.md`, and as **695.8532 Pa** in `SPECIFICATION.md` and the test nominal | ✅ **Fixed 2026-08-21.** The endpoint returns **695.8543508168549** → **695.854**. The same drift ran through the self-consistency pair: ΔP_fric 2338.3238 → **2338.3273** and 3034.1770 → **3034.1817**, whose difference is exactly the fittings term (verified to 1e-6 Pa against the endpoint). Corrected in `api/CLAUDE.md`, §4 above, `SPECIFICATION.md` (both places) and `tests/test_dp_calculator.py`'s nominal — the test's `abs=5e-3` tolerance had been wide enough to hide it. Day 8's copy quotes **695.85** (2 d.p.), right either way, so nothing published was wrong. |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1194,7 +1215,7 @@ difference matter — I want the counter-argument."
 
 ---
 
-### Day 7 — *tracker **Day 7**, Wed 19 Aug 2026* · 🕗 SCHEDULED
+### Day 7 — *tracker **Day 7**, Wed 19 Aug 2026* · ✅ POSTED
 
 > **Scheduled 2026-08-17 for Wed 19 Aug 08:00 JST.** One bilingual post, **2,947 characters**,
 > graphic attached, `engineering-converter.com` in the body of both language sections. Queued
@@ -1263,17 +1284,24 @@ upsize, or change material? And does your company have a standing C-factor?"
 
 ---
 
-### Day 8 — *tracker **Day 8**, Thu 20 Aug 2026* · ✎ READY, NOT YET SCHEDULED
+### Day 8 — *tracker **Day 8**, Fri 21 Aug 2026* · 🕗 SCHEDULED
 
-> **Built 2026-08-18. Graphic, copy and numbers are done and verified; only the LinkedIn step is
-> outstanding.** One bilingual post, **2,798 characters**, `engineering-converter.com` in both
-> language sections. Body text: `<scratchpad>/day08_body.txt`; image: `docs/linkedin/day08.png`.
+> **Built 2026-08-18, refreshed for v3.7 and scheduled 2026-08-21 for Fri 21 Aug 08:00 JST.**
+> One bilingual post, **2,824 characters**, `engineering-converter.com` in both language sections.
+> Body text: `docs/linkedin/day08-body.txt`; image: `docs/linkedin/day08.png`.
 >
-> The image paste was abandoned deliberately, not by failure: the maintainer was at the keyboard
-> (idle 0 s), `Ctrl+9` landed on an unrelated tab because the session tab was **not** last in the
-> strip, and a bounded `Ctrl+Tab` search did not find the LinkedIn tab either. Both guarded
-> attempts refused to paste rather than posting into the wrong window. Finish it when the machine
-> is free — open the composer, paste `day08.png` into it **empty**, then type the body.
+> It slipped a day. Across three attempts the composer step was refused by the guards rather than
+> risking a paste into the wrong window — twice because `Ctrl+9` landed on an unrelated tab (the
+> session tab was **not** last in the strip), once because `SetForegroundWindow` was refused
+> outright while the maintainer was typing. It went through immediately once Chrome was the
+> foreground window; the whole composer sequence takes under a minute. **The lesson is to ask for
+> the window rather than fight for it** — the guards were right every time.
+>
+> **Refreshed for v3.7 before scheduling.** Every published figure was re-verified and is
+> bit-identical under the new default two-phase method (HEM), so the physics stood. Two things had
+> gone stale and were fixed: the graphic's version chip (v3.4 → v3.7) and, in **both** the EN and
+> JA copy, the reproduction path — v3.6 moved the card, so "Advanced → Pipe ΔP" became
+> **Advanced → Hydraulics → Pipe ΔP**.
 
 **Title:** Your fittings are worth 30 m of pipe, not 23 m
 **Lens:** teach-theory · **Format:** worked example · **Feature:** Advanced → ΔP fittings block
@@ -1305,10 +1333,10 @@ the wire** — `k_matches=true` in the generator's `data-ready`, i.e. the ledger
 exactly. Endpoint values: ΔP_fittings **695.8543508168549 Pa**, L_eq **29.758637189491434 m**,
 ΔP_total **177624.65735431717 Pa**, f **0.01835438889630599**, velocity head **129.43719 Pa**.
 
-> ⚠️ **§4 says `ΔP_fittings 695.853 Pa`; the endpoint returns 695.8543…, which rounds to
-> **695.854**.** The last digit in the register is wrong. The Theory tab's 2-d.p. `695.85` is fine,
-> and CLAUDE.md / api/CLAUDE.md carry the same `695.853` — worth correcting there in a later pass.
-> Logged as C13 below. The post quotes **695.85**, which is right either way.
+> ✅ **The register's figure was stale and is now fixed (C13).** §4, `api/CLAUDE.md`,
+> `SPECIFICATION.md` and the test nominal said 695.853 / 695.8532; the endpoint returns
+> **695.8543508168549 → 695.854**. All corrected 2026-08-21. The post quotes **695.85** (2 d.p.),
+> which was right either way.
 
 **Display precision:** the card shows ΔP Fittings as **0.69585 kPa** (not 695.85 Pa) and ΣK as
 **5.38** (not 5.3760). The graphic's ledger shows the exact ΣK; the cloned strip shows the card's
@@ -1332,10 +1360,10 @@ behind — use this, not the old PrintWindow recipe.
 
 ---
 
-### Day 9 — Mon 24 Aug 2026
+### Day 9 — Mon 24 Aug 2026 · 🕗 SCHEDULED
 
 **Title:** The pressure drop was fine. The flow regime wasn't.
-**Lens:** pain-workflow · **Format:** mini-tutorial · **Feature:** Advanced → Flow Regime
+**Lens:** pain-workflow · **Format:** mini-tutorial · **Feature:** Advanced → Hydraulics → Flow Regime *(v3.6 moved it under the Hydraulics sub-tab)*
 
 **Hook**
 > Same line, same 176.9 kPa, same WITHIN LIMIT badge. The map says Churn / Slug.
@@ -1352,13 +1380,55 @@ point is the inclination gate, which stands regardless of boundary fidelity. Pub
 point on a hand-simplified map one day after the Colebrook post, without this, is the campaign's
 easiest own-goal.
 
-**Mockup.** Left: the real rendered map, plotted point circled — *"Churn / Slug, θ = +45.0°"*, axes
-annotated *"j_G vs j_L — vertical map, chosen because |θ| ≥ 30°"*. Right: a frame from the Three.js
-3D animation.
+**Mockup — as built, and it deviates from the plan above.** The hero is the app's own
+server-rendered map (the PNG data-URI straight off `/api/flowregime`, which already carries its
+title, the circled OPERATING POINT, the j/G info box, the θ inclination inset and the
+"indicative only" citation — so there was nothing to re-draw). Beside it: the live 4-up hydraulic
+strip cloned out of the ΔP card (Re / Darcy f / V_e / the green EROSION CHECK badge), which is the
+*"every check passes"* evidence. Along the bottom: the inclination gate.
 
-**Numbers.** §4 flow-regime row.
+**The planned Three.js frame was dropped.** The gate probe below is a stronger and far more
+checkable demonstration of the same teaching point the Angle asks for, and a 3D still adds
+decoration rather than evidence. Recorded here so the deviation is deliberate and visible.
 
-**Hashtags:** `#FlowAssurance #TwoPhaseFlow #ProcessEngineering #Commissioning`
+**Numbers.** §4 flow-regime row, including the new inclination-gate table — all re-verified live
+against v3.7 on 2026-08-21, with the ΔP card at its true defaults (see the trap below).
+
+**The load-bearing claim, and how it is guarded.** The post asserts that across the 30° flip the
+*flow* is unchanged and only the *chart* changes. That is not an assumption: the generator probes
+the running app at Δz = 50.000 m and 49.999 m and asserts `fluxes_identical` — j_G and j_L must be
+bit-identical to each other **and** to the reference case — plus `gate_flipped` for the
+vertical→horizontal switch. Both are in `data-ready`; if either goes false the claim is wrong and
+the build stops. Both were true at build time.
+
+> ⚠️ **Trap — saved UI state silently loaded Day 8's fittings.** The first run read
+> ΔP_total = **177.62466 kPa**, not 176.9288: `og_ui_state_v24` in `localStorage` still held the
+> four elbows, gate, swing check, entrance and exit from building Day 8 in the same browser. The
+> regime is unaffected (j_G and j_L do not depend on fittings), but the headline ΔP would have
+> been wrong by 0.7 kPa and would not have matched §4. **Clear `localStorage` and reload before
+> grounding any number** — the app restores state by design, which is exactly what makes it a trap.
+
+**Caveat, and it is in the published copy.** The region boundaries are simplified piecewise-linear
+approximations of Hewitt & Roberts (1969) and Baker (1954) — qualitative orientation, not a
+transition criterion. The post says so in both languages and adds "do not size a slug catcher off
+them". The inclination gate is the transferable part and holds regardless of boundary fidelity.
+
+> **Observation, NOT published — for the maintainer to rule on.** The gate tests `abs(theta_deg)`,
+> so a **downhill** line at θ = −45° is classified on the Hewitt & Roberts *upflow* map and returns
+> Churn / Slug Flow, identical to +45°. Downflow behaves quite differently from upflow, so this is
+> arguably a real simplification rather than a deliberate one. It is **not** in the §11 known-issues
+> register and was deliberately kept out of the post — the campaign does not publish limitation
+> claims that the documentation does not already record. Worth a decision: document it, or refine
+> the gate.
+
+**Mockup files.** `day09-mockup.html` → `day09-standalone.html` → `day09.png` (1200×675, 182 KB),
+captured with headless Chrome. `day09-map-probe.png` is the raw endpoint render, kept as the
+provenance of the hero image.
+
+**Copy.** `docs/linkedin/day09-body.txt` — **2,843 characters**, both language sections carry
+`engineering-converter.com`.
+
+**Hashtags:** `#FlowAssurance #TwoPhaseFlow #ProcessEngineering #Commissioning #プロセスエンジニアリング`
 
 ---
 

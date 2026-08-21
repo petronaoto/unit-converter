@@ -41,9 +41,9 @@
   <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
     <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
     <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
-      <span class="text-slate-600">v3.4</span>
-      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Pipe ΔP
-      <span class="text-slate-600">▸</span> Fittings &amp; Valves (Crane TP-410)</span>
+      <span class="text-slate-600">v3.7</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span> Hydraulics
+      <span class="text-slate-600">▸</span> Pipe ΔP <span class="text-slate-600">▸</span> Fittings (Crane TP-410)</span>
   </div>
   <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
 
@@ -150,6 +150,9 @@ function buildCard() {
 
   setTimeout(function () {
     if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    // v3.6 split Advanced into sub-tabs; the DP card lives under 'hyd' (Hydraulics) and its
+    // geometry does not compute while the sub-tab is hidden.
+    if (typeof win.switchAdvSub === 'function') { win.switchAdvSub('hyd'); }
     var set = function (id, v) { var e = doc.getElementById(id); if (!e) return; e.value = v;
       e.dispatchEvent(new win.Event('input', {bubbles: true}));
       e.dispatchEvent(new win.Event('change', {bubbles: true})); };

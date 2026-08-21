@@ -148,7 +148,7 @@ pattern with `regime_key`; the other message/error branches across the three fil
   strings — the i18n Milestone 4 pattern `flowregime.py` already uses for `regime_key`.
   The frontend branches on these, never on the English text.
 - **Reference case (Vector 7, `docs/SPECIFICATION.md` §9):** ΣK = 5.3760 on the Vector 2
-  hydraulics → dpFittings ≈ **695.853 Pa**, L_eq ≈ **29.7586 m**, ΔP_total ≈ **177.625 kPa**.
+  hydraulics → dpFittings ≈ **695.854 Pa**, L_eq ≈ **29.7586 m**, ΔP_total ≈ **177.625 kPa**.
   Re-verify alongside Vector 2 after touching this file.
 
 ## v3.7 — Selectable two-phase methods (dp_calculator.py)

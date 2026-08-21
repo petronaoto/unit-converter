@@ -1,0 +1,57 @@
+Same 4-inch line as Friday's post. Total ΔP 176.9288 kPa. Reynolds 2.20e+5, turbulent. Darcy f 0.01835. Erosional velocity 7.69 m/s against 1.01 m/s flowing — v/V_e = 0.13, WITHIN LIMIT.
+
+Every hydraulic check passes. The regime map says Churn / Slug.
+
+ΔP is a number. Regime is a behaviour, and it is the one that wakes the control room: slugging is a separator-level, pipe-support and control-valve-cycling problem. No pressure-drop figure predicts it — ΔP is an average, and slugging is the variance.
+
+What decides which chart you may even read is geometry:
+
+θ = asin(Δz / L)
+
+At |θ| ≥ 30° the physics is vertical, so the tool plots a Hewitt & Roberts type map — volumetric fluxes j_G vs j_L, in m/s. Below 30°, a Baker type map — mass fluxes G_G vs G_L, in kg/s·m². Not the same chart with the lines moved. The axes change.
+
+Which makes the gate a hard edge. On this line, L = 100 m:
+
+Δz = 50.000 m — θ = 30.0000° — vertical map — Churn / Slug Flow
+Δz = 49.999 m — θ = 29.9993° — horizontal map — Slug Flow
+
+One millimetre. And across it j_G = 0.5139 m/s and j_L = 0.5002 m/s do not move — not rounded to the same value, bit-identical. The flow did not change. The chart chosen to describe it did.
+
+The honest part: this tool's region boundaries are simplified piecewise-linear approximations of Hewitt & Roberts (1969) and Baker (1954). Qualitative orientation, not a transition criterion — do not size a slug catcher off them. The inclination gate is the transferable part, and it holds whatever the boundaries look like.
+
+I put the map in because a green ΔP result reads like an answer. It is one answer.
+
+Advanced → Hydraulics → Flow Regime, then VISUALIZE FLOW REGIME.
+
+https://engineering-converter.com
+
+— — —
+
+金曜の投稿と同じ4インチ配管です。全圧損 176.9288 kPa。レイノルズ数 2.20e+5、乱流。ダルシー摩擦係数 0.01835。浸食速度 7.69 m/s に対して流速 1.01 m/s、v/V_e = 0.13 で WITHIN LIMIT。
+
+水力側のチェックは全部合格。それでも流動様式マップは Churn / Slug と出ます。
+
+ΔP は数値、流動様式は挙動です。そして制御室を起こすのは後者のほう。スラッギングはセパレータ液面、配管サポート、調節弁ハンチングの問題です。圧損の数字では予測できません。ΔP は平均で、スラッギングは分散だからです。
+
+「どのチャートを読んでよいか」を決めているのは幾何です。
+
+θ = asin(Δz / L)
+
+|θ| ≥ 30° なら物理は垂直流。ツールは Hewitt & Roberts 型（体積流束 j_G 対 j_L、m/s）を描きます。30° 未満なら Baker 型（質量流束 G_G 対 G_L、kg/s·m²）。同じチャートの線が動くのではありません。軸そのものが変わります。
+
+だからこのゲートは不連続です。L = 100 m のこの配管で:
+
+Δz = 50.000 m — θ = 30.0000° — 垂直マップ — Churn / Slug Flow
+Δz = 49.999 m — θ = 29.9993° — 水平マップ — Slug Flow
+
+1 ミリ。その 1 ミリを跨いでも j_G = 0.5139 m/s、j_L = 0.5002 m/s は動きません。丸めて同じ、ではなく完全に同一です。流れは変わっていない。変わったのは、それを記述するチャートのほうです。
+
+正直なところも。このツールの領域境界は Hewitt & Roberts (1969) と Baker (1954) を区分線形に単純化した近似です。定性的な当たりをつけるためのもので、遷移判定基準ではありません。スラグキャッチャーの設計には使わないでください。持ち帰れるのは傾斜ゲートで、こちらは境界の精度によらず成り立ちます。
+
+マップを載せた理由は、緑の ΔP 結果が「答え」に見えるからです。答えのひとつ、です。
+
+Advanced → Hydraulics → Flow Regime を開いて VISUALIZE FLOW REGIME。
+
+https://engineering-converter.com
+
+#FlowAssurance #TwoPhaseFlow #ProcessEngineering #Commissioning #プロセスエンジニアリング
