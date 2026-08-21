@@ -224,6 +224,58 @@ real sub-tab strip and the LNG Cargo card body; note the vessel photo is `loadin
 forced eager in the off-screen iframe), `-standalone.html`, `v36-adv-subtabs.png`, `-body.txt` (LinkedIn),
 `-x.txt` (thread). v3.5 had shipped without an announcement, so this post covers both releases.
 
+---
+
+**v3.4 documentation restructure — 📝 READY, NOT POSTED.** Copy, graphic and assets are complete
+and approved by Naoto (2026-08-24). Nothing has been published; publish on his word.
+
+- **Not framed as a "v3.4 launch".** v3.4 shipped 2026-08-16 and was never announced; by the time
+  this was written the app was on **v3.7** and v3.5+v3.6 had already gone out above. Announcing
+  "v3.4" three releases late reads as stale, so this is an **engineering-practice post about the
+  documentation restructure** — no version peg, verifiable on the live site today.
+- **The hook is a measured number: 14 → 8.** Colour the jump-link pills by the tab each section
+  documents and count contiguous runs. Pre-v3.4 = **14 runs**; today = **8**, which is provably the
+  floor (there are exactly 8 distinct groups, so one block each is the best achievable). Computed
+  from the two strips, not asserted — see `v34-docs-strips.json` and the `runs()` function in the
+  generator. This replaced an earlier draft that led on "22 sections, 13 Parts"; the image and the
+  copy now make the same argument.
+- **The credibility argument is that the rule held.** v3.4 wrote the ordering rule into CLAUDE.md,
+  and the three releases since (v3.5 LNG Cargo, v3.6 sub-tabs, v3.7 ΔP methods) each **inserted**
+  their documentation at the correct position. The run count is still 8. Same role GIIGNL's
+  published value played in the v3.3 post.
+- **Figures re-read from the live site on 2026-08-24**, not from the docs: 22 How To Use sections ·
+  13 Theory Parts · 10 languages. Historical figures (four stacked "★ New in Version" blocks, Basic
+  Eng in sections 4/13/16/17/18, Theory printing Part VI before Part V) describe the **pre-v3.4**
+  state and are past tense in the copy.
+- **Assets:** `docs/linkedin/v34-docs-body.txt` (LinkedIn, EN 1,973 + JA 964 = 2,951 chars / 2,965
+  UTF-16 units — inside 3,000 either way) · `v34-docs-x.txt` (three tweets, X-counted 245/143/274) ·
+  `v34-docs.png` (1200 × 675, 89.9 KB) · `v34-docs-standalone.html` (frozen frame) ·
+  `v34-docs-mockup.py` (generator) · `v34-docs-strips.json` (the extracted strips, so the 14 → 8
+  claim is auditable).
+- **The graphic is a new pattern and worth reusing.** The `dayNN-mockup.html` generators clone a
+  *card*; this post's subject is the shape of a contents list, so the frame shows **the same
+  jump-link strip at two commits** — `ae3f3dc^` (pre-v3.4) and current `main` — with labels and
+  Tailwind classes lifted verbatim from `index.html` at each. The only added layer is the colour
+  bar. Reuse `v34-docs-mockup.py` for any future before/after structural post.
+  - ⚠️ **Three captures were needed and the first two passed every programmatic check.** v1 left
+    ~250 px of dead space; v2 filled it but pushed the payoff strip out of frame and spilled the
+    pills onto three rows. Only opening the PNG caught either — rule 3 of the skill, again.
+- **No first comment planned.** Optional per the 2026-08-13 ruling, and this post has no inputs to
+  pre-fill, so the share-link recipe adds nothing.
+
+> ✅ **Gap closed in the same change: v3.4 now has an entry in its own Release Notes appendix**
+> (`howto-new34`, `docs.howto.b114`/`b115`, translated into all 9 dictionaries). The appendix had
+> listed 3.7, 3.6, 3.5, 3.3, 3.2, 3.1, 3.0, 2.8, 2.5, 2.4 — the release that *created* the appendix
+> was missing from it, which would have been an own-goal in a post that points at the appendix.
+> It now reads 3.7, 3.6, 3.5, **3.4**, 3.3, …
+>
+> ⚠️ **Still open — v3.7 is unannounced** (selectable two-phase ΔP methods + the rebuilt 3D flow
+> animation). The v3.5+v3.6 precedent is to bundle an un-announced release into the next
+> announcement; the alternative is a separate v3.7 post. **Naoto's call, not yet made.**
+>
+> Also fixed here: CLAUDE.md's restructure rules claimed *"five years"* of appending. The project
+> started **March 2026** — five *months*. The copy says "five months and twenty-odd releases".
+
 ## 3. The compact share-link recipe — *use this, never the Share button*
 
 The app's own **Share** button encodes every field. A stock v3.0 link measures
