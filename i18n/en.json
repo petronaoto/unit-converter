@@ -540,7 +540,7 @@
       "hintFlash": "[flash @ 0.9×Po]",
       "hintTwophase": "[0.85 two-phase]",
       "hintViscosity": "[viscosity]",
-      "twophaseInfoBox": "v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg. Po/Pa accept any pressure unit and Abs/Gauge basis (converted to kPa abs / psia before sizing).",
+      "twophaseInfoBox": "v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. W, vo/v9, Po and Pa each take the unit (and, for pressure, the Abs/Gauge basis) selected beside them; all are converted to the card's unit system before sizing.",
       "importPressTitle": "Import from General tab › Pressure card",
       "importPressEmpty": "Nothing to import — enter a pressure in the General tab's Pressure card first.",
       "importPressDone": "Imported {value} {unit} from the General tab Pressure card.",

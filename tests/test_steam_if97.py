@@ -278,8 +278,9 @@ def test_exact_unit_factors_survive(html):
 
 def test_advisory_temperature_never_enters_the_sizing_payload(html):
     """psv-T-steam is advisory-only. Exactly five references may exist: the input id,
-    its unit-span id, the comment above updateSteamAdvisory(), the read inside it,
-    and the unit relabel in _psvUnitLabels(). A sixth means someone wired it into
-    calcPSV() — that is a payload change and must be a deliberate, reviewed
-    decision, not a drive-by."""
+    its unit-select id (`psv-T-steam-u`, v3.8.1 — formerly the fixed unit-span id), its
+    PSV_QTY entry (the °F/°C/K/°R conversion table — formerly the relabel line in
+    _psvUnitLabels()), the comment above updateSteamAdvisory(), and the psvQty() read
+    inside it. A sixth means someone wired it into calcPSV() — that is a payload change
+    and must be a deliberate, reviewed decision, not a drive-by."""
     assert html.count("psv-T-steam") == 5
