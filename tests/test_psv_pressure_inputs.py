@@ -182,3 +182,79 @@ def test_docs_quote_the_default_case_numbers(html):
     for needle in ("8,000 lb/h", "19 g/mol", "560 °R", "179.7 psi", "346.98", "98.07 psia",
                    "0.7144 in²", "orifice H", "0.785 in²"):
         assert needle in blk, f"§21 worked example missing {needle!r}"
+
+
+# ── v3.8.1 — every other physical input has a unit select too ────────────────────
+
+QTY_FIELDS = {
+    # id: (first option value = USC canonical, second option value = SI canonical)
+    "psv-W": ("0.45359237", "1"), "psv-W-steam": ("0.45359237", "1"), "psv-W-tp": ("0.45359237", "1"),
+    "psv-T": ("R", "K"), "psv-T-steam": ("F", "C"),
+    "psv-Q": ("3.785411784", "1"), "psv-mu": ("1", "1"),      # cP in BOTH systems (API 520 SI form is mPa·s = cP)
+    "psv-vo": ("0.062427961", "1"), "psv-v9": ("0.062427961", "1"),
+}
+
+
+def test_every_quantity_field_has_a_unit_select_with_canonical_units_first(html):
+    """The USC canonical unit is the first option (the card's default system) and the SI
+    canonical the second, so a fresh page and a pre-v3.8.1 restore both mean what they always
+    meant; psvSyncQtyUnits() flips between exactly these two values."""
+    for fid, (usc, si) in QTY_FIELDS.items():
+        sel = re.search(r'<select id="%s-u"[^>]*>(.*?)</select>' % fid, html, re.S)
+        assert sel, f"{fid}: missing unit <select>"
+        opts = re.findall(r'<option value="([^"]+)">', sel.group(1))
+        assert opts[0] == usc, f"{fid}: first option must be the USC canonical unit: {opts[:2]}"
+        if usc != si:
+            assert opts[1] == si, f"{fid}: second option must be the SI canonical unit: {opts[:2]}"
+        assert f'id="{fid}-unit"' not in html, f"{fid}: stale fixed-unit <span> still present"
+        # PSV_QTY must carry the same canonical pair
+        entry = re.search(r"'%s':\s*\{\s*usc:\s*'([^']+)',\s*si:\s*'([^']+)'" % re.escape(fid), html)
+        assert entry and entry.groups() == (usc, si), f"{fid}: PSV_QTY canonical pair differs from the <select>"
+
+
+def test_viscosity_options_are_string_distinct(html):
+    """cP and mPa·s are numerically identical; their option VALUES must differ as strings or a
+    share-link restore could never tell them apart (same rule as the Basic Eng viscosity card)."""
+    sel = re.search(r'<select id="psv-mu-u"[^>]*>(.*?)</select>', html, re.S).group(1)
+    values = re.findall(r'<option value="([^"]+)">', sel)
+    assert len(values) == len(set(values))
+    assert "1" in values and "1.0" in values
+
+
+def test_quantities_route_through_psvqty_in_calcpsv(html):
+    body = html[html.index("async function calcPSV()"):]
+    body = body[:body.index("// ════")]
+    raw_read = lambda fid: re.search(r"(?<![A-Za-z])g\('%s'\)" % re.escape(fid), body)
+    for fid in ("psv-W", "psv-T", "psv-W-steam", "psv-Q", "psv-mu", "psv-W-tp", "psv-vo", "psv-v9"):
+        assert f"gq('{fid}')" in body, f"{fid}: not converted through psvQty()"
+        assert not raw_read(fid), f"{fid}: still read raw"
+    # dimensionless inputs stay raw
+    for fid in ("psv-M", "psv-k", "psv-Z", "psv-Gl"):
+        assert f"gq('{fid}')" not in body, f"{fid} is dimensionless and must not be unit-converted"
+    # the advisory temperature goes through the same converter (and stays out of the payload)
+    assert "psvQty('psv-T-steam', usc ? 'USC' : 'SI')" in html
+    assert html.count("psv-T-steam") == 5
+
+
+def test_units_toggle_follows_quantity_selects_too(html):
+    fn = html[html.index("function onPsvUnitsChange()"):]
+    fn = fn[:fn.index("}")]
+    assert "psvSyncPressUnits(" in fn and "psvSyncQtyUnits(" in fn and "updatePSVMode()" in fn
+
+
+def test_restore_falls_back_to_defaults_for_incomplete_panels(html):
+    """v3.8.1 — the reason the defaults were invisible to returning visitors: a saved session
+    restores over the HTML value= attributes. applyState() must call psvEnsureDefaults() after
+    the inputs are applied and before recomputeAll(); liquid accepts EITHER P1 (certified) or
+    Ps (non-certified) as the pressure requirement, or a certified case would be wiped because
+    the hidden Ps is blank."""
+    a = html.index("function applyState(")
+    seg = html[a:html.index("function scheduleSave", a)]
+    assert seg.index("applyInputs(s.inputs)") < seg.index("psvEnsureDefaults();") < seg.index("recomputeAll();")
+    req = re.search(r"const PSV_PANEL_REQUIRED = \{(.*?)\n    \};", html, re.S).group(1)
+    assert "['psv-P1-liq', 'psv-Ps']" in req
+    for panel in ("gas:", "steam:", "liquid:", "twophase:"):
+        assert panel in req
+    # the reset restores the shipped defaults — inputs, selects and basis — not blanks
+    reset = html[html.index("function psvResetPanel("):html.index("function psvEnsureDefaults(")]
+    assert "el.defaultValue" in reset and "defaultSelected" in reset and "setPsvPressMode(" in reset

@@ -1999,10 +1999,10 @@
             <div id="psv-inputs-gas" class="space-y-4">
               <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.gasHeading">Gas / Vapor Inputs</span> (§5.6)</h3>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W" value="8000" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W" value="8000" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-W-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="0.45359237">lb/h</option><option value="1">kg/h</option><option value="1000">t/h</option><option value="3600">kg/s</option><option value="1632.932532">lb/s</option></select></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.molWeightLabel">MOL. WEIGHT</span> M</label><div class="flex"><input type="number" step="any" id="psv-M" value="19" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">g/mol</span></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.heatRatioLabel">HEAT RATIO</span> k (Cp/Cv)</label><div class="flex"><input type="number" step="any" id="psv-k" value="1.3" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingTempLabel">RELIEVING TEMP</span> T</label><div class="flex"><input type="number" step="any" id="psv-T" value="560" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°R</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.relievingTempLabel">RELIEVING TEMP</span> T</label><div class="flex"><input type="number" step="any" id="psv-T" value="560" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-T-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="R">°R</option><option value="K">K</option><option value="F">°F</option><option value="C">°C</option></select></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.compressibilityLabel">COMPRESSIBILITY</span> Z</label><div class="flex"><input type="number" step="any" id="psv-Z" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">—</span></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-P1-abs" onclick="setPsvPressMode('psv-P1','abs')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-P1-gau" onclick="setPsvPressMode('psv-P1','gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-P1" value="179.7" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-P1')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-P1-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> P2</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-P2-abs" onclick="setPsvPressMode('psv-P2','abs')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-P2-gau" onclick="setPsvPressMode('psv-P2','gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-P2" value="0" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-P2')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-P2-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
@@ -2019,13 +2019,13 @@
             <div id="psv-inputs-steam" class="hidden space-y-4">
               <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.steamHeading">Steam Inputs</span> (§5.7)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" value="153500" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-steam" value="153500" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-W-steam-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="0.45359237">lb/h</option><option value="1">kg/h</option><option value="1000">t/h</option><option value="3600">kg/s</option><option value="1632.932532">lb/s</option></select></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-P1-steam-abs" onclick="setPsvPressMode('psv-P1-steam','abs')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-P1-steam-gau" onclick="setPsvPressMode('psv-P1-steam','gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-P1-steam" value="1774.7" oninput="updateSteamAdvisory()" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-P1-steam')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-P1-steam-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">KSH <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintKshSaturated">[1.0 = saturated]</span></label><div class="flex"><input type="number" step="any" id="psv-KSH" value="1.0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">Table 9</span></div></div>
                 <!-- v3.0 — advisory-only steam temperature. NOT part of the sizing payload:
                      calcPSV() never reads it. It exists so the IF97 Tsat advisory below can
                      tell the user whether their steam is superheated and KSH needs Table 9. -->
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.steamTempLabel">STEAM TEMP</span> T <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAdvisoryOnly">[optional — advisory only]</span></label><div class="flex"><input type="number" step="any" id="psv-T-steam" placeholder="e.g. 680" oninput="updateSteamAdvisory()" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-T-steam-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">°F</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.steamTempLabel">STEAM TEMP</span> T <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAdvisoryOnly">[optional — advisory only]</span></label><div class="flex"><input type="number" step="any" id="psv-T-steam" placeholder="e.g. 680" oninput="updateSteamAdvisory()" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-T-steam-u" onchange="updateSteamAdvisory()" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="F">°F</option><option value="C">°C</option><option value="K">K</option><option value="R">°R</option></select></div></div>
               </div>
               <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-800">
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kd</label><input type="number" step="any" id="psv-Kd-steam" value="0.975" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
@@ -2042,9 +2042,9 @@
             <div id="psv-inputs-liquid" class="hidden space-y-4">
               <h3 id="psv-liquid-heading" class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase">Liquid Inputs (§5.8 Certified)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.flowRateLabel">FLOW RATE</span> Q</label><div class="flex"><input type="number" step="any" id="psv-Q" value="1800" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-Q-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">gal/min</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.flowRateLabel">FLOW RATE</span> Q</label><div class="flex"><input type="number" step="any" id="psv-Q" value="1800" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-Q-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="3.785411784">gal/min</option><option value="1">L/min</option><option value="16.66666667">m³/h</option><option value="2.649788249">bbl/h</option><option value="0.001">mL/min</option></select></div></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="basic.gravity.sgLabel">SPECIFIC GRAVITY</span> Gl</label><div class="flex"><input type="number" step="any" id="psv-Gl" value="0.9" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">H₂O=1</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.viscosityLabel">VISCOSITY</span> µ <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintIgnore">[0 = ignore]</span></label><div class="flex"><input type="number" step="any" id="psv-mu" value="0" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">cP</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.viscosityLabel">VISCOSITY</span> µ <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintIgnore">[0 = ignore]</span></label><div class="flex"><input type="number" step="any" id="psv-mu" value="0" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-mu-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="1">cP</option><option value="1.0">mPa·s</option><option value="1000">Pa·s</option></select></div></div>
                 <div id="psv-P1-row-liquid"><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> P1</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-P1-liq-abs" onclick="setPsvPressMode('psv-P1-liq','abs')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-P1-liq-gau" onclick="setPsvPressMode('psv-P1-liq','gau')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-P1-liq" value="275" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-P1-liq')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-P1-liq-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
                 <div id="psv-Ps-row" class="hidden"><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.setPressureLabel">SET PRESSURE</span> Ps</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-Ps-abs" onclick="setPsvPressMode('psv-Ps','abs')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-Ps-gau" onclick="setPsvPressMode('psv-Ps','gau')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-Ps" value="250" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-Ps')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-Ps-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> P2</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-P2-liq-abs" onclick="setPsvPressMode('psv-P2-liq','abs')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-P2-liq-gau" onclick="setPsvPressMode('psv-P2-liq','gau')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-P2-liq" value="0" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-P2-liq')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-P2-liq-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
@@ -2061,9 +2061,9 @@
             <div id="psv-inputs-twophase" class="hidden space-y-4">
               <h3 class="text-xs font-bold tracking-widest text-red-500 border-b border-slate-800 pb-1 uppercase"><span data-i18n="safety.psv.twophaseHeading">Two-Phase Inputs — Omega Method</span> (§5.10 / Annex C.2.2)</h3>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-tp" value="238715" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-W-tp-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">lb/h</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.inletSpecVolLabel">INLET SPEC. VOL.</span> vo <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAtPo">[at Po]</span></label><div class="flex"><input type="number" step="any" id="psv-vo" value="0.3116" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-vo-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
-                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.specVolLabel">SPEC. VOL.</span> v9 <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintFlash">[flash @ 0.9×Po]</span></label><div class="flex"><input type="number" step="any" id="psv-v9" value="0.3629" class="w-2/3 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><span id="psv-v9-unit" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-[10px] text-red-400 font-bold flex items-center justify-center">ft³/lb</span></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.massFlowLabel">MASS FLOW</span> W</label><div class="flex"><input type="number" step="any" id="psv-W-tp" value="238715" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-W-tp-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="0.45359237">lb/h</option><option value="1">kg/h</option><option value="1000">t/h</option><option value="3600">kg/s</option><option value="1632.932532">lb/s</option></select></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.inletSpecVolLabel">INLET SPEC. VOL.</span> vo <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintAtPo">[at Po]</span></label><div class="flex"><input type="number" step="any" id="psv-vo" value="0.3116" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-vo-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="0.062427961">ft³/lb</option><option value="1">m³/kg</option><option value="0.001">L/kg</option></select></div></div>
+                <div><label class="block text-[10px] font-semibold text-slate-400 mb-1"><span data-i18n="safety.psv.specVolLabel">SPEC. VOL.</span> v9 <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintFlash">[flash @ 0.9×Po]</span></label><div class="flex"><input type="number" step="any" id="psv-v9" value="0.3629" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><select id="psv-v9-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="0.062427961">ft³/lb</option><option value="1">m³/kg</option><option value="0.001">L/kg</option></select></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.relievingPressLabel">RELIEVING PRESS</span> Po</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-Po-abs" onclick="setPsvPressMode('psv-Po','abs')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-Po-gau" onclick="setPsvPressMode('psv-Po','gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-Po" value="80.7" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-Po')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-Po-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
                 <div><div class="flex items-center justify-between mb-1"><label class="block text-[10px] font-semibold text-slate-400"><span data-i18n="safety.psv.backpressureLabel">BACKPRESSURE</span> Pa</label><div class="flex rounded overflow-hidden border border-slate-700 text-[10px] font-bold"><button type="button" id="psv-Pa-abs" onclick="setPsvPressMode('psv-Pa','abs')" class="px-2 py-0.5 bg-red-700 text-white transition-colors" data-i18n="common.abs">Abs</button><button type="button" id="psv-Pa-gau" onclick="setPsvPressMode('psv-Pa','gau')" class="px-2 py-0.5 bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors" data-i18n="common.gauge">Gauge</button></div></div><div class="flex"><input type="number" step="any" id="psv-Pa" value="0" class="flex-1 min-w-0 px-2 py-1.5 bg-slate-950 border border-slate-700 rounded-l text-slate-200 outline-none focus:border-red-500" /><button type="button" onclick="importPsvPressure('psv-Pa')" title="Import from General tab › Pressure card" aria-label="Import from General tab › Pressure card" data-i18n-title="safety.psv.importPressTitle" data-i18n-aria="safety.psv.importPressTitle" class="px-1.5 bg-slate-950 border-y border-slate-700 text-slate-500 hover:text-amber-400 transition-colors text-sm leading-none">⇩</button><select id="psv-Pa-u" class="w-1/3 bg-slate-800 border-y border-r border-slate-700 rounded-r text-xs text-amber-500 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 focus:relative"><option value="6894.75729">psi</option><option value="1000">kPa</option><option value="100000">bar</option><option value="1000000">MPa</option><option value="1">Pa</option><option value="101325">atm</option><option value="98066.5">kg/cm²</option></select></div></div>
               </div>
@@ -2073,7 +2073,7 @@
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kc</label><input type="number" step="any" id="psv-Kc-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
                 <div><label class="block text-[10px] font-semibold text-slate-400 mb-1">Kv <span class="text-slate-600 font-normal" data-i18n="safety.psv.hintViscosity">[viscosity]</span></label><input type="number" step="any" id="psv-Kv-tp" value="1.0" class="w-full px-2 py-1.5 bg-slate-950 border border-slate-700 rounded text-slate-200 outline-none focus:border-red-500" /></div>
               </div>
-              <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-2 text-[10px] text-fuchsia-300" data-i18n="safety.psv.twophaseInfoBox">v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. SI: vo/v9 in m³/kg; Po/Pa in kPa abs.</div>
+              <div class="bg-fuchsia-500/10 border border-fuchsia-500/30 rounded p-2 text-[10px] text-fuchsia-300" data-i18n="safety.psv.twophaseInfoBox">v9 = specific volume from isenthalpic (adiabatic) flash to 0.9×Po — obtain from process simulator. W, vo/v9, Po and Pa each take the unit (and, for pressure, the Abs/Gauge basis) selected beside them; all are converted to the card's unit system before sizing.</div>
             </div>
 
             <!-- CALCULATE -->
@@ -2853,7 +2853,7 @@
 
         <section>
           <h3 id="howto-21" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">21. Safety Tab — PRV Sizing (API 520 Part I)</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. The card opens pre-filled with a complete gas/vapor case, so a single click on CALCULATE ORIFICE SIZE returns a result (orifice H) before you type anything — then replace the figures with your own. Select the sizing mode and unit system, enter the process inputs, and read the required effective discharge area and the recommended API 526 orifice letter (D–T). Every pressure field (P1, P2, Ps, Po, Pa) has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the figure entered in the General tab's Pressure card; the card converts to the absolute basis API 520 expects (gauge for the §5.8/§5.9 liquid modes) before sizing, so units and bases may be mixed freely. The USC/SI switch still sets the flow, temperature and area units, and moves pressure fields sitting on psi↔kPa to the other system's default.</p>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. The card opens pre-filled with a complete gas/vapor case, so a single click on CALCULATE ORIFICE SIZE returns a result (orifice H) before you type anything — then replace the figures with your own. Select the sizing mode and unit system, enter the process inputs, and read the required effective discharge area and the recommended API 526 orifice letter (D–T). Every input with a physical unit has its own unit drop-down — mass flow W (lb/h · kg/h · t/h · kg/s · lb/s), temperature T (°R · K · °F · °C), flow rate Q (gal/min · L/min · m³/h · bbl/h), specific volume vo/v9 (ft³/lb · m³/kg · L/kg) and viscosity µ (cP · mPa·s · Pa·s) — and the card converts each to the unit system's basis before sizing. If a saved session left a panel incomplete, it falls back to the default case on reload, so the one-click example is always there. Every pressure field (P1, P2, Ps, Po, Pa) has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the figure entered in the General tab's Pressure card; the card converts to the absolute basis API 520 expects (gauge for the §5.8/§5.9 liquid modes) before sizing, so units and bases may be mixed freely. The USC/SI switch still sets the flow, temperature and area units, and moves pressure fields sitting on psi↔kPa to the other system's default.</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
@@ -2894,7 +2894,7 @@
 
             <details id="howto-new38" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
               <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b115">★ New in Version 3.8</span></summary>
-              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b116"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Pressure inputs with units and Abs/Gauge (Safety tab)</strong> — every pressure field on the PRV card — P1, P2, Ps, Po, Pa in all five modes — now has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the value entered in the General tab's Pressure card. The card converts to the absolute (or, for the liquid modes, gauge) basis API 520 expects before sizing; the API and the reference vectors are unchanged. Section 21, Theory §12.8.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">One-click defaults</strong> — the PRV card opens pre-filled — gas/vapor with an 8,000 lb/h natural-gas case that sizes to orifice H, the other modes with their reference cases — so CALCULATE ORIFICE SIZE returns a result immediately; replace the figures with your own afterwards.</div></div>
+              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b116"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Pressure inputs with units and Abs/Gauge (Safety tab)</strong> — every pressure field on the PRV card — P1, P2, Ps, Po, Pa in all five modes — now has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the value entered in the General tab's Pressure card. The card converts to the absolute (or, for the liquid modes, gauge) basis API 520 expects before sizing; the API and the reference vectors are unchanged. v3.8.1 adds the same unit drop-downs to W, T, Q, µ, vo/v9 and the advisory steam T, and lets an incomplete saved panel fall back to the default case on reload. Section 21, Theory §12.8.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">One-click defaults</strong> — the PRV card opens pre-filled — gas/vapor with an 8,000 lb/h natural-gas case that sizes to orifice H, the other modes with their reference cases — so CALCULATE ORIFICE SIZE returns a result immediately; replace the figures with your own afterwards.</div></div>
             </details>
 
             <details id="howto-new37" class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
@@ -3699,7 +3699,7 @@
               <div class="text-center text-green-300 py-1">P_abs = P_field × f_unit + (P_atm if Gauge) &nbsp;→&nbsp; P_API = P_abs / f_sys − (P_atm / f_sys if §5.8–§5.9)</div>
               <div class="bg-slate-900 rounded p-3 border border-slate-700 text-[10px] space-y-1 text-slate-300">
                 <div>f_unit = multiply-to-Pa factor of the selected unit: psi 6,894.75729 · kPa 1,000 · bar 100,000 · MPa 10⁶ · Pa 1 · atm 101,325 · kg/cm² 98,066.5. f_sys = 6,894.75729 (USC) or 1,000 (SI). P_atm = 101,325 Pa (1 atm) — the same convention as the General tab Pressure card.</div>
-                <div>A field already on the system's canonical unit and basis is passed through unchanged, so the reference vectors (§9 Vector 4) stay bit-identical to earlier versions. The USC/SI switch moves only psi↔kPa selections and never converts a value.</div>
+                <div>A field already on the system's canonical unit and basis is passed through unchanged, so the reference vectors (§9 Vector 4) stay bit-identical to earlier versions. The USC/SI switch moves only psi↔kPa selections and never converts a value. Mass flow, temperature, volumetric flow, specific volume and viscosity fields follow the same rule with their own canonical pairs — lb/h ↔ kg/h (0.45359237), °R ↔ K (×1.8), gal/min ↔ L/min (3.785411784), ft³/lb ↔ m³/kg (0.062427961), cP = mPa·s — each reduced to the unit API 520 states for the chosen system (psvQty()).</div>
               </div>
             </div>
           </div>
@@ -5076,7 +5076,7 @@
       // v3.8 — P1 may sit on any unit / basis; reduce it to the system's canonical absolute
       // unit first (psia / kPa abs — exact when already there), then apply the same factors.
       const p1 = psvPressForApi('psv-P1-steam', usc ? 'USC' : 'SI', false);
-      const t  = parseFloat(document.getElementById('psv-T-steam').value);
+      const t  = psvQty('psv-T-steam', usc ? 'USC' : 'SI');   // v3.8.1 — any °F / °C / K / °R on screen
       if (!(p1 > 0)) { el.classList.add('hidden'); return; }
       const pMPa = p1 * (usc ? 0.006894757 : 0.001);
       if (!(pMPa >= 0.000611213)) { el.classList.add('hidden'); return; }
@@ -6871,28 +6871,20 @@
     }
 
     function _psvUnitLabels(u) {
-      const s = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = v; };
-      const usc = u === 'USC';
-      s('psv-W-unit',        usc ? 'lb/h'    : 'kg/h');
-      s('psv-W-steam-unit',  usc ? 'lb/h'    : 'kg/h');
-      // v3.0 — advisory-only steam temp uses °F/°C (API 520 Table 9 is tabulated in °F),
-      // deliberately NOT the °R/K convention of the gas-mode relieving temperature.
-      s('psv-T-steam-unit',  usc ? '°F' : '°C');
-      s('psv-W-tp-unit',     usc ? 'lb/h'    : 'kg/h');
-      s('psv-T-unit',        usc ? '\u00b0R' : 'K');
-      // v3.8 \u2014 the eight pressure fields carry their own unit <select> (psv-*-u) and
-      // Abs/Gauge basis; they are no longer relabelled here \u2014 see psvSyncPressUnits().
-      s('psv-Q-unit',        usc ? 'gal/min' : 'L/min');
-      s('psv-vo-unit',       usc ? 'ft\u00b3/lb' : 'm\u00b3/kg');
-      s('psv-v9-unit',       usc ? 'ft\u00b3/lb' : 'm\u00b3/kg');
+      // v3.8 — the eight pressure fields carry their own unit <select> (psv-*-u) and
+      // Abs/Gauge basis; v3.8.1 — so does every other physical input (W, T, Q, µ, vo, v9 and
+      // the advisory-only steam T — see PSV_QTY). No fixed unit chip is left to relabel; the
+      // canonical-unit follow on a USC↔SI toggle is psvSyncPressUnits() + psvSyncQtyUnits(),
+      // called from onPsvUnitsChange() only (never from updatePSVMode(), which also runs on
+      // mode changes and on restore). Kept as the historical hook point; intentionally a no-op.
     }
 
-    // \u2500\u2500 v3.8 \u2014 PSV pressure fields: per-field unit select + Abs/Gauge basis + import \u2500\u2500
+    // ── v3.8 — PSV pressure fields: per-field unit select + Abs/Gauge basis + import ──
     // Every pressure field <id> has a sibling <select id="<id>-u"> whose option values are
     // multiply-to-Pa factors (the General tab Pressure card's list) and an Abs/Gauge pair
     // <id>-abs / <id>-gau. calcPSV() reduces each field to what psv_calculator.py has always
-    // taken \u2014 psia / kPa abs (gas, steam, two-phase) or psig / kPag (liquid, \u00a75.8/\u00a75.9) in
-    // the selected unit system \u2014 so the API contract, Vector 4 and the server tests are
+    // taken — psia / kPa abs (gas, steam, two-phase) or psig / kPag (liquid, §5.8/§5.9) in
+    // the selected unit system — so the API contract, Vector 4 and the server tests are
     // untouched. P_atm = PATM_PA (101,325 Pa), the General card's convention.
     const PSV_PRESS_IDS = ['psv-P1', 'psv-P2', 'psv-P1-steam', 'psv-P1-liq', 'psv-Ps', 'psv-P2-liq', 'psv-Po', 'psv-Pa'];
     const PSV_PRESS_GAUGE_DEFAULT = ['psv-P1-liq', 'psv-Ps', 'psv-P2-liq'];   // API 520 \u00a75.8/\u00a75.9 are written in gauge terms
@@ -6939,17 +6931,18 @@
     }
     function onPsvUnitsChange() {
       psvSyncPressUnits(document.getElementById('psv-units').value);
+      psvSyncQtyUnits(document.getElementById('psv-units').value);   // v3.8.1
       updatePSVMode();
     }
     // A unit-system toggle moves only the fields sitting on the OTHER system's canonical unit
-    // (psi <-> kPa); an explicit bar / MPa / atm choice is left alone. Values are not converted \u2014
+    // (psi <-> kPa); an explicit bar / MPa / atm choice is left alone. Values are not converted —
     // the same "numbers stay, labels switch" rule the W / T fields have always followed.
     function psvSyncPressUnits(units) {
       const from = String(units === 'USC' ? PSV_KPA_PA : PSV_PSI_PA), to = String(units === 'USC' ? PSV_PSI_PA : PSV_KPA_PA);
       PSV_PRESS_IDS.forEach(id => { const u = document.getElementById(id + '-u'); if (u && u.value === from) u.value = to; });
     }
-    // \u21e9 button: pull the General tab Pressure card's figure (Unit A, else Unit B) into this
-    // field, converted to the field's own unit and basis. Only the value moves \u2014 the target's
+    // ⇩ button: pull the General tab Pressure card's figure (Unit A, else Unit B) into this
+    // field, converted to the field's own unit and basis. Only the value moves — the target's
     // unit select and Abs/Gauge choice are respected, not overwritten.
     function importPsvPressure(id) {
       const el = document.getElementById(id);
@@ -6963,6 +6956,77 @@
       const u = document.getElementById(id + '-u');
       const unitTxt = (u ? u.options[u.selectedIndex].text : '') + ' ' + tr(psvPressMode[id] === 'gau' ? 'common.gauge' : 'common.abs');
       showToast(tr('safety.psv.importPressDone', { value: formatValue(out), unit: unitTxt }), true);
+    }
+
+    // ── v3.8.1 — every other physical input gets its own unit <select> too ─────────────
+    // PSV_QTY maps each input to its sibling <select id="<id>-u"> and to the unit the API has
+    // always taken in each system (`usc` / `si`). Linear quantities use multiply-to-canonical
+    // factors as option values (mass flow → kg/h, volumetric flow → L/min, specific volume →
+    // m³/kg, viscosity → cP); temperatures use the codes R / K / F / C (affine, so no factor).
+    // psvQty() reduces the on-screen figure to the system's canonical unit — exact pass-through
+    // when the field already sits on it, so a stock case is byte-identical to the old payload.
+    const PSV_QTY = {
+      'psv-W':       { usc: '0.45359237', si: '1' },          // lb/h ↔ kg/h
+      'psv-W-steam': { usc: '0.45359237', si: '1' },
+      'psv-W-tp':    { usc: '0.45359237', si: '1' },
+      'psv-T':       { usc: 'R', si: 'K', temp: true },         // API 520: °R (USC) / K (SI)
+      'psv-T-steam': { usc: 'F', si: 'C', temp: true },         // advisory only: °F / °C (Table 9 is in °F)
+      'psv-Q':       { usc: '3.785411784', si: '1' },         // gal/min ↔ L/min
+      'psv-mu':      { usc: '1', si: '1' },                   // cP in both systems (Eq. 28/29 SI form uses mPa·s)
+      'psv-vo':      { usc: '0.062427961', si: '1' },         // ft³/lb ↔ m³/kg
+      'psv-v9':      { usc: '0.062427961', si: '1' }
+    };
+    function psvTempToK(v, code)   { return code === 'K' ? v : code === 'C' ? v + 273.15 : code === 'R' ? v / 1.8 : (v - 32) / 1.8 + 273.15; }
+    function psvTempFromK(k, code) { return code === 'K' ? k : code === 'C' ? k - 273.15 : code === 'R' ? k * 1.8 : (k - 273.15) * 1.8 + 32; }
+    // On-screen figure of <id> expressed in the API's canonical unit for `units`; NaN when blank.
+    function psvQty(id, units) {
+      const q = PSV_QTY[id], el = document.getElementById(id);
+      const v = el ? parseFloat(el.value) : NaN;
+      if (!q || isNaN(v)) return v;
+      const sel = document.getElementById(id + '-u');
+      const c = units === 'USC' ? q.usc : q.si;
+      const u = sel ? sel.value : c;
+      if (q.temp) return u === c ? v : psvTempFromK(psvTempToK(v, u), c);
+      const f = parseFloat(u), F = parseFloat(c);
+      return (f === F || !(f > 0)) ? v : v * f / F;
+    }
+    // USC↔SI toggle: same rule as the pressures — a select sitting on the OTHER system's canonical
+    // unit follows; an explicit t/h, °F, m³/h … choice stays; values are never converted.
+    function psvSyncQtyUnits(units) {
+      Object.keys(PSV_QTY).forEach(id => {
+        const q = PSV_QTY[id], sel = document.getElementById(id + '-u');
+        if (!sel) return;
+        const from = units === 'USC' ? q.si : q.usc, to = units === 'USC' ? q.usc : q.si;
+        if (sel.value === from) sel.value = to;
+      });
+    }
+    // v3.8.1 — a saved session restores on top of the HTML defaults, so a returning visitor with an
+    // incomplete panel (one that cannot be calculated) would never see the one-click case. After
+    // applyInputs(), any panel whose required figures are not all present is reset to its shipped
+    // default case — inputs, unit selects and Abs/Gauge basis alike. A complete saved case is left
+    // exactly as saved. Required = the same fields calcPSV()'s pre-check demands.
+    const PSV_PANEL_REQUIRED = {
+      gas:      [['psv-W'], ['psv-M'], ['psv-k'], ['psv-T'], ['psv-P1']],
+      steam:    [['psv-W-steam'], ['psv-P1-steam']],
+      liquid:   [['psv-Q'], ['psv-Gl'], ['psv-P1-liq', 'psv-Ps']],     // certified P1 OR non-certified Ps
+      twophase: [['psv-W-tp'], ['psv-vo'], ['psv-v9'], ['psv-Po']]
+    };
+    function psvResetPanel(panel) {
+      const box = document.getElementById('psv-inputs-' + panel);
+      if (!box) return;
+      box.querySelectorAll('input[id]').forEach(el => { el.value = el.defaultValue; });
+      box.querySelectorAll('select[id]').forEach(sel => {
+        let i = 0; for (let k = 0; k < sel.options.length; k++) { if (sel.options[k].defaultSelected) { i = k; break; } }
+        sel.selectedIndex = i;
+      });
+      PSV_PRESS_IDS.forEach(id => { if (box.contains(document.getElementById(id))) setPsvPressMode(id, PSV_PRESS_GAUGE_DEFAULT.indexOf(id) >= 0 ? 'gau' : 'abs', true); });
+    }
+    function psvEnsureDefaults() {
+      const filled = id => { const el = document.getElementById(id); return !!el && el.value.trim() !== '' && !isNaN(parseFloat(el.value)); };
+      Object.keys(PSV_PANEL_REQUIRED).forEach(panel => {
+        const complete = PSV_PANEL_REQUIRED[panel].every(alts => alts.some(filled));
+        if (!complete) psvResetPanel(panel);
+      });
     }
 
     async function calcPSV() {
@@ -6979,25 +7043,26 @@
       // kPa abs (psig / kPag for the liquid modes), i.e. exactly what the API always took.
       const gp = id => psvPressForApi(id, units, false);   // absolute out
       const gg = id => psvPressForApi(id, units, true);    // gauge out
+      const gq = id => { const x = psvQty(id, units); return isNaN(x) ? 0 : x; };   // v3.8.1 — W / T / Q / µ / vo / v9
       if (mode === 'gas') {
-        Object.assign(payload, { W:g('psv-W'), M:gd('psv-M',28), k:gd('psv-k',1.3), T:g('psv-T'),
+        Object.assign(payload, { W:gq('psv-W'), M:gd('psv-M',28), k:gd('psv-k',1.3), T:gq('psv-T'),
           Z:gd('psv-Z',1.0), P1:gp('psv-P1'), P2:gp('psv-P2'),
           Kd:gd('psv-Kd',0.975), Kb:gd('psv-Kb',1.0), Kc:gd('psv-Kc',1.0) });
       } else if (mode === 'steam') {
-        Object.assign(payload, { W:g('psv-W-steam'), P1:gp('psv-P1-steam'),
+        Object.assign(payload, { W:gq('psv-W-steam'), P1:gp('psv-P1-steam'),
           Kd:gd('psv-Kd-steam',0.975), Kb:gd('psv-Kb-steam',1.0),
           Kc:gd('psv-Kc-steam',1.0), KSH:gd('psv-KSH',1.0) });
       } else if (mode === 'liquid_cert') {
-        Object.assign(payload, { Q:g('psv-Q'), Gl:gd('psv-Gl',1.0), P1:gg('psv-P1-liq'),
-          P2:gg('psv-P2-liq'), mu:g('psv-mu'),
+        Object.assign(payload, { Q:gq('psv-Q'), Gl:gd('psv-Gl',1.0), P1:gg('psv-P1-liq'),
+          P2:gg('psv-P2-liq'), mu:gq('psv-mu'),
           Kd:gd('psv-Kd-liq',0.65), Kw:gd('psv-Kw',1.0), Kc:gd('psv-Kc-liq',1.0) });
       } else if (mode === 'liquid_noncert') {
-        Object.assign(payload, { Q:g('psv-Q'), Gl:gd('psv-Gl',1.0), Ps:gg('psv-Ps'),
-          P2:gg('psv-P2-liq'), mu:g('psv-mu'),
+        Object.assign(payload, { Q:gq('psv-Q'), Gl:gd('psv-Gl',1.0), Ps:gg('psv-Ps'),
+          P2:gg('psv-P2-liq'), mu:gq('psv-mu'),
           Kd:gd('psv-Kd-liq',0.62), Kw:gd('psv-Kw',1.0),
           Kc:gd('psv-Kc-liq',1.0), Kp:gd('psv-Kp',1.0) });
       } else if (mode === 'twophase') {
-        Object.assign(payload, { W:g('psv-W-tp'), vo:g('psv-vo'), v9:g('psv-v9'),
+        Object.assign(payload, { W:gq('psv-W-tp'), vo:gq('psv-vo'), v9:gq('psv-v9'),
           Po:gp('psv-Po'), Pa:gp('psv-Pa'),
           Kd:gd('psv-Kd-tp',0.85), Kb:gd('psv-Kb-tp',1.0),
           Kc:gd('psv-Kc-tp',1.0), Kv:gd('psv-Kv-tp',1.0) });
@@ -7313,6 +7378,7 @@
       // so the restored figures keep their meaning (the legacy basis defaults already match).
       if (s.psvPm) applyPsvPressModes(s.psvPm);
       if (s.inputs && !('psv-P1-u' in s.inputs) && s.inputs['psv-units'] === 'SI') psvSyncPressUnits('SI');
+      psvEnsureDefaults();   // v3.8.1 — incomplete saved PSV panels fall back to the one-click default case
       recomputeAll();
       // v3.6 — the Advanced sub-tab is restored on every visit (it is a position inside a tab, not a
       // landing choice); the top-level tab itself still follows the v2.5.1 rule below.
