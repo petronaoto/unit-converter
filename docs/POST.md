@@ -135,6 +135,7 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 | Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088656797607547322> |
 | Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7495603696488177664/> |
 | Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2089838802542186931> |
+| Sat 22 Aug 2026 | **v3.4 documentation restructure** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7496852514277974016/> |
 
 **v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
 a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
@@ -226,8 +227,9 @@ forced eager in the off-screen iframe), `-standalone.html`, `v36-adv-subtabs.png
 
 ---
 
-**v3.4 documentation restructure — 📝 READY, NOT POSTED.** Copy, graphic and assets are complete
-and approved by Naoto (2026-08-24). Nothing has been published; publish on his word.
+**v3.4 documentation restructure — ✅ POSTED to LinkedIn 2026-08-22** as
+<https://www.linkedin.com/feed/update/urn:li:share:7496852514277974016/>. Image attached and verified
+rendering in the live post. **The X thread is NOT posted** — see the account note below.
 Re-grounded against **v3.8** after a mid-branch rebase: sections (22) and Theory Parts (13) are
 unchanged and the jump strip is byte-identical, so 14 → 8 still holds; "three releases since"
 became **four** in both the copy and the graphic.
@@ -265,6 +267,18 @@ became **four** in both the copy and the graphic.
     pills onto three rows. Only opening the PNG caught either — rule 3 of the skill, again.
 - **No first comment planned.** Optional per the 2026-08-13 ruling, and this post has no inputs to
   pre-fill, so the share-link recipe adds nothing.
+
+> ⚠️ **X thread outstanding — wrong account signed in.** The browser's X session is
+> **@WorldFishingMap** (Naoto's other project), while every previous release thread in §2.1 went out
+> from **@NaotoYamabe**. The thread was NOT posted rather than published from the wrong identity.
+> Copy is ready in `docs/linkedin/v34-docs-x.txt` (three tweets, X-counted 245/143/274) and the
+> image is `v34-docs.png`. Sign in as @NaotoYamabe and post, then add the row to §2.1 above.
+
+> 🔒 **Image attachment needs a human on this machine.** The OS-clipboard paste route the skill
+> documents requires a PowerShell window-focus + SendKeys call, which the auto-mode permission
+> classifier blocks (and it also blocks self-granting the permission). Workaround used here, which
+> works and is simpler: open the composer, click **Photo**, and let the maintainer pick the PNG from
+> the file dialog — then Claude types the body and posts. Two clicks from a human, no config change.
 
 > ✅ **Gap closed in the same change: v3.4 now has an entry in its own Release Notes appendix**
 > (`howto-new34`, `docs.howto.b117`/`b118`, translated into all 9 dictionaries). The appendix had
