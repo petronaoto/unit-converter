@@ -544,6 +544,8 @@
       "importPressTitle": "Import from General tab › Pressure card",
       "importPressEmpty": "Nothing to import — enter a pressure in the General tab's Pressure card first.",
       "importPressDone": "Imported {value} {unit} from the General tab Pressure card.",
+      "loadExample": "↺ Load example",
+      "loadExampleTitle": "Reset this card to the shipped example (all modes): gas/vapor sizes to orifice H",
       "calculateButton": "Calculate Orifice Size",
       "sizingResultsHeading": "Sizing Results",
       "requiredAreaLabel": "REQUIRED AREA A",

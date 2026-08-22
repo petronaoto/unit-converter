@@ -242,6 +242,43 @@ def test_units_toggle_follows_quantity_selects_too(html):
     assert "psvSyncPressUnits(" in fn and "psvSyncQtyUnits(" in fn and "updatePSVMode()" in fn
 
 
+# ── v3.8.2 — the toggle converts the figures it re-labels; ↺ Load example ────────
+
+def test_units_toggle_converts_the_figures_it_relabels(html):
+    """v3.8.1 re-labelled psi→kPa / lb/h→kg/h / °R→K but left the numbers, so selecting SI turned
+    the default H case into an R case (maintainer screenshot 2026-08-22). Both sync functions must
+    now rescale the value whenever they move a select; temperatures go through kelvin."""
+    press = html[html.index("function psvSyncPressUnits("):html.index("function psvRescale(")]
+    assert "psvRescale(id, parseFloat(from) / parseFloat(to))" in press
+    qty = html[html.index("function psvSyncQtyUnits("):html.index("function psvLoadExample(")]
+    assert "psvTempFromK(psvTempToK(v, from), to)" in qty
+    assert "v * parseFloat(from) / parseFloat(to)" in qty
+    assert "if (from === to || sel.value !== from) return;" in qty   # cP↔cP must not rewrite the field
+    rescale = html[html.index("function psvRescale("):html.index("function psvSyncQtyUnits(")]
+    assert "formatValuePlain(v * ratio)" in rescale and "ratio !== 1" in rescale
+
+
+def test_load_example_button_resets_every_panel(html):
+    assert html.count('id="psv-load-example"') == 1
+    assert 'onclick="psvLoadExample()"' in html
+    assert 'data-i18n="safety.psv.loadExample"' in html and 'data-i18n-title="safety.psv.loadExampleTitle"' in html
+    fn = html[html.index("function psvLoadExample()"):]
+    fn = fn[:fn.index("\n    }")]
+    assert "['gas', 'steam', 'liquid', 'twophase'].forEach(psvResetPanel)" in fn
+    assert "updatePSVMode()" in fn and "scheduleSave()" in fn
+
+
+def test_si_expression_of_the_default_case_still_sizes_to_H(psv_module):
+    """What the toggle now produces from the shipped case: 8,000 lb/h → kg/h, 560 °R → K,
+    179.7 psi → kPa, run through the SI equations (API 520 Eq. 5 with C_SI = 0.03948)."""
+    si = {"W": 8000 * 0.45359237, "M": 19, "k": 1.3, "T": 560 / 1.8, "Z": 1.0,
+          "P1": 179.7 * 6894.75729 / 1000, "P2": 0, "Kd": 0.975, "Kb": 1.0, "Kc": 1.0}
+    res = psv_module.size_gas(si, "SI")
+    assert res["error"] is False and res["area_unit"] == "mm²"
+    assert res["orifice"] == "H"
+    assert 455 < res["area"] < 470          # ≈ 461.4 mm² (0.7152 in² — the SI constant 0.03948 vs 520 rounds differently)
+
+
 def test_restore_falls_back_to_defaults_for_incomplete_panels(html):
     """v3.8.1 — the reason the defaults were invisible to returning visitors: a saved session
     restores over the HTML value= attributes. applyState() must call psvEnsureDefaults() after
