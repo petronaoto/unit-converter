@@ -255,7 +255,12 @@ def test_units_toggle_converts_the_figures_it_relabels(html):
     assert "v * parseFloat(from) / parseFloat(to)" in qty
     assert "if (from === to || sel.value !== from) return;" in qty   # cP↔cP must not rewrite the field
     rescale = html[html.index("function psvRescale("):html.index("function psvSyncQtyUnits(")]
-    assert "formatValuePlain(v * ratio)" in rescale and "ratio !== 1" in rescale
+    assert "psvFmt(v * ratio)" in rescale and "ratio !== 1" in rescale
+    # v3.8.3 — 9 significant digits (5 decimals truncated vo = 0.0194526 m³/kg to 0.01945), snapped to
+    # the 6-digit value when they agree within 1e-7 so a USC→SI→USC round trip lands back on 179.7 / 0.3116
+    fmt = html[html.index("function psvFmt(x) {"):]
+    fmt = fmt[:fmt.index("\n    }")]
+    assert "x.toPrecision(9)" in fmt and "x.toPrecision(6)" in fmt and "1e-7 * Math.abs(full)" in fmt
 
 
 def test_load_example_button_resets_every_panel(html):
@@ -264,8 +269,26 @@ def test_load_example_button_resets_every_panel(html):
     assert 'data-i18n="safety.psv.loadExample"' in html and 'data-i18n-title="safety.psv.loadExampleTitle"' in html
     fn = html[html.index("function psvLoadExample()"):]
     fn = fn[:fn.index("\n    }")]
-    assert "['gas', 'steam', 'liquid', 'twophase'].forEach(psvResetPanel)" in fn
+    assert "['gas', 'steam', 'liquid', 'twophase'].forEach(p => { psvResetPanel(p); psvExpressPanelInSystem(p); })" in fn
     assert "updatePSVMode()" in fn and "scheduleSave()" in fn
+
+
+def test_reset_panels_are_expressed_in_the_active_unit_system(html):
+    """v3.8.3 — with SI selected, ↺ Load example (and the restore fallback) must present the shipped
+    case in SI units (kg/h · K · kPa), not flip the card back to USC labels. Both reset paths go
+    through psvExpressPanelInSystem(), which runs the two sync passes SCOPED to the reset panel so a
+    user's other panels are never touched."""
+    fn = html[html.index("function psvExpressPanelInSystem("):]
+    fn = fn[:fn.index("\n    }")]
+    assert "if (!box || units !== 'SI') return;" in fn
+    assert "psvSyncPressUnits(units, box);" in fn and "psvSyncQtyUnits(units, box);" in fn
+    # restore fallback uses it too
+    ens = html[html.index("function psvEnsureDefaults()"):]
+    ens = ens[:ens.index("\n    }")]
+    assert "if (!complete) { psvResetPanel(panel); psvExpressPanelInSystem(panel); }" in ens
+    # both sync functions honour the optional scope
+    assert "function psvSyncPressUnits(units, scope)" in html and "if (!u || (scope && !scope.contains(u))) return;" in html
+    assert "function psvSyncQtyUnits(units, scope)" in html and "if (!sel || (scope && !scope.contains(sel))) return;" in html
 
 
 def test_si_expression_of_the_default_case_still_sizes_to_H(psv_module):
