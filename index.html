@@ -2854,7 +2854,7 @@
 
         <section>
           <h3 id="howto-21" class="text-sm font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-2" data-i18n-html="docs.howto.b063">21. Safety Tab — PRV Sizing (API 520 Part I)</h3>
-          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. The card opens pre-filled with a complete gas/vapor case, so a single click on CALCULATE ORIFICE SIZE returns a result (orifice H) before you type anything — then replace the figures with your own. Select the sizing mode and unit system, enter the process inputs, and read the required effective discharge area and the recommended API 526 orifice letter (D–T). Every input with a physical unit has its own unit drop-down — mass flow W (lb/h · kg/h · t/h · kg/s · lb/s), temperature T (°R · K · °F · °C), flow rate Q (gal/min · L/min · m³/h · bbl/h), specific volume vo/v9 (ft³/lb · m³/kg · L/kg) and viscosity µ (cP · mPa·s · Pa·s) — and the card converts each to the unit system's basis before sizing. If a saved session left a panel incomplete, it falls back to the default case on reload, so the one-click example is always there. Every pressure field (P1, P2, Ps, Po, Pa) has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the figure entered in the General tab's Pressure card; the card converts to the absolute basis API 520 expects (gauge for the §5.8/§5.9 liquid modes) before sizing, so units and bases may be mixed freely. The USC/SI switch sets the output area unit and re-expresses every field sitting on a canonical unit (psi↔kPa, lb/h↔kg/h, °R↔K, gal/min↔L/min, ft³/lb↔m³/kg) in the other system, converting the figures — so the default case gives orifice H in USC and SI alike. ↺ LOAD EXAMPLE in the card header restores the shipped case in all modes at any time.</p>
+          <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b064">Sizes Pressure Relief Valves (PRVs) per API Standard 520 Part I §5.6–§5.10 and Annex C. The card opens pre-filled with a complete gas/vapor case, so a single click on CALCULATE ORIFICE SIZE returns a result (orifice H) before you type anything — then replace the figures with your own. Select the sizing mode and unit system, enter the process inputs, and read the required effective discharge area and the recommended API 526 orifice letter (D–T). Every input with a physical unit has its own unit drop-down — mass flow W (lb/h · kg/h · t/h · kg/s · lb/s), temperature T (°R · K · °F · °C), flow rate Q (gal/min · L/min · m³/h · bbl/h), specific volume vo/v9 (ft³/lb · m³/kg · L/kg) and viscosity µ (cP · mPa·s · Pa·s) — and the card converts each to the unit system's basis before sizing. If a saved session left a panel incomplete, it falls back to the default case on reload, so the one-click example is always there. Every pressure field (P1, P2, Ps, Po, Pa) has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the figure entered in the General tab's Pressure card; the card converts to the absolute basis API 520 expects (gauge for the §5.8/§5.9 liquid modes) before sizing, so units and bases may be mixed freely. The USC/SI switch sets the output area unit and re-expresses every field sitting on a canonical unit (psi↔kPa, lb/h↔kg/h, °R↔K, gal/min↔L/min, ft³/lb↔m³/kg) in the other system, converting the figures — so the default case gives orifice H in USC and SI alike. ↺ LOAD EXAMPLE in the card header restores the shipped case in all modes at any time, expressed in whichever unit system is selected (kg/h · K · kPa under SI).</p>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-i18n-html="docs.howto.b065">
             <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 font-mono text-xs space-y-2">
               <div class="text-red-400 font-bold text-[10px] tracking-widest border-b border-slate-800 pb-1">SIZING MODES</div>
@@ -6939,15 +6939,30 @@
     // (psi <-> kPa); an explicit bar / MPa / atm choice is left alone. v3.8.2 — the figure is
     // CONVERTED along with the label (same physical case, same orifice): the old "numbers stay,
     // labels switch" rule turned the default H case into an R case the moment SI was selected.
-    function psvSyncPressUnits(units) {
+    // `scope` (v3.8.3, optional): limit the pass to the fields inside that element — used when a
+    // single panel was reset and must be expressed in the active system without touching the rest.
+    function psvSyncPressUnits(units, scope) {
       const from = String(units === 'USC' ? PSV_KPA_PA : PSV_PSI_PA), to = String(units === 'USC' ? PSV_PSI_PA : PSV_KPA_PA);
-      PSV_PRESS_IDS.forEach(id => { const u = document.getElementById(id + '-u'); if (u && u.value === from) { u.value = to; psvRescale(id, parseFloat(from) / parseFloat(to)); } });
+      PSV_PRESS_IDS.forEach(id => {
+        const u = document.getElementById(id + '-u');
+        if (!u || (scope && !scope.contains(u))) return;
+        if (u.value === from) { u.value = to; psvRescale(id, parseFloat(from) / parseFloat(to)); }
+      });
     }
     // v3.8.2 — re-express a figure whose select was just moved by the toggle (NaN / blank: untouched)
+    // v3.8.3 — 9 significant digits, not 5 decimals: formatValuePlain() truncated small magnitudes
+    // (vo = 0.0194526 m³/kg became 0.01945) and 9 digits round-trip 8000 ↔ 3628.73896 exactly.
+    // Keep 9 significant digits, but collapse to the 6-digit value when the two agree within 1e-7
+    // (relative): that snaps the float noise of a USC->SI->USC round trip (179.700001, 0.311599999)
+    // back to 179.7 / 0.3116 while leaving a genuinely long figure (3628.73896) untouched.
+    function psvFmt(x) {
+      const full = parseFloat(x.toPrecision(9)), short = parseFloat(x.toPrecision(6));
+      return String(Math.abs(short - full) <= 1e-7 * Math.abs(full) ? short : full);
+    }
     function psvRescale(id, ratio) {
       const el = document.getElementById(id);
       const v = el ? parseFloat(el.value) : NaN;
-      if (el && !isNaN(v) && isFinite(ratio) && ratio !== 1) el.value = formatValuePlain(v * ratio);
+      if (el && !isNaN(v) && isFinite(ratio) && ratio !== 1) el.value = psvFmt(v * ratio);
     }
     // ⇩ button: pull the General tab Pressure card's figure (Unit A, else Unit B) into this
     // field, converted to the field's own unit and basis. Only the value moves — the target's
@@ -7001,23 +7016,34 @@
     // USC↔SI toggle: same rule as the pressures — a select sitting on the OTHER system's canonical
     // unit follows and (v3.8.2) its figure is converted with it; an explicit t/h, °F, m³/h … choice
     // stays untouched. Temperatures go through kelvin (affine), everything else by factor ratio.
-    function psvSyncQtyUnits(units) {
+    function psvSyncQtyUnits(units, scope) {
       Object.keys(PSV_QTY).forEach(id => {
         const q = PSV_QTY[id], sel = document.getElementById(id + '-u');
-        if (!sel) return;
+        if (!sel || (scope && !scope.contains(sel))) return;
         const from = units === 'USC' ? q.si : q.usc, to = units === 'USC' ? q.usc : q.si;
         if (from === to || sel.value !== from) return;
         sel.value = to;
         const el = document.getElementById(id), v = el ? parseFloat(el.value) : NaN;
         if (!el || isNaN(v)) return;
-        el.value = formatValuePlain(q.temp ? psvTempFromK(psvTempToK(v, from), to) : v * parseFloat(from) / parseFloat(to));
+        el.value = psvFmt(q.temp ? psvTempFromK(psvTempToK(v, from), to) : v * parseFloat(from) / parseFloat(to));
       });
     }
     // v3.8.2 — ↺ Load example: every panel back to the shipped default case (inputs, unit selects,
     // Abs/Gauge), whatever the saved session holds. Mode and unit system are left as they are —
     // the defaults are unit-explicit, so the gas case gives orifice H under USC and SI alike.
+    // v3.8.3 — the shipped defaults are written in USC (8,000 lb/h · 560 °R · 179.7 psi …). A panel
+    // that was just reset is re-expressed in the ACTIVE unit system, so under SI the example reads
+    // 3,628.74 kg/h · 311.11 K · 1,238.99 kPa — same physical case, same orifice H — instead of
+    // flipping the whole card back to USC units (maintainer feedback 2026-08-22).
+    function psvExpressPanelInSystem(panel) {
+      const box = document.getElementById('psv-inputs-' + panel);
+      const units = document.getElementById('psv-units').value;
+      if (!box || units !== 'SI') return;       // defaults already ARE the USC expression
+      psvSyncPressUnits(units, box);
+      psvSyncQtyUnits(units, box);
+    }
     function psvLoadExample() {
-      ['gas', 'steam', 'liquid', 'twophase'].forEach(psvResetPanel);
+      ['gas', 'steam', 'liquid', 'twophase'].forEach(p => { psvResetPanel(p); psvExpressPanelInSystem(p); });
       updatePSVMode();
       if (psvResultFresh) { psvResultFresh = false; markResultStale('psv'); }
       scheduleSave();
@@ -7047,7 +7073,7 @@
       const filled = id => { const el = document.getElementById(id); return !!el && el.value.trim() !== '' && !isNaN(parseFloat(el.value)); };
       Object.keys(PSV_PANEL_REQUIRED).forEach(panel => {
         const complete = PSV_PANEL_REQUIRED[panel].every(alts => alts.some(filled));
-        if (!complete) psvResetPanel(panel);
+        if (!complete) { psvResetPanel(panel); psvExpressPanelInSystem(panel); }
       });
     }
 
