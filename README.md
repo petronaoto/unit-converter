@@ -67,7 +67,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 
 - **API 520 PRV Sizing** — required orifice areas for Gas, Liquid, Steam, and Two-Phase (Omega method) relief scenarios per API Standard 520 Part I, with API 526 orifice-letter selection.
   - *(new in v3.8 / v3.8.1)* Every physical input has its own unit drop-down — mass flow, temperature, flow rate, specific volume, viscosity — and every pressure input (P1, P2, Ps, Po, Pa) additionally an **Abs/Gauge** toggle and a ⇩ button that imports the value from the General tab's Pressure card; the card converts to the absolute (or, for liquid, gauge) basis API 520 expects before sizing.
-  - *(new in v3.8)* The card opens pre-filled — gas/vapor with a case that sizes to **orifice H**, the other modes with their documented reference cases — so CALCULATE ORIFICE SIZE gives a result in one click (in either unit system; a saved session that left a panel incomplete falls back to it).
+  - *(new in v3.8)* The card opens pre-filled — gas/vapor with a case that sizes to **orifice H**, the other modes with their documented reference cases — so CALCULATE ORIFICE SIZE gives a result in one click — in either unit system (the USC/SI switch converts the figures it re-labels), with a **↺ Load example** button to bring the shipped case back at any time.
 
 ### 4. Productivity *(new in v2.4)*
 
