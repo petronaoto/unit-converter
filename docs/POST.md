@@ -1,6 +1,6 @@
 # LinkedIn Campaign Log — O&G Engineering Converter
 
-**Document version:** 1.2 (accompanies app v3.2)
+**Document version:** 1.3 (accompanies app v3.8.3)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [MARKETING.md](MARKETING.md) · [SPECIFICATION.md](SPECIFICATION.md) · [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)
 

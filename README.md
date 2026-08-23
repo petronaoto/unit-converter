@@ -44,6 +44,9 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Petroleum Gravity** *(new in v2.4)* — three-way °API ↔ specific gravity ↔ density (water at 60 °F).
 - **Viscosity converter** *(new in v2.4)* — dynamic (cP / Pa·s) ↔ kinematic (cSt / m²/s) via density.
 - **Mass ↔ Volumetric Flow** *(new in v2.4)* — flow-rate conversion by fluid density.
+- **Steam Properties** *(new in v3.0)* — IAPWS-IF97 regions 1 / 2 / 4 with the B23 boundary; saturation and single-phase properties client-side, and the source of the PRV steam-mode superheat advisory.
+- **NPSHa** *(new in v3.0)* — available net positive suction head with an IF97 water autofill for vapour pressure and density. Reports NPSHa only: pump-margin tables are paywalled and deliberately not quoted.
+- **Compressor head & power** *(new in v3.0)* — isentropic and perfect-gas polytropic estimates from first principles, both Z evaluations routed through the shared Papay solver.
 
 ### 2. Advanced Process Engineering (serverless-backed)
 
@@ -52,7 +55,9 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Compositional GHV & Flow Calculator**
   - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
+  - *(new in v3.3)* **Reference Composition** selector — nine published LNG compositions, each carrying its own citation and a published/reference/assumed tier badge, cross-checked against the source's own GCV and Wobbe index where the source states them.
 - **LNG Cargo Estimator** *(new in v3.5)* — pick one of 36 representative LNG carriers (each row cites its own public source; Wikimedia Commons photos with credits) or type a capacity, set the loading limit, and read the cargo as t, kNm³ / MMscf and TBtu (HHV basis) — loaded and delivered after heel and boil-off — straight from the composition above.
+- **GT Fuel** *(new in v3.1)* — gas-turbine fuel-gas demand from power and efficiency (Q = P/η), with a catalogue of 31 source-cited machines, simple-cycle / GTCC modes, availability-weighted daily-to-yearly totals, and a one-click import of the composition calculated above.
 - **Pipe Delta Pressure (Darcy-Weisbach)**
   - Pressure drop across vapor, liquid, and two-phase regimes.
   - Python backend solves the **Colebrook-White** equation implicitly.
@@ -74,6 +79,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **Export PDF report** — one-click printable summary of every active calculation (browser "Save as PDF").
 - **Share links** — encode the full input set into the URL for handover/collaboration (computed entirely client-side).
 - **Session auto-restore** — last inputs and UI preferences persist in browser local storage.
+- **Unit-aware clipboard** *(new in v3.0)* — a plain click copies the bare value (spreadsheet-safe); Ctrl/⌘/Shift-click or a long press appends the live unit.
 - **Out-of-range guards** — LNG density (ISO 6578 108–120 K), composition, and Papay Z-factor flag extrapolated inputs instead of silently clamping.
 - **UX & accessibility polish** *(new in v2.5)* — Enter-to-calculate, instant input-validation hints and stale-result flags on the server-backed cards; jump links + back-to-top on the long documentation tabs; ARIA tab semantics; Export falls back to an HTML download when pop-ups are blocked.
 
@@ -84,7 +90,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 - **NORSOK P-001 line-sizing screen** — velocity and frictional ΔP/100 m against per-service criteria, with a WITHIN / NEAR / EXCEEDS verdict.
 - **Mobile navigation** — the nine-tab bar becomes a dropdown below tablet width (the three Advanced sub-tabs appear as indented rows).
 - **Share links carry custom modules** — state format v:2, behind a sanitizing import boundary.
-- **Automated regression suite** — 242 pytest tests across 13 modules, plus GitHub Actions, guarding every documented reference vector on each change.
+- **Automated regression suite** — 379 pytest tests across 17 modules, plus GitHub Actions, guarding every documented reference vector on each change. See *Testing* below.
 
 ### 6. Internationalization *(v2.6–v2.7)*
 
@@ -113,9 +119,11 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
 
 | Document | Contents |
 |---|---|
-| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, full version history, the i18n program milestones, and the v3.4 outcome with the v3.5 candidates |
+| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Vision, personas, architecture principles, the full version history, the i18n program milestones, and the roadmap — what is still open, what was decided against and why |
 | [docs/SPECIFICATION.md](docs/SPECIFICATION.md) | Detailed engineering spec of every module, the three API contracts, state/share-link format, calculation rules, reference test vectors, and the known-issues register |
 | [docs/MARKETING.md](docs/MARKETING.md) | Positioning, target segments, SEO/content plan, channels, and privacy-compatible analytics options |
+| [docs/PRESERVATION.md](docs/PRESERVATION.md) | The per-release register of load-bearing element IDs, payload keys, defaults and test-pinned literals — read before changing `index.html` |
+| [docs/POST.md](docs/POST.md) | The LinkedIn campaign: schedule, per-day sheets, verified figures and the tracker of published posts |
 
 The in-app **How To Use** and **Theory** tabs remain the end-user manual; the `docs/` folder is the maintainer/contributor reference.
 
@@ -139,6 +147,17 @@ vercel dev
 ```
 
 **Python dependencies** (`requirements.txt`) are required only by `api/flowregime.py` (numpy / matplotlib / seaborn). `api/dp_calculator.py` and `api/psv_calculator.py` use the standard library only.
+
+### Testing
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+pytest
+```
+
+379 tests across 17 modules: the API reference vectors, PRV sizing cases, IF97 coefficients, the GT and LNG datasets, share-link security, i18n key parity across all 10 dictionaries, and architectural guards (the endpoints stay standard-library-only; the frontend keeps no build step). `requirements-dev.txt` is deliberately separate — Vercel installs `requirements.txt` into the production runtime, so test tooling must never go there. Details in [docs/SPECIFICATION.md](docs/SPECIFICATION.md) §13.
+
+The JIS K 2301 chain runs in JavaScript and is out of pytest's reach — after changing it, verify the reference values in `CLAUDE.md` by hand.
 
 ---
 
