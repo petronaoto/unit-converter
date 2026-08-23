@@ -1,6 +1,6 @@
 # Development Plan — O&G Engineering Converter
 
-**Document version:** 2.5 (accompanies app v3.8.3)
+**Document version:** 2.6 (accompanies app v3.8.3)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Repository:** <https://github.com/petronaoto/unit-converter>
 **Companion documents:** [SPECIFICATION.md](SPECIFICATION.md) (feature-level detail) · [MARKETING.md](MARKETING.md) (promotion strategy)
@@ -58,16 +58,13 @@ Reconstructed from the git log and tags (all dates 2026).
 | v2.5 | Jul 2026 | **Documentation & UX release** — `docs/` folder (this document, SPECIFICATION.md, MARKETING.md); Theory §4.1 corrected to Papay; tab-navigation accessibility (scroll-into-view, ARIA tablist); back-to-top + section anchors in doc tabs; Enter-to-calculate and client-side validation hints on ΔP/PSV; export pop-up fallback; distinct viscosity unit values; stale-input indicator on server-backed cards |
 | **v2.6** | Jul 2026 (PR #3) | **Internationalization Milestone 1** — full i18n mechanism (`i18n/en.json`/`ja.json` dictionaries, `tr()`/`applyTranslations()`/`setLanguage()`, two-part header switcher); complete English↔Japanese translation of the working tool (General, Basic Eng, Advanced, Safety, floating action bar, Report form, module modal, every JS-generated dynamic string); settings menu lists 8 more languages as "coming soon". See §5 and SPECIFICATION.md §12 for full detail. |
 | **v2.7** | Aug 2026 | **Internationalization Milestones 2+3** — all 10 menu languages live (adds 中文, 한국어, ไทย, Bahasa Indonesia, Русский, Español, Français, Deutsch); the four documentation tabs (How To Use, Theory, Terms, Privacy) translated in all 9 non-English languages via the new `data-i18n-html` block-swap mechanism (125 `docs.*` keys/language, English cached inline); governing-language notes on Terms/Privacy; CLAUDE.md split into root + `api/` scoped files. SPECIFICATION.md §12.6. |
-| **v2.8.1** | Aug 2026 | **Documentation completion release** — the 14 v2.8 doc blocks (How To Use ★ New + §13–15, Theory Part VII) translated into all 9 non-English languages, closing the §12.5.1 exemption: the `PENDING_TRANSLATION` set and its guard tests deleted together, stale key counts corrected (368 working-tool keys / 139 `docs.*` keys). Also removed the dead Cloudflare email-decode script (Known Issue #10, maintainer-approved) with the matching Privacy Policy rewrite in English + 9 dictionaries. |
 | **v2.8** | Aug 2026 | **"Junior engineer value pack"** — shipped as six reviewed PRs. **Testing:** first automated suite (183 pytest assertions + GitHub Actions), covering Vectors 2–4, i18n key parity across all 10 dictionaries, and the architectural constraints; mutation-tested, which exposed two real gaps in the tests themselves. **Basic Eng:** Gas Property Estimator — Lee-Gonzalez-Eakin viscosity, sonic velocity, Joule-Thomson — on a shared `papayZ()` helper verified against the original arithmetic over 7,203 input combinations. **Advanced:** Crane TP-410 fittings (backward-compatible `k_total`, default 0) and a NORSOK P-001 line-sizing screen judging frictional ΔP only; `phase_key`/`re_regime_key` replace English-badge branching. **UX:** mobile navigation dropdown; share links now carry custom modules (state v:2) behind a sanitizing import boundary. **Corrections:** RP 14E SI constant (#9), two-phase PRV `Pc` (#1), Z-Factor 0 °C guard (#11); `report-*` removed from state; guarded `og_custom_modules` parse. New reference Vectors 4–7. Documentation sections for all of the above are English-only pending v2.8.1 translation. |
+| **v2.8.1** | Aug 2026 | **Documentation completion release** — the 14 v2.8 doc blocks (How To Use ★ New + §13–15, Theory Part VII) translated into all 9 non-English languages, closing the §12.5.1 exemption: the `PENDING_TRANSLATION` set and its guard tests deleted together, stale key counts corrected (368 working-tool keys / 139 `docs.*` keys). Also removed the dead Cloudflare email-decode script (Known Issue #10, maintainer-approved) with the matching Privacy Policy rewrite in English + 9 dictionaries. |
 | **v3.0** | Aug 2026 | **"Professional pack"** — shipped as six reviewed PRs, every feature PR carrying its full i18n (10 languages) and documentation in the same commit ("zero translation debt"). **PR-1 API hardening:** Known Issues #2–#6 closed with structured, translatable errors; review surfaced and fixed #12, a two-phase subcritical Leung flux-bracket error dormant since v2.0 (~20–30 % valve under-sizing on that branch). **PR-2 Steam (IAPWS-IF97):** Basic Eng card for Regions 1/2/4 + B23, all 259 coefficients in one `JSON.parse` literal extracted and re-verified in CI against the Release's own check tables to 9 s.f.; PSV steam-mode T_sat/superheat advisory. **PR-3 NPSHa:** first-principles suction-head card with IF97 water autofill; deliberately no margin verdict. **PR-4 Compressor:** isentropic + perfect-gas polytropic head/power with one-pass Papay Z_avg via the shared `papayZ()`; zero new physics constants; PTC 10 uncited. **PR-5 Unit-aware clipboard:** plain click keeps the bare value; modifier-click / long-press appends the live unit at all 33 copy sites. **PR-6 Basic Eng quick links:** nine-pill jump strip (maintainer-requested). New reference Vectors 8–10; suite grown 183 → 242 tests. |
 | **v3.1** | Aug 2026 | **"GT Fuel"** (maintainer-requested, scope approved 2026-08-15) — a new top-level **GT Fuel tab**: gas-turbine fuel gas estimator (Q = P/η, V = 3600·Q/LHV, ṁ = V·ρ_std; heat rate 3600/η per ISO 3977-2 / ASME PTC 22 convention) with vendor→model selection, simple-cycle/GTCC basis toggle, MJ/Nm³↔Btu/scf and LHV/HHV handling, and hourly/daily/monthly (730 h)/yearly (8,760 h) totals under a user availability factor; a filterable **gas turbine catalogue** — 31 machines (MHI incl. FT aeroderivatives from brochure METP-11GT01E1-E-0; GE Vernova incl. HA fact sheets GEA35750/GEA35768; Siemens Energy) with original SVG schematic thumbnails (no vendor imagery), every entry source-cited; cross-links (`lastGHV` import bridge from the Advanced compositional suite; send-to-Mass↔Vol); export-report section 6; full 10-language i18n and How To Use §20 / Theory Part XI in the same change. New reference Vector 11; CI enforces per-machine HR ≡ 3600/η (±30 kJ/kWh) and CC > SC dataset invariants. |
-
 | **v3.2** | Aug 2026 | **Usage analytics** — Vercel Web Analytics enabled via the script-tag install (no bundler, so `@vercel/analytics` does not apply), plus custom-event instrumentation, because a single-URL app learns nothing from page views alone. Five event names: `Tool Used` (de-duplicated to ≤ 1 per tool per visit — the live converters fire on every keystroke), `Calculation` (every run of the three server-backed calculators, directly comparable to the serverless invocation count), `Tab View`, `Language`, `Action`. Instrumentation is **purely additive** — it wraps globals and delegates off `e.target.id`, editing no calculation code — and boot is silent, so a `localStorage` restore is not counted as user activity. The boundary is *that* a tool was used, never *what* was entered; the Report tab is excluded outright. The v3.1 GT Fuel card is instrumented from day one via its `gt-*` id family. Disclosed in the same commit per the MARKETING.md §5 release rule: Privacy Policy §2/§5/§7/§9 rewritten in English **and** all 9 dictionaries, and the og:/twitter: "no tracking" claim corrected to "no ads". New `tests/test_analytics_privacy.py` pins the privacy boundary and the disclosure parity; also widened the i18n version-string regex, which had never matched any of the ten `footer.copyright` values and so let a partial version bump pass. Suite 285 tests. SPECIFICATION.md §14. |
 | **v3.3** | Aug 2026 | **LNG reference compositions** (maintainer-requested, scope approved 2026-08-15) — a **Reference Composition** selector on the Advanced compositional card that prefills all 14 components from a 9-entry source-cited dataset and applies each entry's own fraction basis to `ghv-mode`. Three tiers, deliberately visually distinct: five **published** origins from GIIGNL Information Paper No. 1 Table 1 (data: 2018 GIIGNL Annual Report), the app's own **reference** JIS case, and three **assumed** archetypes carrying no external citation. The tier boundary is an honesty boundary and is enforced in CI: an assumed entry may not declare a published calorific value, because cross-checking against an invented number would present a guess as a citation. The published tier's real value is that GIIGNL prints a GCV and Wobbe index beside each composition, so every entry doubles as an **external verification vector** for the JIS K 2301 engine — five reference points not derived from this app — displayed live as pass/fail chips (±0.05 MJ/Nm³; largest actual deviation 0.02). Two findings shaped the design: the GIIGNL table is **mole %**, recovered from the data itself (a volume basis sits a systematic 0.06 MJ/Nm³ high across all five rows), and the lumped C4+ split is immaterial at ≤ 0.03 MJ/Nm³ across its full range — measured, not assumed, and re-measured by CI, which also asserts that the figure quoted in the on-screen citation is the figure the suite enforces. Published rows are reproduced verbatim including Qatar's 100.01 % total; a manual edit of any component clears the attribution. Purely additive: no existing element, id, or step of the JIS chain was touched, and analytics needed no change (the `comp` prefix already mapped). Full 10-language i18n plus How To Use §21 and Theory Part XII in the same change. New reference Vector 12; new `tests/test_lng_presets.py`. Suite 306 tests. SPECIFICATION.md §4.3.1.1. |
-
 | **v3.4** | Aug 2026 | **Documentation restructure** (maintainer-requested) — the How To Use and Theory tabs were reordered from *release order* into **tab order**, the shape they should have had all along. Both had grown by appending each release's features to the bottom, so a reader landed on four stacked *★ New in Version x.x* blocks and found the nine Basic Eng cards scattered across sections 4, 13, 16, 17 and 18. How To Use is now Header/global (1–3) → General (4–5) → Basic Eng (6–10) → Advanced (11–18) → Safety (19) → GT Fuel (20) → Report (21), with all five changelog blocks moved into a new collapsed **`Appendix — Release Notes`** (newest first, latest expanded), joined by new v3.3 and v3.2 entries that had never been written. Theory was renumbered Part I–XII on the same principle, which required **splitting the two Parts that straddled tab boundaries**: old Part IV (Hydraulics & Gas Laws) and Part VII (Real-Gas Properties & Fittings) became Part I (Basic Eng: Papay Z, LGE viscosity, sonic velocity, Joule-Thomson) and Part IX (Advanced: Darcy-Weisbach, Crane TP-410, NORSOK P-001, RP 14E, flow-regime maps); Data Sources moved from its odd mid-document position (Part V, printed *after* Part VI) to the end. All 47 `N.M` subsection numbers and the `(v3.0)`-style tags in Part headings were rewritten to match. **How To Use §11 (Gas Composition Input) was rebuilt** from a four-line stub into a full walkthrough — workflow strip, a wireframe mockup reproducing the real card (Reference Composition selector, tier badge, GIIGNL citation line, live cross-check chips, all fourteen component boxes, the red 100.01 % Qatar total), four annotated control callouts, and a reproducible worked example — because the reference-composition feature that shipped in v3.3 had no operating instructions. §6 (Basic Eng overview) was corrected from "two engineering calculators" to the nine that actually exist. Executed as scripted, assertion-checked rewrites across `index.html` and all 9 dictionaries — 14 doc blocks rewritten or added (`docs.howto.b094`–`b101`), every section number, jump-link strip and cross-reference (`Theory Part VIII` → `Part II`, `§1.4` → `§5.4`, `§4.4` → `§9.4`) repointed in ten languages, and two long-standing translation gaps closed (§21 and Theory Part XII had never been added to the non-English jump strips). Verified in-browser across all 10 languages; suite unchanged at 306 tests. New **Documentation Tab Structure Rules** in CLAUDE.md pin the ordering, the appendix-only changelog, the four things a section must contain, and the five files a renumbering touches. |
-
 | **v3.5** | Aug 2026 | **LNG Cargo Estimator + GT Fuel unit switches** (maintainer-requested, scope approved 2026-08-18). A new Advanced-tab card under the compositional suite: pick one of **36 representative LNG carriers** (or type a capacity), set the loading limit, and read the cargo as t, kNm³/MMscf/Bscf and TBtu on the HHV custody-transfer basis, loaded and delivered after heel and boil-off, with MMBtu/t and expansion ratio; ρ_liq/ρ_std/HHV/LHV come live from the composition card through a `lastLNGProps` bridge, so the card owns no physics. **Provenance by design:** the IGU World LNG Report 2026 Appendix 3 (804 vessels, extracted and verified locally) was deliberately *not* reproduced — the report is all-rights-reserved and Rystad-sourced, and a compiled fleet table is protected in the UK/EU as a database — so each of the 36 rows was re-sourced from a public primary page it cites, and the IGU report is cited for fleet context only. Thumbnails are Wikimedia Commons CC BY-SA photographs (16, credited on screen and in `assets/vessels/CREDITS.json`) or original schematics; MarineTraffic/VesselFinder are linked by IMO, never embedded. GT Fuel: unit selects on the totals-table headers (Nm³/scf; MWh/GJ/MMBtu with auto-scaling), a new *Fuel energy in* column that makes yearly fuel directly comparable to cargoes, MMBtu/h and GJ/h on the fuel-energy tile, extended rate selects, and gas density in **lb/scf** — using the standard-volume factor 16.9307, not the 16.0185 actual-density factor (a 5.7 % trap, now named, documented and test-pinned). Docs: How To Use §16 and Theory Part IX inserted in tab order with the displaced sections renumbered in all ten languages by script (which also fixed three "Section 9/10" cross-references the translations had kept from before v3.4). New reference Vector 13; `tests/test_lng_cargo.py`. |
 | **v3.6** | Aug 2026 | **Two-layer Advanced tab** (maintainer-requested, mock-up approved 2026-08-19). The Advanced tab opens on a segmented strip with three sub-tabs — **Gas Quality & LNG Cargo** (compositional GHV card + LNG Cargo Estimator), **Hydraulics** (Pipe ΔP + Flow Regime) and **GT Fuel**, which leaves the top bar (10 → 9 tabs). No card changed; the sub-tab is remembered and travels in share links, `switchTab('gtfuel')` maps onto it so old links keep working, the mobile dropdown lists the sub-tabs as indented rows. Docs re-ordered to the new tab order: How To Use §11–19 headings carry their sub-tab, GT Fuel is §20 (before Safety §21), Theory Parts XI (GT Fuel) ↔ XII (PRV) swapped — all ten languages by script with asserted hit counts; §1 rewritten with a two-layer mockup; release entry `howto-new36`. LNG Cargo **heel default 0 → 3,000 m³** (delivered column visible from the start; §16 mockup and prose updated in ten languages). 342 tests. |
 | **v3.6.1** | Aug 2026 | **Hotfix** — the Flow Regime card appeared on every Advanced sub-tab: a stray `</div>` had closed the ΔP card's NORSOK line-sizing grid on the very next line since v2.8, ending the card one level early; harmless while all cards shared one grid, visible once the panes were split. Removed; the four line-sizing tiles now render in their intended 4-column grid; regression test pins each pane's `<div>` balance and card ownership. **Terms of Use §6** gains an "LNG vessel data and photographs" paragraph (source-cited particulars, Wikimedia Commons credits, no affiliation), **Privacy Policy §7** now says tab views include the Advanced sub-section — both headers → Version 3.6, ten languages. 343 tests. |
@@ -121,7 +118,50 @@ See "Internationalization Program — next milestones" under §6 Roadmap for the
 
 Each item enters a release only after explicit approval by the maintainer. Effort: L < 1 day · M = 1–3 days · H > 3 days.
 
-### v2.8 — "Junior engineer value pack" (proposed)
+**What shipped is not repeated here.** §4 Version History is the record of what landed and SPECIFICATION.md describes it; the delivered scope packs are folded away at the bottom of this section. Everything above that fold is still open or was decided against.
+
+### Still open
+
+| Feature | Value | Effort | Status |
+|---|---|---|---|
+| Calculation notebook (save/load named scenarios) | High | M | Deferred (headliner; needs its own security review of stored state) — **remains open after v3.1**, which shipped the maintainer-requested GT Fuel feature instead; re-bucketed to v3.2 |
+| Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) — **remains open after v3.1**; re-bucketed to v3.2 |
+| Orifice metering (ISO 5167-2 lite) | Med | M–H | Deferred — iterative, takes the fourth-endpoint slot; primary content verified accessible (IS 15675:2006 + Reader-Harris NSFMW papers). Venturi (ISO 5167-4) rejected outright: no accessible primary text. **Remains open after v3.1**; re-bucketed to v3.2 |
+
+The three above were bucketed for "v3.2" when v3.0 closed, then repeatedly outranked by maintainer-requested work (v3.1 GT Fuel, v3.3 LNG presets, v3.5 LNG Cargo, v3.6 Advanced sub-tabs, v3.7 two-phase methods, v3.8 Safety pressure inputs). They carry no release number until the maintainer assigns one.
+
+**i18n Milestone 4** — the last unshipped milestone of the internationalization program (M1 shipped in v2.6, M2 and M3 together in v2.7):
+
+| Milestone | Scope | Effort | Notes |
+|---|---|---|---|
+| **M4 (optional)** | `api/dp_calculator.py`, `api/psv_calculator.py`, `api/flowregime.py` return machine-readable status/error keys instead of English prose, so server-driven text (flow-regime classification, validation errors) can localize too | M | Backend-only, stdlib-safe additive payload change. `flowregime.py` already returns `regime_key` alongside its English `regime` label (SPECIFICATION.md §5.3) — the other ~10+ message/error branches across the three files remain unkeyed |
+
+### Decided against
+
+Kept so they are not re-proposed. The first three were rejected during v3.0 scoping; the last two are permanent.
+
+| Feature | Value | Effort | Status |
+|---|---|---|---|
+| PWA / offline mode | Med | M | Rejected — a stale cached calculator is silently wrong physics; no benign fallback exists |
+| Tank volume / strapping | Med | M | Rejected — accessible sources for torispherical heads proved unreliable (a published example contains its own arithmetic error); fails the traceability bar |
+| Dark/light theme toggle | Low | M | Rejected for v3.0 — ~1,900 dark-theme utility classes make this structural, not cosmetic |
+
+- **Flash / dew-point (VLE) calculation** — requires an equation of state plus stability analysis; the effort and validation burden are out of proportion for a reference tool, and wrong VLE answers are dangerous. Revisit only if the tool ever gains a rigorous property backend.
+- **User accounts / cloud storage** — contradicts the zero-data-harvesting principle.
+- **Venturi metering (ISO 5167-4)** — rejected outright during v3.0 scoping: no accessible primary text. Recorded with the orifice-metering candidate above, which does have one.
+
+### Scoping rules these decisions came from
+
+- **A candidate ships only if its governing text is legally accessible for verification** — "ship a coherent half rather than an incoherent whole". This is what deferred Venturi, killed the GPSA line-sizing rows, and kept the HI/API NPSH margin tables out of the NPSHa card.
+- **A maintainer request outranks the deferred queue.** Six releases since v3.0 were maintainer-requested and took priority over the three open candidates above.
+- **No feature may make a wrong answer look right.** PWA/offline and the unreliable torispherical sources were both rejected on this ground.
+
+### Delivered scope packs
+
+Collapsed for reference — each pack's original scoping note and per-candidate outcome, unchanged.
+
+<details>
+<summary><strong>v2.8 — "Junior engineer value pack" — all 7 candidates shipped</strong></summary>
 
 (Renumbered twice: originally proposed as "v2.6", then "v2.7" — both numbers were taken by i18n releases instead; see §4 and §5.)
 
@@ -134,19 +174,22 @@ Each item enters a release only after explicit approval by the maintainer. Effor
 | ~~pytest + GitHub Actions reference regression~~ | High | M | **Shipped.** 183 tests: Vector 2 (ΔP), Vector 3 (Flow Regime), five candidate PRV cases, i18n key parity, architectural guards. Two CI jobs — one deliberately installs nothing, so a third-party import creeping into `dp_calculator.py`/`psv_calculator.py` fails the build. Vector 1 (JIS) deferred: it is JavaScript, and the chosen route (`node -e` on an extracted slice) needs Node, which is not on the maintainer's machine. See SPECIFICATION.md §13 |
 | ~~Mobile navigation affordance (hamburger or wrap)~~ | Med | M | **Shipped.** Dropdown rather than a wrapping grid — nine tabs would wrap to three rows and push the content below the fold on a phone. Menu is generated from the existing tab buttons, so no second list to maintain. SPECIFICATION.md §3 |
 | ~~Custom modules in Share links (state format v:2)~~ | Med | M | **Shipped.** The real work turned out to be security, not versioning: `createCard()` interpolates module text into `innerHTML` and the id into inline `onclick` attributes, so letting a URL supply them would have been stored XSS. Sanitizing import boundary + id regeneration; verified against hostile payloads in a browser. Bundled: guarded `og_custom_modules` parse (a corrupt value previously killed every function below it), `report-*` excluded from state, over-long share-link warning |
+</details>
 
-### Internationalization Program — next milestones
+<details>
+<summary><strong>Internationalization Program — M1–M3 shipped (v2.6, v2.7)</strong></summary>
 
-Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in **v2.7**. Only M4 remains:
+Milestone 1 shipped in **v2.6** (PR #3); Milestones 2 and 3 shipped together in **v2.7**. M4 is listed under "Still open" above.
 
 | Milestone | Scope | Effort | Notes |
 |---|---|---|---|
 | **M1 — shipped (v2.6)** | i18n mechanism + full EN/JA translation of General, Basic Eng, Advanced, Safety tabs, action bar, Report form, module modal, and all JS-generated strings | — | Merged; see SPECIFICATION.md §12 |
 | **M2 — shipped (v2.7)** | Same scope as M1, remaining 8 languages (Chinese, Korean, Thai, Indonesian, Russian, Spanish, French, German) | — | All 10 `LANGUAGES` rows now `enabled: true`, each with a full `i18n/<code>.json` |
 | **M3 — shipped (v2.7)** | How To Use, Theory, Terms of Use, Privacy Policy tabs in all 9 non-English languages | — | Via the `data-i18n-html` mechanism (SPECIFICATION.md §12.6). **Terms/Privacy translations still need the maintainer's legal review** — a governing-language note (English prevails) is in place in every language as mitigation |
-| **M4 (optional)** | `api/dp_calculator.py`, `api/psv_calculator.py`, `api/flowregime.py` return machine-readable status/error keys instead of English prose, so server-driven text (flow-regime classification, validation errors) can localize too | M | Backend-only, stdlib-safe additive payload change. `flowregime.py` already returns `regime_key` alongside its English `regime` label (SPECIFICATION.md §5.3) — the other ~10+ message/error branches across the three files remain unkeyed |
+</details>
 
-### v3.0 — "Professional pack" (scope approved by maintainer 2026-08-04)
+<details>
+<summary><strong>v3.0 — "Professional pack" — all 4 approved candidates shipped</strong></summary>
 
 Scoping rule applied: a candidate ships only if its governing text is legally accessible
 for verification ("ship a coherent half rather than an incoherent whole"). Approved
@@ -159,14 +202,10 @@ by the PR-1 API-hardening pass (shipped — see §11 notes above).
 | NPSH / pump hydraulics screening | Med | M | **Shipped in the v3.0 cycle (PR-3)** — NPSHa card with IF97 water helper (Region 4 Pv + Region 1 ρ_f autofill); deliberately no margin verdict, HI/API margin tables are paywalled and stay out (SPECIFICATION.md §4.2, §9 Vector 9) |
 | Compressor power estimate (isentropic/polytropic) | Med | M | **Shipped in the v3.0 cycle (PR-4)** — head & power card: isentropic + perfect-gas polytropic from first principles, one-pass Papay Z_avg via the shared `papayZ()`, zero new physics constants; PTC 10 remains uncited (SPECIFICATION.md §4.2, §9 Vector 10) |
 | Unit-aware clipboard (copy value + unit) | Low | L | **Shipped in the v3.0 cycle (PR-5)** — plain click stays the bare value (spreadsheet-safe, maintainer's decision); Ctrl/⌘/Shift+click or ~500 ms long-press appends the live unit at all 33 copy sites incl. custom modules (SPECIFICATION.md §3 "Unit-aware clipboard") |
-| Calculation notebook (save/load named scenarios) | High | M | Deferred (headliner; needs its own security review of stored state) — **remains open after v3.1**, which shipped the maintainer-requested GT Fuel feature instead; re-bucketed to v3.2 |
-| Control valve Cv sizing (IEC 60534-2-1 lite) | Med | M | Deferred "flow elements" pack — primary text verified accessible (BIS adoption IS/IEC 60534-2-1:1998 incl. Annex D examples) — **remains open after v3.1**; re-bucketed to v3.2 |
-| Orifice metering (ISO 5167-2 lite) | Med | M–H | Deferred — iterative, takes the fourth-endpoint slot; primary content verified accessible (IS 15675:2006 + Reader-Harris NSFMW papers). Venturi (ISO 5167-4) rejected outright: no accessible primary text. **Remains open after v3.1**; re-bucketed to v3.2 |
-| PWA / offline mode | Med | M | Rejected — a stale cached calculator is silently wrong physics; no benign fallback exists |
-| Tank volume / strapping | Med | M | Rejected — accessible sources for torispherical heads proved unreliable (a published example contains its own arithmetic error); fails the traceability bar |
-| Dark/light theme toggle | Low | M | Rejected for v3.0 — ~1,900 dark-theme utility classes make this structural, not cosmetic |
+</details>
 
-### v3.1 — "GT Fuel" (maintainer-requested, scope approved 2026-08-15)
+<details>
+<summary><strong>v3.1 — "GT Fuel" — all 3 candidates shipped</strong></summary>
 
 Requested directly by the maintainer (with the MHI GTCC brochure as source material), so it
 took priority over the three deferred v3.1 candidates above. Scoping rule applied: the
@@ -179,8 +218,10 @@ vendor material, each entry carrying its citation — no licensed text is used o
 | GT Fuel tab — estimator + vendor/model selection + GTCC mode + availability totals | High | M | **Shipped v3.1** (SPECIFICATION.md §4.6, §9 Vector 11) |
 | Gas turbine catalogue — 31 source-cited machines, filterable, original SVG thumbnails | Med | M | **Shipped v3.1** — vendor photos deliberately excluded (copyright); dataset invariants CI-enforced (`tests/test_gt_fuel.py`) |
 | Cross-links (Advanced-composition import via `lastGHV`; send-to-Mass↔Vol) | Med | L | **Shipped v3.1** |
+</details>
 
-### v3.8 — Safety-tab pressure inputs (maintainer-requested 2026-08-22)
+<details>
+<summary><strong>v3.8 — Safety-tab pressure inputs — all 6 candidates shipped (v3.8–v3.8.3)</strong></summary>
 
 Requested directly by the maintainer: the PRV card's pressure fields were fixed to the unit system's canonical unit (psia / kPa abs, psig / kPag), had no Abs/Gauge switch, could not take a figure from the General tab, and opened empty.
 
@@ -192,11 +233,7 @@ Requested directly by the maintainer: the PRV card's pressure fields were fixed 
 | One-click defaults (gas → orifice H; other modes on Vector 4) | High | S | **Shipped v3.8** — new Vector 15, `tests/test_psv_pressure_inputs.py`; **v3.8.1** makes them visible to returning visitors (restore-time fallback) |
 | Unit drop-downs on W, T, Q, µ, vo/v9 and the advisory steam T | High | S | **Shipped v3.8.1** (`PSV_QTY` / `psvQty()`) |
 | USC↔SI toggle converts the figures it re-labels; ↺ Load example button | High | S | **Shipped v3.8.2** — default case stays on H in both systems |
-
-### Explicitly out of scope
-
-- **Flash / dew-point (VLE) calculation** — requires an equation of state plus stability analysis; the effort and validation burden are out of proportion for a reference tool, and wrong VLE answers are dangerous. Revisit only if the tool ever gains a rigorous property backend.
-- **User accounts / cloud storage** — contradicts the zero-data-harvesting principle.
+</details>
 
 ## 7. Release & QA Process
 
