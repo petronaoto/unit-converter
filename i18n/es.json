@@ -494,7 +494,7 @@
       "warnFillHigh": "Límite de carga superior a 98.5 % — compruebe el límite de llenado aprobado del buque (Código IGC Cap. 15).",
       "warnNeg": "El heel más el boil-off superan el volumen cargado — no quedaría nada que entregar.",
       "catTitle": "Catálogo de flota",
-      "catSub": "— buques representativos, uno o más por clase",
+      "catSub": "— la flota activa completa (finales de 2025)",
       "catCount": "{n} buques",
       "catUse": "Usar este buque",
       "catNoMatch": "Ningún buque coincide con los filtros actuales.",

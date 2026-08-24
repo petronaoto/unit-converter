@@ -494,7 +494,7 @@
       "warnFillHigh": "Füllgrenze über 98.5 % — zugelassene Füllgrenze des Schiffs prüfen (IGC-Code Kap. 15).",
       "warnNeg": "Heel plus Boil-off übersteigen das geladene Volumen — es bliebe nichts zu liefern.",
       "catTitle": "Flottenkatalog",
-      "catSub": "— repräsentative Schiffe, eines oder mehrere je Klasse",
+      "catSub": "— die gesamte aktive Flotte (Ende 2025)",
       "catCount": "{n} Schiffe",
       "catUse": "Dieses Schiff verwenden",
       "catNoMatch": "Kein Schiff entspricht den aktuellen Filtern.",

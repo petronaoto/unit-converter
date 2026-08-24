@@ -494,7 +494,7 @@
       "warnFillHigh": "Batas pemuatan di atas 98.5 % — periksa batas pengisian yang disetujui untuk kapal (IGC Code Ch. 15).",
       "warnNeg": "Heel ditambah boil-off melebihi volume dimuat — tidak akan ada yang tersisa untuk dikirim.",
       "catTitle": "Katalog armada",
-      "catSub": "— kapal representatif, satu atau lebih per kelas",
+      "catSub": "— seluruh armada aktif (akhir 2025)",
       "catCount": "{n} kapal",
       "catUse": "Pakai kapal ini",
       "catNoMatch": "Tidak ada kapal yang cocok dengan filter saat ini.",

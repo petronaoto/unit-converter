@@ -494,7 +494,7 @@
       "warnFillHigh": "Limite de chargement supérieure à 98.5 % — vérifiez la limite de remplissage approuvée du navire (IGC Code, ch. 15).",
       "warnNeg": "Le talon et l'évaporation dépassent le volume chargé — il ne resterait rien à livrer.",
       "catTitle": "Catalogue de la flotte",
-      "catSub": "— navires représentatifs, un ou plusieurs par classe",
+      "catSub": "— toute la flotte en service (fin 2025)",
       "catCount": "{n} navires",
       "catUse": "Utiliser ce navire",
       "catNoMatch": "Aucun navire ne correspond aux filtres actuels.",
