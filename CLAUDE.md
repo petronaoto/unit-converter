@@ -12,7 +12,7 @@ each is the normative source for its area:
 
 ## Project Overview
 
-- **App**: O&G Engineering Converter v3.8 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
+- **App**: O&G Engineering Converter v3.9 — a control-room-ready unit conversion and engineering calculation suite for the Oil & Gas / LNG sector.
 - **Licence**: **MIT** (`LICENSE`, added 2026-08-16). The repo was previously public but unlicensed, and the in-app Terms §6 actively *prohibited* redistribution and commercial use — those two facts contradicted each other. Three things must now stay in agreement, and a change to any one of them is a change to all three: the `LICENSE` file, the README licence section, and **in-app Terms §6 (`docs.terms.b008`) in the inline English AND all 9 dictionaries**. The licence covers this project's own code only — the `LICENSE` file's third-party section (engineering standards, GIIGNL LNG data, vendor GT specs) is load-bearing and must not be dropped.
   - Default UI language is English; as of v2.7 all 10 menu languages (en, ja, zh, ko, th, id, ru, es, fr, de) are fully live — working tool AND the four documentation tabs. See "Internationalization (i18n)" below and `docs/SPECIFICATION.md` §12.
 - **Developer**: Naoto Yamabe (petro.naoto@gmail.com)
@@ -23,7 +23,7 @@ each is the normative source for its area:
   - `requirements.txt` — Python deps for flowregime.py only (numpy/matplotlib/seaborn).
   - `i18n/*.json` — translation dictionaries, 10 files as of v2.7 (`en`, `ja`, `zh`, `ko`, `th`, `id`, `ru`, `es`, `fr`, `de`). `en.json` is the canonical source and runtime fallback for any working-tool key missing elsewhere; for `docs.*` keys the fallback is the inline English HTML in `index.html` (cached at runtime by `applyTranslations()` — English doc content is deliberately NOT duplicated into `en.json`). Fetched lazily by `index.html`, not bundled — the no-build-step principle holds.
   - `README.md` — project documentation.
-  - `docs/` (v3.8) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy), `POST.md` (the live LinkedIn campaign log — see below), `PRESERVATION.md` (the Preservation Rule 5 register — see above).
+  - `docs/` (v3.9) — `DEVELOPMENT_PLAN.md` (history + roadmap, incl. the i18n program milestones), `SPECIFICATION.md` (full feature & API spec, known-issues register, §12 i18n architecture), `MARKETING.md` (promotion strategy), `POST.md` (the live LinkedIn campaign log — see below), `PRESERVATION.md` (the Preservation Rule 5 register — see above).
 
 ## Public URL — one domain only
 

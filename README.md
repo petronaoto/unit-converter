@@ -1,4 +1,4 @@
-# O&G Engineering Converter — v3.8
+# O&G Engineering Converter — v3.9
 
 A high-precision, control-room-ready suite of engineering tools for the **Oil & Gas** and **LNG** sectors.
 
@@ -56,7 +56,7 @@ The project follows a **Hybrid Edge-Server Architecture** to balance client resp
   - Strict adherence to **JIS K 2301:2011** for cascading rounding, Wobbe Index, and Maximum Combustion Potential (MCP).
   - LNG liquid density via the **Klosek-McKinley** method (ISO 6578:1991).
   - *(new in v3.3)* **Reference Composition** selector — nine published LNG compositions, each carrying its own citation and a published/reference/assumed tier badge, cross-checked against the source's own GCV and Wobbe index where the source states them.
-- **LNG Cargo Estimator** *(new in v3.5)* — pick one of 36 representative LNG carriers (each row cites its own public source; Wikimedia Commons photos with credits) or type a capacity, set the loading limit, and read the cargo as t, kNm³ / MMscf and TBtu (HHV basis) — loaded and delivered after heel and boil-off — straight from the composition above.
+- **LNG Cargo Estimator** *(v3.5; full fleet in v3.9)* — pick any of the **804 LNG carriers active at end-2025** (Appendix 3 of the IGU World LNG Report 2026, reproduced with the IGU’s written permission — attribution and link on every entry; 36 featured vessels keep their own primary sources and Wikimedia Commons photos) or type a capacity, set the loading limit, and read the cargo as t, kNm³ / MMscf and TBtu (HHV basis) — loaded and delivered after heel and boil-off — straight from the composition above.
 - **GT Fuel** *(new in v3.1)* — gas-turbine fuel-gas demand from power and efficiency (Q = P/η), with a catalogue of 31 source-cited machines, simple-cycle / GTCC modes, availability-weighted daily-to-yearly totals, and a one-click import of the composition calculated above.
 - **Pipe Delta Pressure (Darcy-Weisbach)**
   - Pressure drop across vapor, liquid, and two-phase regimes.

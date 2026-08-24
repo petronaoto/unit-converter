@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.8</title>
+  <title data-i18n="meta.pageTitle">O&G Unit Converter V3.9</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Search + link-preview metadata. Deliberately STATIC ENGLISH and NOT wired to data-i18n:
@@ -1119,7 +1119,8 @@
         <!-- Reads rho_liq / rho_std / HHV / LHV from the composition card through lastLNGProps.
              The vessel <option> list is STATIC (never rebuilt): a share-link restore sets lc-vessel
              before any event fires — same rule as gt-model and comp-preset. Every LNG_VESSELS entry
-             carries its own public source; the IGU report is cited only for fleet-level context. -->
+             carries its own public source; the LNG_FLEET rows (v3.9) reproduce the IGU World LNG
+             Report 2026 Appendix 3 under the IGU's written permission of 2026-08-24. -->
         <div id="adv-lng-cargo" class="col-span-1 md:col-span-2 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden mt-6 scroll-mt-64 md:scroll-mt-40">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col lg:flex-row lg:justify-between items-start lg:items-center gap-3">
             <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2 whitespace-nowrap shrink-0">
@@ -1197,6 +1198,776 @@
                       <option value="9905980">Lagenda Serenity — 80,000 m³ · K Line</option>
                       <option value="9919890">Coral Nordic — 30,000 m³ · Anthony Veder</option>
                     </optgroup>
+                    <optgroup data-i18n-label="advanced.lngCargo.grpFleet" label="Full fleet — IGU World LNG Report 2026, Appendix 3">
+                      <option value="9501186">Adam LNG — 162,000 m³ · Asyad Shipping</option>
+                      <option value="9879698">Adamastos — 174,000 m³ · Capital Gas</option>
+                      <option value="9325697">Al Areesh — 151,700 m³ · Seapeak</option>
+                      <option value="9431147">Al Bahiya — 210,100 m³ · Nakilat</option>
+                      <option value="9132741">Al Bidda — 137,300 m³ · J4 Consortium</option>
+                      <option value="9325702">Al Daayen — 151,700 m³ · Seapeak</option>
+                      <option value="9443683">Al Dafna — 266,400 m³ · Nakilat</option>
+                      <option value="9307176">Al Deebel — 145,700 m³ · MOL, NYK Line, K Line</option>
+                      <option value="9986104">Al Galayel — 174,000 m³ · K3 Consortium</option>
+                      <option value="9337705">Al Gattara — 216,200 m³ · Nakilat, Asyad Shipping</option>
+                      <option value="9337987">Al Ghariya — 210,200 m³ · Commerz Real, Nakilat, PRONAV</option>
+                      <option value="9337717">Al Gharrafa — 216,200 m³ · Nakilat, Asyad Shipping</option>
+                      <option value="9397286">Al Ghashamiya — 217,600 m³ · Nakilat</option>
+                      <option value="9372743">Al Ghuwairiya — 263,300 m³ · Nakilat</option>
+                      <option value="9074640">Al Hamra — 135,000 m³ · National Gas Shipping Co</option>
+                      <option value="9360879">Al Huwaila — 217,000 m³ · Nakilat, Seapeak</option>
+                      <option value="9132791">Al Jasra — 137,200 m³ · J4 Consortium</option>
+                      <option value="9324435">Al Jassasiya — 145,700 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9431123">Al Karaana — 210,100 m³ · Nakilat</option>
+                      <option value="9397327">Al Kharaitiyat — 216,300 m³ · Nakilat</option>
+                      <option value="9976939">Al Kharrarah (2549) — 174,000 m³ · K3 Consortium</option>
+                      <option value="9360881">Al Kharsaah — 217,000 m³ · Nakilat, Seapeak</option>
+                      <option value="9431111">Al Khattiya — 210,200 m³ · Nakilat</option>
+                      <option value="9982677">Al Kheesah — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9085613">Al Khor — 137,400 m³ · J4 Consortium</option>
+                      <option value="9360908">Al Khuwair — 217,000 m³ · Nakilat, Seapeak</option>
+                      <option value="9397315">Al Mafyar — 266,400 m³ · Nakilat</option>
+                      <option value="9325685">Al Marrouna — 152,600 m³ · Nakilat, Seapeak</option>
+                      <option value="9986611">Al Mashabiyyah — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9397298">Al Mayeda — 266,000 m³ · Nakilat</option>
+                      <option value="9431135">Al Nuaman — 210,100 m³ · Nakilat</option>
+                      <option value="9360790">Al Oraiq — 210,200 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9976812">Al Qaiyyah — 174,000 m³ · K3 Consortium</option>
+                      <option value="9982689">Al Qassar (2612) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9965435">Al Rahba (Jiangnan H2701) — 174,000 m³ · ADNOC L&amp;S</option>
+                      <option value="9086734">Al Rayyan — 137,400 m³ · J4 Consortium</option>
+                      <option value="9972945">Al Reef (Jiangnan H2702) — 174,000 m³ · ADNOC L&amp;S</option>
+                      <option value="9397339">Al Rekayyat — 216,300 m³ · Nakilat</option>
+                      <option value="9337951">Al Ruwais — 210,200 m³ · Commerz Real, Nakilat, PRONAV</option>
+                      <option value="9972957">Al Sadaf — 174,000 m³ · ADNOC L&amp;S</option>
+                      <option value="9397341">Al Sadd — 210,200 m³ · Nakilat</option>
+                      <option value="9337963">Al Safliya — 210,200 m³ · Commerz Real, Nakilat, PRONAV</option>
+                      <option value="9360855">Al Sahla — 216,200 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9977270">Al Sailiya (2641) — 174,000 m³ · JP Morgan</option>
+                      <option value="9986051">Al Sakhamah — 174,000 m³ · K3 Consortium</option>
+                      <option value="9388821">Al Samriya — 263,300 m³ · Nakilat</option>
+                      <option value="9986099">Al Sene (ex-2653) — 174,000 m³ · K3 Consortium</option>
+                      <option value="9360893">Al Shamal — 217,000 m³ · Nakilat, Seapeak</option>
+                      <option value="9360831">Al Sheehaniya — 210,200 m³ · Nakilat</option>
+                      <option value="9965423">Al Shelila (ex-Jiangnan H2700) — 174,000 m³ · ADNOC L&amp;S</option>
+                      <option value="9986087">Al Slaimi — 174,000 m³ · K3 Consortium</option>
+                      <option value="9360843">Al Thumama — 216,200 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9986609">Al Tuwar — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9360867">Al Utouriya — 215,000 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9085625">Al Wajbah — 137,300 m³ · J4 Consortium</option>
+                      <option value="9086746">Al Wakrah — 137,600 m³ · J4 Consortium</option>
+                      <option value="9981386">Al Zore — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9085649">Al Zubarah — 137,600 m³ · J4 Consortium</option>
+                      <option value="9981491">Al Zuwair (3395) — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9390185">Alexandroupolis — 153,000 m³ · GasLog</option>
+                      <option value="9904194">Alicante Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9682552">Amadi — 154,800 m³ · Brunei Gas Carriers</option>
+                      <option value="9496317">Amali — 147,000 m³ · Brunei Gas Carriers</option>
+                      <option value="9661869">Amani — 154,800 m³ · Brunei Gas Carriers</option>
+                      <option value="9972218">Amaryllis Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9845776">Amberjack LNG — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9943841">Amore Mio I — 174,000 m³ · Capital Gas</option>
+                      <option value="9317999">Amur River — 149,700 m³ · CDB Leasing</option>
+                      <option value="9957737">Apostolos (ex-Hyundai 3342) — 174,000 m³ · Capital Gas</option>
+                      <option value="9970674">Archy Vanguard — 174,000 m³ · MOL</option>
+                      <option value="9645970">Arctic Aurora — 155,000 m³ · CDB Leasing</option>
+                      <option value="9284192">Arctic Lady — 148,000 m³ · Hoegh</option>
+                      <option value="9243148">Arctic Metagas (ex-Metagas Everest) — 138,000 m³ · Nur Global Shipping</option>
+                      <option value="9256602">Arctic Pioneer (ex-LNG Pioneer / ex-Pioneer Spirit) — 138,000 m³ · Nur Global Shipping</option>
+                      <option value="9271248">Arctic Princess — 148,000 m³ · Hoegh, MOL, Equinor</option>
+                      <option value="9216298">Arctic Vostok — 137,000 m³ · Nur Global Shipping</option>
+                      <option value="9862918">Aristarchos — 174,000 m³ · Capital Gas</option>
+                      <option value="9862906">Aristidis I — 174,000 m³ · Capital Gas</option>
+                      <option value="9862891">Aristos I — 174,000 m³ · Capital Gas</option>
+                      <option value="9496305">Arkat — 147,000 m³ · Brunei Gas Carriers</option>
+                      <option value="9319404">Arrow Spirit — 155,000 m³ · Jovo Group</option>
+                      <option value="9245720">Arunika Jaya — 147,000 m³ · Tokyo Gas</option>
+                      <option value="9377547">Aseem — 155,000 m³ · MOL, NYK Line, K Line, SCI, Nakilat, Petronet</option>
+                      <option value="9610779">Asia Endeavour — 160,000 m³ · Chevron</option>
+                      <option value="9610767">Asia Excellence — 160,000 m³ · Chevron</option>
+                      <option value="9680188">Asia Integrity — 160,000 m³ · Chevron</option>
+                      <option value="9680190">Asia Venture — 160,000 m³ · Chevron</option>
+                      <option value="9606948">Asia Vision — 160,000 m³ · Chevron</option>
+                      <option value="9884021">Asklipios — 174,000 m³ · Capital Gas</option>
+                      <option value="9957725">Assos (ex-3341) — 174,000 m³ · Capital Gas</option>
+                      <option value="9892298">Asterix I — 174,000 m³ · Capital Gas</option>
+                      <option value="9972672">Athos LNG (ex-Samsung 2635) — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9862920">Attalos — 174,000 m³ · Capital Gas</option>
+                      <option value="9943853">Axios II — 174,000 m³ · Capital Gas</option>
+                      <option value="9613159">Beidou Star — 171,800 m³ · MOL, China LNG</option>
+                      <option value="9236432">Bilbao Knutsen — 138,000 m³ · Knutsen OAS</option>
+                      <option value="9315393">Blue Dragon I — 145,700 m³ · Unknown</option>
+                      <option value="9845788">Bonito LNG — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9768394">Boris Davydov — 172,000 m³ · Sovcomflot</option>
+                      <option value="9768368">Boris Vilkitsky — 172,000 m³ · Sovcomflot</option>
+                      <option value="9766554">British Contributor — 173,400 m³ · BP</option>
+                      <option value="9766566">British Listener — 173,400 m³ · BP</option>
+                      <option value="9766578">British Mentor — 173,400 m³ · BP</option>
+                      <option value="9766530">British Partner — 173,400 m³ · BP</option>
+                      <option value="9766580">British Sponsor — 173,400 m³ · BP</option>
+                      <option value="9085651">Broog — 137,500 m³ · J4 Consortium</option>
+                      <option value="9976824">Bu Fintas — 174,000 m³ · K3 Consortium</option>
+                      <option value="9986063">Bu Nakhlah — 174,000 m³ · K3 Consortium</option>
+                      <option value="9388833">Bu Samra — 266,000 m³ · Nakilat</option>
+                      <option value="9368302">BW Batangas — 162,400 m³ · BW</option>
+                      <option value="9230062">BW Boston — 138,000 m³ · BW, Total</option>
+                      <option value="9368314">BW Brussels — 162,500 m³ · BW</option>
+                      <option value="9896933">BW Cassia — 174,000 m³ · BW</option>
+                      <option value="9413327">BW Clear Sky — 173,000 m³ · BW</option>
+                      <option value="9383900">BW ENN Crystal Sky — 173,000 m³ · BW</option>
+                      <option value="9896921">BW ENN Snow Lotus — 174,000 m³ · BW</option>
+                      <option value="9724946">BW Integrity — 173,400 m³ · BW, MOL</option>
+                      <option value="9873840">BW Lesmes — 174,000 m³ · BW</option>
+                      <option value="9758076">BW Lilac — 173,400 m³ · BW</option>
+                      <option value="9792591">BW Magna — 173,400 m³ · BW</option>
+                      <option value="9850666">BW Magnolia — 173,400 m³ · BW</option>
+                      <option value="9792606">BW Pavilion Aranda — 173,400 m³ · BW, Pavilion LNG</option>
+                      <option value="9850678">Bw Pavilion Aranthera — 170,800 m³ · BW</option>
+                      <option value="9640645">BW Pavilion Leeara — 162,000 m³ · BW, Pavilion LNG</option>
+                      <option value="9640437">BW Pavilion Vanda — 162,000 m³ · BW, Pavilion LNG</option>
+                      <option value="9684495">BW Singapore — 170,200 m³ · Snam</option>
+                      <option value="9236626">BW Tatiana (ex-Gallina) — 136,600 m³ · BW, Invenenergy Investment Company</option>
+                      <option value="9758064">BW Tulip — 173,400 m³ · BW</option>
+                      <option value="9246578">Cadiz Knutsen — 138,000 m³ · Knutsen OAS</option>
+                      <option value="9390680">Cape Ann — 145,000 m³ · Hoegh, MOL, TLTC</option>
+                      <option value="9742819">Castillo De Caldelas — 178,800 m³ · Elcano</option>
+                      <option value="9742807">Castillo De Merida — 178,800 m³ · Elcano</option>
+                      <option value="9433717">Castillo De Santisteban — 173,600 m³ · Elcano</option>
+                      <option value="9236418">Castillo De Villalba — 138,200 m³ · Elcano</option>
+                      <option value="9864796">Celsius Canberra — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9878723">Celsius Carolina — 180,000 m³ · Celsius Shipping, Basalt</option>
+                      <option value="9878711">Celsius Charlotte — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9864784">Celsius Copenhagen — 180,000 m³ · Celsius Shipping, Basalt</option>
+                      <option value="9959008">Celsius Galapagos (2599) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9958999">Celsius Galway (2598) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9946829">Celsius Gandhinagar (2579) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9945435">Celsius Geneva — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9945447">Celsius Giza — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9945459">Celsius Glarus — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9948736">Celsius Granada (2585) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9948724">Celsius Greenwich (ex-2584) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9969223">Celsius Guadalupe (2619) — 180,000 m³ · Celsius Shipping</option>
+                      <option value="9672844">Cesi Beihai — 174,100 m³ · China Shipping Group</option>
+                      <option value="9672820">Cesi Gladstone — 174,100 m³ · Chuo Kaiun/Shinwa Chem.</option>
+                      <option value="9672818">Cesi Lianyungang — 174,100 m³ · China Shipping Group</option>
+                      <option value="9672832">Cesi Qingdao — 174,100 m³ · China Shipping Group</option>
+                      <option value="9694749">Cesi Tianjin — 174,100 m³ · China Shipping Group</option>
+                      <option value="9694751">Cesi Wenzhou — 174,100 m³ · China Shipping Group</option>
+                      <option value="9324344">Cheikh Bouamama — 75,500 m³ · HYPROC, Sonatrach, Itochu, MOL</option>
+                      <option value="9324332">Cheikh El Mokrani — 75,500 m³ · HYPROC, Sonatrach, Itochu, MOL</option>
+                      <option value="9886732">Clean Cajun — 200,000 m³ · Dynagas</option>
+                      <option value="9886744">Clean Copano — 200,000 m³ · Dynagas</option>
+                      <option value="9943487">Clean Destiny — 200,000 m³ · Dynagas</option>
+                      <option value="9323687">Clean Energy — 149,700 m³ · CDB Leasing</option>
+                      <option value="9943504">Clean Future (ex-3293) — 200,000 m³ · Dynagas</option>
+                      <option value="9655444">Clean Horizon — 162,000 m³ · Dynagas</option>
+                      <option value="9967330">Clean Levant — 200,000 m³ · Dynagas</option>
+                      <option value="9967328">Clean Mistral — 200,000 m³ · Dynagas</option>
+                      <option value="9637492">Clean Ocean — 162,000 m³ · Dynagas</option>
+                      <option value="9637507">Clean Planet — 162,000 m³ · Dynagas</option>
+                      <option value="9943475">Clean Resolution — 200,000 m³ · Dynagas</option>
+                      <option value="9655456">Clean Vision — 162,000 m³ · Dynagas</option>
+                      <option value="9943499">Clean Vitality — 200,000 m³ · Dynagas</option>
+                      <option value="9869306">Cobia LNG — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9654878">Cool Baltic (ex-SCF Melampus) — 170,200 m³ · CoolCo</option>
+                      <option value="9861031">Cool Discoverer — 174,000 m³ · Thenamaris</option>
+                      <option value="9640023">Cool Explorer — 160,000 m³ · Thenamaris</option>
+                      <option value="9869265">Cool Racer — 174,000 m³ · Thenamaris</option>
+                      <option value="9333606">Cool Ranger — 155,000 m³ · BP</option>
+                      <option value="9333591">Cool Rider — 155,000 m³ · BP</option>
+                      <option value="9333618">Cool Rover — 155,000 m³ · BP</option>
+                      <option value="9636797">Cool Runner — 160,000 m³ · Thenamaris</option>
+                      <option value="9636785">Cool Voyager — 160,000 m³ · Thenamaris</option>
+                      <option value="9693719">Coral Encanto — 30,000 m³ · Anthony Veder</option>
+                      <option value="9955521">Coral Evolutionist — 30,000 m³ · Anthony Veder</option>
+                      <option value="9636711">Corcovado LNG — 160,100 m³ · TMS Cardiff Gas</option>
+                      <option value="9491812">Cubal — 160,000 m³ · Mitsui, NYK Line, Seapeak</option>
+                      <option value="9376294">Cygnus Passage — 147,000 m³ · TEPCO, NYK Line, Mitsubishi</option>
+                      <option value="9308481">Dapeng Moon — 147,200 m³ · China LNG Ship Mgmt</option>
+                      <option value="9937907">Dapeng Princess — 80,000 m³ · Shenzhen Gas</option>
+                      <option value="9369473">Dapeng Star — 147,600 m³ · China LNG Ship Mgmt</option>
+                      <option value="9308479">Dapeng Sun — 147,200 m³ · China LNG Ship Mgmt</option>
+                      <option value="9874454">Diamond Gas Crystal — 174,000 m³ · MISC, Mitsubishi, NYK Line</option>
+                      <option value="9862487">Diamond Gas Metropolis — 174,000 m³ · NYK Line</option>
+                      <option value="9779226">Diamond Gas Orchid — 165,000 m³ · NYK Line</option>
+                      <option value="9779238">Diamond Gas Rose — 165,000 m³ · NYK Line</option>
+                      <option value="9810020">Diamond Gas Sakura — 165,000 m³ · NYK Line</option>
+                      <option value="9874466">Diamond Gas Victoria — 174,000 m³ · MISC, Mitsubishi, NYK Line, Toho LNG Shipping</option>
+                      <option value="9250713">Disha — 138,100 m³ · MOL, NYK Line, K Line, SCI, Nakilat, Petronet</option>
+                      <option value="9085637">Doha — 137,300 m³ · J4 Consortium</option>
+                      <option value="9863182">Dorado LNG — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9337975">Duhail — 210,200 m³ · Commerz Real, Nakilat, PRONAV</option>
+                      <option value="9750696">Eduard Toll — 172,000 m³ · Seapeak</option>
+                      <option value="9334076">Ejnan — 145,000 m³ · K Line, MOL, NYK Line, Mitsui, Nakilat</option>
+                      <option value="8706155">Ekaputra 1 — 137,000 m³ · P.T. Humpuss Trans</option>
+                      <option value="9884473">Elisa Aquila — 174,000 m³ · NYK Line</option>
+                      <option value="9980540">Elisa Ardea (Hyundai Samho 8049) — 174,000 m³ · NYK Line</option>
+                      <option value="9980552">Elisa Halycon — 174,000 m³ · NYK Line</option>
+                      <option value="9852975">Elisa Larus — 174,000 m³ · GazOcean</option>
+                      <option value="9626027">Energos Celsius — 160,000 m³ · Energos</option>
+                      <option value="9624940">Energos Eskimo — 160,000 m³ · Energos</option>
+                      <option value="9861811">Energos Force — 174,000 m³ · Energos</option>
+                      <option value="7361922">Energos Freeze — 125,000 m³ · Energos</option>
+                      <option value="9303560">Energos Grand — 145,000 m³ · Energos</option>
+                      <option value="9633991">Energos Igloo — 170,000 m³ · Energos</option>
+                      <option value="9320374">Energos Maria — 145,000 m³ · Energos</option>
+                      <option value="9785500">Energos Nanook — 170,000 m³ · Energos</option>
+                      <option value="9624938">Energos Penguin — 160,000 m³ · Energos</option>
+                      <option value="9861809">Energos Power — 174,000 m³ · Energos</option>
+                      <option value="9253715">Energos Princess — 138,000 m³ · Energos</option>
+                      <option value="9256614">Energos Winter — 138,000 m³ · Energos</option>
+                      <option value="9649328">Energy Atlantic — 159,700 m³ · Alpha Gas</option>
+                      <option value="9405588">Energy Confidence — 155,000 m³ · NYK Line, Tokyo Gas</option>
+                      <option value="9854624">Energy Endeavour — 173,400 m³ · Alpha Gas</option>
+                      <option value="9948695">Energy Endurance — 174,000 m³ · Alpha Gas</option>
+                      <option value="9540089">Energy Fidelity (ex-Jules Verne) — 174,000 m³ · Alpha Gas</option>
+                      <option value="9948700">Energy Fortitude (ex-Victor Hugo (8107)) — 174,000 m³ · Alpha Gas</option>
+                      <option value="9483877">Energy Horizon — 177,000 m³ · NYK Line, TLTC</option>
+                      <option value="9758832">Energy Innovator — 165,000 m³ · MOL, Tokyo Gas</option>
+                      <option value="9859739">Energy Integrity — 173,400 m³ · Alpha Gas</option>
+                      <option value="9881201">Energy Intelligence — 173,400 m³ · Alpha Gas</option>
+                      <option value="9736092">Energy Liberty — 165,000 m³ · MOL, Tokyo Gas</option>
+                      <option value="9355264">Energy Navigator — 147,000 m³ · MOL, Tokyo Gas</option>
+                      <option value="9854612">Energy Pacific — 173,400 m³ · Alpha Gas</option>
+                      <option value="9274226">Energy Progress — 147,000 m³ · MOL</option>
+                      <option value="9269207">Energy Spirit — 74,500 m³ · Jovo Group</option>
+                      <option value="9758844">Energy Universe — 165,000 m³ · MOL, Tokyo Gas</option>
+                      <option value="9749609">Enshu Maru — 164,700 m³ · K Line</option>
+                      <option value="9859820">Ertugrul Gazi — 170,000 m³ · Turkish Petroleum Corp</option>
+                      <option value="9666560">Esshu Maru — 153,000 m³ · MOL, Tokyo Gas</option>
+                      <option value="9991850">Esteem Fuji (ex-Hull 2566) — 174,000 m³ · Meiji Shipping</option>
+                      <option value="9236614">Etyfa Prometheas — 135,000 m³ · Natural Gas Infrastructure Company of Cyprus</option>
+                      <option value="9230050">Excalibur — 138,000 m³ · Exmar</option>
+                      <option value="9820843">Excelerate Sequoia — 173,400 m³ · Excelerate Energy</option>
+                      <option value="9252539">Excellence — 138,000 m³ · Excelerate Energy</option>
+                      <option value="9444649">Exemplar — 150,900 m³ · Excelerate Energy</option>
+                      <option value="9389643">Expedient — 150,900 m³ · Excelerate Energy</option>
+                      <option value="9638525">Experience — 173,400 m³ · Excelerate Energy</option>
+                      <option value="9361079">Explorer — 150,900 m³ · Excelerate Energy</option>
+                      <option value="9361445">Express — 150,900 m³ · Excelerate Energy</option>
+                      <option value="9381134">Exquisite — 150,900 m³ · Excelerate Energy, Nakilat</option>
+                      <option value="9918157">Extremadura Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9986623">Fath Al Khair (1799A) — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9768370">Fedor Litke — 172,000 m³ · LITKE</option>
+                      <option value="9918145">Ferrol Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9857377">Flex Amber — 174,000 m³ · Flex LNG</option>
+                      <option value="9851634">Flex Artemis — 173,400 m³ · Flex LNG</option>
+                      <option value="9857365">Flex Aurora — 174,000 m³ · Flex LNG</option>
+                      <option value="9825427">Flex Constellation — 173,400 m³ · Flex LNG</option>
+                      <option value="9825439">Flex Courageous — 173,400 m³ · Flex LNG</option>
+                      <option value="9762261">Flex Endeavour — 173,400 m³ · Flex LNG</option>
+                      <option value="9762273">Flex Enterprise — 173,400 m³ · Flex LNG</option>
+                      <option value="9862308">Flex Freedom — 173,400 m³ · Flex LNG</option>
+                      <option value="9709037">Flex Rainbow — 174,000 m³ · Flex LNG</option>
+                      <option value="9709025">Flex Ranger — 174,000 m³ · Flex LNG</option>
+                      <option value="9851646">Flex Resolute — 173,400 m³ · Flex LNG</option>
+                      <option value="9862475">Flex Vigilant — 174,000 m³ · Flex LNG</option>
+                      <option value="9862463">Flex Volunteer — 174,000 m³ · Flex LNG</option>
+                      <option value="9360817">Fraiha — 210,100 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9253284">FSRU Toscana — 137,100 m³ · OLT Offshore LNG Toscana</option>
+                      <option value="9256200">Fuwairit — 138,300 m³ · MOL</option>
+                      <option value="9877145">Gail Bhuwan — 176,500 m³ · MOL</option>
+                      <option value="9976147">Gail Sagar (HSHI-8197) — 174,000 m³ · CoolCo</option>
+                      <option value="9949027">Gail Urja — 174,000 m³ · MOL</option>
+                      <option value="9266982">Gas Garuda (ex-LNG River Orashi) — 145,900 m³ · BW</option>
+                      <option value="9864928">Gaslog Galveston — 174,000 m³ · GasLog</option>
+                      <option value="9707508">Gaslog Geneva — 174,000 m³ · GasLog</option>
+                      <option value="9744013">Gaslog Genoa — 174,000 m³ · GasLog</option>
+                      <option value="9707510">Gaslog Gibraltar — 174,000 m³ · GasLog</option>
+                      <option value="9744025">Gaslog Gladstone — 174,000 m³ · GasLog</option>
+                      <option value="9687021">Gaslog Glasgow — 174,000 m³ · GasLog</option>
+                      <option value="9687019">Gaslog Greece — 174,000 m³ · GasLog</option>
+                      <option value="9748904">Gaslog Hongkong — 174,000 m³ · GasLog</option>
+                      <option value="9962407">Gaslog Italy (2532) — 174,000 m³ · Gaslog</option>
+                      <option value="9638915">Gaslog Salem — 155,000 m³ · CDB Leasing</option>
+                      <option value="9600530">Gaslog Santiago — 155,000 m³ · GasLog</option>
+                      <option value="9638903">Gaslog Saratoga — 155,000 m³ · CDB Leasing</option>
+                      <option value="9352860">Gaslog Savannah — 155,000 m³ · GasLog</option>
+                      <option value="9634086">Gaslog Seattle — 155,000 m³ · GasLog</option>
+                      <option value="9600528">Gaslog Shanghai — 155,000 m³ · CDB Leasing</option>
+                      <option value="9355604">Gaslog Singapore — 155,000 m³ · GasLog</option>
+                      <option value="9626285">Gaslog Skagen — 155,000 m³ · CDB Leasing</option>
+                      <option value="9626273">Gaslog Sydney — 155,000 m³ · CDB Leasing</option>
+                      <option value="9853137">Gaslog Wales — 180,000 m³ · GasLog</option>
+                      <option value="9816763">Gaslog Warsaw — 180,000 m³ · GasLog</option>
+                      <option value="9876660">Gaslog Wellington — 180,000 m³ · GasLog</option>
+                      <option value="9855812">Gaslog Westminster — 180,000 m³ · GasLog</option>
+                      <option value="9876737">Gaslog Winchester — 180,000 m³ · GasLog</option>
+                      <option value="9819650">Gaslog Windsor — 180,000 m³ · GasLog</option>
+                      <option value="9768382">Georgiy Brusilov — 172,600 m³ · Dynagas</option>
+                      <option value="9750749">Georgiy Ushakov — 172,000 m³ · Seapeak, China LNG Shipping</option>
+                      <option value="9360922">Gigira Laitebo — 155,000 m³ · MOL, Itochu</option>
+                      <option value="9845013">Global Energy — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9880465">Global Sea Spirit — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9880477">Global Sealine — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9859741">Global Star — 173,400 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9321756">Golden Isaia (ex-Methane Shirley Elizabeth) — 145,000 m³ · Sillo Maritime</option>
+                      <option value="9946374">Gordonwaters Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9315707">Grace Acacia — 150,000 m³ · NYK Line</option>
+                      <option value="9315719">Grace Barleria — 150,000 m³ · NYK Line</option>
+                      <option value="9323675">Grace Cosmos — 150,000 m³ · Sino Commerce Offshore</option>
+                      <option value="9540716">Grace Dahlia — 177,400 m³ · NYK Line</option>
+                      <option value="9884174">Grace Emelia — 174,000 m³ · NYK Line</option>
+                      <option value="9903920">Grace Freesia — 174,000 m³ · NYK Line</option>
+                      <option value="9332054">Grand Elena — 147,000 m³ · NYK Line, Sovcomflot</option>
+                      <option value="9338929">Grand Mereya — 147,600 m³ · MOL, K Line, Primorsk</option>
+                      <option value="9922988">Grazyna Gesicka — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9961506">GREENERGY MOON — 174,000 m³ · MOL</option>
+                      <option value="9961477">Greenergy Ocean (1880A) — 174,000 m³ · MOL</option>
+                      <option value="9961489">Greenergy Pearl (ex-Hudong-Zhonghua H1881A) — 174,000 m³ · MOL</option>
+                      <option value="9961491">Greenergy Star — 174,000 m³ · MOL</option>
+                      <option value="9878888">Gui Ying — 174,000 m³ · CSSC Shpg Leasing</option>
+                      <option value="9696266">Hai Yang Shi You 301 — 30,000 m³ · CNOOC</option>
+                      <option value="9872999">Hellas Athina — 174,000 m³ · Latsco (London)</option>
+                      <option value="9872987">Hellas Diana — 174,000 m³ · Latsco (London)</option>
+                      <option value="9972359">HL Alyssa Warner (2607) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9972361">HL Edward Austin (2608) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9986283">HL Fortuna — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9155078">HL Muscat — 138,000 m³ · H-Line Shipping</option>
+                      <option value="9972385">HL Puffin (2610) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9972373">HL Sea Eagle (2609) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9953262">Hlaitan (ex-H1792A) — 174,000 m³ · MOL</option>
+                      <option value="9941013">HLS Bilbao — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9947691">HLS Cartagena (2522) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9653678">Hoegh Gallant — 170,100 m³ · Hoegh</option>
+                      <option value="9820013">Hoegh Galleon — 170,000 m³ · Hoegh</option>
+                      <option value="9624914">Hoegh Gandria — 160,000 m³ · Hoegh</option>
+                      <option value="9822451">Hoegh Gannet — 170,000 m³ · Hoegh</option>
+                      <option value="9762962">Hoegh Giant — 170,000 m³ · Hoegh</option>
+                      <option value="9674907">Hoegh Grace — 170,000 m³ · Hoegh</option>
+                      <option value="9250725">Hongkong Energy — 140,500 m³ · Sinokor Merchant Marine</option>
+                      <option value="9958652">Huashan (1835A) — 174,000 m³ · United Liquefied Gas</option>
+                      <option value="9904209">Huelva Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9372999">Hyundai Ecopia — 150,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9183269">Hyundai Oceanpia — 135,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9761853">Hyundai Peacepia — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9761841">Hyundai Princepia — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9018555">Hyundai Utopia — 125,200 m³ · Hyundai LNG Shipping</option>
+                      <option value="9326603">Iberica Knutsen — 138,000 m³ · Knutsen OAS</option>
+                      <option value="9326689">Ibra LNG — 147,600 m³ · Asyad Shipping, MOL</option>
+                      <option value="9317315">Ibri LNG — 147,600 m³ · Asyad Shipping, MOL, Mitsubishi</option>
+                      <option value="9977220">Id'Asah (2596) — 174,000 m³ · JP Morgan</option>
+                      <option value="9986647">IDD Al Shargi (ex-QatarGas LNG 52 (1801A)) — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9969388">Ignacy Jan Paderewski (8180) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9946398">Ignacy Lukasiewicz — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9977256">Imsaikah (2637) — 174,000 m³ · JP Morgan</option>
+                      <option value="9874820">Isabella — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9035864">Ish — 137,300 m³ · National Gas Shipping Co</option>
+                      <option value="9655808">Italis LNG (ex-Golar Tundra) — 170,000 m³ · Snam</option>
+                      <option value="9854935">Jawa Satu — 170,000 m³ · Jawa Satu Regas</option>
+                      <option value="9901350">John A Angelicoussis — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9969376">Josef Pilsudski (8179) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9157636">K. Acacia — 138,000 m³ · Korea Line</option>
+                      <option value="9186584">K. Freesia — 138,000 m³ · Korea Line</option>
+                      <option value="9373008">K. Jasmine — 145,700 m³ · Korea Line</option>
+                      <option value="9373010">K. Mugungwha — 151,700 m³ · Korea Line</option>
+                      <option value="9045132">Karadeniz LNGT Americas (ex-Northwest Stormpetrel) — 126,800 m³ · Karpowership</option>
+                      <option value="9306495">Karadeniz LNGT Powership Anatolia (ex-LNG Unity / ex-Provalys) — 154,472 m³ · Karpowership</option>
+                      <option value="9064073">Karadeniz LNGT Powership Black Sea (ex-Portovenere / ex-LNG Portovenere) — 65,000 m³ · MISC</option>
+                      <option value="9064085">Karadeniz LNGT Powership Marmara (ex-Lerici / ex-LNG Lerici) — 65,000 m³ · MISC</option>
+                      <option value="9043677">Karmol LNGT Powership Africa (ex-Dwiputra) — 127,386 m³ · Karpowership, MOL</option>
+                      <option value="8608705">Karmol LNGT Powership Asia (ex-Northwest Shearwater) — 127,000 m³ · Karpowership, MOL</option>
+                      <option value="9020766">Karmol LNGT Powership Europe (ex-LNG Vesta) — 128,000 m³ · Karpowership, MOL</option>
+                      <option value="9785158">Kinisis — 173,400 m³ · Chandris Group</option>
+                      <option value="9636723">Kita LNG — 160,100 m³ · TMS Cardiff Gas</option>
+                      <option value="9333620">Kmarin Diamond — 155,000 m³ · BP</option>
+                      <option value="9958664">Kongtong (ex-Hudong-Zhonghua H1836A) — 174,000 m³ · United Liquefied Gas</option>
+                      <option value="9635315">Kool Blizzard — 160,000 m³ · CoolCo</option>
+                      <option value="9654880">Kool Boreas (ex-SCF Mitre) — 170,200 m³ · CoolCo</option>
+                      <option value="9624926">Kool Crystal — 160,000 m³ · CoolCo</option>
+                      <option value="9864746">Kool Firn (ex-SCF Barents) — 174,000 m³ · CoolCo</option>
+                      <option value="9655042">Kool Frost — 160,000 m³ · CoolCo</option>
+                      <option value="9654696">Kool Glacier — 162,000 m³ · CoolCo</option>
+                      <option value="9626039">Kool Husky — 160,000 m³ · CoolCo</option>
+                      <option value="9637325">Kool Ice — 160,000 m³ · CoolCo</option>
+                      <option value="9654701">Kool Kelvin — 162,000 m³ · CoolCo</option>
+                      <option value="9870525">Kool Orca — 174,000 m³ · CoolCo</option>
+                      <option value="9976135">Kool Tiger (HSHI-8196) — 174,000 m³ · CoolCo</option>
+                      <option value="9613161">Kumul — 172,000 m³ · MOL, China LNG</option>
+                      <option value="9915911">Kunlun — 174,000 m³ · COSCO</option>
+                      <option value="9721724">La Mancha Knutsen — 176,000 m³ · Knutsen OAS</option>
+                      <option value="9849887">La Perouse (ex-SCF La Perouse) — 174,000 m³ · Sovcomflot</option>
+                      <option value="9845764">La Seine — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9165011">Lady Eva — 135,225 m³ · PT Mitrausaha Tanker Persada</option>
+                      <option value="9952816">Lagenda Setia — 174,000 m³ · K Line</option>
+                      <option value="9905978">Lagenda Suria — 80,000 m³ · K Line</option>
+                      <option value="9275347">Lalla Fatma N'soumer — 147,300 m³ · HYPROC</option>
+                      <option value="9976927">Lebrethah (2548) — 174,000 m³ · K3 Consortium</option>
+                      <option value="9922976">Lech Kaczynski — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9629598">Lena River — 155,000 m³ · Dynagas</option>
+                      <option value="9977268">Leshatt (2638) — 174,000 m³ · JP Morgan</option>
+                      <option value="9388819">Lijmiliya — 263,300 m³ · Nakilat</option>
+                      <option value="9953274">Limail (ex-Hudong Hull 1793A) — 174,000 m³ · MOL</option>
+                      <option value="9690171">LNG Abalamabie — 175,000 m³ · BGT LTD</option>
+                      <option value="9690169">LNG Abuja II — 175,000 m³ · BGT LTD</option>
+                      <option value="9262211">LNG Adamawa — 141,000 m³ · BGT LTD</option>
+                      <option value="9870159">LNG Adventure — 174,000 m³ · France LNG Shipping</option>
+                      <option value="9262209">LNG Akwa Ibom — 141,000 m³ · BGT LTD</option>
+                      <option value="9320075">LNG Alliance — 154,500 m³ · GazOcean</option>
+                      <option value="9341299">LNG Barka — 153,600 m³ · Asyad Shipping, Osaka Gas, NYK Line, K Line</option>
+                      <option value="9241267">LNG Bayelsa — 137,000 m³ · BGT LTD</option>
+                      <option value="9267015">LNG Benue — 145,700 m³ · BW</option>
+                      <option value="9692002">LNG Bonny II — 177,000 m³ · BGT LTD</option>
+                      <option value="9322803">LNG Borno — 149,600 m³ · NYK Line</option>
+                      <option value="9256767">LNG Croatia — 138,000 m³ · LNG Hrvatska</option>
+                      <option value="9262223">LNG Cross River — 141,000 m³ · BGT LTD</option>
+                      <option value="9277620">LNG Dream — 145,300 m³ · NYK Line</option>
+                      <option value="9834296">LNG Dubhe — 174,000 m³ · MOL, COSCO</option>
+                      <option value="9329291">LNG Ebisu — 147,500 m³ · MOL, KEPCO</option>
+                      <option value="9874492">LNG Endurance — 174,000 m³ · NYK Line</option>
+                      <option value="9874480">LNG Enterprise — 174,000 m³ · NYK Line</option>
+                      <option value="9266994">LNG Enugu — 145,000 m³ · BW</option>
+                      <option value="9690145">LNG Finima II — 175,000 m³ · BGT LTD</option>
+                      <option value="9666986">LNG Fukurokuju — 165,100 m³ · MOL, KEPCO</option>
+                      <option value="9892133">LNG Geneva — 174,000 m³ · CSSC Shpg Leasing</option>
+                      <option value="9917555">LNG Harmony — 174,000 m³ · JP Morgan</option>
+                      <option value="9311581">LNG Imo — 148,500 m³ · BW</option>
+                      <option value="9769855">LNG Jia Xing — 45,000 m³ · Landmark Capital</option>
+                      <option value="9774628">LNG Juno — 177,300 m³ · MOL</option>
+                      <option value="9341689">LNG Jupiter — 156,000 m³ · NYK Line, Osaka Gas</option>
+                      <option value="9666998">LNG Jurojin — 155,300 m³ · MOL, KEPCO</option>
+                      <option value="9311567">LNG Kano — 148,300 m³ · BW</option>
+                      <option value="9372963">LNG Kolt — 153,000 m³ · Pan Ocean</option>
+                      <option value="9692014">LNG Lagos II — 177,000 m³ · BGT LTD</option>
+                      <option value="9269960">LNG Lokoja — 148,300 m³ · BW</option>
+                      <option value="8701791">LNG Maleo — 127,700 m³ · MOL, NYK Line, K Line</option>
+                      <option value="9645748">LNG Mars — 155,000 m³ · MOL, Osaka Gas</option>
+                      <option value="9834325">LNG Megrez — 174,000 m³ · MOL, COSCO</option>
+                      <option value="9834301">LNG Merak — 174,000 m³ · MOL, COSCO</option>
+                      <option value="9322815">LNG Ogun — 149,600 m³ · NYK Line</option>
+                      <option value="9311579">LNG Ondo — 148,300 m³ · BW</option>
+                      <option value="9267003">LNG Oyo — 145,800 m³ · BW</option>
+                      <option value="9834313">LNG Phecda — 174,000 m³ · MOL, COSCO</option>
+                      <option value="9690157">LNG Port-Harcourt II — 175,000 m³ · BGT LTD</option>
+                      <option value="9902938">LNG Prosperity — 174,000 m³ · JP Morgan</option>
+                      <option value="9262235">LNG River Niger — 141,000 m³ · BGT LTD</option>
+                      <option value="9877133">LNG Rosenrot — 174,000 m³ · MOL</option>
+                      <option value="9774135">LNG Sakura — 177,000 m³ · NYK Line, KEPCO</option>
+                      <option value="9696149">LNG Saturn — 155,700 m³ · MOL</option>
+                      <option value="9771913">LNG Schneeweisschen — 180,000 m³ · MOL</option>
+                      <option value="9307205">LNG Soars (ex-Methane Lydon Volney) — 145,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9216303">LNG Sokoto — 137,000 m³ · BGT LTD</option>
+                      <option value="9645736">LNG Venus — 155,000 m³ · MOL, Osaka Gas</option>
+                      <option value="9872949">LNGships Athena — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9875800">LNGships Empress — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9872901">LNGships Manhattan — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9343106">LNGT Karadeniz — 147,798 m³ · Karadeniz</option>
+                      <option value="9490961">Lobito — 160,400 m³ · Mitsui, NYK Line, Seapeak</option>
+                      <option value="9285952">Lusail — 145,700 m³ · K Line, MOL, NYK Line, Nakilat</option>
+                      <option value="9705653">Macoma — 173,000 m³ · Seapeak</option>
+                      <option value="9770921">Magdala — 173,000 m³ · Seapeak</option>
+                      <option value="9904182">Malaga Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9490959">Malanje — 160,400 m³ · Mitsui, NYK Line, Seapeak</option>
+                      <option value="9682588">Maran Gas Achilles — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9682590">Maran Gas Agamemnon — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9650054">Maran Gas Alexandria — 161,900 m³ · Maran Gas Maritime</option>
+                      <option value="9887217">Maran Gas Amorgos — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9701217">Maran Gas Amphipolis — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9810379">Maran Gas Andros — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9941520">Maran Gas Antibes (2474) — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9633422">Maran Gas Apollonia — 161,900 m³ · Maran Gas Maritime</option>
+                      <option value="9302499">Maran Gas Asclepius — 145,800 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9753014">Maran Gas Chios — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9331048">Maran Gas Coronis — 145,700 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9633173">Maran Gas Delphi — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9627497">Maran Gas Efessos — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9682605">Maran Gas Hector — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9767962">Maran Gas Hydra — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9892717">Maran Gas Ithaca — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9883742">Maran Gas Kalymnos — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9956408">Maran Gas Kastelorizo — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9956393">Maran Gas Kimolos — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9682576">Maran Gas Leto — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9627502">Maran Gas Lindos — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9924869">Maran Gas Marseille — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9658238">Maran Gas Mystras — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9941518">Maran Gas Nice (2473) — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9732371">Maran Gas Olympias — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9709489">Maran Gas Pericles — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9633434">Maran Gas Posidonia — 161,900 m³ · Maran Gas Maritime</option>
+                      <option value="9844863">Maran Gas Psara — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9701229">Maran Gas Roxana — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9650042">Maran Gas Sparta — 161,900 m³ · Maran Gas Maritime</option>
+                      <option value="9767950">Maran Gas Spetses — 173,400 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9961398">Maran Gas Syros (ex-ABCDE (2537)) — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9658240">Maran Gas Troy — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9709491">Maran Gas Ulysses — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9732369">Maran Gas Vergina — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9659725">Maria Energy — 174,000 m³ · Tsakos</option>
+                      <option value="9778313">Marshal Vasilevskiy — 174,000 m³ · Gazprom</option>
+                      <option value="9770438">Marvel Crane — 177,000 m³ · NYK Line</option>
+                      <option value="9964182">Marvel Dove (Hull 8173) — 174,000 m³ · SK Shipping</option>
+                      <option value="9759240">Marvel Eagle — 155,000 m³ · MOL</option>
+                      <option value="9760768">Marvel Falcon — 174,000 m³ · MOL</option>
+                      <option value="9760770">Marvel Hawk — 174,000 m³ · MOL</option>
+                      <option value="9770440">Marvel Heron — 177,000 m³ · MOL</option>
+                      <option value="9760782">Marvel Kite — 174,000 m³ · Meiji Shipping</option>
+                      <option value="9759252">Marvel Pelican — 155,985 m³ · MOL</option>
+                      <option value="9962419">Marvel Phoenix — 174,000 m³ · Gaslog</option>
+                      <option value="9963449">Marvel Swallow (2536) — 174,000 m³ · MOL</option>
+                      <option value="9880192">Marvel Swan — 174,000 m³ · Navigare Capital Partners</option>
+                      <option value="9770945">Megara — 173,000 m³ · Seapeak</option>
+                      <option value="9397303">Mekaines — 266,500 m³ · Nakilat</option>
+                      <option value="9250191">Merchant — 138,200 m³ · Sinokor Merchant Marine</option>
+                      <option value="9975519">Mesaieed (3381) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9337729">Mesaimeer — 216,300 m³ · Nakilat</option>
+                      <option value="9321768">Methane Alison Victoria — 145,000 m³ · Gaslog</option>
+                      <option value="9516129">Methane Becki Anne — 170,000 m³ · GasLog</option>
+                      <option value="9307190">Methane Jane Elizabeth — 145,000 m³ · GasLog</option>
+                      <option value="9412880">Methane Julia Louise — 170,000 m³ · MOL</option>
+                      <option value="9520376">Methane Mickie Harper — 170,000 m³ · Meiji Shipping</option>
+                      <option value="9321770">Methane Nile Eagle — 145,000 m³ · Shell, Gaslog</option>
+                      <option value="9425277">Methane Patricia Camila — 170,000 m³ · Meiji Shipping</option>
+                      <option value="9307188">Methane Rita Andrea — 145,000 m³ · Shell, Gaslog</option>
+                      <option value="9321732">Milaha Qatar — 145,600 m³ · Nakilat, Qatar Shpg., SocGen</option>
+                      <option value="9255854">Milaha Ras Laffan — 138,300 m³ · Nakilat, Qatar Shpg., SocGen</option>
+                      <option value="9305128">Min Lu — 147,200 m³ · China LNG Ship Mgmt</option>
+                      <option value="9305116">Min Rong — 147,600 m³ · China LNG Ship Mgmt</option>
+                      <option value="9885855">Minerva Amorgos — 174,000 m³ · Minerva Marine</option>
+                      <option value="9877341">Minerva Chios — 174,000 m³ · Minerva Marine</option>
+                      <option value="9869942">Minerva Kalymnos — 174,000 m³ · Minerva Marine</option>
+                      <option value="9854375">Minerva Limnos — 173,400 m³ · Minerva Marine</option>
+                      <option value="9854363">Minerva Psara — 173,400 m³ · Minerva Marine</option>
+                      <option value="9986635">Mizhem (ex-QatarGas LNG 36 (2563)) — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9956953">MOL Azure (ex-Hull 2527) — 174,000 m³ · MOL</option>
+                      <option value="9885996">MOL Hestia — 173,400 m³ · MOL</option>
+                      <option value="9975507">Mraikh (3380) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9074638">Mraweh — 135,000 m³ · National Gas Shipping Co</option>
+                      <option value="9878876">Mu Lan — 178,000 m³ · CSSC Shpg Leasing</option>
+                      <option value="9074626">Mubaraz — 135,000 m³ · National Gas Shipping Co</option>
+                      <option value="9864837">Mulan Spirit — 79,800 m³ · Nur Global Shipping</option>
+                      <option value="9705641">Murex — 173,000 m³ · Seapeak</option>
+                      <option value="9360805">Murwab — 210,100 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9770933">Myrina — 173,000 m³ · Seapeak</option>
+                      <option value="9926714">Nantes Knutsen (Hull 8100) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9324277">Neo Energy — 150,000 m³ · Nur Global Shipping</option>
+                      <option value="9385673">Neptune — 145,000 m³ · Hoegh, MOL, TLTC</option>
+                      <option value="9929106">New Apex — 174,000 m³ · Pan Ocean</option>
+                      <option value="9926908">New Brave (ex-3221) — 174,000 m³ · Pan Ocean</option>
+                      <option value="9947500">New Green ST (ex-3224) — 174,000 m³ · Pan Ocean</option>
+                      <option value="9926910">New Nature (ex-3222) — 174,000 m³ · Pan Ocean</option>
+                      <option value="9947512">New Oasis (ex-Hyundai 3225) — 174,000 m³ · Pan Ocean</option>
+                      <option value="9750660">Nikolay Urvantsev — 172,000 m³ · MOL, COSCO</option>
+                      <option value="9750725">Nikolay Yevgenov — 172,000 m³ · Seapeak, China LNG Shipping</option>
+                      <option value="9768526">Nikolay Zubov — 172,000 m³ · Dynagas</option>
+                      <option value="9294264">Nizwa LNG — 147,700 m³ · Asyad Shipping, MOL</option>
+                      <option value="9796781">Nohshu Maru — 177,300 m³ · MOL, JERA</option>
+                      <option value="9953509">North Air — 174,000 m³ · White Fox Ship Management</option>
+                      <option value="9958298">North Light (Hull 2523) — 174,000 m³ · MOL</option>
+                      <option value="9958303">North Moon (Hull 2524) — 174,000 m³ · MOL</option>
+                      <option value="9958315">North Ocean — 174,000 m³ · MOL</option>
+                      <option value="9953523">North Star — 174,000 m³ · White Fox Ship Management</option>
+                      <option value="9958327">North Valley (Hull 2526) — 174,000 m³ · MOL</option>
+                      <option value="9953535">North Way (Hull 2583) — 174,000 m³ · White Fox Ship Management</option>
+                      <option value="9976903">Nuaijah (Hull 2546) — 174,000 m³ · K3 Consortium</option>
+                      <option value="7382744">Nusantara Regas Satu — 125,000 m³ · Energos</option>
+                      <option value="9315692">Ob River — 149,700 m³ · CDB Leasing</option>
+                      <option value="9979761">Ocean Inspiration (ex-Hudong-Zhonghua H1892A) — 174,000 m³ · United LNG Transportation</option>
+                      <option value="9979773">Ocean Oasis — 174,000 m³ · United LNG Transportation</option>
+                      <option value="9698111">Oceanic Breeze — 155,300 m³ · K Line, Inpex</option>
+                      <option value="9397353">Onaiza — 210,200 m³ · Nakilat</option>
+                      <option value="9902926">Orion Bohemia — 174,000 m³ · JP Morgan</option>
+                      <option value="9947639">Orion Gaugin — 174,000 m³ · JP Morgan</option>
+                      <option value="9947627">Orion Hugo — 174,000 m³ · JP Morgan</option>
+                      <option value="9956604">Orion Iris (2594) — 174,000 m³ · JP Morgan</option>
+                      <option value="9917543">Orion Jessica — 174,000 m³ · JP Morgan</option>
+                      <option value="9888766">Orion Monet — 174,000 m³ · JP Morgan</option>
+                      <option value="9958858">Orion Saint (2601) — 174,000 m³ · JP Morgan</option>
+                      <option value="9889904">Orion Sea — 174,000 m³ · JP Morgan</option>
+                      <option value="9926922">Orion Sinead — 174,000 m³ · JP Morgan</option>
+                      <option value="9956616">Orion Sirius (2595) — 174,000 m³ · JP Morgan</option>
+                      <option value="9956587">Orion Spirit (ex-2592) — 174,000 m³ · JP Morgan</option>
+                      <option value="9889916">Orion Sun — 174,000 m³ · JP Morgan</option>
+                      <option value="9761267">Ougarta — 171,800 m³ · HYPROC</option>
+                      <option value="9621077">Pacific Arcadia — 145,400 m³ · NYK Line</option>
+                      <option value="9698123">Pacific Breeze — 182,000 m³ · K Line</option>
+                      <option value="9351971">Pacific Enlighten — 145,000 m³ · Kyushu Electric, TEPCO, Mitsubishi, Mitsui, NYK Line, MOL</option>
+                      <option value="9743875">Pacific Mimosa — 155,300 m³ · NYK Line</option>
+                      <option value="9247962">Pacific Notus — 137,000 m³ · TEPCO, NYK Line, Mitsubishi</option>
+                      <option value="9903425">Pacific Success (ex-Samsung Heavy Industries 2315) — 174,000 m³ · Sinokor Maritime Co Ltd</option>
+                      <option value="9636735">Palu LNG — 160,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9750256">Pan Africa — 174,000 m³ · Seapeak, China LNG Shipping, CETS Investment Management, BW</option>
+                      <option value="9750232">Pan Americas — 174,000 m³ · Seapeak</option>
+                      <option value="9750220">Pan Asia — 174,000 m³ · Seapeak</option>
+                      <option value="9750244">Pan Europe — 174,000 m³ · Seapeak</option>
+                      <option value="9613135">Papua — 172,000 m³ · MOL, China LNG</option>
+                      <option value="9946350">Paris Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9766889">Patris — 173,400 m³ · Chandris Group</option>
+                      <option value="9862346">Pearl LNG — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9629524">PGN FSRU Lampung — 170,000 m³ · Hoegh</option>
+                      <option value="9375721">Point Fortin — 154,200 m³ · MOL, Sumitomo, LNG JAPAN</option>
+                      <option value="9246621">Portovyy — 138,100 m³ · Gazprom</option>
+                      <option value="9723801">Prachi — 173,000 m³ · MOL, NYK Line, K Line, SCI, Nakilat, Petronet</option>
+                      <option value="9264910">Prima Carrier (ex-Pacific Eurus) — 137,000 m³ · Soechi Lines</option>
+                      <option value="9256793">Prima Concord — 138,000 m³ · Soechi Lines</option>
+                      <option value="9810549">Prism Agility — 180,000 m³ · SK Shipping</option>
+                      <option value="9810551">Prism Brilliance — 180,000 m³ · SK Shipping</option>
+                      <option value="9888481">Prism Courage — 174,000 m³ · SK Shipping</option>
+                      <option value="9904651">Prism Diversity — 180,000 m³ · SK Shipping</option>
+                      <option value="9630028">Pskov — 170,200 m³ · Sovcomflot</option>
+                      <option value="9947598">Puteri Ledang (ex-Hull 3297) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9947603">Puteri Mahsuri (ex-Hull 3298) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9947615">Puteri Mayang (ex-Hull 3299) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9229647">Puteri Nilam Satu — 134,833 m³ · MISC</option>
+                      <option value="9974149">Puteri Pahang — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9974151">Puteri Perak (2632) — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9937945">Puteri Saadong — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9975521">Puteri Sabah (3370) — 175,000 m³ · SK Shipping</option>
+                      <option value="9937957">Puteri Santubong (ex-Hull 3295) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9975533">Puteri Sarawak — 174,000 m³ · SK Shipping</option>
+                      <option value="9937969">Puteri Sejinjang - 3 (Hull 3296) — 174,000 m³ · Hyundai LNG Shipping</option>
+                      <option value="9976109">Puteri Selangor (8188) — 174,000 m³ · SK Shipping</option>
+                      <option value="9976111">Puteri Terengganu (8189) — 174,000 m³ · SK Shipping</option>
+                      <option value="9030838">Puteri Zamrud — 130,000 m³ · MISC</option>
+                      <option value="1023865">Qingcheng — 174,000 m³ · United Liquefied Gas</option>
+                      <option value="9851787">Qogir — 174,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9981049">Qtaifan (Hull 2640) — 174,000 m³ · JP Morgan</option>
+                      <option value="9963853">Quest Kirishima (2604) — 174,000 m³ · NYK Line</option>
+                      <option value="9253703">Raahi — 138,100 m³ · MOL, NYK Line, K Line, SCI, Nakilat, Petronet</option>
+                      <option value="9874040">Ravenna Knutsen — 30,000 m³ · Knutsen OAS</option>
+                      <option value="9953248">Rex Tillerson (1790A) — 174,000 m³ · MOL</option>
+                      <option value="9825568">Rias Baixas Knutsen — 180,000 m³ · Knutsen OAS</option>
+                      <option value="9477593">Ribera Duero Knutsen — 173,400 m³ · Knutsen OAS</option>
+                      <option value="9721736">Rioja Knutsen — 176,000 m³ · Knutsen OAS</option>
+                      <option value="9750713">Rudolf Samoylovich — 172,000 m³ · Seapeak</option>
+                      <option value="9946386">Saint Barbara — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9300817">Salalah LNG — 147,000 m³ · Asyad Shipping, MOL</option>
+                      <option value="9904170">Santander Knutsen — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9253105">SC SERENITY — 140,000 m³ · Soechi Lines</option>
+                      <option value="9970650">Sea Spirit (Dalian No 1 G175K-1) — 175,000 m³ · China Merchants Energy Shipping</option>
+                      <option value="9339260">Seapeak Arwa — 168,900 m³ · Seapeak, Marubeni</option>
+                      <option value="9771080">Seapeak Bahrain — 173,400 m³ · Seapeak</option>
+                      <option value="9681687">Seapeak Creole — 173,400 m³ · Seapeak</option>
+                      <option value="9247364">Seapeak Galicia — 140,500 m³ · Seapeak</option>
+                      <option value="9781918">Seapeak Glasgow — 174,000 m³ · Seapeak</option>
+                      <option value="9230048">Seapeak Jupiter — 140,500 m³ · Seapeak</option>
+                      <option value="9342487">Seapeak Magellan — 165,500 m³ · Seapeak, Marubeni</option>
+                      <option value="9336749">Seapeak Marib — 165,500 m³ · Seapeak</option>
+                      <option value="9369904">Seapeak Meridian — 165,500 m³ · Seapeak, Marubeni</option>
+                      <option value="9336737">Seapeak Methane — 165,500 m³ · Seapeak, Marubeni</option>
+                      <option value="9681699">Seapeak Oak — 173,400 m³ · Seapeak</option>
+                      <option value="9721401">Seapeak Vancouver — 173,000 m³ · Seapeak</option>
+                      <option value="9781920">Seapeak Yamal — 174,000 m³ · Seapeak</option>
+                      <option value="9666558">Seishu Maru — 153,000 m³ · Mitsubishi, NYK Line, Chubu Electric</option>
+                      <option value="9293832">Seri Alam — 145,700 m³ · MISC</option>
+                      <option value="9293844">Seri Amanah — 145,700 m³ · MISC</option>
+                      <option value="9321653">Seri Anggun — 145,700 m³ · MISC</option>
+                      <option value="9321665">Seri Angkasa — 145,700 m³ · MISC</option>
+                      <option value="9329679">Seri Ayu — 145,700 m³ · MISC</option>
+                      <option value="9331634">Seri Bakti — 152,300 m³ · MISC</option>
+                      <option value="9331660">Seri Balhaf — 157,000 m³ · MISC</option>
+                      <option value="9331672">Seri Balqis — 152,000 m³ · MISC</option>
+                      <option value="9331646">Seri Begawan — 152,300 m³ · MISC</option>
+                      <option value="9331658">Seri Bijaksana — 152,300 m³ · MISC</option>
+                      <option value="9714305">Seri Camar — 150,200 m³ · PETRONAS</option>
+                      <option value="9714276">Seri Camellia — 150,200 m³ · PETRONAS</option>
+                      <option value="9756389">Seri Cemara — 150,200 m³ · PETRONAS</option>
+                      <option value="9714290">Seri Cempaka — 150,200 m³ · PETRONAS</option>
+                      <option value="9714288">Seri Cenderawasih — 150,200 m³ · PETRONAS</option>
+                      <option value="9896440">Seri Damai — 174,000 m³ · MISC</option>
+                      <option value="9896452">Seri Daya — 174,000 m³ · MISC</option>
+                      <option value="9338797">Sestao Knutsen — 138,000 m³ · Knutsen OAS</option>
+                      <option value="9414632">Sevilla Knutsen — 173,400 m³ · Knutsen OAS</option>
+                      <option value="9986116">Shafallah (ex-QatarGas LNG 37 (2564)) — 174,000 m³ · K3 Consortium</option>
+                      <option value="9418365">Shagra — 266,300 m³ · Nakilat</option>
+                      <option value="9035852">Shahamah — 135,000 m³ · National Gas Shipping Co</option>
+                      <option value="9253222">Shandong Juniper — 135,000 m³ · Shell</option>
+                      <option value="9321744">Shandong Redwood (ex-Methane Heather Sally) — 145,000 m³ · Huaxia Financial Leasing</option>
+                      <option value="9915894">Shaolin — 174,000 m³ · COSCO</option>
+                      <option value="9981506">Sharq (ex-Hyundai Ulsan 3396) — 174,000 m³ · MISC, NYK Line, K Line, China LNG</option>
+                      <option value="9583677">Shen Hai — 147,600 m³ · China LNG, CNOOC, Shanghai LNG</option>
+                      <option value="9791200">Shinshu Maru — 177,000 m³ · MOL</option>
+                      <option value="9320386">Simaisma — 145,700 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9977282">Simsimah — 174,000 m³ · JP Morgan</option>
+                      <option value="9238040">Singapore Energy — 138,000 m³ · Sinokor Merchant Marine</option>
+                      <option value="9693161">SK Audace — 180,000 m³ · SK Shipping, Marubeni</option>
+                      <option value="9693173">SK Resolute — 180,000 m³ · SK Shipping, Marubeni</option>
+                      <option value="9247194">SK Sunrise — 138,200 m³ · SK Shipping</option>
+                      <option value="9902902">SM Albatross — 174,000 m³ · Korea Line</option>
+                      <option value="9902914">SM Bluebird — 174,000 m³ · Korea Line</option>
+                      <option value="9761827">SM Eagle — 174,000 m³ · Korea Line</option>
+                      <option value="9917567">SM Golden Eagle — 174,000 m³ · Korea Line</option>
+                      <option value="9917579">SM Kestrel — 174,000 m³ · Korea Line</option>
+                      <option value="9761839">SM Seahawk — 174,000 m³ · Korea Line</option>
+                      <option value="9210816">Sohar LNG — 137,200 m³ · Asyad Shipping, MOL</option>
+                      <option value="9791212">Sohshu Maru — 177,300 m³ · MOL, JERA</option>
+                      <option value="9634098">Solaris — 155,000 m³ · GasLog</option>
+                      <option value="9482304">Sonangol Benguela — 160,000 m³ · Mitsui, Sonangol, Sojlitz</option>
+                      <option value="9482299">Sonangol Etosha — 160,000 m³ · Mitsui, Sonangol, Sojlitz</option>
+                      <option value="9475600">Sonangol Sambizanga — 160,000 m³ · Mitsui, Sonangol, Sojlitz</option>
+                      <option value="9613147">Southern Cross — 168,400 m³ · MOL, China LNG</option>
+                      <option value="9475208">Soyo — 160,400 m³ · Mitsui, NYK Line, Seapeak</option>
+                      <option value="9361639">Spirit Of Hela — 177,000 m³ · MOL, Itochu</option>
+                      <option value="9322255">Summit LNG — 138,000 m³ · Excelerate Energy</option>
+                      <option value="9330745">Symphonic Breeze — 147,600 m³ · K Line</option>
+                      <option value="9403669">Taitar No.1 — 145,300 m³ · CPC, Mitsui, NYK Line</option>
+                      <option value="9403645">Taitar No.2 — 145,300 m³ · MOL, NYK Line</option>
+                      <option value="9403671">Taitar No.3 — 145,300 m³ · MOL, NYK Line</option>
+                      <option value="9403657">Taitar No.4 — 145,300 m³ · CPC, Mitsui, NYK Line</option>
+                      <option value="9334284">Tangguh Batur — 145,700 m³ · NYK Line, Sovcomflot</option>
+                      <option value="9349007">Tangguh Foja — 154,800 m³ · K Line, PT Meratus</option>
+                      <option value="9333632">Tangguh Hiri — 155,000 m³ · Seapeak</option>
+                      <option value="9349019">Tangguh Jaya — 155,000 m³ · K Line, PT Meratus</option>
+                      <option value="9355379">Tangguh Palung — 155,000 m³ · K Line, PT Meratus</option>
+                      <option value="9361990">Tangguh Sago — 155,000 m³ · Seapeak</option>
+                      <option value="9325893">Tangguh Towuti — 145,700 m³ · NYK Line, PT Samudera, Sovcomflot</option>
+                      <option value="9337731">Tembek — 216,200 m³ · Nakilat, Asyad Shipping</option>
+                      <option value="7428433">Tenaga Empat — 130,000 m³ · MISC</option>
+                      <option value="7428457">Tenaga Satu — 130,000 m³ · MISC</option>
+                      <option value="9892456">Tenergy — 174,000 m³ · Tsakos</option>
+                      <option value="9761243">Tessala — 171,800 m³ · HYPROC</option>
+                      <option value="9006681">Torman II (ex-LNG Flora) — 127,700 m³ · NYK Line</option>
+                      <option value="9854765">Traiano Knutsen — 180,000 m³ · Knutsen OAS</option>
+                      <option value="9350927">Trinity Glory — 155,000 m³ · K Line</option>
+                      <option value="9823883">Turquoise P — 170,000 m³ · Pardus Energy</option>
+                      <option value="9360829">Umm Al Amad — 210,200 m³ · NYK Line, K Line, MOL, lino, Mitsui, Nakilat</option>
+                      <option value="9074652">Umm Al Ashtan — 135,000 m³ · National Gas Shipping Co</option>
+                      <option value="9980851">Umm Al Hanaya — 174,000 m³ · JP Morgan</option>
+                      <option value="9977244">Umm Al Houl (2634) — 174,000 m³ · JP Morgan</option>
+                      <option value="9308431">Umm Bab — 145,700 m³ · Maran Gas Maritime, Nakilat</option>
+                      <option value="9953250">Umm Ghuwailina (1791A) — 174,000 m³ · MOL</option>
+                      <option value="9977232">Umm Graybah (2597) — 174,000 m³ · JP Morgan</option>
+                      <option value="9372731">Umm Slal — 266,000 m³ · Nakilat</option>
+                      <option value="9976915">Umm Swayyah (Hull 2547) — 174,000 m³ · K3 Consortium</option>
+                      <option value="9434266">Valencia Knutsen — 173,400 m³ · Knutsen OAS</option>
+                      <option value="9837066">Vasant 1 — 180,000 m³ · Botas</option>
+                      <option value="9630004">Velikiy Novgorod — 170,200 m³ · Sovcomflot</option>
+                      <option value="9960588">Venture Acadia — 174,000 m³ · Venture Global</option>
+                      <option value="9958846">Venture Bayou — 174,000 m³ · Venture Global</option>
+                      <option value="9960590">Venture Creole (2531) — 174,000 m³ · Venture Global</option>
+                      <option value="9956599">Venture Gator — 174,000 m³ · Venture Global</option>
+                      <option value="9970571">Venture Iberia — 174,000 m³ · Venture Global</option>
+                      <option value="9970569">Venture Pelican (2541) — 200,000 m³ · Venture Global</option>
+                      <option value="9950105">Vivit Africa LNG — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9864667">Vivit Americas LNG — 170,520 m³ · TMS Cardiff Gas</option>
+                      <option value="9902756">Vivit Arabia LNG — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9895238">Vivit City LNG — 174,000 m³ · H-Line Shipping</option>
+                      <option value="9750701">Vladimir Rusanov — 172,000 m³ · MOL</option>
+                      <option value="9750658">Vladimir Vize — 172,000 m³ · MOL</option>
+                      <option value="9750737">Vladimir Voronin — 172,000 m³ · Seapeak, China LNG Shipping</option>
+                      <option value="9953511">Voskhod — 174,000 m³ · White Fox Ship Management</option>
+                      <option value="9981374">Wadi Al Syl (3382) — 174,000 m³ · Knutsen OAS</option>
+                      <option value="9892121">Wen Cheng — 174,000 m³ · CSSC Shpg Leasing</option>
+                      <option value="9627954">Wilforce — 160,000 m³ · CDB Leasing</option>
+                      <option value="9627966">Wilpride — 160,000 m³ · CDB Leasing</option>
+                      <option value="9962433">Woodside Barrumbara (ex-2535) — 174,000 m³ · Gaslog</option>
+                      <option value="9753026">Woodside Chaney — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9859753">Woodside Charles Allen — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9369899">Woodside Donaldson — 165,500 m³ · Seapeak, Marubeni</option>
+                      <option value="9633161">Woodside Goode — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9962421">Woodside Jirrubakura (2534) — 174,000 m³ · Gaslog</option>
+                      <option value="9810367">Woodside Rees Wither — 173,400 m³ · Maran Gas Maritime</option>
+                      <option value="9627485">Woodside Rogers — 159,800 m³ · Maran Gas Maritime</option>
+                      <option value="9975040">Woodside Scarlet Ibis (8170) — 174,000 m³ · Hyundai Glovis</option>
+                      <option value="9915909">Wudang — 174,000 m³ · COSCO</option>
+                      <option value="9210828">Xinhang Energy — 137,000 m³ · Xinhang Shipping Co. Ltd.</option>
+                      <option value="9750672">Yakov Gakkel — 172,000 m³ · Seapeak, China LNG Shipping</option>
+                      <option value="9636747">Yari LNG — 160,000 m³ · TMS Cardiff Gas</option>
+                      <option value="9629586">Yenisei River — 155,000 m³ · Dynagas</option>
+                      <option value="9879674">Yiannis — 174,000 m³ · Maran Gas Maritime</option>
+                      <option value="9431214">Zarga — 266,000 m³ · Nakilat</option>
+                      <option value="9132818">Zekreet — 137,500 m³ · J4 Consortium</option>
+                      <option value="9946362">Zoe Knutsen (8102) — 174,000 m³ · Knutsen OAS</option>
+                    </optgroup>
                 </select>
                 <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-950/70" style="aspect-ratio: 320 / 120;">
                   <img id="lc-thumb-img" src="" alt="" class="hidden w-full h-full object-cover" loading="lazy" />
@@ -1214,7 +1985,7 @@
                 </div>
                 <p class="text-[10px] text-slate-500 leading-snug"><span data-i18n="advanced.lngCargo.srcPrefix">Source:</span> <a id="lc-src" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-sky-400 underline decoration-slate-700">—</a><br>
                   <a id="lc-link-mt" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-sky-400 hover:underline" data-i18n="advanced.lngCargo.linkMt">View on MarineTraffic ↗</a> · <a id="lc-link-vf" href="#" target="_blank" rel="noopener noreferrer nofollow" class="text-sky-400 hover:underline" data-i18n="advanced.lngCargo.linkVf">VesselFinder ↗</a> <span class="text-slate-600" data-i18n="advanced.lngCargo.linkNote">(links by IMO, new tab — nothing fetched or embedded)</span></p>
-                <p class="text-[10px] text-slate-600 leading-snug" data-i18n="advanced.lngCargo.fleetContext">Fleet context: IGU World LNG Report 2026, Appendix 3 (Rystad Energy data) — 804 active LNG carriers at end-2025. The vessels here are representative examples, not the fleet register.</p>
+                <p class="text-[10px] text-slate-600 leading-snug" data-i18n="advanced.lngCargo.fleetContext">Fleet data: IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — the full table of all 804 LNG carriers active at end-2025, reproduced with the International Gas Union’s written permission. The 36 featured vessels additionally cite their own primary sources. Please do not re-extract the data from this tool.</p>
               </div>
 
               <!-- 2. CARGO -->
@@ -2125,7 +2896,7 @@
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.howto.b001">
-          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.8</h2>
+          <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.9</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
           <nav aria-label="How To Use contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#howto-1" class="px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-500/50 transition-colors">1 Header</a>
@@ -2665,13 +3436,13 @@
                 <div class="flex flex-wrap gap-1 pt-1 text-[9px]"><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Energy density <span class="text-amber-500">51.69</span> MMBtu/t</span><span class="bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300">Expansion <span class="text-amber-500">562</span> Nm³/m³</span></div>
               </div>
             </div>
-            <div class="border-t border-slate-800 pt-2 text-[9px] text-slate-500 flex justify-between"><span>▸ Fleet catalogue — representative vessels, one or more per class</span><span>36 vessels</span></div>
+            <div class="border-t border-slate-800 pt-2 text-[9px] text-slate-500 flex justify-between"><span>▸ Fleet catalogue — full active fleet (IGU World LNG Report 2026, Appendix 3, with permission)</span><span>804 vessels</span></div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs" data-i18n-html="docs.howto.b105">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
-              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">① THE VESSEL CATALOGUE — REPRESENTATIVE, NOT THE REGISTER</div>
-              <p class="text-slate-400 leading-relaxed">36 ships chosen for coverage: every class (Q-Max, Q-Flex, conventional, Arc7 icebreaker, FSRU, FSU, mid- and small-scale), all four containment systems (membrane, Moss spherical, SPB prismatic, Type C) and all nine propulsion families, from the oldest ship in the active fleet (LNG Aquarius, 1977) to 2025 deliveries. <strong class="text-slate-200">Every row carries its own public source</strong> — an owner's fleet page, a shipbuilder release, a class-society register or Wikipedia — and links out to MarineTraffic and VesselFinder by IMO. The IGU World LNG Report 2026 is cited for fleet-level context only (804 active carriers at end-2025); its Appendix 3 is deliberately <em>not</em> reproduced. Filter with the pills, or expand the catalogue for the card grid.</p>
+              <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">① THE VESSEL CATALOGUE — THE FULL ACTIVE FLEET, WITH PERMISSION</div>
+              <p class="text-slate-400 leading-relaxed">The list now holds the <strong class="text-slate-200">full active fleet — all 804 LNG carriers at end-2025</strong> — reproduced from Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy) with the International Gas Union’s written permission, with attribution and a link to the report on every fleet entry. 36 featured vessels — every class, all four containment systems, all nine propulsion families, from LNG Aquarius (1977) to 2025 deliveries — additionally carry their own public primary source (an owner’s fleet page, a shipbuilder release, a class-society register or Wikipedia) and a photograph or schematic; where a featured row’s primary source and the report disagree on capacity, the primary source’s figure is shown. Every vessel links out to MarineTraffic and VesselFinder by IMO. Filter with the pills, or expand the catalogue for the grid.</p>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">② LOADING LIMIT, HEEL AND BOIL-OFF</div>
@@ -2893,7 +3664,12 @@
           <p class="text-sm text-slate-400 mb-4" data-i18n-html="docs.howto.b095">What changed in each release, newest first. Everything listed here is documented properly in the numbered sections above — this appendix is the history, not the manual. Click a release to expand it.</p>
           <div class="space-y-2">
 
-            <details id="howto-new38" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+            <details id="howto-new39" open class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
+              <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b117">★ New in Version 3.9</span></summary>
+              <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b118"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">The full active LNG fleet</strong> — the vessel list grows from 36 to <strong>all 804 carriers active at end-2025</strong>, reproduced from Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy) with the International Gas Union’s written permission — attribution and a link to the report on every entry. Filters, share links and the catalogue work across the whole fleet; the 36 featured vessels keep their photographs and their own primary-source citations. Section 16, Theory §9.4.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Permission, honoured</strong> — the IGU’s grant asks full attribution and a link to the original source; the app adds its own undertaking that the data is not to be re-extracted from the tool. All three are stated on the card and in the Terms of Use. Thank you to the International Gas Union for supporting a free, open-source engineering tool.</div></div>
+            </details>
+
+            <details id="howto-new38" class="bg-slate-950/60 rounded-lg border border-slate-700 overflow-hidden">
               <summary class="cursor-pointer select-none px-3 py-2 text-[11px] font-bold text-amber-500 uppercase tracking-widest hover:bg-slate-900/60 transition-colors"><span data-i18n-html="docs.howto.b115">★ New in Version 3.8</span></summary>
               <div class="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300" data-i18n-html="docs.howto.b116"><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">Pressure inputs with units and Abs/Gauge (Safety tab)</strong> — every pressure field on the PRV card — P1, P2, Ps, Po, Pa in all five modes — now has its own unit drop-down (psi · kPa · bar · MPa · Pa · atm · kg/cm²), an Abs/Gauge toggle and a ⇩ button that imports the value entered in the General tab's Pressure card. The card converts to the absolute (or, for the liquid modes, gauge) basis API 520 expects before sizing; the API and the reference vectors are unchanged. v3.8.1 adds the same unit drop-downs to W, T, Q, µ, vo/v9 and the advisory steam T, and lets an incomplete saved panel fall back to the default case on reload. v3.8.2 makes the USC/SI switch convert the figures it re-labels (the default case now stays on H in SI), and a ↺ Load example button restores the shipped case in one click. Section 21, Theory §12.8.</div><div class="bg-slate-950 rounded-lg border border-slate-700 p-3"><strong class="text-amber-400">One-click defaults</strong> — the PRV card opens pre-filled — gas/vapor with an 8,000 lb/h natural-gas case that sizes to orifice H, the other modes with their reference cases — so CALCULATE ORIFICE SIZE returns a result immediately; replace the figures with your own afterwards.</div></div>
             </details>
@@ -3006,7 +3782,7 @@
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
         <div data-i18n-html="docs.theory.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">Theory &amp; Specifications Manual</h2>
-          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.8. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Complete technical reference for all formulas, standards, coefficients and algorithmic logic implemented in v3.9. Primary reference: <strong class="text-amber-400">JIS K 2301:2011</strong> and <strong class="text-amber-400">ISO 6578:1991</strong>.</p>
           <nav aria-label="Theory contents" class="flex flex-wrap gap-2 mt-4 text-[10px] font-mono">
             <a href="#theory-p1" class="px-2 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700 hover:border-amber-500/50 transition-colors">I Real Gas</a>
             <a href="#theory-p2" class="px-2 py-1 rounded bg-slate-800 text-sky-400 border border-slate-700 hover:border-amber-500/50 transition-colors">II Steam</a>
@@ -3457,7 +4233,7 @@
           <p class="text-sm leading-relaxed">The IGC Code (Ch. 15) sets the tank filling limit at 98 % at the reference temperature unless the Administration approves a higher limit for the specific ship and tank; many modern carriers are approved to 98.5 %, so the card defaults to 98.5 % and warns above it — the vessel's certificate governs. <em>Heel</em> is the liquid deliberately left on board so the tanks stay cold for the ballast voyage (typically a few thousand m³ on a large carrier). <em>Boil-off</em> is modelled as a constant fraction of the loaded volume per day (0.10 %/day is representative of a modern membrane ship; steam-era Moss carriers were nearer 0.15 %) multiplied by the voyage days — a linear screening approximation. Real boil-off varies with tank pressure, ambient conditions and cargo composition, and on most ships it is burnt as fuel or reliquefied rather than lost; treat "delivered" as an order-of-magnitude view, and use the discharge port's custody-transfer figures for anything commercial.</p></div>
 
             <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.4 The vessel dataset — provenance by design</h4>
-          <p class="text-sm leading-relaxed">The catalogue holds <strong class="text-slate-200">36 representative vessels</strong>, chosen for coverage rather than completeness: every vessel type in the active fleet (Q-Max, Q-Flex, conventional, Arc7 icebreaker, FSRU, FSU, mid-scale, small-scale), all four containment systems (membrane, Moss spherical, SPB self-supporting prismatic, Type C), all nine propulsion families (steam, steam reheat, STaGE, DFDE, TFDE, SSD, X-DF, ME-GI, ME-GA) and a dozen shipyards. Each entry's particulars are confirmed against a public primary page — the owner's or operator's fleet list, a shipbuilder delivery release, a classification-society register or, as a last resort, an English Wikipedia article — and that page is the row's cited source in the app. The IGU World LNG Report 2026 (Rystad Energy data) is cited only for fleet-level context — 804 active carriers at end-2025 — and its Appendix 3 table is deliberately not reproduced: the report is all-rights-reserved and, as a compiled database, protected in the UK and EU independently of copyright. Nothing is scraped from AIS platforms; the "View on MarineTraffic / VesselFinder" links are ordinary hyperlinks by IMO number, opened in a new tab.</p>
+          <p class="text-sm leading-relaxed">The catalogue holds the <strong class="text-slate-200">full active fleet — 804 vessels at end-2025</strong> — of which 36 are featured entries chosen for coverage: every vessel type in the active fleet (Q-Max, Q-Flex, conventional, Arc7 icebreaker, FSRU, FSU, mid-scale, small-scale), all four containment systems (membrane, Moss spherical, SPB self-supporting prismatic, Type C), all nine propulsion families (steam, steam reheat, STaGE, DFDE, TFDE, SSD, X-DF, ME-GI, ME-GA) and a dozen shipyards. Each entry's particulars are confirmed against a public primary page — the owner's or operator's fleet list, a shipbuilder delivery release, a classification-society register or, as a last resort, an English Wikipedia article — and that page is the row's cited source in the app. The remaining 768 entries are reproduced from the report’s Appendix 3 table with the International Gas Union’s written permission (granted 24 August 2026), each carrying the attribution and a link to the report; where a featured vessel’s primary source and the report disagree on capacity, the featured row keeps its primary source’s figure. Nothing is scraped from AIS platforms; the "View on MarineTraffic / VesselFinder" links are ordinary hyperlinks by IMO number, opened in a new tab.</p>
           <p class="text-sm leading-relaxed mt-3">Photographs come from Wikimedia Commons only, each under CC BY-SA or public domain, downloaded once as Commons-rendered thumbnails and committed with a credits file that the card renders under every image; ShareAlike attaches to the photograph, not to the surrounding MIT-licensed application (Creative Commons' own "collection" interpretation). Where no free-licensed photograph of a ship exists, an original schematic silhouette by containment type stands in. Spotter-site photographs (MarineTraffic, VesselFinder, ShipSpotting) are photographer-owned with no licence to third parties and are not used or hot-linked.</p></div>
 
             <div><h4 class="text-base font-semibold text-orange-400 mb-2">9.5 Worked example (Vector 13)</h4>
@@ -3823,7 +4599,7 @@
             <p><strong class="text-amber-400">The Application is open source, released under the MIT Licence.</strong> You are free to use, copy, modify and redistribute it, including commercially, provided the copyright notice and the licence text are retained. The full text is in the <span class="font-mono text-slate-300">LICENSE</span> file of the public repository. Copyright © 2026 Naoto Yamabe. <span class="text-slate-400">(Changed in v3.3 — earlier versions of these Terms prohibited redistribution and commercial use without written permission. That restriction no longer applies.)</span></p>
             <p class="mt-2">The licence covers the Application’s own code, design and documentation. It grants <strong>no rights in third-party material</strong> the Application cites or transcribes. The underlying calculation methods and physical constants are derived from publicly available engineering standards (JIS K 2301, ISO 6578, API 520 / API 526, API RP 14E, NORSOK P-001, IAPWS-IF97, Crane TP-410 and others), which remain the property of their respective issuing bodies; their texts, tables and figures are not reproduced here. Anyone redistributing or building on the Application remains responsible for their own compliance with the terms attached to that material.</p>
             <p class="mt-2"><strong>Third-party names and data.</strong> The GT Fuel catalogue refers to gas-turbine manufacturers and model designations (including MHI / Mitsubishi Power, GE Vernova and Siemens Energy) solely to identify the equipment; those names and marks are the property of their respective owners, and the performance figures shown are transcribed, with source citations, from the manufacturers' publicly available brochures, fact sheets and product pages. The Application is an independent tool that is <strong>not affiliated with, sponsored by, or endorsed by</strong> any of these manufacturers. The catalogue thumbnails are original schematic illustrations created for this Application and are not manufacturer imagery. The LNG reference compositions (v3.3) badged <span class="font-mono text-slate-300">PUBLISHED</span> are transcribed, with citation, from GIIGNL Information Paper No. 1, “Basic Properties of LNG”, Table 1 (data credited to the 2018 GIIGNL Annual Report), and remain the property of GIIGNL; those badged <span class="font-mono text-slate-300">ASSUMED</span> are the developer’s own engineering assumptions and are labelled as such in the Application.</p>
-            <p class="mt-2"><strong>LNG vessel data and photographs (v3.5).</strong> The LNG Cargo Estimator lists representative LNG carriers by name, IMO number, owner, builder, capacity and type solely to identify the vessels; each entry cites the public page it was taken from, and vessel names and owners’ marks remain the property of their respective owners. The IGU World LNG Report 2026 is cited for fleet-level context only; its Appendix 3 is not reproduced. Vessel photographs are Wikimedia Commons works reproduced under their stated Creative Commons or public-domain terms with the author credited on screen (see <span class="font-mono text-slate-300">assets/vessels/CREDITS.json</span>); the remaining thumbnails are original schematics created for this Application. The Application is <strong>not affiliated with, sponsored by, or endorsed by</strong> any shipowner, shipbuilder, classification society, MarineTraffic, VesselFinder or the IGU.</p>
+            <p class="mt-2"><strong>LNG vessel data and photographs (v3.5).</strong> The LNG Cargo Estimator lists representative LNG carriers by name, IMO number, owner, builder, capacity and type solely to identify the vessels; each entry cites the public page it was taken from, and vessel names and owners’ marks remain the property of their respective owners. Appendix 3 of the IGU World LNG Report 2026 — the table of the global active LNG fleet (data: Rystad Energy) — is reproduced in the vessel list with the International Gas Union’s written permission of 24 August 2026, with full attribution and a link to the original source; the data is not to be re-extracted from the Application. Vessel photographs are Wikimedia Commons works reproduced under their stated Creative Commons or public-domain terms with the author credited on screen (see <span class="font-mono text-slate-300">assets/vessels/CREDITS.json</span>); the remaining thumbnails are original schematics created for this Application. The Application is <strong>not affiliated with, sponsored by, or endorsed by</strong> any shipowner, shipbuilder, classification society, MarineTraffic, VesselFinder or the IGU.</p>
           </div>
 
           <div data-i18n-html="docs.terms.b009">
@@ -5537,8 +6313,12 @@
     // Cargo quantities from vessel capacity and the composition card above. The card never
     // recomputes any JIS/ISO 6578 quantity itself: rho_liq, rho_std, HHV and LHV arrive through
     // lastLNGProps, assigned inside calcGHV() (kept separate from lastGHV, whose exact shape is
-    // test-pinned). Every LNG_VESSELS entry carries its own public source; the IGU World LNG
-    // Report 2026 is cited for fleet-level context only and its Appendix 3 is NOT reproduced.
+    // test-pinned). Every LNG_VESSELS entry carries its own public source. v3.9: the LNG_FLEET
+    // rows below reproduce Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy)
+    // under the IGU's WRITTEN PERMISSION of 2026-08-24 (E. Minty, Director Communication):
+    // conditions are full attribution and a link to the original source — both rendered on
+    // every fleet entry (advanced.lngCargo.iguSrc + LNG_FLEET_SRC_URL). Do not add rows from
+    // any other rights-reserved compilation without an equivalent grant.
     const LNG_VESSELS = JSON.parse(`[
       {"id": "9796793", "name": "Bushu Maru", "owner": "Trans Pacific Shipping 6 Ltd (JERA / NYK JV)", "builder": "Mitsubishi Shipbuilding", "cap": 180000, "cont": "moss", "type": "conv", "prop": "STaGE", "year": 2019, "src": "MHI press release (christening, 2019)", "srcUrl": "https://www.mhi.com/news/190515.html", "photo": 0, "credit": "", "creditUrl": ""},
       {"id": "9893606", "name": "LNG Endeavour", "owner": "France LNG Shipping (NYK / Geogas LNG JV)", "builder": "Samsung Heavy Industries", "cap": 174000, "cont": "membrane", "type": "conv", "prop": "X-DF", "year": 2021, "src": "NYK Line press release (delivery, 2021)", "srcUrl": "https://www.nyk.com/english/news/2021/20211021_01.html", "photo": 1, "credit": "kees torn, CC BY-SA 2.0, via Wikimedia Commons", "creditUrl": "https://commons.wikimedia.org/wiki/File:LNG_ENDEAVOUR_(52169430001).jpg"},
@@ -5581,11 +6361,790 @@
     let lastLNGProps = null, lastLNGCargoResult = null;
     let lcFilt = { t: 'all', c: 'all' };
 
-    function lcVesselById(id) { return LNG_VESSELS.find(v => v.id === id) || null; }
+
+    // v3.9 — the remaining active fleet: Appendix 3 of the IGU World LNG Report 2026, pp. 129–153
+    // (data: Rystad Energy), reproduced with the IGU's written permission (2026-08-24) less the 36
+    // curated vessels above, which keep their own primary-source capacities and citations.
+    // Compact rows: [imo, name, owner, builder, cap_m3, cont, type, prop, year]. ONE JSON.parse
+    // literal — tests/test_lng_cargo.py extracts it verbatim; never convert to a plain literal.
+    const LNG_FLEET_SRC_URL = 'https://www.igu.org/igu-reports/2026-world-lng-report/';
+    const LNG_FLEET = JSON.parse(`[
+      ["9501186", "Adam LNG", "Asyad Shipping", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2014],
+      ["9879698", "Adamastos", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9325697", "Al Areesh", "Seapeak", "Hanwha Ocean", 151700, "membrane", "conv", "Steam", 2007],
+      ["9431147", "Al Bahiya", "Nakilat", "Hanwha Ocean", 210100, "membrane", "qflex", "SSD", 2010],
+      ["9132741", "Al Bidda", "J4 Consortium", "Kawasaki", 137300, "moss", "conv", "Steam", 1999],
+      ["9325702", "Al Daayen", "Seapeak", "Hanwha Ocean", 151700, "membrane", "conv", "Steam", 2007],
+      ["9443683", "Al Dafna", "Nakilat", "Samsung", 266400, "membrane", "qmax", "SSD", 2009],
+      ["9307176", "Al Deebel", "MOL, NYK Line, K Line", "Samsung", 145700, "membrane", "conv", "Steam", 2005],
+      ["9986104", "Al Galayel", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9337705", "Al Gattara", "Nakilat, Asyad Shipping", "HD Hyundai", 216200, "membrane", "qflex", "SSD", 2007],
+      ["9337987", "Al Ghariya", "Commerz Real, Nakilat, PRONAV", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2008],
+      ["9337717", "Al Gharrafa", "Nakilat, Asyad Shipping", "HD Hyundai", 216200, "membrane", "qflex", "SSD", 2008],
+      ["9397286", "Al Ghashamiya", "Nakilat", "Samsung", 217600, "membrane", "qflex", "SSD", 2009],
+      ["9372743", "Al Ghuwairiya", "Nakilat", "Hanwha Ocean", 263300, "membrane", "qmax", "SSD", 2008],
+      ["9074640", "Al Hamra", "National Gas Shipping Co", "Kvaerner Masa", 135000, "moss", "conv", "Steam", 1997],
+      ["9360879", "Al Huwaila", "Nakilat, Seapeak", "Samsung", 217000, "membrane", "qflex", "SSD", 2008],
+      ["9132791", "Al Jasra", "J4 Consortium", "Mitsubishi", 137200, "moss", "conv", "Steam", 2000],
+      ["9324435", "Al Jassasiya", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2007],
+      ["9431123", "Al Karaana", "Nakilat", "Hanwha Ocean", 210100, "membrane", "qflex", "SSD", 2009],
+      ["9397327", "Al Kharaitiyat", "Nakilat", "HD Hyundai", 216300, "membrane", "qflex", "SSD", 2009],
+      ["9976939", "Al Kharrarah (2549)", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9360881", "Al Kharsaah", "Nakilat, Seapeak", "Samsung", 217000, "membrane", "qflex", "SSD", 2008],
+      ["9431111", "Al Khattiya", "Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2009],
+      ["9982677", "Al Kheesah", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9085613", "Al Khor", "J4 Consortium", "Mitsubishi", 137400, "moss", "conv", "Steam", 1996],
+      ["9360908", "Al Khuwair", "Nakilat, Seapeak", "Samsung", 217000, "membrane", "qflex", "SSD", 2008],
+      ["9397315", "Al Mafyar", "Nakilat", "Samsung", 266400, "membrane", "qmax", "SSD", 2009],
+      ["9325685", "Al Marrouna", "Nakilat, Seapeak", "Hanwha Ocean", 152600, "membrane", "conv", "Steam", 2006],
+      ["9986611", "Al Mashabiyyah", "MISC, NYK Line, K Line, China LNG", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9397298", "Al Mayeda", "Nakilat", "Samsung", 266000, "membrane", "qmax", "SSD", 2009],
+      ["9431135", "Al Nuaman", "Nakilat", "Hanwha Ocean", 210100, "membrane", "qflex", "SSD", 2009],
+      ["9360790", "Al Oraiq", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2008],
+      ["9976812", "Al Qaiyyah", "K3 Consortium", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9982689", "Al Qassar (2612)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9965435", "Al Rahba (Jiangnan H2701)", "ADNOC L&S", "Jiangnan", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9086734", "Al Rayyan", "J4 Consortium", "Kawasaki", 137400, "moss", "conv", "Steam", 1997],
+      ["9972945", "Al Reef (Jiangnan H2702)", "ADNOC L&S", "Jiangnan", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9397339", "Al Rekayyat", "Nakilat", "HD Hyundai", 216300, "membrane", "qflex", "SSD", 2009],
+      ["9337951", "Al Ruwais", "Commerz Real, Nakilat, PRONAV", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2007],
+      ["9972957", "Al Sadaf", "ADNOC L&S", "Jiangnan", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9397341", "Al Sadd", "Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2009],
+      ["9337963", "Al Safliya", "Commerz Real, Nakilat, PRONAV", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2007],
+      ["9360855", "Al Sahla", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "HD Hyundai", 216200, "membrane", "qflex", "SSD", 2008],
+      ["9977270", "Al Sailiya (2641)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9986051", "Al Sakhamah", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9388821", "Al Samriya", "Nakilat", "Hanwha Ocean", 263300, "membrane", "qmax", "SSD", 2009],
+      ["9986099", "Al Sene (ex-2653)", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9360893", "Al Shamal", "Nakilat, Seapeak", "Samsung", 217000, "membrane", "qflex", "SSD", 2008],
+      ["9360831", "Al Sheehaniya", "Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2009],
+      ["9965423", "Al Shelila (ex-Jiangnan H2700)", "ADNOC L&S", "Jiangnan", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9986087", "Al Slaimi", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9360843", "Al Thumama", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "HD Hyundai", 216200, "membrane", "qflex", "SSD", 2008],
+      ["9986609", "Al Tuwar", "MISC, NYK Line, K Line, China LNG", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9360867", "Al Utouriya", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "HD Hyundai", 215000, "membrane", "qflex", "SSD", 2008],
+      ["9085625", "Al Wajbah", "J4 Consortium", "Mitsubishi", 137300, "moss", "conv", "Steam", 1997],
+      ["9086746", "Al Wakrah", "J4 Consortium", "Kawasaki", 137600, "moss", "conv", "Steam", 1998],
+      ["9981386", "Al Zore", "Knutsen OAS", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9085649", "Al Zubarah", "J4 Consortium", "Mitsui", 137600, "moss", "conv", "Steam", 1996],
+      ["9981491", "Al Zuwair (3395)", "MISC, NYK Line, K Line, China LNG", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9390185", "Alexandroupolis", "GasLog", "Hanjin H.I.", 153000, "membrane", "fsru", "DFDE", 2010],
+      ["9904194", "Alicante Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9682552", "Amadi", "Brunei Gas Carriers", "HD Hyundai", 154800, "membrane", "conv", "DFDE", 2015],
+      ["9496317", "Amali", "Brunei Gas Carriers", "Hanwha Ocean", 147000, "membrane", "conv", "DFDE", 2011],
+      ["9661869", "Amani", "Brunei Gas Carriers", "HD Hyundai", 154800, "membrane", "conv", "DFDE", 2014],
+      ["9972218", "Amaryllis Knutsen", "Knutsen OAS", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9845776", "Amberjack LNG", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9943841", "Amore Mio I", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2023],
+      ["9317999", "Amur River", "CDB Leasing", "HD Hyundai", 149700, "membrane", "conv", "Steam", 2008],
+      ["9957737", "Apostolos (ex-Hyundai 3342)", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9970674", "Archy Vanguard", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9645970", "Arctic Aurora", "CDB Leasing", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9284192", "Arctic Lady", "Hoegh", "Mitsubishi", 148000, "moss", "conv", "Steam", 2006],
+      ["9243148", "Arctic Metagas (ex-Metagas Everest)", "Nur Global Shipping", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2003],
+      ["9256602", "Arctic Pioneer (ex-LNG Pioneer / ex-Pioneer Spirit)", "Nur Global Shipping", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2005],
+      ["9271248", "Arctic Princess", "Hoegh, MOL, Equinor", "Mitsubishi", 148000, "moss", "conv", "Steam", 2006],
+      ["9216298", "Arctic Vostok", "Nur Global Shipping", "HD Hyundai", 137000, "moss", "conv", "Steam", 2002],
+      ["9862918", "Aristarchos", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9862906", "Aristidis I", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9862891", "Aristos I", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9496305", "Arkat", "Brunei Gas Carriers", "Hanwha Ocean", 147000, "membrane", "conv", "DFDE", 2011],
+      ["9319404", "Arrow Spirit", "Jovo Group", "Imabari", 155000, "membrane", "conv", "Steam", 2008],
+      ["9245720", "Arunika Jaya", "Tokyo Gas", "Kawasaki", 147000, "moss", "conv", "Steam", 2003],
+      ["9377547", "Aseem", "MOL, NYK Line, K Line, SCI, Nakilat, Petronet", "Samsung", 155000, "membrane", "conv", "DFDE", 2009],
+      ["9610779", "Asia Endeavour", "Chevron", "Samsung", 160000, "membrane", "conv", "DFDE", 2015],
+      ["9610767", "Asia Excellence", "Chevron", "Samsung", 160000, "membrane", "conv", "DFDE", 2015],
+      ["9680188", "Asia Integrity", "Chevron", "Samsung", 160000, "membrane", "conv", "DFDE", 2017],
+      ["9680190", "Asia Venture", "Chevron", "Samsung", 160000, "membrane", "conv", "DFDE", 2017],
+      ["9606948", "Asia Vision", "Chevron", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9884021", "Asklipios", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9957725", "Assos (ex-3341)", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9892298", "Asterix I", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9972672", "Athos LNG (ex-Samsung 2635)", "TMS Cardiff Gas", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9862920", "Attalos", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9943853", "Axios II", "Capital Gas", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9613159", "Beidou Star", "MOL, China LNG", "Hudong-Zhonghua", 171800, "membrane", "conv", "SSD", 2015],
+      ["9236432", "Bilbao Knutsen", "Knutsen OAS", "IZAR", 138000, "membrane", "fsu", "Steam", 2004],
+      ["9315393", "Blue Dragon I", "Unknown", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2006],
+      ["9845788", "Bonito LNG", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9768394", "Boris Davydov", "Sovcomflot", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2018],
+      ["9768368", "Boris Vilkitsky", "Sovcomflot", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2017],
+      ["9766554", "British Contributor", "BP", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9766566", "British Listener", "BP", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9766578", "British Mentor", "BP", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9766530", "British Partner", "BP", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9766580", "British Sponsor", "BP", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9085651", "Broog", "J4 Consortium", "Mitsui", 137500, "moss", "conv", "Steam", 1998],
+      ["9976824", "Bu Fintas", "K3 Consortium", "Samsung", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9986063", "Bu Nakhlah", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9388833", "Bu Samra", "Nakilat", "Samsung", 266000, "membrane", "qmax", "SSD", 2008],
+      ["9368302", "BW Batangas", "BW", "Hanwha Ocean", 162400, "membrane", "fsru", "DFDE", 2009],
+      ["9230062", "BW Boston", "BW, Total", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2003],
+      ["9368314", "BW Brussels", "BW", "Hanwha Ocean", 162500, "membrane", "conv", "DFDE", 2009],
+      ["9896933", "BW Cassia", "BW", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2022],
+      ["9413327", "BW Clear Sky", "BW", "Hanwha Ocean", 173000, "membrane", "conv", "DFDE", 2011],
+      ["9383900", "BW ENN Crystal Sky", "BW", "Hanwha Ocean", 173000, "membrane", "conv", "DFDE", 2011],
+      ["9896921", "BW ENN Snow Lotus", "BW", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2022],
+      ["9724946", "BW Integrity", "BW, MOL", "Samsung", 173400, "membrane", "fsru", "DFDE", 2017],
+      ["9873840", "BW Lesmes", "BW", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2021],
+      ["9758076", "BW Lilac", "BW", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9792591", "BW Magna", "BW", "Hanwha Ocean", 173400, "membrane", "fsru", "DFDE", 2019],
+      ["9850666", "BW Magnolia", "BW", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9792606", "BW Pavilion Aranda", "BW, Pavilion LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9850678", "Bw Pavilion Aranthera", "BW", "Hanwha Ocean", 170800, "membrane", "conv", "ME-GI", 2020],
+      ["9640645", "BW Pavilion Leeara", "BW, Pavilion LNG", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2015],
+      ["9640437", "BW Pavilion Vanda", "BW, Pavilion LNG", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2015],
+      ["9684495", "BW Singapore", "Snam", "Samsung", 170200, "membrane", "fsru", "DFDE", 2015],
+      ["9236626", "BW Tatiana (ex-Gallina)", "BW, Invenenergy Investment Company", "Mitsubishi", 136600, "moss", "fsru", "Steam", 2002],
+      ["9758064", "BW Tulip", "BW", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9246578", "Cadiz Knutsen", "Knutsen OAS", "IZAR", 138000, "membrane", "conv", "Steam", 2004],
+      ["9390680", "Cape Ann", "Hoegh, MOL, TLTC", "Samsung", 145000, "membrane", "fsru", "DFDE", 2010],
+      ["9742819", "Castillo De Caldelas", "Elcano", "Imabari", 178800, "membrane", "conv", "ME-GI", 2018],
+      ["9742807", "Castillo De Merida", "Elcano", "Imabari", 178800, "membrane", "conv", "ME-GI", 2018],
+      ["9433717", "Castillo De Santisteban", "Elcano", "STX", 173600, "membrane", "conv", "DFDE", 2010],
+      ["9236418", "Castillo De Villalba", "Elcano", "IZAR", 138200, "membrane", "conv", "Steam", 2003],
+      ["9864796", "Celsius Canberra", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "X-DF", 2021],
+      ["9878723", "Celsius Carolina", "Celsius Shipping, Basalt", "Samsung", 180000, "membrane", "conv", "X-DF", 2021],
+      ["9878711", "Celsius Charlotte", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "X-DF", 2021],
+      ["9864784", "Celsius Copenhagen", "Celsius Shipping, Basalt", "Samsung", 180000, "membrane", "conv", "X-DF", 2020],
+      ["9959008", "Celsius Galapagos (2599)", "Celsius Shipping", "Samsung Heavy Industries", 180000, "membrane", "conv", "ME-GA", 2025],
+      ["9958999", "Celsius Galway (2598)", "Celsius Shipping", "Samsung Heavy Industries", 180000, "membrane", "conv", "ME-GA", 2025],
+      ["9946829", "Celsius Gandhinagar (2579)", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2024],
+      ["9945435", "Celsius Geneva", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2023],
+      ["9945447", "Celsius Giza", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2023],
+      ["9945459", "Celsius Glarus", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2024],
+      ["9948736", "Celsius Granada (2585)", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2024],
+      ["9948724", "Celsius Greenwich (ex-2584)", "Celsius Shipping", "Samsung", 180000, "membrane", "conv", "ME-GA", 2024],
+      ["9969223", "Celsius Guadalupe (2619)", "Celsius Shipping", "Samsung Heavy Industries", 180000, "membrane", "conv", "ME-GA", 2025],
+      ["9672844", "Cesi Beihai", "China Shipping Group", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2017],
+      ["9672820", "Cesi Gladstone", "Chuo Kaiun/Shinwa Chem.", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2016],
+      ["9672818", "Cesi Lianyungang", "China Shipping Group", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2018],
+      ["9672832", "Cesi Qingdao", "China Shipping Group", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2017],
+      ["9694749", "Cesi Tianjin", "China Shipping Group", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2017],
+      ["9694751", "Cesi Wenzhou", "China Shipping Group", "Hudong-Zhonghua", 174100, "membrane", "conv", "DFDE", 2018],
+      ["9324344", "Cheikh Bouamama", "HYPROC, Sonatrach, Itochu, MOL", "Universal", 75500, "membrane", "conv", "Steam", 2008],
+      ["9324332", "Cheikh El Mokrani", "HYPROC, Sonatrach, Itochu, MOL", "Universal", 75500, "membrane", "conv", "Steam", 2007],
+      ["9886732", "Clean Cajun", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "X-DF", 2022],
+      ["9886744", "Clean Copano", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "X-DF", 2022],
+      ["9943487", "Clean Destiny", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "ME-GA", 2023],
+      ["9323687", "Clean Energy", "CDB Leasing", "HD Hyundai", 149700, "membrane", "conv", "Steam", 2007],
+      ["9943504", "Clean Future (ex-3293)", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "ME-GA", 2024],
+      ["9655444", "Clean Horizon", "Dynagas", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2015],
+      ["9967330", "Clean Levant", "Dynagas", "Hyundai Heavy Industries", 200000, "membrane", "conv", "ME-GA", 2025],
+      ["9967328", "Clean Mistral", "Dynagas", "Hyundai Heavy Industries", 200000, "membrane", "conv", "ME-GA", 2025],
+      ["9637492", "Clean Ocean", "Dynagas", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2014],
+      ["9637507", "Clean Planet", "Dynagas", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2014],
+      ["9943475", "Clean Resolution", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "ME-GA", 2023],
+      ["9655456", "Clean Vision", "Dynagas", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2016],
+      ["9943499", "Clean Vitality", "Dynagas", "HD Hyundai", 200000, "membrane", "conv", "ME-GA", 2024],
+      ["9869306", "Cobia LNG", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9654878", "Cool Baltic (ex-SCF Melampus)", "CoolCo", "STX", 170200, "membrane", "conv", "DFDE", 2015],
+      ["9861031", "Cool Discoverer", "Thenamaris", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9640023", "Cool Explorer", "Thenamaris", "Samsung", 160000, "membrane", "conv", "DFDE", 2015],
+      ["9869265", "Cool Racer", "Thenamaris", "HD Hyundai", 174000, "membrane", "conv", "ME-GI", 2021],
+      ["9333606", "Cool Ranger", "BP", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2008],
+      ["9333591", "Cool Rider", "BP", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2007],
+      ["9333618", "Cool Rover", "BP", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2008],
+      ["9636797", "Cool Runner", "Thenamaris", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9636785", "Cool Voyager", "Thenamaris", "Samsung", 160000, "membrane", "conv", "DFDE", 2013],
+      ["9693719", "Coral Encanto", "Anthony Veder", "Ningbo Xinle Shipbuilding Co Ltd", 30000, "typec", "small", "DFDE", 2020],
+      ["9955521", "Coral Evolutionist", "Anthony Veder", "HD Hyundai", 30000, "typec", "small", "X-DF", 2023],
+      ["9636711", "Corcovado LNG", "TMS Cardiff Gas", "Hanwha Ocean", 160100, "membrane", "conv", "DFDE", 2014],
+      ["9491812", "Cubal", "Mitsui, NYK Line, Seapeak", "Samsung", 160000, "membrane", "conv", "DFDE", 2012],
+      ["9376294", "Cygnus Passage", "TEPCO, NYK Line, Mitsubishi", "Mitsubishi", 147000, "moss", "conv", "Steam", 2009],
+      ["9308481", "Dapeng Moon", "China LNG Ship Mgmt", "Hudong-Zhonghua", 147200, "membrane", "conv", "Steam", 2008],
+      ["9937907", "Dapeng Princess", "Shenzhen Gas", "Hudong-Zhonghua", 80000, "membrane", "mid", "X-DF", 2023],
+      ["9369473", "Dapeng Star", "China LNG Ship Mgmt", "Hudong-Zhonghua", 147600, "membrane", "conv", "Steam", 2009],
+      ["9308479", "Dapeng Sun", "China LNG Ship Mgmt", "Hudong-Zhonghua", 147200, "membrane", "conv", "Steam", 2008],
+      ["9874454", "Diamond Gas Crystal", "MISC, Mitsubishi, NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9862487", "Diamond Gas Metropolis", "NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9779226", "Diamond Gas Orchid", "NYK Line", "Mitsubishi", 165000, "moss", "conv", "STaGE", 2018],
+      ["9779238", "Diamond Gas Rose", "NYK Line", "Mitsubishi", 165000, "moss", "conv", "STaGE", 2018],
+      ["9810020", "Diamond Gas Sakura", "NYK Line", "Mitsubishi", 165000, "moss", "conv", "STaGE", 2019],
+      ["9874466", "Diamond Gas Victoria", "MISC, Mitsubishi, NYK Line, Toho LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9250713", "Disha", "MOL, NYK Line, K Line, SCI, Nakilat, Petronet", "Hanwha Ocean", 138100, "membrane", "conv", "Steam", 2004],
+      ["9085637", "Doha", "J4 Consortium", "Mitsubishi", 137300, "moss", "conv", "Steam", 1999],
+      ["9863182", "Dorado LNG", "TMS Cardiff Gas", "Samsung", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9337975", "Duhail", "Commerz Real, Nakilat, PRONAV", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2008],
+      ["9750696", "Eduard Toll", "Seapeak", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2017],
+      ["9334076", "Ejnan", "K Line, MOL, NYK Line, Mitsui, Nakilat", "Samsung", 145000, "membrane", "conv", "Steam", 2007],
+      ["8706155", "Ekaputra 1", "P.T. Humpuss Trans", "Mitsubishi", 137000, "moss", "conv", "Steam", 1990],
+      ["9884473", "Elisa Aquila", "NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9980540", "Elisa Ardea (Hyundai Samho 8049)", "NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9980552", "Elisa Halycon", "NYK Line", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9852975", "Elisa Larus", "GazOcean", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9626027", "Energos Celsius", "Energos", "Samsung", 160000, "membrane", "fsru", "DFDE", 2013],
+      ["9624940", "Energos Eskimo", "Energos", "Samsung", 160000, "membrane", "fsru", "DFDE", 2014],
+      ["9861811", "Energos Force", "Energos", "Hudong-Zhonghua", 174000, "membrane", "fsru", "DFDE", 2021],
+      ["7361922", "Energos Freeze", "Energos", "HDW", 125000, "moss", "fsru", "Steam", 1977],
+      ["9303560", "Energos Grand", "Energos", "Hanwha Ocean", 145000, "membrane", "conv", "Steam", 2005],
+      ["9633991", "Energos Igloo", "Energos", "Samsung", 170000, "membrane", "fsru", "DFDE", 2014],
+      ["9320374", "Energos Maria", "Energos", "Hanwha Ocean", 145000, "membrane", "conv", "Steam", 2006],
+      ["9785500", "Energos Nanook", "Energos", "Samsung", 170000, "membrane", "fsru", "DFDE", 2018],
+      ["9624938", "Energos Penguin", "Energos", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9861809", "Energos Power", "Energos", "Hudong-Zhonghua", 174000, "membrane", "fsru", "DFDE", 2021],
+      ["9253715", "Energos Princess", "Energos", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2003],
+      ["9256614", "Energos Winter", "Energos", "Hanwha Ocean", 138000, "membrane", "fsru", "Steam", 2004],
+      ["9649328", "Energy Atlantic", "Alpha Gas", "STX", 159700, "membrane", "conv", "DFDE", 2015],
+      ["9405588", "Energy Confidence", "NYK Line, Tokyo Gas", "Kawasaki", 155000, "moss", "conv", "Steam", 2009],
+      ["9854624", "Energy Endeavour", "Alpha Gas", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9948695", "Energy Endurance", "Alpha Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9540089", "Energy Fidelity (ex-Jules Verne)", "Alpha Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9948700", "Energy Fortitude (ex-Victor Hugo (8107))", "Alpha Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9483877", "Energy Horizon", "NYK Line, TLTC", "Kawasaki", 177000, "moss", "conv", "Steam", 2011],
+      ["9758832", "Energy Innovator", "MOL, Tokyo Gas", "Japan Marine", 165000, "ssp", "conv", "DFDE", 2019],
+      ["9859739", "Energy Integrity", "Alpha Gas", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9881201", "Energy Intelligence", "Alpha Gas", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9736092", "Energy Liberty", "MOL, Tokyo Gas", "Japan Marine", 165000, "ssp", "conv", "DFDE", 2018],
+      ["9355264", "Energy Navigator", "MOL, Tokyo Gas", "Kawasaki", 147000, "moss", "conv", "Steam", 2008],
+      ["9854612", "Energy Pacific", "Alpha Gas", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9274226", "Energy Progress", "MOL", "Kawasaki", 147000, "moss", "conv", "Steam", 2006],
+      ["9269207", "Energy Spirit", "Jovo Group", "Chantiers de l'Atlantique", 74500, "membrane", "conv", "Steam", 2006],
+      ["9758844", "Energy Universe", "MOL, Tokyo Gas", "Japan Marine", 165000, "ssp", "conv", "DFDE", 2019],
+      ["9749609", "Enshu Maru", "K Line", "Kawasaki", 164700, "moss", "conv", "Steam reheat", 2018],
+      ["9859820", "Ertugrul Gazi", "Turkish Petroleum Corp", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2021],
+      ["9666560", "Esshu Maru", "MOL, Tokyo Gas", "Mitsubishi", 153000, "moss", "conv", "Steam", 2014],
+      ["9991850", "Esteem Fuji (ex-Hull 2566)", "Meiji Shipping", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9236614", "Etyfa Prometheas", "Natural Gas Infrastructure Company of Cyprus", "Mitsubishi", 135000, "moss", "fsru", "Steam", 2002],
+      ["9230050", "Excalibur", "Exmar", "Hanwha Ocean", 138000, "membrane", "fsu", "Steam", 2002],
+      ["9820843", "Excelerate Sequoia", "Excelerate Energy", "Hanwha Ocean", 173400, "membrane", "fsru", "DFDE", 2020],
+      ["9252539", "Excellence", "Excelerate Energy", "Hanwha Ocean", 138000, "membrane", "fsru", "Steam", 2005],
+      ["9444649", "Exemplar", "Excelerate Energy", "Hanwha Ocean", 150900, "membrane", "fsru", "Steam", 2010],
+      ["9389643", "Expedient", "Excelerate Energy", "Hanwha Ocean", 150900, "membrane", "fsru", "Steam", 2010],
+      ["9638525", "Experience", "Excelerate Energy", "Hanwha Ocean", 173400, "membrane", "fsru", "DFDE", 2014],
+      ["9361079", "Explorer", "Excelerate Energy", "Hanwha Ocean", 150900, "membrane", "fsru", "Steam", 2008],
+      ["9361445", "Express", "Excelerate Energy", "Hanwha Ocean", 150900, "membrane", "fsru", "Steam", 2009],
+      ["9381134", "Exquisite", "Excelerate Energy, Nakilat", "Hanwha Ocean", 150900, "membrane", "fsru", "Steam", 2009],
+      ["9918157", "Extremadura Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9986623", "Fath Al Khair (1799A)", "MISC, NYK Line, K Line, China LNG", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9768370", "Fedor Litke", "LITKE", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2017],
+      ["9918145", "Ferrol Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9857377", "Flex Amber", "Flex LNG", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9851634", "Flex Artemis", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9857365", "Flex Aurora", "Flex LNG", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9825427", "Flex Constellation", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9825439", "Flex Courageous", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9762261", "Flex Endeavour", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9762273", "Flex Enterprise", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9862308", "Flex Freedom", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9709037", "Flex Rainbow", "Flex LNG", "Samsung", 174000, "membrane", "conv", "ME-GI", 2018],
+      ["9709025", "Flex Ranger", "Flex LNG", "Samsung", 174000, "membrane", "conv", "ME-GI", 2018],
+      ["9851646", "Flex Resolute", "Flex LNG", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9862475", "Flex Vigilant", "Flex LNG", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9862463", "Flex Volunteer", "Flex LNG", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9360817", "Fraiha", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "Hanwha Ocean", 210100, "membrane", "qflex", "SSD", 2008],
+      ["9253284", "FSRU Toscana", "OLT Offshore LNG Toscana", "HD Hyundai", 137100, "moss", "fsru", "Steam", 2004],
+      ["9256200", "Fuwairit", "MOL", "Samsung", 138300, "membrane", "conv", "Steam", 2004],
+      ["9877145", "Gail Bhuwan", "MOL", "Hanwha Ocean", 176500, "membrane", "conv", "X-DF", 2021],
+      ["9976147", "Gail Sagar (HSHI-8197)", "CoolCo", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9949027", "Gail Urja", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9266982", "Gas Garuda (ex-LNG River Orashi)", "BW", "Hanwha Ocean", 145900, "membrane", "conv", "Steam", 2004],
+      ["9864928", "Gaslog Galveston", "GasLog", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9707508", "Gaslog Geneva", "GasLog", "Samsung", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9744013", "Gaslog Genoa", "GasLog", "Samsung", 174000, "membrane", "conv", "X-DF", 2018],
+      ["9707510", "Gaslog Gibraltar", "GasLog", "Samsung", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9744025", "Gaslog Gladstone", "GasLog", "Samsung", 174000, "membrane", "conv", "X-DF", 2019],
+      ["9687021", "Gaslog Glasgow", "GasLog", "Samsung", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9687019", "Gaslog Greece", "GasLog", "Samsung", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9748904", "Gaslog Hongkong", "GasLog", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2018],
+      ["9962407", "Gaslog Italy (2532)", "Gaslog", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9638915", "Gaslog Salem", "CDB Leasing", "Samsung", 155000, "membrane", "conv", "DFDE", 2015],
+      ["9600530", "Gaslog Santiago", "GasLog", "Samsung", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9638903", "Gaslog Saratoga", "CDB Leasing", "Samsung", 155000, "membrane", "conv", "DFDE", 2014],
+      ["9352860", "Gaslog Savannah", "GasLog", "Samsung", 155000, "membrane", "conv", "DFDE", 2010],
+      ["9634086", "Gaslog Seattle", "GasLog", "Samsung", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9600528", "Gaslog Shanghai", "CDB Leasing", "Samsung", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9355604", "Gaslog Singapore", "GasLog", "Samsung", 155000, "membrane", "fsu", "DFDE", 2010],
+      ["9626285", "Gaslog Skagen", "CDB Leasing", "Samsung", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9626273", "Gaslog Sydney", "CDB Leasing", "Samsung", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9853137", "Gaslog Wales", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2020],
+      ["9816763", "Gaslog Warsaw", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2019],
+      ["9876660", "Gaslog Wellington", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2021],
+      ["9855812", "Gaslog Westminster", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2020],
+      ["9876737", "Gaslog Winchester", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2021],
+      ["9819650", "Gaslog Windsor", "GasLog", "Samsung", 180000, "membrane", "conv", "X-DF", 2020],
+      ["9768382", "Georgiy Brusilov", "Dynagas", "Hanwha Ocean", 172600, "membrane", "ice", "DFDE", 2018],
+      ["9750749", "Georgiy Ushakov", "Seapeak, China LNG Shipping", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9360922", "Gigira Laitebo", "MOL, Itochu", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2010],
+      ["9845013", "Global Energy", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9880465", "Global Sea Spirit", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9880477", "Global Sealine", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9859741", "Global Star", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9321756", "Golden Isaia (ex-Methane Shirley Elizabeth)", "Sillo Maritime", "Samsung", 145000, "membrane", "conv", "Steam", 2007],
+      ["9946374", "Gordonwaters Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9315707", "Grace Acacia", "NYK Line", "HD Hyundai", 150000, "membrane", "conv", "Steam", 2007],
+      ["9315719", "Grace Barleria", "NYK Line", "HD Hyundai", 150000, "membrane", "conv", "Steam", 2007],
+      ["9323675", "Grace Cosmos", "Sino Commerce Offshore", "HD Hyundai", 150000, "membrane", "conv", "Steam", 2008],
+      ["9540716", "Grace Dahlia", "NYK Line", "Kawasaki", 177400, "moss", "conv", "Steam", 2013],
+      ["9884174", "Grace Emelia", "NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9903920", "Grace Freesia", "NYK Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9332054", "Grand Elena", "NYK Line, Sovcomflot", "Mitsubishi", 147000, "moss", "conv", "Steam", 2007],
+      ["9338929", "Grand Mereya", "MOL, K Line, Primorsk", "Mitsui", 147600, "moss", "conv", "Steam", 2008],
+      ["9922988", "Grazyna Gesicka", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9961506", "GREENERGY MOON", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9961477", "Greenergy Ocean (1880A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9961489", "Greenergy Pearl (ex-Hudong-Zhonghua H1881A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9961491", "Greenergy Star", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9878888", "Gui Ying", "CSSC Shpg Leasing", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9696266", "Hai Yang Shi You 301", "CNOOC", "Jiangnan", 30000, "membrane", "bunk", "DFDE", 2015],
+      ["9872999", "Hellas Athina", "Latsco (London)", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9872987", "Hellas Diana", "Latsco (London)", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9972359", "HL Alyssa Warner (2607)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9972361", "HL Edward Austin (2608)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9986283", "HL Fortuna", "H-Line Shipping", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9155078", "HL Muscat", "H-Line Shipping", "Hanjin H.I.", 138000, "membrane", "conv", "Steam", 1999],
+      ["9972385", "HL Puffin (2610)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9972373", "HL Sea Eagle (2609)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9953262", "Hlaitan (ex-H1792A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9941013", "HLS Bilbao", "Hyundai LNG Shipping", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9947691", "HLS Cartagena (2522)", "Hyundai LNG Shipping", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9653678", "Hoegh Gallant", "Hoegh", "HD Hyundai", 170100, "membrane", "fsru", "DFDE", 2014],
+      ["9820013", "Hoegh Galleon", "Hoegh", "Samsung", 170000, "membrane", "fsru", "DFDE", 2019],
+      ["9624914", "Hoegh Gandria", "Hoegh", "Samsung", 160000, "membrane", "conv", "DFDE", 2013],
+      ["9822451", "Hoegh Gannet", "Hoegh", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2018],
+      ["9762962", "Hoegh Giant", "Hoegh", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2017],
+      ["9674907", "Hoegh Grace", "Hoegh", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2016],
+      ["9250725", "Hongkong Energy", "Sinokor Merchant Marine", "Hanwha Ocean", 140500, "membrane", "conv", "Steam", 2004],
+      ["9958652", "Huashan (1835A)", "United Liquefied Gas", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9904209", "Huelva Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9372999", "Hyundai Ecopia", "Hyundai LNG Shipping", "HD Hyundai", 150000, "membrane", "conv", "Steam", 2008],
+      ["9183269", "Hyundai Oceanpia", "Hyundai LNG Shipping", "HD Hyundai", 135000, "moss", "conv", "Steam", 2000],
+      ["9761853", "Hyundai Peacepia", "Hyundai LNG Shipping", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2017],
+      ["9761841", "Hyundai Princepia", "Hyundai LNG Shipping", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2017],
+      ["9018555", "Hyundai Utopia", "Hyundai LNG Shipping", "HD Hyundai", 125200, "moss", "conv", "Steam", 1994],
+      ["9326603", "Iberica Knutsen", "Knutsen OAS", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2006],
+      ["9326689", "Ibra LNG", "Asyad Shipping, MOL", "Samsung", 147600, "membrane", "conv", "Steam", 2006],
+      ["9317315", "Ibri LNG", "Asyad Shipping, MOL, Mitsubishi", "Mitsubishi", 147600, "moss", "conv", "Steam", 2006],
+      ["9977220", "Id'Asah (2596)", "JP Morgan", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9986647", "IDD Al Shargi (ex-QatarGas LNG 52 (1801A))", "MISC, NYK Line, K Line, China LNG", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9969388", "Ignacy Jan Paderewski (8180)", "Knutsen OAS", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9946398", "Ignacy Lukasiewicz", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9977256", "Imsaikah (2637)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9874820", "Isabella", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "X-DF", 2021],
+      ["9035864", "Ish", "National Gas Shipping Co", "Mitsubishi", 137300, "moss", "fsu", "Steam", 1995],
+      ["9655808", "Italis LNG (ex-Golar Tundra)", "Snam", "Samsung", 170000, "membrane", "fsru", "DFDE", 2015],
+      ["9854935", "Jawa Satu", "Jawa Satu Regas", "Samsung", 170000, "membrane", "fsru", "DFDE", 2021],
+      ["9901350", "John A Angelicoussis", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2022],
+      ["9969376", "Josef Pilsudski (8179)", "Knutsen OAS", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9157636", "K. Acacia", "Korea Line", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2000],
+      ["9186584", "K. Freesia", "Korea Line", "Hanwha Ocean", 138000, "membrane", "conv", "Steam", 2000],
+      ["9373008", "K. Jasmine", "Korea Line", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2008],
+      ["9373010", "K. Mugungwha", "Korea Line", "Hanwha Ocean", 151700, "membrane", "conv", "Steam", 2008],
+      ["9045132", "Karadeniz LNGT Americas (ex-Northwest Stormpetrel)", "Karpowership", "Mitsubishi", 126800, "moss", "conv", "Steam", 1994],
+      ["9306495", "Karadeniz LNGT Powership Anatolia (ex-LNG Unity / ex-Provalys)", "Karpowership", "Chantiers de l'Atlantique", 154472, "membrane", "conv", "DFDE", 2006],
+      ["9064073", "Karadeniz LNGT Powership Black Sea (ex-Portovenere / ex-LNG Portovenere)", "MISC", "Sestri", 65000, "membrane", "conv", "Steam", 1996],
+      ["9064085", "Karadeniz LNGT Powership Marmara (ex-Lerici / ex-LNG Lerici)", "MISC", "Sestri", 65000, "membrane", "conv", "Steam", 1998],
+      ["9043677", "Karmol LNGT Powership Africa (ex-Dwiputra)", "Karpowership, MOL", "Mitsubishi", 127386, "moss", "fsru", "Steam", 1994],
+      ["8608705", "Karmol LNGT Powership Asia (ex-Northwest Shearwater)", "Karpowership, MOL", "Kawasaki", 127000, "moss", "fsru", "Steam", 1991],
+      ["9020766", "Karmol LNGT Powership Europe (ex-LNG Vesta)", "Karpowership, MOL", "Mitsubishi", 128000, "moss", "fsru", "Steam", 1994],
+      ["9785158", "Kinisis", "Chandris Group", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9636723", "Kita LNG", "TMS Cardiff Gas", "Hanwha Ocean", 160100, "membrane", "conv", "DFDE", 2014],
+      ["9333620", "Kmarin Diamond", "BP", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2008],
+      ["9958664", "Kongtong (ex-Hudong-Zhonghua H1836A)", "United Liquefied Gas", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9635315", "Kool Blizzard", "CoolCo", "Samsung", 160000, "membrane", "conv", "DFDE", 2015],
+      ["9654880", "Kool Boreas (ex-SCF Mitre)", "CoolCo", "STX", 170200, "membrane", "conv", "DFDE", 2015],
+      ["9624926", "Kool Crystal", "CoolCo", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9864746", "Kool Firn (ex-SCF Barents)", "CoolCo", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9655042", "Kool Frost", "CoolCo", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9654696", "Kool Glacier", "CoolCo", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2014],
+      ["9626039", "Kool Husky", "CoolCo", "Samsung", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9637325", "Kool Ice", "CoolCo", "Samsung", 160000, "membrane", "conv", "DFDE", 2015],
+      ["9654701", "Kool Kelvin", "CoolCo", "HD Hyundai", 162000, "membrane", "conv", "DFDE", 2015],
+      ["9870525", "Kool Orca", "CoolCo", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9976135", "Kool Tiger (HSHI-8196)", "CoolCo", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9613161", "Kumul", "MOL, China LNG", "Hudong-Zhonghua", 172000, "membrane", "conv", "SSD", 2016],
+      ["9915911", "Kunlun", "COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9721724", "La Mancha Knutsen", "Knutsen OAS", "HD Hyundai", 176000, "membrane", "conv", "ME-GI", 2016],
+      ["9849887", "La Perouse (ex-SCF La Perouse)", "Sovcomflot", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9845764", "La Seine", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9165011", "Lady Eva", "PT Mitrausaha Tanker Persada", "Mitsubishi Heavy Industries", 135225, "moss", "conv", "Steam", 2000],
+      ["9952816", "Lagenda Setia", "K Line", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9905978", "Lagenda Suria", "K Line", "Hudong-Zhonghua", 80000, "membrane", "mid", "X-DF", 2022],
+      ["9275347", "Lalla Fatma N'soumer", "HYPROC", "Kawasaki", 147300, "moss", "conv", "Steam", 2004],
+      ["9976927", "Lebrethah (2548)", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9922976", "Lech Kaczynski", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9629598", "Lena River", "Dynagas", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9977268", "Leshatt (2638)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9388819", "Lijmiliya", "Nakilat", "Hanwha Ocean", 263300, "membrane", "qmax", "SSD", 2009],
+      ["9953274", "Limail (ex-Hudong Hull 1793A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9690171", "LNG Abalamabie", "BGT LTD", "Samsung", 175000, "membrane", "conv", "DFDE", 2016],
+      ["9690169", "LNG Abuja II", "BGT LTD", "Samsung", 175000, "membrane", "conv", "DFDE", 2016],
+      ["9262211", "LNG Adamawa", "BGT LTD", "HD Hyundai", 141000, "moss", "conv", "Steam", 2005],
+      ["9870159", "LNG Adventure", "France LNG Shipping", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9262209", "LNG Akwa Ibom", "BGT LTD", "HD Hyundai", 141000, "moss", "conv", "Steam", 2004],
+      ["9320075", "LNG Alliance", "GazOcean", "Chantiers de l'Atlantique", 154500, "membrane", "conv", "DFDE", 2007],
+      ["9341299", "LNG Barka", "Asyad Shipping, Osaka Gas, NYK Line, K Line", "Kawasaki", 153600, "moss", "conv", "Steam", 2008],
+      ["9241267", "LNG Bayelsa", "BGT LTD", "HD Hyundai", 137000, "moss", "conv", "Steam", 2003],
+      ["9267015", "LNG Benue", "BW", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2006],
+      ["9692002", "LNG Bonny II", "BGT LTD", "HD Hyundai", 177000, "membrane", "conv", "DFDE", 2015],
+      ["9322803", "LNG Borno", "NYK Line", "Samsung", 149600, "membrane", "conv", "Steam", 2007],
+      ["9256767", "LNG Croatia", "LNG Hrvatska", "HD Hyundai", 138000, "membrane", "fsru", "Steam", 2005],
+      ["9262223", "LNG Cross River", "BGT LTD", "HD Hyundai", 141000, "moss", "conv", "Steam", 2005],
+      ["9277620", "LNG Dream", "NYK Line", "Kawasaki", 145300, "moss", "conv", "Steam", 2006],
+      ["9834296", "LNG Dubhe", "MOL, COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2019],
+      ["9329291", "LNG Ebisu", "MOL, KEPCO", "Kawasaki", 147500, "moss", "conv", "Steam", 2008],
+      ["9874492", "LNG Endurance", "NYK Line", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9874480", "LNG Enterprise", "NYK Line", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9266994", "LNG Enugu", "BW", "Hanwha Ocean", 145000, "membrane", "conv", "Steam", 2005],
+      ["9690145", "LNG Finima II", "BGT LTD", "Samsung", 175000, "membrane", "conv", "DFDE", 2015],
+      ["9666986", "LNG Fukurokuju", "MOL, KEPCO", "Kawasaki", 165100, "moss", "conv", "Steam reheat", 2016],
+      ["9892133", "LNG Geneva", "CSSC Shpg Leasing", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9917555", "LNG Harmony", "JP Morgan", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9311581", "LNG Imo", "BW", "Hanwha Ocean", 148500, "membrane", "conv", "Steam", 2008],
+      ["9769855", "LNG Jia Xing", "Landmark Capital", "Xiamen Shipbuilding Industry", 45000, "ssp", "small", "DFDE", 2019],
+      ["9774628", "LNG Juno", "MOL", "Mitsubishi", 177300, "moss", "conv", "STaGE", 2018],
+      ["9341689", "LNG Jupiter", "NYK Line, Osaka Gas", "Kawasaki", 156000, "moss", "conv", "Steam", 2009],
+      ["9666998", "LNG Jurojin", "MOL, KEPCO", "Mitsubishi", 155300, "moss", "conv", "Steam reheat", 2015],
+      ["9311567", "LNG Kano", "BW", "Hanwha Ocean", 148300, "membrane", "conv", "Steam", 2007],
+      ["9372963", "LNG Kolt", "Pan Ocean", "Hanjin H.I.", 153000, "membrane", "conv", "Steam", 2008],
+      ["9692014", "LNG Lagos II", "BGT LTD", "HD Hyundai", 177000, "membrane", "conv", "DFDE", 2016],
+      ["9269960", "LNG Lokoja", "BW", "Hanwha Ocean", 148300, "membrane", "conv", "Steam", 2006],
+      ["8701791", "LNG Maleo", "MOL, NYK Line, K Line", "Mitsui", 127700, "moss", "conv", "Steam", 1989],
+      ["9645748", "LNG Mars", "MOL, Osaka Gas", "Mitsubishi", 155000, "moss", "conv", "Steam reheat", 2016],
+      ["9834325", "LNG Megrez", "MOL, COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9834301", "LNG Merak", "MOL, COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9322815", "LNG Ogun", "NYK Line", "Samsung", 149600, "membrane", "conv", "Steam", 2007],
+      ["9311579", "LNG Ondo", "BW", "Hanwha Ocean", 148300, "membrane", "conv", "Steam", 2007],
+      ["9267003", "LNG Oyo", "BW", "Hanwha Ocean", 145800, "membrane", "conv", "Steam", 2005],
+      ["9834313", "LNG Phecda", "MOL, COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9690157", "LNG Port-Harcourt II", "BGT LTD", "Samsung", 175000, "membrane", "conv", "DFDE", 2015],
+      ["9902938", "LNG Prosperity", "JP Morgan", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9262235", "LNG River Niger", "BGT LTD", "HD Hyundai", 141000, "moss", "conv", "Steam", 2006],
+      ["9877133", "LNG Rosenrot", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9774135", "LNG Sakura", "NYK Line, KEPCO", "Kawasaki", 177000, "moss", "conv", "DFDE", 2018],
+      ["9696149", "LNG Saturn", "MOL", "Mitsubishi", 155700, "moss", "conv", "Steam reheat", 2016],
+      ["9771913", "LNG Schneeweisschen", "MOL", "Hanwha Ocean", 180000, "membrane", "conv", "X-DF", 2018],
+      ["9307205", "LNG Soars (ex-Methane Lydon Volney)", "TMS Cardiff Gas", "Samsung", 145000, "membrane", "conv", "Steam", 2006],
+      ["9216303", "LNG Sokoto", "BGT LTD", "HD Hyundai", 137000, "moss", "conv", "Steam", 2002],
+      ["9645736", "LNG Venus", "MOL, Osaka Gas", "Mitsubishi", 155000, "moss", "conv", "Steam", 2014],
+      ["9872949", "LNGships Athena", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9875800", "LNGships Empress", "TMS Cardiff Gas", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9872901", "LNGships Manhattan", "TMS Cardiff Gas", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9343106", "LNGT Karadeniz", "Karadeniz", "Mitsubishi Heavy Industries", 147798, "moss", "conv", "Steam", 2008],
+      ["9490961", "Lobito", "Mitsui, NYK Line, Seapeak", "Samsung", 160400, "membrane", "conv", "DFDE", 2011],
+      ["9285952", "Lusail", "K Line, MOL, NYK Line, Nakilat", "Samsung", 145700, "membrane", "conv", "Steam", 2005],
+      ["9705653", "Macoma", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2017],
+      ["9770921", "Magdala", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2018],
+      ["9904182", "Malaga Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9490959", "Malanje", "Mitsui, NYK Line, Seapeak", "Samsung", 160400, "membrane", "conv", "DFDE", 2011],
+      ["9682588", "Maran Gas Achilles", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2015],
+      ["9682590", "Maran Gas Agamemnon", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "ME-GI", 2016],
+      ["9650054", "Maran Gas Alexandria", "Maran Gas Maritime", "HD Hyundai", 161900, "membrane", "conv", "DFDE", 2015],
+      ["9887217", "Maran Gas Amorgos", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9701217", "Maran Gas Amphipolis", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2016],
+      ["9810379", "Maran Gas Andros", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9941520", "Maran Gas Antibes (2474)", "Maran Gas Maritime", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9633422", "Maran Gas Apollonia", "Maran Gas Maritime", "HD Hyundai", 161900, "membrane", "conv", "DFDE", 2014],
+      ["9302499", "Maran Gas Asclepius", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 145800, "membrane", "conv", "Steam", 2005],
+      ["9753014", "Maran Gas Chios", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9331048", "Maran Gas Coronis", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2007],
+      ["9633173", "Maran Gas Delphi", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2014],
+      ["9627497", "Maran Gas Efessos", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2014],
+      ["9682605", "Maran Gas Hector", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9767962", "Maran Gas Hydra", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9892717", "Maran Gas Ithaca", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9883742", "Maran Gas Kalymnos", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9956408", "Maran Gas Kastelorizo", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9956393", "Maran Gas Kimolos", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9682576", "Maran Gas Leto", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9627502", "Maran Gas Lindos", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2015],
+      ["9924869", "Maran Gas Marseille", "Maran Gas Maritime", "Samsung", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9658238", "Maran Gas Mystras", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2015],
+      ["9941518", "Maran Gas Nice (2473)", "Maran Gas Maritime", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9732371", "Maran Gas Olympias", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2017],
+      ["9709489", "Maran Gas Pericles", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9633434", "Maran Gas Posidonia", "Maran Gas Maritime", "HD Hyundai", 161900, "membrane", "conv", "DFDE", 2014],
+      ["9844863", "Maran Gas Psara", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9701229", "Maran Gas Roxana", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2017],
+      ["9650042", "Maran Gas Sparta", "Maran Gas Maritime", "HD Hyundai", 161900, "membrane", "conv", "DFDE", 2015],
+      ["9767950", "Maran Gas Spetses", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9961398", "Maran Gas Syros (ex-ABCDE (2537))", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2025],
+      ["9658240", "Maran Gas Troy", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2015],
+      ["9709491", "Maran Gas Ulysses", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2017],
+      ["9732369", "Maran Gas Vergina", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2016],
+      ["9659725", "Maria Energy", "Tsakos", "HD Hyundai", 174000, "membrane", "conv", "DFDE", 2016],
+      ["9778313", "Marshal Vasilevskiy", "Gazprom", "HD Hyundai", 174000, "membrane", "fsru", "DFDE", 2018],
+      ["9770438", "Marvel Crane", "NYK Line", "Mitsubishi", 177000, "moss", "conv", "STaGE", 2019],
+      ["9964182", "Marvel Dove (Hull 8173)", "SK Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9759240", "Marvel Eagle", "MOL", "Kawasaki", 155000, "moss", "conv", "DFDE", 2018],
+      ["9760768", "Marvel Falcon", "MOL", "Samsung", 174000, "membrane", "conv", "X-DF", 2018],
+      ["9760770", "Marvel Hawk", "MOL", "Samsung", 174000, "membrane", "conv", "X-DF", 2018],
+      ["9770440", "Marvel Heron", "MOL", "Mitsubishi", 177000, "moss", "conv", "STaGE", 2019],
+      ["9760782", "Marvel Kite", "Meiji Shipping", "Samsung", 174000, "membrane", "conv", "X-DF", 2019],
+      ["9759252", "Marvel Pelican", "MOL", "Kawasaki", 155985, "moss", "conv", "DFDE", 2019],
+      ["9962419", "Marvel Phoenix", "Gaslog", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2024],
+      ["9963449", "Marvel Swallow (2536)", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9880192", "Marvel Swan", "Navigare Capital Partners", "Samsung", 174000, "membrane", "conv", "DFDE", 2021],
+      ["9770945", "Megara", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2018],
+      ["9397303", "Mekaines", "Nakilat", "Samsung", 266500, "membrane", "qmax", "SSD", 2009],
+      ["9250191", "Merchant", "Sinokor Merchant Marine", "Samsung", 138200, "membrane", "conv", "Steam", 2003],
+      ["9975519", "Mesaieed (3381)", "Knutsen OAS", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9337729", "Mesaimeer", "Nakilat", "HD Hyundai", 216300, "membrane", "qflex", "SSD", 2009],
+      ["9321768", "Methane Alison Victoria", "Gaslog", "Samsung", 145000, "membrane", "fsu", "Steam", 2007],
+      ["9516129", "Methane Becki Anne", "GasLog", "Samsung", 170000, "membrane", "conv", "DFDE", 2010],
+      ["9307190", "Methane Jane Elizabeth", "GasLog", "Samsung", 145000, "membrane", "conv", "Steam", 2006],
+      ["9412880", "Methane Julia Louise", "MOL", "Samsung", 170000, "membrane", "conv", "DFDE", 2010],
+      ["9520376", "Methane Mickie Harper", "Meiji Shipping", "Samsung", 170000, "membrane", "conv", "DFDE", 2010],
+      ["9321770", "Methane Nile Eagle", "Shell, Gaslog", "Samsung", 145000, "membrane", "conv", "Steam", 2007],
+      ["9425277", "Methane Patricia Camila", "Meiji Shipping", "Samsung", 170000, "membrane", "conv", "DFDE", 2010],
+      ["9307188", "Methane Rita Andrea", "Shell, Gaslog", "Samsung", 145000, "membrane", "conv", "Steam", 2006],
+      ["9321732", "Milaha Qatar", "Nakilat, Qatar Shpg., SocGen", "Samsung", 145600, "membrane", "conv", "Steam", 2006],
+      ["9255854", "Milaha Ras Laffan", "Nakilat, Qatar Shpg., SocGen", "Samsung", 138300, "membrane", "conv", "Steam", 2004],
+      ["9305128", "Min Lu", "China LNG Ship Mgmt", "Hudong-Zhonghua", 147200, "membrane", "conv", "Steam", 2009],
+      ["9305116", "Min Rong", "China LNG Ship Mgmt", "Hudong-Zhonghua", 147600, "membrane", "conv", "Steam", 2009],
+      ["9885855", "Minerva Amorgos", "Minerva Marine", "Samsung", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9877341", "Minerva Chios", "Minerva Marine", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9869942", "Minerva Kalymnos", "Minerva Marine", "Samsung", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9854375", "Minerva Limnos", "Minerva Marine", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9854363", "Minerva Psara", "Minerva Marine", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2021],
+      ["9986635", "Mizhem (ex-QatarGas LNG 36 (2563))", "MISC, NYK Line, K Line, China LNG", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9956953", "MOL Azure (ex-Hull 2527)", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9885996", "MOL Hestia", "MOL", "Hanwha Ocean", 173400, "membrane", "conv", "X-DF", 2021],
+      ["9975507", "Mraikh (3380)", "Knutsen OAS", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9074638", "Mraweh", "National Gas Shipping Co", "Kvaerner Masa", 135000, "moss", "conv", "Steam", 1996],
+      ["9878876", "Mu Lan", "CSSC Shpg Leasing", "Hudong-Zhonghua", 178000, "membrane", "conv", "X-DF", 2021],
+      ["9074626", "Mubaraz", "National Gas Shipping Co", "Kvaerner Masa", 135000, "moss", "conv", "Steam", 1996],
+      ["9864837", "Mulan Spirit", "Nur Global Shipping", "Jiangnan", 79800, "membrane", "mid", "X-DF", 2023],
+      ["9705641", "Murex", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2017],
+      ["9360805", "Murwab", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "Hanwha Ocean", 210100, "membrane", "qflex", "SSD", 2008],
+      ["9770933", "Myrina", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2018],
+      ["9926714", "Nantes Knutsen (Hull 8100)", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9324277", "Neo Energy", "Nur Global Shipping", "HD Hyundai", 150000, "moss", "conv", "Steam", 2007],
+      ["9385673", "Neptune", "Hoegh, MOL, TLTC", "Samsung", 145000, "membrane", "fsru", "DFDE", 2009],
+      ["9929106", "New Apex", "Pan Ocean", "Samsung", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9926908", "New Brave (ex-3221)", "Pan Ocean", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9947500", "New Green ST (ex-3224)", "Pan Ocean", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9926910", "New Nature (ex-3222)", "Pan Ocean", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9947512", "New Oasis (ex-Hyundai 3225)", "Pan Ocean", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9750660", "Nikolay Urvantsev", "MOL, COSCO", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9750725", "Nikolay Yevgenov", "Seapeak, China LNG Shipping", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9768526", "Nikolay Zubov", "Dynagas", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9294264", "Nizwa LNG", "Asyad Shipping, MOL", "Kawasaki", 147700, "moss", "conv", "Steam", 2005],
+      ["9796781", "Nohshu Maru", "MOL, JERA", "Mitsubishi", 177300, "moss", "conv", "STaGE", 2019],
+      ["9953509", "North Air", "White Fox Ship Management", "Samsung", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9958298", "North Light (Hull 2523)", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9958303", "North Moon (Hull 2524)", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9958315", "North Ocean", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9953523", "North Star", "White Fox Ship Management", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9958327", "North Valley (Hull 2526)", "MOL", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9953535", "North Way (Hull 2583)", "White Fox Ship Management", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9976903", "Nuaijah (Hull 2546)", "K3 Consortium", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["7382744", "Nusantara Regas Satu", "Energos", "Rosenberg Verft", 125000, "moss", "fsru", "Steam", 1977],
+      ["9315692", "Ob River", "CDB Leasing", "HD Hyundai", 149700, "membrane", "conv", "Steam", 2007],
+      ["9979761", "Ocean Inspiration (ex-Hudong-Zhonghua H1892A)", "United LNG Transportation", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9979773", "Ocean Oasis", "United LNG Transportation", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9698111", "Oceanic Breeze", "K Line, Inpex", "Mitsubishi", 155300, "moss", "conv", "Steam reheat", 2018],
+      ["9397353", "Onaiza", "Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2009],
+      ["9902926", "Orion Bohemia", "JP Morgan", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9947639", "Orion Gaugin", "JP Morgan", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9947627", "Orion Hugo", "JP Morgan", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9956604", "Orion Iris (2594)", "JP Morgan", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9917543", "Orion Jessica", "JP Morgan", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9888766", "Orion Monet", "JP Morgan", "Samsung", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9958858", "Orion Saint (2601)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9889904", "Orion Sea", "JP Morgan", "Samsung", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9926922", "Orion Sinead", "JP Morgan", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9956616", "Orion Sirius (2595)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9956587", "Orion Spirit (ex-2592)", "JP Morgan", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9889916", "Orion Sun", "JP Morgan", "Samsung", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9761267", "Ougarta", "HYPROC", "HD Hyundai", 171800, "membrane", "conv", "DFDE", 2017],
+      ["9621077", "Pacific Arcadia", "NYK Line", "Mitsubishi", 145400, "moss", "conv", "Steam", 2014],
+      ["9698123", "Pacific Breeze", "K Line", "Kawasaki", 182000, "moss", "conv", "DFDE", 2018],
+      ["9351971", "Pacific Enlighten", "Kyushu Electric, TEPCO, Mitsubishi, Mitsui, NYK Line, MOL", "Mitsubishi", 145000, "moss", "conv", "Steam", 2009],
+      ["9743875", "Pacific Mimosa", "NYK Line", "Mitsubishi", 155300, "membrane", "conv", "Steam reheat", 2018],
+      ["9247962", "Pacific Notus", "TEPCO, NYK Line, Mitsubishi", "Mitsubishi", 137000, "moss", "conv", "Steam", 2003],
+      ["9903425", "Pacific Success (ex-Samsung Heavy Industries 2315)", "Sinokor Maritime Co Ltd", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9636735", "Palu LNG", "TMS Cardiff Gas", "Hanwha Ocean", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9750256", "Pan Africa", "Seapeak, China LNG Shipping, CETS Investment Management, BW", "Hudong-Zhonghua", 174000, "membrane", "conv", "DFDE", 2019],
+      ["9750232", "Pan Americas", "Seapeak", "Hudong-Zhonghua", 174000, "membrane", "conv", "DFDE", 2018],
+      ["9750220", "Pan Asia", "Seapeak", "Hudong-Zhonghua", 174000, "membrane", "conv", "DFDE", 2017],
+      ["9750244", "Pan Europe", "Seapeak", "Hudong-Zhonghua", 174000, "membrane", "conv", "DFDE", 2018],
+      ["9613135", "Papua", "MOL, China LNG", "Hudong-Zhonghua", 172000, "membrane", "conv", "SSD", 2015],
+      ["9946350", "Paris Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9766889", "Patris", "Chandris Group", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2018],
+      ["9862346", "Pearl LNG", "TMS Cardiff Gas", "Samsung", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9629524", "PGN FSRU Lampung", "Hoegh", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2014],
+      ["9375721", "Point Fortin", "MOL, Sumitomo, LNG JAPAN", "Imabari", 154200, "membrane", "conv", "Steam", 2010],
+      ["9246621", "Portovyy", "Gazprom", "Hanwha Ocean", 138100, "membrane", "fsu", "Steam", 2003],
+      ["9723801", "Prachi", "MOL, NYK Line, K Line, SCI, Nakilat, Petronet", "HD Hyundai", 173000, "membrane", "conv", "DFDE", 2016],
+      ["9264910", "Prima Carrier (ex-Pacific Eurus)", "Soechi Lines", "Mitsubishi", 137000, "moss", "conv", "Steam", 2006],
+      ["9256793", "Prima Concord", "Soechi Lines", "Samsung", 138000, "membrane", "conv", "Steam", 2004],
+      ["9810549", "Prism Agility", "SK Shipping", "HD Hyundai", 180000, "membrane", "conv", "X-DF", 2019],
+      ["9810551", "Prism Brilliance", "SK Shipping", "HD Hyundai", 180000, "membrane", "conv", "X-DF", 2019],
+      ["9888481", "Prism Courage", "SK Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9904651", "Prism Diversity", "SK Shipping", "HD Hyundai", 180000, "membrane", "conv", "X-DF", 2022],
+      ["9630028", "Pskov", "Sovcomflot", "STX", 170200, "membrane", "conv", "DFDE", 2014],
+      ["9947598", "Puteri Ledang (ex-Hull 3297)", "Hyundai LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9947603", "Puteri Mahsuri (ex-Hull 3298)", "Hyundai LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9947615", "Puteri Mayang (ex-Hull 3299)", "Hyundai LNG Shipping", "Hyundai Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9229647", "Puteri Nilam Satu", "MISC", "Mitsubishi Heavy Industries", 134833, "membrane", "conv", "Steam", 2003],
+      ["9974149", "Puteri Pahang", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9974151", "Puteri Perak (2632)", "H-Line Shipping", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9937945", "Puteri Saadong", "Hyundai LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9975521", "Puteri Sabah (3370)", "SK Shipping", "Hyundai Heavy Industries", 175000, "membrane", "conv", "ME-GA", 2025],
+      ["9937957", "Puteri Santubong (ex-Hull 3295)", "Hyundai LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9975533", "Puteri Sarawak", "SK Shipping", "Hyundai Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9937969", "Puteri Sejinjang - 3 (Hull 3296)", "Hyundai LNG Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9976109", "Puteri Selangor (8188)", "SK Shipping", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9976111", "Puteri Terengganu (8189)", "SK Shipping", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9030838", "Puteri Zamrud", "MISC", "Chantiers de l'Atlantique", 130000, "membrane", "conv", "Steam", 1996],
+      ["1023865", "Qingcheng", "United Liquefied Gas", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9851787", "Qogir", "TMS Cardiff Gas", "Samsung", 174000, "membrane", "conv", "X-DF", 2020],
+      ["9981049", "Qtaifan (Hull 2640)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9963853", "Quest Kirishima (2604)", "NYK Line", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9253703", "Raahi", "MOL, NYK Line, K Line, SCI, Nakilat, Petronet", "Hanwha Ocean", 138100, "membrane", "conv", "Steam", 2004],
+      ["9874040", "Ravenna Knutsen", "Knutsen OAS", "HD Hyundai", 30000, "typec", "small", "X-DF", 2021],
+      ["9953248", "Rex Tillerson (1790A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9825568", "Rias Baixas Knutsen", "Knutsen OAS", "HD Hyundai", 180000, "membrane", "conv", "ME-GI", 2019],
+      ["9477593", "Ribera Duero Knutsen", "Knutsen OAS", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2010],
+      ["9721736", "Rioja Knutsen", "Knutsen OAS", "HD Hyundai", 176000, "membrane", "conv", "ME-GI", 2016],
+      ["9750713", "Rudolf Samoylovich", "Seapeak", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2018],
+      ["9946386", "Saint Barbara", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9300817", "Salalah LNG", "Asyad Shipping, MOL", "Samsung", 147000, "membrane", "conv", "Steam", 2005],
+      ["9904170", "Santander Knutsen", "Knutsen OAS", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9253105", "SC SERENITY", "Soechi Lines", "Hanwha Ocean", 140000, "membrane", "conv", "Steam", 2003],
+      ["9970650", "Sea Spirit (Dalian No 1 G175K-1)", "China Merchants Energy Shipping", "Dalian Shipbuilding Industry Co", 175000, "membrane", "conv", "X-DF", 2025],
+      ["9339260", "Seapeak Arwa", "Seapeak, Marubeni", "Samsung", 168900, "membrane", "conv", "DFDE", 2008],
+      ["9771080", "Seapeak Bahrain", "Seapeak", "Hanwha Ocean", 173400, "membrane", "fsu", "ME-GI", 2018],
+      ["9681687", "Seapeak Creole", "Seapeak", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2016],
+      ["9247364", "Seapeak Galicia", "Seapeak", "Hanwha Ocean", 140500, "membrane", "conv", "Steam", 2004],
+      ["9781918", "Seapeak Glasgow", "Seapeak", "HD Hyundai", 174000, "membrane", "conv", "ME-GI", 2018],
+      ["9230048", "Seapeak Jupiter", "Seapeak", "Hanwha Ocean", 140500, "membrane", "conv", "Steam", 2002],
+      ["9342487", "Seapeak Magellan", "Seapeak, Marubeni", "Samsung", 165500, "membrane", "conv", "DFDE", 2009],
+      ["9336749", "Seapeak Marib", "Seapeak", "Samsung", 165500, "membrane", "conv", "DFDE", 2008],
+      ["9369904", "Seapeak Meridian", "Seapeak, Marubeni", "Samsung", 165500, "membrane", "conv", "DFDE", 2010],
+      ["9336737", "Seapeak Methane", "Seapeak, Marubeni", "Samsung", 165500, "membrane", "conv", "DFDE", 2008],
+      ["9681699", "Seapeak Oak", "Seapeak", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2016],
+      ["9721401", "Seapeak Vancouver", "Seapeak", "Hanwha Ocean", 173000, "membrane", "conv", "ME-GI", 2017],
+      ["9781920", "Seapeak Yamal", "Seapeak", "HD Hyundai", 174000, "membrane", "conv", "ME-GI", 2019],
+      ["9666558", "Seishu Maru", "Mitsubishi, NYK Line, Chubu Electric", "Mitsubishi", 153000, "membrane", "conv", "Steam", 2014],
+      ["9293832", "Seri Alam", "MISC", "Samsung", 145700, "membrane", "conv", "Steam", 2005],
+      ["9293844", "Seri Amanah", "MISC", "Samsung", 145700, "membrane", "conv", "Steam", 2006],
+      ["9321653", "Seri Anggun", "MISC", "Samsung", 145700, "membrane", "conv", "Steam", 2006],
+      ["9321665", "Seri Angkasa", "MISC", "Samsung", 145700, "membrane", "conv", "Steam", 2006],
+      ["9329679", "Seri Ayu", "MISC", "Samsung", 145700, "membrane", "conv", "Steam", 2007],
+      ["9331634", "Seri Bakti", "MISC", "Mitsubishi", 152300, "membrane", "conv", "Steam", 2007],
+      ["9331660", "Seri Balhaf", "MISC", "Mitsubishi", 157000, "membrane", "conv", "DFDE", 2009],
+      ["9331672", "Seri Balqis", "MISC", "Mitsubishi", 152000, "membrane", "conv", "DFDE", 2009],
+      ["9331646", "Seri Begawan", "MISC", "Mitsubishi", 152300, "membrane", "conv", "Steam", 2007],
+      ["9331658", "Seri Bijaksana", "MISC", "Mitsubishi", 152300, "membrane", "conv", "Steam", 2008],
+      ["9714305", "Seri Camar", "PETRONAS", "HD Hyundai", 150200, "membrane", "conv", "Steam reheat", 2018],
+      ["9714276", "Seri Camellia", "PETRONAS", "HD Hyundai", 150200, "membrane", "conv", "Steam reheat", 2016],
+      ["9756389", "Seri Cemara", "PETRONAS", "HD Hyundai", 150200, "moss", "conv", "Steam reheat", 2018],
+      ["9714290", "Seri Cempaka", "PETRONAS", "HD Hyundai", 150200, "moss", "conv", "ME-GI", 2017],
+      ["9714288", "Seri Cenderawasih", "PETRONAS", "HD Hyundai", 150200, "moss", "conv", "Steam reheat", 2017],
+      ["9896440", "Seri Damai", "MISC", "Samsung", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9896452", "Seri Daya", "MISC", "Samsung", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9338797", "Sestao Knutsen", "Knutsen OAS", "IZAR", 138000, "membrane", "conv", "Steam", 2007],
+      ["9414632", "Sevilla Knutsen", "Knutsen OAS", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2010],
+      ["9986116", "Shafallah (ex-QatarGas LNG 37 (2564))", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9418365", "Shagra", "Nakilat", "Samsung", 266300, "membrane", "qmax", "SSD", 2009],
+      ["9035852", "Shahamah", "National Gas Shipping Co", "Kawasaki", 135000, "moss", "conv", "Steam", 1994],
+      ["9253222", "Shandong Juniper", "Shell", "Mitsubishi", 135000, "moss", "conv", "Steam", 2004],
+      ["9321744", "Shandong Redwood (ex-Methane Heather Sally)", "Huaxia Financial Leasing", "Samsung", 145000, "membrane", "conv", "Steam", 2007],
+      ["9915894", "Shaolin", "COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9981506", "Sharq (ex-Hyundai Ulsan 3396)", "MISC, NYK Line, K Line, China LNG", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9583677", "Shen Hai", "China LNG, CNOOC, Shanghai LNG", "Hudong-Zhonghua", 147600, "membrane", "conv", "Steam", 2012],
+      ["9791200", "Shinshu Maru", "MOL", "Kawasaki", 177000, "moss", "conv", "DFDE", 2019],
+      ["9320386", "Simaisma", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2006],
+      ["9977282", "Simsimah", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9238040", "Singapore Energy", "Sinokor Merchant Marine", "Samsung", 138000, "membrane", "conv", "Steam", 2003],
+      ["9693161", "SK Audace", "SK Shipping, Marubeni", "Samsung", 180000, "membrane", "conv", "X-DF", 2017],
+      ["9693173", "SK Resolute", "SK Shipping, Marubeni", "Samsung", 180000, "membrane", "conv", "X-DF", 2018],
+      ["9247194", "SK Sunrise", "SK Shipping", "Samsung", 138200, "membrane", "conv", "Steam", 2003],
+      ["9902902", "SM Albatross", "Korea Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9902914", "SM Bluebird", "Korea Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9761827", "SM Eagle", "Korea Line", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2017],
+      ["9917567", "SM Golden Eagle", "Korea Line", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9917579", "SM Kestrel", "Korea Line", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2023],
+      ["9761839", "SM Seahawk", "Korea Line", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2017],
+      ["9210816", "Sohar LNG", "Asyad Shipping, MOL", "Mitsubishi", 137200, "moss", "conv", "Steam", 2001],
+      ["9791212", "Sohshu Maru", "MOL, JERA", "Kawasaki", 177300, "moss", "conv", "DFDE", 2019],
+      ["9634098", "Solaris", "GasLog", "Samsung", 155000, "membrane", "conv", "DFDE", 2014],
+      ["9482304", "Sonangol Benguela", "Mitsui, Sonangol, Sojlitz", "Hanwha Ocean", 160000, "membrane", "conv", "Steam", 2011],
+      ["9482299", "Sonangol Etosha", "Mitsui, Sonangol, Sojlitz", "Hanwha Ocean", 160000, "membrane", "conv", "Steam", 2011],
+      ["9475600", "Sonangol Sambizanga", "Mitsui, Sonangol, Sojlitz", "Hanwha Ocean", 160000, "membrane", "conv", "Steam", 2011],
+      ["9613147", "Southern Cross", "MOL, China LNG", "Hudong-Zhonghua", 168400, "membrane", "conv", "SSD", 2015],
+      ["9475208", "Soyo", "Mitsui, NYK Line, Seapeak", "Samsung", 160400, "membrane", "conv", "DFDE", 2011],
+      ["9361639", "Spirit Of Hela", "MOL, Itochu", "HD Hyundai", 177000, "membrane", "conv", "DFDE", 2009],
+      ["9322255", "Summit LNG", "Excelerate Energy", "Hanwha Ocean", 138000, "membrane", "fsru", "Steam", 2006],
+      ["9330745", "Symphonic Breeze", "K Line", "Kawasaki", 147600, "moss", "conv", "Steam", 2007],
+      ["9403669", "Taitar No.1", "CPC, Mitsui, NYK Line", "Mitsubishi", 145300, "moss", "conv", "Steam", 2009],
+      ["9403645", "Taitar No.2", "MOL, NYK Line", "Kawasaki", 145300, "moss", "conv", "Steam", 2009],
+      ["9403671", "Taitar No.3", "MOL, NYK Line", "Mitsubishi", 145300, "moss", "conv", "Steam", 2010],
+      ["9403657", "Taitar No.4", "CPC, Mitsui, NYK Line", "Kawasaki", 145300, "moss", "conv", "Steam", 2010],
+      ["9334284", "Tangguh Batur", "NYK Line, Sovcomflot", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2008],
+      ["9349007", "Tangguh Foja", "K Line, PT Meratus", "Samsung", 154800, "membrane", "conv", "DFDE", 2008],
+      ["9333632", "Tangguh Hiri", "Seapeak", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2008],
+      ["9349019", "Tangguh Jaya", "K Line, PT Meratus", "Samsung", 155000, "membrane", "conv", "DFDE", 2008],
+      ["9355379", "Tangguh Palung", "K Line, PT Meratus", "Samsung", 155000, "membrane", "conv", "DFDE", 2009],
+      ["9361990", "Tangguh Sago", "Seapeak", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2009],
+      ["9325893", "Tangguh Towuti", "NYK Line, PT Samudera, Sovcomflot", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2008],
+      ["9337731", "Tembek", "Nakilat, Asyad Shipping", "Samsung", 216200, "membrane", "qflex", "SSD", 2007],
+      ["7428433", "Tenaga Empat", "MISC", "CNIM", 130000, "membrane", "fsu", "Steam", 1981],
+      ["7428457", "Tenaga Satu", "MISC", "Dunkerque Chantiers", 130000, "membrane", "fsu", "Steam", 1982],
+      ["9892456", "Tenergy", "Tsakos", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9761243", "Tessala", "HYPROC", "HD Hyundai", 171800, "membrane", "conv", "DFDE", 2016],
+      ["9006681", "Torman II (ex-LNG Flora)", "NYK Line", "Kawasaki", 127700, "moss", "fsu", "Steam", 1993],
+      ["9854765", "Traiano Knutsen", "Knutsen OAS", "HD Hyundai", 180000, "membrane", "conv", "ME-GI", 2020],
+      ["9350927", "Trinity Glory", "K Line", "Imabari", 155000, "membrane", "conv", "Steam", 2009],
+      ["9823883", "Turquoise P", "Pardus Energy", "HD Hyundai", 170000, "membrane", "fsru", "DFDE", 2019],
+      ["9360829", "Umm Al Amad", "NYK Line, K Line, MOL, lino, Mitsui, Nakilat", "Hanwha Ocean", 210200, "membrane", "qflex", "SSD", 2008],
+      ["9074652", "Umm Al Ashtan", "National Gas Shipping Co", "Kvaerner Masa", 135000, "moss", "conv", "Steam", 1997],
+      ["9980851", "Umm Al Hanaya", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9977244", "Umm Al Houl (2634)", "JP Morgan", "Samsung Heavy Industries", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9308431", "Umm Bab", "Maran Gas Maritime, Nakilat", "Hanwha Ocean", 145700, "membrane", "conv", "Steam", 2005],
+      ["9953250", "Umm Ghuwailina (1791A)", "MOL", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9977232", "Umm Graybah (2597)", "JP Morgan", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9372731", "Umm Slal", "Nakilat", "Samsung", 266000, "membrane", "qmax", "SSD", 2008],
+      ["9976915", "Umm Swayyah (Hull 2547)", "K3 Consortium", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9434266", "Valencia Knutsen", "Knutsen OAS", "Hanwha Ocean", 173400, "membrane", "conv", "DFDE", 2010],
+      ["9837066", "Vasant 1", "Botas", "HD Hyundai", 180000, "membrane", "fsru", "DFDE", 2020],
+      ["9630004", "Velikiy Novgorod", "Sovcomflot", "STX", 170200, "membrane", "conv", "DFDE", 2014],
+      ["9960588", "Venture Acadia", "Venture Global", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2025],
+      ["9958846", "Venture Bayou", "Venture Global", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9960590", "Venture Creole (2531)", "Venture Global", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2025],
+      ["9956599", "Venture Gator", "Venture Global", "Samsung", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9970571", "Venture Iberia", "Venture Global", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GA", 2025],
+      ["9970569", "Venture Pelican (2541)", "Venture Global", "Hanwha Ocean", 200000, "membrane", "conv", "ME-GA", 2025],
+      ["9950105", "Vivit Africa LNG", "H-Line Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9864667", "Vivit Americas LNG", "TMS Cardiff Gas", "HD Hyundai", 170520, "membrane", "conv", "X-DF", 2020],
+      ["9902756", "Vivit Arabia LNG", "H-Line Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9895238", "Vivit City LNG", "H-Line Shipping", "HD Hyundai", 174000, "membrane", "conv", "X-DF", 2021],
+      ["9750701", "Vladimir Rusanov", "MOL", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2018],
+      ["9750658", "Vladimir Vize", "MOL", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2018],
+      ["9750737", "Vladimir Voronin", "Seapeak, China LNG Shipping", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9953511", "Voskhod", "White Fox Ship Management", "Samsung", 174000, "membrane", "conv", "X-DF", 2024],
+      ["9981374", "Wadi Al Syl (3382)", "Knutsen OAS", "Hyundai Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025],
+      ["9892121", "Wen Cheng", "CSSC Shpg Leasing", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2023],
+      ["9627954", "Wilforce", "CDB Leasing", "Hanwha Ocean", 160000, "membrane", "conv", "DFDE", 2013],
+      ["9627966", "Wilpride", "CDB Leasing", "Hanwha Ocean", 160000, "membrane", "conv", "DFDE", 2013],
+      ["9962433", "Woodside Barrumbara (ex-2535)", "Gaslog", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2025],
+      ["9753026", "Woodside Chaney", "Maran Gas Maritime", "HD Hyundai", 174000, "membrane", "conv", "ME-GI", 2019],
+      ["9859753", "Woodside Charles Allen", "Maran Gas Maritime", "HD Hyundai", 173400, "membrane", "conv", "ME-GI", 2020],
+      ["9369899", "Woodside Donaldson", "Seapeak, Marubeni", "Samsung", 165500, "membrane", "conv", "DFDE", 2009],
+      ["9633161", "Woodside Goode", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2013],
+      ["9962421", "Woodside Jirrubakura (2534)", "Gaslog", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2025],
+      ["9810367", "Woodside Rees Wither", "Maran Gas Maritime", "Hanwha Ocean", 173400, "membrane", "conv", "ME-GI", 2019],
+      ["9627485", "Woodside Rogers", "Maran Gas Maritime", "Hanwha Ocean", 159800, "membrane", "conv", "DFDE", 2013],
+      ["9975040", "Woodside Scarlet Ibis (8170)", "Hyundai Glovis", "HD Hyundai", 174000, "membrane", "conv", "ME-GA", 2024],
+      ["9915909", "Wudang", "COSCO", "Hudong-Zhonghua", 174000, "membrane", "conv", "X-DF", 2022],
+      ["9210828", "Xinhang Energy", "Xinhang Shipping Co. Ltd.", "Mitsubishi", 137000, "moss", "conv", "Steam", 2002],
+      ["9750672", "Yakov Gakkel", "Seapeak, China LNG Shipping", "Hanwha Ocean", 172000, "membrane", "ice", "DFDE", 2019],
+      ["9636747", "Yari LNG", "TMS Cardiff Gas", "Hanwha Ocean", 160000, "membrane", "conv", "DFDE", 2014],
+      ["9629586", "Yenisei River", "Dynagas", "HD Hyundai", 155000, "membrane", "conv", "DFDE", 2013],
+      ["9879674", "Yiannis", "Maran Gas Maritime", "Hanwha Ocean", 174000, "membrane", "conv", "ME-GI", 2021],
+      ["9431214", "Zarga", "Nakilat", "Samsung", 266000, "membrane", "qmax", "SSD", 2010],
+      ["9132818", "Zekreet", "J4 Consortium", "Mitsui", 137500, "moss", "conv", "Steam", 1998],
+      ["9946362", "Zoe Knutsen (8102)", "Knutsen OAS", "Hyundai Samho Heavy Industries", 174000, "membrane", "conv", "X-DF", 2025]
+    ]`).map(r => ({ id: r[0], name: r[1], owner: r[2], builder: r[3], cap: r[4], cont: r[5], type: r[6], prop: r[7], year: r[8], igu: true }));
+    const LNG_FLEET_BY_ID = new Map(LNG_FLEET.map(v => [v.id, v]));
+
+    function lcVesselById(id) { return LNG_VESSELS.find(v => v.id === id) || LNG_FLEET_BY_ID.get(id) || null; }
     function lcTypeMatch(v) {
       if (lcFilt.t === 'all') return true;
       if (lcFilt.t === 'fsru') return v.type === 'fsru' || v.type === 'fsu';
-      if (lcFilt.t === 'small') return v.type === 'small' || v.type === 'mid';
+      if (lcFilt.t === 'small') return v.type === 'small' || v.type === 'mid' || v.type === 'bunk';
       return v.type === lcFilt.t;
     }
     function lcContMatch(v) {
@@ -5631,7 +7190,8 @@
     // the source (tests/test_i18n_parity.py's dead-key sweep) and a typo fails loudly.
     const LC_TYPE_KEYS = { qmax: 'advanced.lngCargo.type.qmax', qflex: 'advanced.lngCargo.type.qflex', conv: 'advanced.lngCargo.type.conv',
                            ice: 'advanced.lngCargo.type.ice', fsru: 'advanced.lngCargo.type.fsru', fsu: 'advanced.lngCargo.type.fsu',
-                           mid: 'advanced.lngCargo.type.mid', small: 'advanced.lngCargo.type.small' };
+                           mid: 'advanced.lngCargo.type.mid', small: 'advanced.lngCargo.type.small',
+                           bunk: 'advanced.lngCargo.type.bunk' };
     const LC_CONT_KEYS = { membrane: 'advanced.lngCargo.cont.membrane', moss: 'advanced.lngCargo.cont.moss',
                            ssp: 'advanced.lngCargo.cont.ssp', typec: 'advanced.lngCargo.cont.typec' };
     function lcVesselTypeLabel(v) { return tr(LC_TYPE_KEYS[v.type] || 'advanced.lngCargo.type.conv'); }
@@ -5662,7 +7222,9 @@
       set('lc-spec-type', v ? lcVesselTypeLabel(v) : '—');
       set('lc-spec-cap', v ? fmtI(v.cap) : '—');
       const src = document.getElementById('lc-src');
-      if (v) { src.textContent = v.src; src.href = v.srcUrl; } else { src.textContent = tr('advanced.lngCargo.manualOption'); src.removeAttribute('href'); }
+      if (v && v.igu) { src.textContent = tr('advanced.lngCargo.iguSrc'); src.href = LNG_FLEET_SRC_URL; }
+      else if (v) { src.textContent = v.src; src.href = v.srcUrl; }
+      else { src.textContent = tr('advanced.lngCargo.manualOption'); src.removeAttribute('href'); }
       const mt = document.getElementById('lc-link-mt'), vf = document.getElementById('lc-link-vf');
       mt.href = v ? 'https://www.marinetraffic.com/en/ais/details/ships/imo:' + v.id : '#';
       vf.href = v ? 'https://www.vesselfinder.com/vessels/details/' + v.id : '#';
@@ -5771,6 +7333,7 @@
       const grid = document.getElementById('lc-cat-grid');
       if (!grid) return;
       const rows = LNG_VESSELS.filter(v => lcTypeMatch(v) && lcContMatch(v));
+      const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v));
       const escH = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       grid.innerHTML = rows.map(v => {
         const thumb = v.photo
@@ -5786,9 +7349,18 @@
           '<div class="flex justify-between items-center mt-auto pt-1"><span class="text-[9px] text-slate-600 truncate mr-2">' + escH(v.src) + '</span>' +
           '<button onclick="selectLNGVessel(\'' + escH(v.id) + '\');document.getElementById(\'adv-lng-cargo\').scrollIntoView({behavior:\'smooth\'})" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 whitespace-nowrap">' + escH(tr('advanced.lngCargo.catUse')) + ' ›</button></div>' +
           '</div></div>';
-      }).join('') || '<p class="text-xs text-slate-500 col-span-full">' + escH(tr('advanced.lngCargo.catNoMatch')) + '</p>';
+      }).join('')
+      // v3.9 — the rest of the active fleet as compact rows (IGU Appendix 3, with permission);
+      // no photos, the shared attribution is rendered on the vessel panel via lcRenderVessel().
+      + fleetRows.map(v =>
+          '<div class="bg-slate-950/70 border border-slate-800 rounded-lg px-2 py-1.5 flex items-center justify-between gap-2 hover:border-amber-500/40 transition-colors">' +
+          '<div class="min-w-0"><p class="text-[10.5px] font-semibold text-slate-200 leading-tight truncate">' + escH(v.name) + '</p>' +
+          '<p class="text-[9.5px] text-slate-500 leading-tight truncate">' + escH(lcVesselTypeLabel(v)) + ' · ' + v.cap.toLocaleString('en-US') + ' m³ · ' + escH(v.prop) + ' · ' + v.year + '</p></div>' +
+          '<button onclick="selectLNGVessel(\'' + escH(v.id) + '\');document.getElementById(\'adv-lng-cargo\').scrollIntoView({behavior:\'smooth\'})" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 whitespace-nowrap">' + escH(tr('advanced.lngCargo.catUse')) + ' ›</button></div>'
+        ).join('')
+      || '<p class="text-xs text-slate-500 col-span-full">' + escH(tr('advanced.lngCargo.catNoMatch')) + '</p>';
       grid.dataset.sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c;
-      document.getElementById('lc-cat-count').textContent = tr('advanced.lngCargo.catCount', { n: String(rows.length) });
+      document.getElementById('lc-cat-count').textContent = tr('advanced.lngCargo.catCount', { n: String(rows.length + fleetRows.length) });
     }
 
 
@@ -7716,7 +9288,7 @@
           <button onclick="window.print()" style="padding:6px 14px;background:#f59e0b;border:0;border-radius:6px;font-weight:bold;cursor:pointer;">${esc(tr('js.export.printButton'))}</button>
         </div>
         <h1>${esc(tr('js.export.h1'))}</h1>
-        <h2>${esc(tr('js.export.versionGenerated', {version: '3.8', date: now.toLocaleString()}))}</h2>
+        <h2>${esc(tr('js.export.versionGenerated', {version: '3.9', date: now.toLocaleString()}))}</h2>
         ${ghv}${dp}${regime}${psv}${basic}${gt}${lc}
         <div class="disc"><b>${esc(tr('js.export.disclaimerBold'))}</b> ${esc(tr('js.export.disclaimerText'))}</div>
         </body></html>`;
