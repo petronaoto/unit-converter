@@ -142,6 +142,7 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 | Sun 16 Aug 2026 | **v3.3 launch — LNG reference compositions** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2088656797607547322> |
 | Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7495603696488177664/> |
 | Wed 19 Aug 2026 | **v3.5 + v3.6 launch — LNG Cargo Estimator, two-layer Advanced tab** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2089838802542186931> |
+| Tue 25 Aug 2026 | **v3.9 launch — the full active LNG fleet (IGU permission)** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7497781912745308160/> |
 | Sat 22 Aug 2026 | **v3.4 documentation restructure** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7496852514277974016/> |
 | Sat 22 Aug 2026 | **v3.4 documentation restructure** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2091090283178156312> |
 
@@ -316,6 +317,19 @@ became **four** in both the copy and the graphic.
 >
 > Also fixed here: CLAUDE.md's restructure rules claimed *"five years"* of appending. The project
 > started **March 2026** — five *months*. The copy says "five months and twenty-odd releases".
+
+**v3.9 launch — what went out (2026-08-25).** One bilingual LinkedIn post (EN then JA, 2,150 chars,
+emoji-forward), thanking the International Gas Union for its written permission (2026-08-24) to
+reproduce Appendix 3 — the story arc is ask → grant in days → all 804 carriers live with attribution.
+Figures re-read from the live app before writing: Adam LNG 162,000 m³ at 98.5 % with 3,000 m³ heel →
+159,570 m³ · 74,570 t · 89,727 kNm³ · 3.854 TBtu (HHV). Graphic (1200 × 675,
+`docs/linkedin/v39-fleet-announce.png`, generator `-announce.html`): built around two PIL crops of a
+REAL production screenshot (`v39_vessel_crop.png` — the vessel panel with the IGU credit visible —
+and `v39_quant_crop.png`), a "36 → 804 vessels" headline, a thank-you band naming the IGU, and the
+domain footer. The production screenshot itself came from a share-link restore captured with headless
+Chrome (`--virtual-time-budget`), because html2canvas hangs on the 970 KB DOM and a https page cannot
+POST to a localhost save endpoint (Private Network Access). No X post this time (maintainer asked for
+LinkedIn only). Copy in `v39-announce-body.txt`.
 
 ## 3. The compact share-link recipe — *use this, never the Share button*
 

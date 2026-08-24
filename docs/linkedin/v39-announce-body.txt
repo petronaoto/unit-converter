@@ -1,0 +1,39 @@
+🚢✨ From 36 vessels to the ENTIRE active LNG fleet — all 804 carriers.
+
+Last week I emailed the International Gas Union with an unusual ask: could a free, open-source engineering tool reproduce the fleet table (Appendix 3) of the IGU World LNG Report 2026?
+
+Their answer arrived within days — a warm yes, with full attribution and a link. 🙏
+
+So here it is, live in v3.9 of the O&G Engineering Converter 🎉
+⚓ Pick ANY of the 804 LNG carriers active at end-2025 — Q-Max, Q-Flex, conventional, Arc7 icebreakers, FSRU/FSU, down to small-scale
+🧮 Your gas composition prices the cargo instantly: e.g. Adam LNG, 162,000 m³ at 98.5 % with 3,000 m³ heel → 159,570 m³ · 74,570 t · 89,727 kNm³ · 3.854 TBtu (HHV)
+📖 Every fleet entry credits "IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — reproduced with permission" and links to the report
+📸 The 36 featured vessels keep their own primary sources and Wikimedia Commons photos
+
+A heartfelt thank-you to the International Gas Union 🙏 — for the report our whole industry leans on, and for so generously supporting a free tool built by one engineer in his spare time. This is what open knowledge-sharing looks like. 🌍
+
+Free, no sign-up, no ads, 10 languages, open source (MIT):
+👉 https://engineering-converter.com
+
+#LNG #IGU #NaturalGas #LNGShipping #OilAndGas #ProcessEngineering #OpenSource
+
+──────────
+
+🚢✨ 36隻から、稼働中のLNG船隊すべて — 804隻へ。
+
+先週、International Gas Union（国際ガス連盟）に思い切ったお願いのメールを送りました。「無料のオープンソース・エンジニアリングツールに、IGU World LNG Report 2026 の船隊一覧表（Appendix 3）を転載させていただけませんか」と。
+
+数日で届いた返事は、温かい「Yes」でした。条件は出典表記とリンクのみ。🙏
+
+そして v3.9 として公開しました 🎉
+⚓ 2025年末時点で稼働中のLNG船804隻すべてから選択可能 — Q-Max、Q-Flex、在来船、Arc7砕氷船、FSRU/FSU、小型船まで
+🧮 ガス組成からカーゴを即座に換算：例）Adam LNG、162,000 m³・積載98.5 %・ヒール3,000 m³ → 159,570 m³ · 74,570 t · 89,727 kNm³ · 3.854 TBtu（HHV）
+📖 全船隊エントリに「IGU World LNG Report 2026, Appendix 3（Rystad Energy データ）— 許諾を得て転載」の出典とリンクを表示
+📸 特集36隻は固有の一次出典と Wikimedia Commons の写真を維持
+
+業界全体が頼りにするレポートを発行し、一人のエンジニアが空き時間に作った無料ツールをこれほど寛大に支えてくださった International Gas Union に、心から感謝します 🙏 これこそ、この業界のオープンな知の共有だと思います 🌍
+
+無料・登録不要・広告なし・10言語・オープンソース（MIT）:
+👉 https://engineering-converter.com
+
+#LNG #IGU #天然ガス #LNG船 #プロセスエンジニアリング #オープンソース
