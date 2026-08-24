@@ -1,0 +1,65 @@
+Above 1,500 psia, steam relief needs the Napier correction. On this case it is 1.0115 — a 1.15 % change nobody notices when it is missing.
+
+And liquid sizing cannot be done in a single pass at all.
+
+STEAM (§5.7). A = W / (51.5·P₁·K_d·K_b·K_c·K_N·K_SH). At 153,500 lb/h and P₁ = 1,774.7 psia: 1.7030 in² → orifice K. K_N switched itself on because P₁ crossed 1,500 psia, and it is reported as its own number rather than folded silently into the answer. That matters more than the 1.15 % — a correction you can see is one you can check, and one you notice missing.
+
+LIQUID (§5.8 / §5.9). Same duty, 1,800 gal/min at SG 0.9, sized as certified and non-certified:
+
+certified 4.1690 in² → orifice N
+non-certified 4.1001 in² → orifice N
+
+1.65 % apart, same letter. The reason is not the one people expect — I had it wrong in my own draft until I checked.
+
+It is not just the discharge coefficient. Two things change, and they pull opposite ways:
+
+K_d 0.65 → 0.62 would ENLARGE the area by 4.84 %
+ΔP basis P₁ = 275 → 1.25·P_s = 312.5 psi SHRINKS it by 6.19 %
+
+Net 1.65 % smaller. If you carry "lower K_d means a bigger valve" as a rule of thumb, it fails here: the pressure basis moved further than the coefficient.
+
+Then the part that cannot be done in one pass. K_v needs a Reynolds number; Re needs the orifice area — which you have not chosen yet, because choosing it is the job. So:
+
+1. Size with K_v = 1
+2. Select the next API 526 orifice up — a real area, not the required one
+3. Compute Re on THAT area
+4. Apply K_v and re-check; if the corrected area exceeds the orifice, go back to 2
+
+Step 3 is where the shortcut happens: using the required area instead of the selected one. That error lands on the safe side only by accident.
+
+https://engineering-converter.com
+
+— — —
+
+1,500 psia を超える蒸気リリーフには Napier 補正が要ります。このケースでは 1.0115。抜けていても誰も気づかない 1.15 % です。
+
+そして液相サイジングは、そもそも一度では終わりません。
+
+蒸気（§5.7）。A = W / (51.5·P₁·K_d·K_b·K_c·K_N·K_SH)。153,500 lb/h、P₁ = 1,774.7 psia で 1.7030 in² → オリフィス K。P₁ が 1,500 psia を越えたので K_N が自動で有効になり、答えに黙って畳み込まれず独立した数値で表示されます。1.15 % という値よりこちらが重要です。見える補正は検算でき、効いていないことにも気づけます。
+
+液相（§5.8 / §5.9）。同じ条件 1,800 gal/min、SG 0.9 を認証弁と非認証弁で:
+
+認証 4.1690 in² → オリフィス N
+非認証 4.1001 in² → オリフィス N
+
+差は 1.65 %、記号は同じ。ただし理由は予想と違います。私自身、草稿では取り違えていて確認して直しました。
+
+流量係数だけの差ではありません。2つが変わり、向きが逆です。
+
+K_d 0.65 → 0.62 は面積を 4.84 % 拡大する方向
+ΔP の基準が P₁ = 275 → 1.25·P_s = 312.5 psi になり 6.19 % 縮小する方向
+
+差し引き 1.65 % 小さい。「K_d が低いから弁が大きくなる」という経験則はここでは外れます。圧力基準のほうが大きく動いたからです。
+
+そして一度では終わらない部分。K_v にはレイノルズ数が要り、Re にはオリフィス面積が要る。その面積はまだ選んでいない。選ぶことが目的だからです。
+
+1. K_v = 1 でサイズを出す
+2. API 526 の次に大きいオリフィスを選ぶ（必要面積ではなく実面積）
+3. その面積で Re を計算する
+4. K_v を適用して再確認。補正後の面積がオリフィスを超えたら 2 に戻る
+
+近道が起きるのはステップ3。選んだ面積ではなく必要面積を使ってしまう。それが安全側に出るのは、たまたまのときだけです。
+
+https://engineering-converter.com
+
+#ProcessSafety #ReliefSystems #API520 #プロセスエンジニアリング

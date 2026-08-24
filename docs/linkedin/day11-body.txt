@@ -1,0 +1,63 @@
+Required area 5.7047 in². Nearest API 526 orifice: P, at 6.38 in².
+
+Nobody queries the letter in a design review. They query the C, the P_cf, and whether you were really in critical flow.
+
+So here are two gas cases sized on the same card, minutes apart.
+
+The example the tool ships: 8,000 lb/h, M 19, T 560 °R, P₁ 179.7 psia → 0.7144 in² → orifice H.
+The published reference case: 53,500 lb/h, M 51, T 627 °R, P₁ 97.2 psia → 5.7047 in² → orifice P.
+
+Eight times the area. Two different letters. And two of the three intermediates do not move at all:
+
+C = 346.9764 — both
+P_cf/P₁ = 0.5457 — both
+P_cf = 98.067 vs 53.045 psia — the only one that moves
+
+Not a coincidence, and it is the thing worth carrying. Both C and the critical pressure ratio are functions of k alone:
+
+C = 520·√( k·(2/(k+1))^((k+1)/(k−1)) )
+ratio = (2/(k+1))^(k/(k−1))
+
+Same k = 1.3, same two numbers, whatever else you change. P_cf moves only because it is that ratio times P₁, and P₁ was the one pressure that differed.
+
+So a reviewer asking "where did C come from?" is really asking "what k did you use?" — and if yours came from a stream composition at relieving temperature rather than a textbook 1.3, that is the answer they want.
+
+Now the part that carries risk. Both cases report Critical Flow, and both are critical because P₂ sits below P_cf — 0 psig against 98.067 and 53.045 psia. Not because the tool defaults there. Raise P₂ past P_cf and the same card switches to the subcritical equation, where back-pressure stops dropping out and starts sizing the valve.
+
+Open the case, push P₂ up until it crosses P_cf, and watch the branch flip. The fastest way to see where the equation switches — and the cheapest way to find your assumed back-pressure on the wrong side of it.
+
+https://engineering-converter.com
+
+— — —
+
+必要オリフィス面積 5.7047 in²。API 526 で最も近いのは P、6.38 in²。
+
+設計レビューでオリフィス記号を突かれた人は、たぶんいません。突かれるのは C、P_cf、そして「本当に臨界流だったのか」です。
+
+そこで、同じカードで数分違いに計算したガスの2ケース。
+
+ツール同梱の例: 8,000 lb/h、M 19、T 560 °R、P₁ 179.7 psia → 0.7144 in² → オリフィス H。
+公開リファレンス: 53,500 lb/h、M 51、T 627 °R、P₁ 97.2 psia → 5.7047 in² → オリフィス P。
+
+面積は8倍、記号は別物。それでも3つの中間量のうち2つはまったく動きません。
+
+C = 346.9764 — 両方
+P_cf/P₁ = 0.5457 — 両方
+P_cf = 98.067 対 53.045 psia — 動くのはこれだけ
+
+偶然ではなく、ここが持ち帰るべき点です。C も臨界圧力比も k だけの関数だからです。
+
+C = 520·√( k·(2/(k+1))^((k+1)/(k−1)) )
+比 = (2/(k+1))^(k/(k−1))
+
+k = 1.3 が同じなら、他が何であれこの2つは同じ。P_cf が動くのは、それが「比 × P₁」であり、今回 P₁ だけが違ったからです。
+
+つまりレビューで「その C はどこから？」と聞かれているのは、実は「k は何を使った？」という質問です。教科書の 1.3 ではなく、リリーフ温度での実組成から取った k なら、それが求められている答えです。
+
+そしてリスクを持つ部分。両ケースとも Critical Flow と表示されますが、それは P₂ が P_cf を下回っているから。0 psig に対して 98.067 と 53.045 psia です。ツールが既定でそちらに倒しているのではありません。P₂ を P_cf より上げれば、同じカードが亜臨界式に切り替わり、背圧が「式から消える量」から「弁を決める量」に変わります。
+
+ケースを開いて、P₂ を P_cf を越えるまで上げてみてください。式がどこで切り替わるかを見る最短の方法であり、想定した背圧が境界のどちら側だったかを知る最も安価な方法でもあります。
+
+https://engineering-converter.com
+
+#ProcessSafety #ReliefSystems #API520 #プロセスエンジニアリング

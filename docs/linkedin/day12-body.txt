@@ -1,0 +1,63 @@
+A relief-sizing error sat in my two-phase code from v2.0 onward, and literally nobody could trigger it.
+
+Fixing an unrelated default would have made it the default path. So both fixes shipped in the same PR.
+
+Two coupled defects, one hiding the other.
+
+The first was a default. An omitted back-pressure fell through to zero — a perfect vacuum. Not a conservative simplification but a physically impossible boundary condition — and η = Pa/Po = 0 is always below the critical ratio, so the choked branch fired unconditionally and the subcritical equation sat as dead code for years.
+
+The second was inside that dead code. Leung's bracket should be
+
+−2·[ ω·ln η + (ω−1)(1−η) ]
+
+and I had typed
+
+−2·ω·ln η + (ω−1)(1−η)
+
+The −2 multiplying only the log term. One pair of brackets.
+
+On the published reference case (ω = 1.4817, η_c = 0.6564) the choked flux is 590.891 lb/s·ft². The old expression at the same η_c returns 734.
+
+Flux above choked flux is impossible — choked flow is the maximum. A flux that is too high divides into an area that is too small, so it under-sized the valve by about 19 % wherever that branch applied.
+
+The test on the correction is worth stealing even if you never touch relief valves. η_c is defined as the point where the flux expression peaks, so the subcritical form evaluated at η_c must reproduce the choked value. Not a pinned number — a property. It holds to 0.015 %, and that residual is Eq. C.15 approximating a transcendental equation, not the formula wobbling.
+
+The bug survived because it was unreachable, and was found by adversarial review of the very PR that would have made it reachable. Unreachable code is not safe code. It is code nobody has ever asked a question.
+
+The reference case above sits on the critical branch, so the fix does not move it — which is why this needed a plot rather than a number.
+
+https://engineering-converter.com
+
+— — —
+
+私の二相リリーフ計算には v2.0 以降ずっと誤りが潜んでいて、しかも誰ひとり発火させられませんでした。
+
+無関係なデフォルト値を直すと、その誤りが既定の経路になる。だから両方の修正を同じPRで出しました。
+
+絡み合った2つの欠陥、片方がもう片方を隠していた形です。
+
+1つ目はデフォルト値。背圧を省略するとゼロに落ちていました。完全真空です。保守的な簡略化ではなく物理的にありえない境界条件で、η = Pa/Po = 0 は常に臨界比を下回ります。結果、チョーク側分岐が無条件で選ばれ、亜臨界式は何年もデッドコードのままでした。
+
+2つ目はそのデッドコードの中。Leung の括弧は本来
+
+−2·[ ω·ln η + (ω−1)(1−η) ]
+
+ですが、私が書いていたのは
+
+−2·ω·ln η + (ω−1)(1−η)
+
+−2 が対数項にしか掛かっていない。括弧ひと組の違いです。
+
+何が起きるか。公開リファレンス（ω = 1.4817、η_c = 0.6564）でチョーク質量流束は 590.891 lb/s·ft²。旧式は同じ η_c で 734 を返します。
+
+チョーク流束を超える流束はありえません。チョークとは最大のことです。流束が過大なら必要面積は過小になる。この分岐が効く範囲で弁を約19%小さく見積もっていました。
+
+修正に付けたテストは、リリーフ弁に触らない人にも真似する価値があります。η_c は「流束式が最大になる点」として定義されるので、亜臨界式を η_c で評価すればチョーク値を再現しなければならない。数値を焼き付けるのではなく、性質を検査する。ここでは 0.015 % で一致し、その残差は Eq. C.15 が超越方程式を近似していることによるもので、式が揺れているのではありません。
+
+この誤りが生き延びたのは到達不能だったからで、見つかったのは「到達可能にするPR」自体の敵対的レビューでした。到達不能なコードは安全なコードではありません。一度も問いを向けられていないコードです。
+
+上のリファレンスケースは臨界分岐にあり、この修正では動きません。だからこそ数値ではなくグラフが要りました。
+
+https://engineering-converter.com
+
+#ProcessSafety #ReliefSystems #API520 #プロセスエンジニアリング

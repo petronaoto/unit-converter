@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 13 mockup — Napier, and the loop you cannot do in one pass</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #app{position:absolute;width:1280px;height:1900px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 13 — "Napier, and the viscosity correction you cannot do in one pass"
+
+  Three real results, all cloned from the live Safety card:
+    steam (5.7)          1.7030 in2 -> K, with K_N reported as its own number
+    liquid certified     4.1690 in2 -> N   (Kd 0.65)
+    liquid non-certified 4.1001 in2 -> N   (Kd 0.62)
+
+  The two liquid cases differ ONLY in the discharge coefficient and land on the same orifice
+  letter - which is the quiet point of the pairing, and it is asserted rather than eyeballed.
+
+  Serve the repo root over HTTP and open /docs/linkedin/day13-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-cyan-400 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.8.4</span>
+      <span class="text-slate-600">·</span> Safety <span class="text-slate-600">▸</span>
+      API 520 §5.7 Steam <span class="text-slate-600">·</span> §5.8 / §5.9 Liquid</span>
+  </div>
+
+  <!-- steam -->
+  <div class="absolute" style="left:28px;top:64px;width:560px;">
+    <div class="text-cyan-300 text-[11.5px] tracking-[0.13em]">§5.7 STEAM — NAPIER, WITH K_N SHOWN</div>
+    <div class="text-slate-500 text-[11.5px]" style="margin-top:4px;" id="in-steam">…</div>
+    <div id="card-steam" style="margin-top:9px;"></div>
+    <div id="kn-note" class="text-slate-400 text-[12px] leading-relaxed" style="margin-top:9px;"></div>
+  </div>
+
+  <!-- liquid pair -->
+  <div class="absolute" style="left:612px;top:64px;width:560px;">
+    <div class="text-amber-300 text-[11.5px] tracking-[0.13em]">§5.8 / §5.9 LIQUID — CERTIFIED vs NON-CERTIFIED</div>
+    <div class="text-slate-500 text-[11.5px]" style="margin-top:4px;" id="in-liq">…</div>
+    <div id="card-lc" style="margin-top:9px;"></div>
+    <div id="card-ln" style="margin-top:8px;"></div>
+    <div id="liq-note" class="text-slate-400 text-[12px] leading-relaxed" style="margin-top:9px;"></div>
+  </div>
+
+  <!-- the loop -->
+  <div class="absolute rounded-lg px-4 py-2" style="left:28px;top:490px;width:1144px;
+       border:1px solid rgba(34,211,238,.28);background:rgba(15,23,42,.6);">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:8px;">
+      And liquid sizing cannot be done in a single pass — because K_v needs a Reynolds number that needs the orifice you have not chosen yet.</div>
+    <div id="loop" style="display:flex;align-items:stretch;gap:10px;"></div>
+  </div>
+
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+function cloneResults(doc, win, slotId, width) {
+  var node = doc.getElementById('psv-out-area').parentElement.parentElement.parentElement.parentElement;
+  var clone = node.cloneNode(true);
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  [].forEach.call(clone.querySelectorAll('*'), function (el) {
+    if (el.children.length) { return; }
+    el.style.whiteSpace = 'nowrap';
+    if (el.style.display === 'inline-block') { el.style.width = 'auto'; }
+  });
+  var rect = node.getBoundingClientRect();
+  var k = width / rect.width;
+  clone.style.width = rect.width + 'px';
+  clone.style.transformOrigin = '0 0';
+  clone.style.transform = 'scale(' + k + ')';
+  var slot = document.getElementById(slotId);
+  slot.innerHTML = '';
+  slot.style.height = Math.ceil(rect.height * k) + 'px';
+  slot.style.overflow = 'hidden';
+  slot.appendChild(clone);
+}
+
+var R = {};
+
+function readOut(doc) {
+  return {
+    area: doc.getElementById('psv-out-area').textContent.trim(),
+    unit: doc.getElementById('psv-out-area-unit').textContent.trim(),
+    orifice: doc.getElementById('psv-out-orifice').textContent.trim(),
+    oarea: doc.getElementById('psv-out-orifice-area').textContent.trim(),
+    details: doc.getElementById('psv-out-details').textContent.trim(),
+    badge: doc.getElementById('psv-badge').textContent.trim()
+  };
+}
+
+var QUEUE = [
+  { mode: 'steam',          key: 'steam', slot: 'card-steam', w: 560 },
+  { mode: 'liquid_cert',    key: 'lc',    slot: 'card-lc',    w: 560 },
+  { mode: 'liquid_noncert', key: 'ln',    slot: 'card-ln',    w: 560 }
+];
+var qi = 0;
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+  setTimeout(function () { win.switchTab('safety'); step(doc, win); }, 900);
+}
+
+function step(doc, win) {
+  if (qi >= QUEUE.length) { fillPanels(doc); return; }
+  var job = QUEUE[qi];
+  var sel = doc.getElementById('psv-mode');
+  sel.value = job.mode;
+  sel.dispatchEvent(new win.Event('change', { bubbles: true }));
+  setTimeout(function () {
+    win.psvLoadExample();
+    setTimeout(function () {
+      win.calcPSV();
+      waitFor(doc, win, job, 0);
+    }, 300);
+  }, 300);
+}
+
+function waitFor(doc, win, job, tries) {
+  var a = doc.getElementById('psv-out-area').textContent.trim();
+  var b = doc.getElementById('psv-badge').textContent.trim();
+  var expect = job.mode === 'steam' ? /Steam/i : (job.mode === 'liquid_cert' ? /5\.8|Certified/i : /5\.9|Non-Certified/i);
+  if (a && a !== '—' && expect.test(b)) {
+    R[job.key] = readOut(doc);
+    cloneResults(doc, win, job.slot, job.w);
+    qi++;
+    setTimeout(function () { step(doc, win); }, 150);
+    return;
+  }
+  if (tries > 150) { document.body.setAttribute('data-ready', 'TIMEOUT-' + job.mode); return; }
+  setTimeout(function () { waitFor(doc, win, job, tries + 1); }, 100);
+}
+
+function pick(d, key) {
+  var m = d.match(new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*=\\s*([0-9.]+)'));
+  return m ? m[1] : null;
+}
+
+function fillPanels(doc) {
+  var KN = pick(R.steam.details, 'KN');
+
+  document.getElementById('in-steam').textContent =
+    'W 153,500 lb/h · P₁ 1,774.7 psia · K_d 0.975 — above the 1,500 psia Napier threshold';
+  // NOT "identical but for K_d": section 5.9 also swaps the pressure basis, from P1 to 1.25*Ps.
+  document.getElementById('in-liq').textContent =
+    'Q 1,800 gal/min · G_l 0.9 · P₂ 0 — §5.8 on ΔP = P₁ = 275 psi, K_d 0.65 · §5.9 on 1.25·P_s = 312.5 psi, K_d 0.62';
+
+  document.getElementById('kn-note').innerHTML =
+    'A = W / (51.5·P₁·K_d·K_b·K_c·K_N·K_SH). <b style="color:#67e8f9;">K_N = ' + KN + '</b> switched itself on '
+    + 'because P₁ &gt; 1,500 psia, and is reported as its own number — so you can see that it acted, '
+    + 'rather than discovering later that it did not.';
+
+  var sameLetter = R.lc.orifice === R.ln.orifice;
+  // Decompose the gap rather than attributing it to K_d, which is only half of it and
+  // points the OTHER way. A ~ 1/Kd and A ~ sqrt(1/dP), so:
+  var fKd = 0.65 / 0.62;                       // >1: the lower Kd alone would ENLARGE the area
+  var fDP = Math.sqrt(275.0 / 312.5);          // <1: the higher pressure basis shrinks it
+  var net = fKd * fDP;
+  document.getElementById('liq-note').innerHTML =
+    '<b style="color:#fcd34d;">' + R.lc.area + '</b> vs <b style="color:#fcd34d;">' + R.ln.area
+    + '</b> in² — only ' + ((1 - net) * 100).toFixed(2) + ' % apart, and <b style="color:#e2e8f0;">'
+    + (sameLetter ? 'both land on orifice ' + R.lc.orifice : 'they land on DIFFERENT letters') + '</b>. '
+    + 'Two changes nearly cancelling: K_d 0.65→0.62 would <b style="color:#fda4af;">enlarge</b> it '
+    + ((fKd - 1) * 100).toFixed(2) + ' %, while ΔP 275→312.5 psi <b style="color:#6ee7b7;">shrinks</b> it '
+    + ((1 - fDP) * 100).toFixed(2) + ' %.';
+
+  var steps = [
+    ['1', 'Size without K_v', 'Set K_v = 1 and solve for A.'],
+    ['2', 'Select the orifice', 'Take the next API 526 letter up — a real area, not the required one.'],
+    ['3', 'Re on THAT area', 'Reynolds follows the orifice you chose, not the one you computed.'],
+    ['4', 'Apply K_v, re-check', 'If the corrected area exceeds the selected orifice, go back to 2.']
+  ];
+  document.getElementById('loop').innerHTML = steps.map(function (s, i) {
+    return '<div style="flex:1 1 0;border:1px solid rgba(148,163,184,.22);border-radius:8px;padding:8px 10px;'
+      + 'background:rgba(2,6,23,.5);">'
+      + '<div style="color:#22d3ee;font-size:11px;font-weight:700;letter-spacing:.08em;">STEP ' + s[0]
+      + (i === 3 ? ' &nbsp;↺' : '') + '</div>'
+      + '<div style="color:#e2e8f0;font-size:12.5px;font-weight:600;margin-top:3px;">' + s[1] + '</div>'
+      + '<div style="color:#94a3b8;font-size:11.5px;margin-top:3px;line-height:1.5;">' + s[2] + '</div>'
+      + '</div>';
+  }).join('');
+
+  document.body.setAttribute('data-ready', [
+    'steam=' + R.steam.area + R.steam.unit + '/' + R.steam.orifice,
+    'KN=' + KN,
+    'lc=' + R.lc.area + '/' + R.lc.orifice,
+    'ln=' + R.ln.area + '/' + R.ln.orifice,
+    'liquid_same_letter=' + sameLetter,
+    'net_factor=' + net.toFixed(6),
+    'decomposition_reproduces_app=' +
+      (Math.abs(parseFloat(R.lc.area) * net - parseFloat(R.ln.area)) < 5e-4),
+    'steam_badge=' + R.steam.badge
+  ].join('|'));
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], dd = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (dd.getAttribute('style') && !dd.getAttribute('class')) { continue; }
+    freezeStyle(s, dd, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 13 — Napier and the K_v loop</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day13-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>

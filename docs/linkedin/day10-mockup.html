@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 10 mockup — the report carries the inputs; the guard keeps them honest</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  /* 1200x675 = LinkedIn 16:9 single-image post. Screenshot #shot exactly. */
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #arrows{position:absolute;left:0;top:0;width:1200px;height:675px;pointer-events:none;z-index:40;}
+  /* The staging iframe needs a REAL desktop viewport or the app lays out mobile. */
+  #app{position:absolute;width:1280px;height:1600px;left:-20000px;top:0;border:0;pointer-events:none;}
+  /* Crops of the real exported report. The PNG is a headless capture of the document
+     exportReport() actually produced, at 900 px wide; each window shows one band of it. */
+  .crop{overflow:hidden;position:relative;}
+  .crop img{position:absolute;left:0;width:900px;transform-origin:0 0;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 10 — "Which roughness did you use?"
+
+  C14: the sheet's hook said the report does NOT carry the input. It does. Section 2 of the real
+  export lists Pipe ID, Length, Elevation, Roughness, Erosion C-factor, two-phase method and both
+  flows beside the results. The post is rebuilt on the true version: the report puts inputs next
+  to results, and the stale guard is what stops that pair from becoming a lie.
+
+  Everything here is the app's own output:
+    - the two report bands are crops of day10-report.png, a headless capture of the document
+      exportReport() produced for the reference case;
+    - both badges are cloned from the live DP card, before and after touching an input;
+    - the coverage ledger is DERIVED from the exported document, not hand-typed - the section
+      list and the Basic Eng rows are read out of the captured HTML, and the omissions are
+      asserted absent from it.
+
+  Serve the repo root over HTTP and open /docs/linkedin/day10-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.8.4</span>
+      <span class="text-slate-600">·</span> Export PDF <span class="text-slate-600">▸</span>
+      the report this tool actually produces</span>
+  </div>
+
+  <!-- ================= the real exported report ================= -->
+  <div class="absolute" style="left:28px;top:64px;width:712px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]" style="margin-bottom:6px;">THE EXPORTED REPORT — NOT A MOCK-UP</div>
+    <div class="crop" id="crop-head" style="width:712px;height:52px;border-radius:6px 6px 0 0;background:#fff;">
+      <img id="rep1" src="day10-report.png" alt="">
+    </div>
+    <div class="crop" id="crop-sec2" style="width:712px;height:196px;border-radius:0 0 6px 6px;background:#fff;">
+      <img id="rep2" src="day10-report.png" alt="">
+    </div>
+    <div class="text-emerald-300 text-[12px]" style="margin-top:8px;" id="inputs-note">…</div>
+  </div>
+
+  <!-- ================= the guard ================= -->
+  <div class="absolute" style="left:764px;top:64px;width:408px;">
+    <div class="text-amber-300 text-[11px] tracking-[0.12em]">THE GUARD — CHANGE ONE INPUT</div>
+    <div style="margin-top:9px;" class="text-slate-500 text-[11px]">BEFORE</div>
+    <div id="badge-before" style="margin-top:5px;"></div>
+    <div style="margin-top:10px;" class="text-slate-500 text-[11px]">AFTER — roughness 0.045 → 0.046 mm</div>
+    <div id="badge-after" style="margin-top:5px;"></div>
+    <div id="guard-note" class="text-slate-400 text-[12px] leading-relaxed" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- ================= coverage ledger ================= -->
+  <div class="absolute" style="left:764px;top:352px;width:408px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">AND WHAT IT LEAVES OUT</div>
+    <div id="coverage" style="margin-top:8px;"></div>
+  </div>
+
+  <!-- ================= takeaway band ================= -->
+  <div class="absolute rounded-lg px-4 py-2" style="left:28px;top:566px;width:1144px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div id="takeaway" class="text-slate-300 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <!-- Footer strip -->
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+
+  <svg id="arrows" viewBox="0 0 1200 675" width="1200" height="675"></svg>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+// Crop geometry, measured against the 900x1500 capture of the report.
+var SCALE = 712 / 900;
+var HEAD_Y = 62;     // "O&G Engineering Converter - Calculation Report" + version/date line
+var SEC2_Y = 588;    // "2 - Pipe Pressure Drop" heading through the results table
+
+var REPORT = null;   // the exported document, captured in the frame
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  // Place the report crops. EVERY property must be set INLINE: buildStandalone() drops this
+  // document's <style> block, and it skips elements that already carry an inline style, so a
+  // rule living only in `.crop img` would vanish and the crops would render blank.
+  [['rep1', HEAD_Y], ['rep2', SEC2_Y]].forEach(function (pair) {
+    var el = document.getElementById(pair[0]);
+    el.style.position = 'absolute';
+    el.style.left = '0px';
+    el.style.width = '900px';
+    el.style.transformOrigin = '0 0';
+    el.style.transform = 'scale(' + SCALE + ')';
+    el.style.top = (-pair[1] * SCALE) + 'px';
+  });
+
+  win.__dp = null;
+  var of = win.fetch;
+  win.fetch = function (u, o) {
+    return of.apply(this, arguments).then(function (r) {
+      var c = r.clone();
+      if (String(u).indexOf('dp_calculator') >= 0) {
+        c.json().then(function (j) { win.__dp = j; }).catch(function () {});
+      }
+      return r;
+    });
+  };
+
+  setTimeout(function () {
+    if (typeof win.switchTab === 'function') { win.switchTab('advanced'); }
+    if (typeof win.switchAdvSub === 'function') { win.switchAdvSub('hyd'); }
+    // The regime map must be computed too, or the exported document is missing section 3's
+    // figure and the ledger would describe a different artifact from the one cropped above.
+    win.calcDeltaPressure();
+    win.calcFlowRegime();
+    waitForResult(doc, win, 0);
+  }, 900);
+}
+
+function waitForResult(doc, win, tries) {
+  var frDone = false;
+  try { frDone = !!win.eval('typeof lastFlowRegime !== "undefined" && lastFlowRegime'); } catch (e) {}
+  if (win.__dp && win.__dp.error === false && frDone &&
+      doc.getElementById('dp-out-ve').textContent.trim() !== '—') {
+    captureReportAndBadges(doc, win); return;
+  }
+  if (tries > 120) { document.body.setAttribute('data-ready', 'TIMEOUT'); return; }
+  setTimeout(function () { waitForResult(doc, win, tries + 1); }, 100);
+}
+
+function cloneBadge(doc, win, slotId) {
+  var node = doc.getElementById('dp-regime-badge');
+  var clone = node.cloneNode(true);
+  freezeStyle(node, clone, win);
+  clone.style.whiteSpace = 'nowrap';
+  var slot = document.getElementById(slotId);
+  slot.innerHTML = ''; slot.appendChild(clone);
+  return node.innerText.trim();
+}
+
+function captureReportAndBadges(doc, win) {
+  // 1. the fresh badge
+  var beforeText = cloneBadge(doc, win, 'badge-before');
+  var outsBefore = ['dp-out-total','dp-out-vel','dp-out-re','dp-out-f','dp-out-ve']
+    .map(function (i) { return doc.getElementById(i).textContent.trim(); });
+
+  // 2. the exported document, intercepted rather than popped open
+  var captured = null;
+  var realOpen = win.open;
+  win.open = function () {
+    return { document: { open: function () {}, write: function (h) { captured = h; }, close: function () {} },
+             focus: function () {}, closed: false };
+  };
+  try { win.exportReport(); } finally { win.open = realOpen; }
+  REPORT = captured || '';
+
+  // 3. touch an input the way a user would, then re-clone
+  var r = doc.getElementById('dp-rough');
+  r.value = '0.046';
+  r.dispatchEvent(new win.Event('input', { bubbles: true }));
+
+  setTimeout(function () {
+    var afterText = cloneBadge(doc, win, 'badge-after');
+    var outsAfter = ['dp-out-total','dp-out-vel','dp-out-re','dp-out-f','dp-out-ve']
+      .map(function (i) { return doc.getElementById(i).textContent.trim(); });
+    fillPanels(doc, win, beforeText, afterText, outsBefore, outsAfter);
+  }, 250);
+}
+
+function fillPanels(doc, win, beforeText, afterText, outsBefore, outsAfter) {
+  var figuresStay = JSON.stringify(outsBefore) === JSON.stringify(outsAfter);
+
+  // ---- the coverage ledger, DERIVED from the exported document ----
+  var headings = [], m, re = /<h3>([^<]+)<\/h3>/g;
+  while ((m = re.exec(REPORT)) !== null) { headings.push(m[1]); }
+
+  var basicBlock = REPORT.split('5 · Basic Engineering')[1] || '';
+  basicBlock = basicBlock.split('<h3>')[0];
+  var rows = [], m2, re2 = /<t[dh][^>]*>([^<]{2,60})<\/t[dh]>/g;
+  while ((m2 = re2.exec(basicBlock)) !== null) {
+    var v = m2[1].trim();
+    if (v && rows.indexOf(v) < 0 && !/^[\d.,%\s°]+$/.test(v)) { rows.push(v); }
+  }
+
+  var OMISSIONS = ['Fitting', 'Equivalent', 'NORSOK', 'Steam', 'NPSH', 'Compressor', 'Gas Property'];
+  var absent = OMISSIONS.filter(function (o) { return REPORT.indexOf(o) < 0; });
+
+  document.getElementById('inputs-note').innerHTML =
+    '✓ Pipe ID, length, elevation, <b style="color:#6ee7b7;">roughness</b>, C-factor, two-phase method '
+    + 'and both flows sit <b>beside</b> the results — same page, same run.';
+
+  document.getElementById('guard-note').innerHTML =
+    'The badge is appended to and recoloured; <b style="color:#e2e8f0;">the figures stay on screen</b>'
+    + (figuresStay ? '' : ' <span style="color:#f43f5e;">[ASSERTION FAILED]</span>')
+    + '. It does not blank the card — it refuses to let a number and its inputs quietly disagree.';
+
+  var cov = '<div style="display:flex;align-items:baseline;padding:4px 2px;">'
+    + '<span style="flex:1 1 auto;color:#94a3b8;font-size:12px;">Sections in the report</span>'
+    + '<span style="color:#6ee7b7;font-size:13px;font-weight:700;">' + headings.length + '</span></div>'
+    + '<div style="display:flex;align-items:baseline;padding:4px 2px;border-bottom:1px solid rgba(148,163,184,.10);">'
+    + '<span style="flex:1 1 auto;color:#94a3b8;font-size:12px;">Basic Eng cards carried</span>'
+    + '<span style="color:#fcd34d;font-size:13px;font-weight:700;">' + rows.length + ' of 9</span></div>'
+    + '<div style="color:#f43f5e;font-size:12px;margin-top:8px;line-height:1.65;">'
+    + 'Not in the report: Steam · NPSHa · Compressor · Gas Property Estimator · '
+    + 'and the fittings / line-sizing row of the ΔP card.</div>';
+  document.getElementById('coverage').innerHTML = cov;
+
+  document.getElementById('takeaway').innerHTML =
+    'A report that carries its inputs is only worth something if the two still match. '
+    + 'That is the whole job of the stale flag — and the scope list above is in this graphic '
+    + 'because a post about traceability that overstates its own coverage would be the same failure '
+    + 'in a smaller font.';
+
+  document.getElementById('arrows').innerHTML = '';
+
+  document.body.setAttribute('data-ready', [
+    'sections=' + headings.length,
+    'basic_rows=' + rows.length,
+    'omissions_absent=' + (absent.length === OMISSIONS.length),
+    'badge_before=' + beforeText,
+    'badge_after=' + afterText,
+    'badge_changed=' + (beforeText !== afterText),
+    'figures_stay=' + figuresStay,
+    'report_bytes=' + REPORT.length
+  ].join('|'));
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 10 — which roughness did you use</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day10-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>

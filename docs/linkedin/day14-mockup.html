@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 14 mockup — ideal gas costs you 7.5 % on the speed of sound</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #app{position:absolute;width:1280px;height:2400px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 14 — "Ideal gas costs you 7.5 % on the speed of sound"
+
+  The curve is SWEPT THROUGH THE LIVE APP, not modelled here: for each pressure the Gas Property
+  Estimator is driven and its own Z and c are read back out of the DOM. The ideal-gas comparison
+  is the one derived quantity - c_ideal = c_real / sqrt(Z), which follows from c = sqrt(kZRT/M)
+  with Z set to 1 - and it is labelled as derived in the post, per the campaign's rule for a
+  value the app does not itself compute.
+
+  Serve the repo root over HTTP and open /docs/linkedin/day14-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.8.4</span>
+      <span class="text-slate-600">·</span> Basic Eng <span class="text-slate-600">▸</span>
+      Gas Property Estimator <span class="text-slate-600">▸</span> sonic velocity</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <div class="absolute" style="left:28px;top:80px;width:700px;">
+    <svg id="plot" width="700" height="392" viewBox="0 0 700 392"></svg>
+  </div>
+
+  <div class="absolute" style="left:752px;top:80px;width:420px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">AT 2,000 psi — STRAIGHT FROM THE CARD</div>
+    <div id="card" style="margin-top:8px;"></div>
+    <div id="nums" class="text-slate-400 text-[12px] leading-relaxed" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-2" style="left:28px;top:474px;width:1144px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:5px;" id="head">…</div>
+    <div id="body" class="text-slate-400 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; no tracking &middot; 10 languages</div>
+  </div>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+var PTS = [], REF = null;
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    win.switchTab('basic');
+    setTimeout(function () { sweep(doc, win, 0); }, 500);
+  }, 900);
+}
+
+var PRESSURES = [200, 400, 600, 800, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 3000, 3500, 4000];
+
+function setV(doc, win, id, v) {
+  var e = doc.getElementById(id); e.value = v;
+  e.dispatchEvent(new win.Event('input', { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function sweep(doc, win, i) {
+  if (i >= PRESSURES.length) {
+    // land on the headline case last, so the cloned card shows 2,000 psi
+    setV(doc, win, 'gp-sg', '0.65'); setV(doc, win, 'gp-p', '2000');
+    setV(doc, win, 'gp-t', '150'); setV(doc, win, 'gp-k', '1.3');
+    if (typeof win.calcGasProps === 'function') { win.calcGasProps(); }
+    setTimeout(function () {
+      REF = read(doc);
+      cloneCard(doc, win);
+      draw();
+    }, 350);
+    return;
+  }
+  setV(doc, win, 'gp-sg', '0.65'); setV(doc, win, 'gp-p', String(PRESSURES[i]));
+  setV(doc, win, 'gp-t', '150'); setV(doc, win, 'gp-k', '1.3');
+  if (typeof win.calcGasProps === 'function') { win.calcGasProps(); }
+  setTimeout(function () {
+    var r = read(doc);
+    if (r.Z > 0 && r.c > 0) { PTS.push({ p: PRESSURES[i], Z: r.Z, c: r.c, ideal: r.c / Math.sqrt(r.Z) }); }
+    sweep(doc, win, i + 1);
+  }, 220);
+}
+
+function read(doc) {
+  var t = function (id) { var e = doc.getElementById(id); return e ? e.textContent.trim() : ''; };
+  return { Z: parseFloat(t('gp-out-z')), c: parseFloat(t('gp-out-c')),
+           mu: t('gp-out-mu'), jt: t('gp-out-jt'), warn: t('gp-warn'),
+           cText: t('gp-out-c'), zText: t('gp-out-z') };
+}
+
+function cloneCard(doc, win) {
+  var node = doc.getElementById('gp-out-z').parentElement.parentElement.parentElement;
+  var clone = node.cloneNode(true);
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  [].forEach.call(clone.querySelectorAll('*'), function (el) {
+    if (el.children.length) { return; }
+    el.style.whiteSpace = 'nowrap';
+    if (el.style.display === 'inline-block') { el.style.width = 'auto'; }
+  });
+  var rect = node.getBoundingClientRect();
+  var k = Math.min(1, 420 / rect.width);
+  clone.style.width = rect.width + 'px';
+  clone.style.transformOrigin = '0 0';
+  clone.style.transform = 'scale(' + k + ')';
+  var slot = document.getElementById('card');
+  slot.innerHTML = '';
+  slot.style.height = Math.ceil(rect.height * k) + 'px';
+  slot.style.overflow = 'hidden';
+  slot.appendChild(clone);
+}
+
+function draw() {
+  var L = 66, R = 686, T = 22, B = 340;
+  var pMax = 4000;
+  var lo = 1e9, hi = 0;
+  PTS.forEach(function (q) { lo = Math.min(lo, q.c); hi = Math.max(hi, q.ideal); });
+  var yLo = Math.floor(lo / 20) * 20 - 20, yHi = Math.ceil(hi / 20) * 20 + 20;
+  var X = function (p) { return L + p / pMax * (R - L); };
+  var Y = function (v) { return B - (v - yLo) / (yHi - yLo) * (B - T); };
+
+  var s = '<rect x="' + L + '" y="' + T + '" width="' + (R - L) + '" height="' + (B - T) + '" fill="#0f172a" stroke="#1e293b"/>';
+  for (var v = yLo; v <= yHi; v += 20) {
+    s += '<line x1="' + L + '" y1="' + Y(v) + '" x2="' + R + '" y2="' + Y(v) + '" stroke="#1e293b"/>'
+       + '<text x="' + (L - 8) + '" y="' + (Y(v) + 4) + '" fill="#94a3b8" font-size="10" text-anchor="end">' + v + '</text>';
+  }
+  for (var p = 0; p <= pMax; p += 1000) {
+    s += '<line x1="' + X(p) + '" y1="' + T + '" x2="' + X(p) + '" y2="' + B + '" stroke="#1e293b"/>'
+       + '<text x="' + X(p) + '" y="' + (B + 16) + '" fill="#94a3b8" font-size="10" text-anchor="middle">' + p + '</text>';
+  }
+  s += '<text x="' + ((L + R) / 2) + '" y="' + (B + 34) + '" fill="#94a3b8" font-size="11" text-anchor="middle">pressure  [psi]</text>';
+  s += '<text transform="translate(18,' + ((T + B) / 2) + ') rotate(-90)" fill="#94a3b8" font-size="11" text-anchor="middle">speed of sound  c  [m/s]</text>';
+
+  var dR = '', dI = '';
+  PTS.forEach(function (q, i) {
+    dR += (i ? 'L' : 'M') + X(q.p).toFixed(2) + ' ' + Y(q.c).toFixed(2) + ' ';
+    dI += (i ? 'L' : 'M') + X(q.p).toFixed(2) + ' ' + Y(q.ideal).toFixed(2) + ' ';
+  });
+  s += '<path d="' + dI + '" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="6 4"/>';
+  s += '<path d="' + dR + '" fill="none" stroke="#6ee7b7" stroke-width="2.5"/>';
+
+  var at2000 = PTS.filter(function (q) { return q.p === 2000; })[0];
+  if (at2000) {
+    s += '<line x1="' + X(2000) + '" y1="' + Y(at2000.c) + '" x2="' + X(2000) + '" y2="' + Y(at2000.ideal) + '" stroke="#fbbf24" stroke-width="1.4"/>';
+    s += '<circle cx="' + X(2000) + '" cy="' + Y(at2000.c) + '" r="4.5" fill="#6ee7b7" stroke="#fff" stroke-width="1"/>';
+    s += '<circle cx="' + X(2000) + '" cy="' + Y(at2000.ideal) + '" r="4.5" fill="#f43f5e" stroke="#fff" stroke-width="1"/>';
+    s += '<text x="' + (X(2000) + 9) + '" y="' + (Y(at2000.ideal) - 6) + '" fill="#fbbf24" font-size="11" font-weight="bold">'
+       + ((at2000.ideal / at2000.c - 1) * 100).toFixed(1) + ' % gap at 2,000 psi</text>';
+  }
+  s += '<text x="' + (R - 8) + '" y="' + (T + 16) + '" fill="#f43f5e" font-size="11" text-anchor="end" font-weight="bold">ideal gas — Z set to 1</text>';
+  s += '<text x="' + (R - 8) + '" y="' + (B - 10) + '" fill="#6ee7b7" font-size="11" text-anchor="end" font-weight="bold">carrying Z — what the card returns</text>';
+
+  document.getElementById('plot').innerHTML = s;
+
+  var first = PTS[0], last = PTS[PTS.length - 1];
+  var gapLo = (first.ideal / first.c - 1) * 100, gapHi = (last.ideal / last.c - 1) * 100;
+  // The error is NOT monotonic in pressure. gap = 1/sqrt(Z) - 1, so it peaks exactly where Z
+  // bottoms out and falls away above it. Find both and check they coincide - if they ever
+  // stop coinciding the identity is broken and the caption would be wrong.
+  var peak = PTS[0], zmin = PTS[0];
+  PTS.forEach(function (q) {
+    if ((q.ideal / q.c) > (peak.ideal / peak.c)) { peak = q; }
+    if (q.Z < zmin.Z) { zmin = q; }
+  });
+  var peakGap = (peak.ideal / peak.c - 1) * 100;
+  var idealSpread = Math.max.apply(null, PTS.map(function (q) { return q.ideal; }))
+                  - Math.min.apply(null, PTS.map(function (q) { return q.ideal; }));
+
+  document.getElementById('conditions').textContent =
+    'SG 0.65 · 150 °F · k = 1.3 · Papay Z with Standing-Katz pseudo-criticals — pressure swept through the live card';
+
+  document.getElementById('nums').innerHTML =
+    'Z = <b style="color:#e2e8f0;">' + REF.zText + '</b> &nbsp;·&nbsp; c = <b style="color:#6ee7b7;">' + REF.cText + '</b> m/s<br>'
+    + 'Ideal-gas c = c/√Z = <b style="color:#fda4af;">' + (REF.c / Math.sqrt(REF.Z)).toFixed(4) + '</b> m/s '
+    + '<span style="color:#64748b;">(derived — the card does not print it)</span><br>'
+    + '<span style="color:#94a3b8;">μ = ' + REF.mu + ' &nbsp;·&nbsp; μ_JT = ' + REF.jt + '</span>';
+
+  document.getElementById('head').innerHTML =
+    'Since c ∝ √Z, dropping Z inflates the answer by exactly 1/√Z — so the error <b>peaks where Z '
+    + 'bottoms out</b>, at ' + peakGap.toFixed(2) + ' % around ' + peak.p.toLocaleString('en-US')
+    + ' psi, and falls away on both sides: ' + gapLo.toFixed(1) + ' % at ' + first.p
+    + ' psi and back to ' + gapHi.toFixed(1) + ' % by ' + last.p.toLocaleString('en-US') + ' psi.';
+
+  document.getElementById('body').innerHTML =
+    '“Ideal gas gets worse the higher you go” is therefore only half right, and the useful half is narrower: '
+    + 'it is worst in the <b>Z-minimum band</b> — for a 0.65-gravity gas at 150 °F that is roughly 1,500–3,000 psi, '
+    + 'which is ordinary transmission and gas-processing territory. Note also that the red line is flat: at fixed '
+    + 'temperature the ideal-gas c has no pressure dependence at all, so every bit of the shape is Z. It goes into a Mach number — flare headers, blowdown lines, relief tailpipes. '
+    + '<b style="color:#e2e8f0;">The honest boundary:</b> c = √(kZRT/M) is a <b>first-order</b> real-gas '
+    + 'correction. It carries Z but not Z’s pressure and temperature derivatives, so it is enough to prove that '
+    + 'ignoring Z at 2,000 psi is a several-per-cent error — and not a substitute for an equation of state. The card '
+    + 'says SCREENING for that reason, and it means it.';
+
+  document.body.setAttribute('data-ready', [
+    'points=' + PTS.length,
+    'Z2000=' + REF.zText,
+    'c2000=' + REF.cText,
+    'ideal2000=' + (REF.c / Math.sqrt(REF.Z)).toFixed(4),
+    'gap2000_pct=' + ((REF.c / Math.sqrt(REF.Z) / REF.c - 1) * 100).toFixed(2),
+    'peak_gap=' + peakGap.toFixed(2) + '@' + peak.p,
+    'Zmin=' + zmin.Z.toFixed(4) + '@' + zmin.p,
+    'peak_coincides_with_Zmin=' + (peak.p === zmin.p),
+    'gap_is_NOT_monotonic=' + (gapHi < peakGap),
+    'ideal_line_flat_spread_m_s=' + idealSpread.toFixed(3),
+    'gap_lo=' + gapLo.toFixed(2) + '@' + first.p,
+    'gap_hi=' + gapHi.toFixed(2) + '@' + last.p,
+    'warn=' + (REF.warn || '(none)')
+  ].join('|'));
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 14 — ideal gas costs you 7.5 % on the speed of sound</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day14-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>
