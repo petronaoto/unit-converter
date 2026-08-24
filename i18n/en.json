@@ -494,11 +494,11 @@
       "warnFillHigh": "Loading limit above 98.5 % — check the vessel's approved filling limit (IGC Code Ch. 15).",
       "warnNeg": "Heel plus boil-off exceed the loaded volume — nothing would be left to deliver.",
       "catTitle": "Fleet catalogue",
-      "catSub": "— representative vessels, one or more per class",
+      "catSub": "— the full active fleet, end-2025",
       "catCount": "{n} vessels",
       "catUse": "Use this vessel",
       "catNoMatch": "No vessel matches the current filters.",
-      "catSrcNote": "Thumbnails: Wikimedia Commons photographs where a CC-licensed one exists (author and licence under each — full list in assets/vessels/CREDITS.json), otherwise an original schematic by containment type. No MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every vessel carries its own public source; fleet-level context from IGU World LNG Report 2026, Appendix 3 (Rystad Energy data).",
+      "catSrcNote": "Thumbnails: Wikimedia Commons photographs where a CC-licensed one exists (author and licence under each — full list in assets/vessels/CREDITS.json), otherwise an original schematic by containment type. No MarineTraffic / VesselFinder / ShipSpotting imagery is used. The 36 featured vessels carry their own public sources; all other entries: IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — reproduced with permission.",
       "grpFleet": "Full fleet — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — reproduced with permission"
     }
