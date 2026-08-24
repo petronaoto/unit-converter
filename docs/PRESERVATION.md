@@ -1,4 +1,4 @@
-# Preservation Register — feature-by-feature, v2.4 → v3.8.3
+# Preservation Register — feature-by-feature, v2.4 → v3.9
 
 Companion to [`CLAUDE.md`](../CLAUDE.md) **CRITICAL Preservation Rule 5**. Every entry below
 was added because the thing it names was once at risk of being silently dropped, renamed or
@@ -358,3 +358,37 @@ animation), and all three serverless API integrations must all still exist.
   `psvSyncPressUnits(units, box)`/`psvSyncQtyUnits(units, box)`; the restore fallback in
   `psvEnsureDefaults()` does the same — never reset a panel without it, or an SI user gets USC
   labels back) and its keys `safety.psv.loadExample`/`loadExampleTitle` in all 10 dictionaries.
+
+## v3.9
+
+**The full active LNG fleet (IGU Appendix 3, licensed).** Must survive:
+
+- The **`LNG_FLEET` dataset** — ONE `JSON.parse` literal of **768** compact rows
+  `[imo, name, owner, builder, cap_m3, cont, type, prop, year]` (`tests/test_lng_cargo.py`
+  extracts it verbatim; never convert to a plain literal), expanded at boot with `igu: true`;
+  `LNG_FLEET_BY_ID` (Map) and `LNG_FLEET_SRC_URL`
+  (`https://www.igu.org/igu-reports/2026-world-lng-report/`).
+- **The licence and its rendered conditions.** The rows reproduce Appendix 3 of the IGU World
+  LNG Report 2026 (data: Rystad Energy) under the **IGU's written permission of 2026-08-24**
+  (E. Minty, Director Communication; Gmail thread 1a0155dd0d9f2ec8). Conditions — full
+  attribution and a link to the original source — are load-bearing UI: `lcRenderVessel()`
+  routes `v.igu` rows to `advanced.lngCargo.iguSrc` + `LNG_FLEET_SRC_URL`; the on-card
+  `advanced.lngCargo.fleetContext` note states the permission and the no-re-extraction
+  undertaking; Terms §6 (`docs.terms.b008`, EN + 9) carries the licence statement; the LICENSE
+  third-party section records it. Removing any of these breaks the grant's terms, not just a
+  feature. Do NOT add rows from any other rights-reserved compilation without an equivalent
+  grant, and never swap a featured row's primary-source citation for the IGU's.
+- **Dedup rule:** the 36 featured `LNG_VESSELS` IMOs never appear in `LNG_FLEET`; where the
+  report and a featured row disagree on capacity, the featured row keeps its primary source's
+  figure (15 such rows as of v3.9).
+- The **`grpFleet` static optgroup** — 768 options, labels `Name — cap m³ · Owner` derived
+  from the dataset; the whole `lc-vessel` list is 805 options and is still NEVER rebuilt
+  (filters hide/disable only; share-restore rule).
+- Vessel type **`bunk`** (`advanced.lngCargo.type.bunk`, 1 ship, Hai Yang Shi You 301) in
+  `LC_TYPE_KEYS` and in the small-scale filter bucket
+  (`v.type === 'small' || v.type === 'mid' || v.type === 'bunk'`).
+- The catalogue's two-tier render: featured photo cards + compact fleet cells, count line
+  totalling both (`rows.length + fleetRows.length`).
+- New i18n keys ×10: `advanced.lngCargo.{fleetContext (rewritten), grpFleet, iguSrc, type.bunk}`,
+  `docs.howto.{b117, b118}`; rewritten doc blocks: `docs.howto.b104/b105`, `docs.theory.b051`,
+  `docs.terms.b008` (all ten languages).

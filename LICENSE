@@ -52,13 +52,18 @@ refers to, cites or transcribes. In particular:
   original schematic illustrations created for this project and are not
   manufacturer imagery.
 
-* LNG carrier catalogue and photographs (LNG_VESSELS, assets/vessels/, v3.5).
-  Vessel names, owners, shipbuilders and particulars identify real ships and
-  companies; each catalogue row cites the public page it was confirmed against
-  (an owner's or operator's fleet list, a shipbuilder release, a classification-
-  society register, or Wikipedia). The IGU World LNG Report 2026 (Rystad Energy
-  data) is cited for fleet-level context only; its Appendix 3 table is NOT
-  reproduced. The photographs in assets/vessels/ are third-party works from
+* LNG carrier catalogue and photographs (LNG_VESSELS + LNG_FLEET,
+  assets/vessels/, v3.5/v3.9). Vessel names, owners, shipbuilders and
+  particulars identify real ships and companies. The 36 featured rows
+  (LNG_VESSELS) each cite the public page they were confirmed against (an
+  owner's or operator's fleet list, a shipbuilder release, a classification-
+  society register, or Wikipedia). The remaining rows (LNG_FLEET) reproduce
+  Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy) under the
+  International Gas Union's written permission of 24 August 2026, whose
+  conditions — full attribution and a link to the original source — the
+  application renders on every fleet entry; that table remains the IGU's and
+  Rystad Energy's material, is NOT covered by the MIT licence above, and is
+  not to be re-extracted from this project. The photographs in assets/vessels/ are third-party works from
   Wikimedia Commons, each under the Creative Commons licence (or public-domain
   status) recorded in assets/vessels/CREDITS.json — they are NOT covered by the
   MIT licence above and must be reused only under their own terms, with the

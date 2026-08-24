@@ -1,6 +1,6 @@
 {
   "meta": {
-    "pageTitle": "O&G Unit Converter V3.8"
+    "pageTitle": "O&G Unit Converter V3.9"
   },
   "common": {
     "moreLanguages": "More languages",
@@ -443,7 +443,8 @@
         "fsru": "FSRU",
         "fsu": "FSU",
         "mid": "Mid-scale",
-        "small": "Small-scale"
+        "small": "Small-scale",
+        "bunk": "Bunkering vessel"
       },
       "cont": {
         "membrane": "Membrane",
@@ -466,7 +467,7 @@
       "linkMt": "View on MarineTraffic ↗",
       "linkVf": "VesselFinder ↗",
       "linkNote": "(links by IMO, open in a new tab — nothing is fetched or embedded)",
-      "fleetContext": "Fleet context: IGU World LNG Report 2026, Appendix 3 (Rystad Energy data) — 804 active LNG carriers at end-2025. The vessels here are representative examples, not the fleet register.",
+      "fleetContext": "Fleet data: IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — the full table of all 804 LNG carriers active at end-2025, reproduced with the International Gas Union’s written permission. The 36 featured vessels additionally cite their own primary sources. Please do not re-extract the data from this tool.",
       "cargoHeading": "2. Cargo",
       "capLabel": "Cargo tank capacity",
       "fillLabel": "Loading limit",
@@ -497,7 +498,9 @@
       "catCount": "{n} vessels",
       "catUse": "Use this vessel",
       "catNoMatch": "No vessel matches the current filters.",
-      "catSrcNote": "Thumbnails: Wikimedia Commons photographs where a CC-licensed one exists (author and licence under each — full list in assets/vessels/CREDITS.json), otherwise an original schematic by containment type. No MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every vessel carries its own public source; fleet-level context from IGU World LNG Report 2026, Appendix 3 (Rystad Energy data)."
+      "catSrcNote": "Thumbnails: Wikimedia Commons photographs where a CC-licensed one exists (author and licence under each — full list in assets/vessels/CREDITS.json), otherwise an original schematic by containment type. No MarineTraffic / VesselFinder / ShipSpotting imagery is used. Every vessel carries its own public source; fleet-level context from IGU World LNG Report 2026, Appendix 3 (Rystad Energy data).",
+      "grpFleet": "Full fleet — IGU World LNG Report 2026, Appendix 3",
+      "iguSrc": "IGU World LNG Report 2026, Appendix 3 (data: Rystad Energy) — reproduced with permission"
     }
   },
   "safety": {
@@ -645,7 +648,7 @@
     "descPlaceholder": "Please describe the issue or the requested feature in detail...",
     "submitButton": "GENERATE EMAIL TO DEVELOPER",
     "anonymousUser": "Anonymous User",
-    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.8"
+    "mailtoBody": "Report Details:\n\n{desc}\n\n---\nEnv: Browser/Client-Side V3.9"
   },
   "actionBar": {
     "backToTopLabel": "Top",
@@ -660,7 +663,7 @@
   },
   "footer": {
     "statusLine": "System Online • Vercel Environment",
-    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.8"
+    "copyright": "© 2026 O&G Engineering Tools by Naoto Yamabe • Version 3.9"
   },
   "moduleModal": {
     "title": "Configure Module",

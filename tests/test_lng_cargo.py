@@ -3,12 +3,15 @@ plus the v3.5 GT Fuel unit switches (lb/scf density, MMBtu/GJ energy, scf volume
 
 Two things this module exists to protect:
 
-  * PROVENANCE. The vessel catalogue is deliberately a curated set of representative ships,
-    each carrying its OWN public source URL, so the app never reproduces the IGU World LNG
-    Report's Appendix 3 (all-rights-reserved; EU/UK database right; Rystad Energy data). If a
-    row ever loses its source, or a source points at an AIS/spotter site (MarineTraffic,
-    VesselFinder, ...) whose terms forbid reuse, this fails. Photos are Wikimedia Commons
-    CC/PD works only, and every one must be credited from assets/vessels/CREDITS.json.
+  * PROVENANCE. Two datasets, two regimes. The 36 curated LNG_VESSELS each carry their OWN
+    public primary source URL — never an AIS/spotter site whose terms forbid reuse, never the
+    IGU report. The LNG_FLEET rows (v3.9) reproduce the IGU World LNG Report 2026 Appendix 3
+    (data: Rystad Energy) under the IGU's WRITTEN PERMISSION of 2026-08-24 (E. Minty, Director
+    Communication, cc A. Paul; Gmail thread 1a0155dd0d9f2ec8): conditions are full attribution
+    and a link to the original source, which the app renders on every fleet entry — this module
+    pins both. Photos remain Wikimedia Commons CC/PD works only, credited from
+    assets/vessels/CREDITS.json. Do NOT add rows from any other rights-reserved compilation
+    without an equivalent grant.
 
   * THE STANDARD-DENSITY TRAP. rho_std is mass per STANDARD volume, and the app's standard
     bases are 0 C (Nm3) and 60 F (scf) via the mandated 37.3258. So lb/scf -> kg/Nm3 is
@@ -200,7 +203,7 @@ def test_vessel_select_options_are_static_and_complete(html, vessels):
     block = html[start:end]
     assert '<option value="" data-i18n="advanced.lngCargo.manualOption">' in block
     opt_ids = set(re.findall(r'<option value="(\d{7})">', block))
-    assert opt_ids == {v["id"] for v in vessels}
+    assert opt_ids == {v["id"] for v in vessels} | {v[0] for v in fleet_rows(html)}
     assert "innerHTML" not in html[html.index("function lcFilterVesselOptions"):html.index("function lcSetFilter")]
 
 
@@ -332,3 +335,100 @@ def test_advanced_sub_panes_are_div_balanced_and_own_their_cards():
             if f'data-i18n="{key}"' in region:
                 assert want == pane, f"{key} found in pane {pane}, expected {want}"
     assert 'data-i18n="advanced.flowRegime.title"' in html[idx[1]:idx[2]]
+
+
+# ── v3.9 — LNG_FLEET: the licensed full-fleet dataset (IGU Appendix 3) ───────────
+
+FLEET_URL = "https://www.igu.org/igu-reports/2026-world-lng-report/"
+
+
+def fleet_rows(html):
+    """The LNG_FLEET literal, extracted verbatim — same contract as LNG_VESSELS."""
+    m = re.search(r"const LNG_FLEET = JSON\.parse\(`\[(.*?)\]`\)", html, re.S)
+    assert m, "LNG_FLEET literal missing"
+    return json.loads("[" + m.group(1) + "]")
+
+
+@pytest.fixture(scope="module")
+def fleet(html):
+    return fleet_rows(html)
+
+
+def test_fleet_shape_and_domains(fleet, vessels):
+    """768 fleet rows + 36 curated = the 804 active carriers the report states. Every field
+    typed and in-domain; IMOs unique and disjoint from the curated set (a curated vessel's
+    primary-source figures must never be shadowed by a duplicate fleet row)."""
+    assert len(fleet) == 768
+    imos = [v[0] for v in fleet]
+    assert len(set(imos)) == 768 and all(re.fullmatch(r"\d{7}", i) for i in imos)
+    assert not set(imos) & {v["id"] for v in vessels}
+    assert len(fleet) + len(vessels) == 804
+    for imo, name, owner, builder, cap, cont, vtype, prop, year in fleet:
+        assert name.strip() and owner.strip() and builder.strip(), imo
+        assert isinstance(cap, int) and 30000 <= cap <= 266500, (imo, cap)
+        assert cont in {"membrane", "moss", "ssp", "typec"}, (imo, cont)
+        assert vtype in {"qmax", "qflex", "conv", "fsru", "fsu", "ice", "small", "mid", "bunk"}, (imo, vtype)
+        assert prop in {"SSD", "DFDE", "TFDE", "X-DF", "ME-GI", "ME-GA", "Steam", "Steam reheat", "STaGE"}, (imo, prop)
+        assert isinstance(year, int) and 1977 <= year <= 2025, (imo, year)
+
+
+def test_fleet_rows_are_name_sorted_and_artifact_free(fleet):
+    """The literal is sorted for the option list, and the PDF line-wrap artifacts ('ex- SCF',
+    trailing commas from wrapped owner lists) must never reappear on a re-extraction."""
+    names = [v[1] for v in fleet]
+    assert names == sorted(names, key=str.lower)
+    for imo, name, owner, builder, *_ in fleet:
+        for t in (name, owner, builder):
+            assert not re.search(r"\w- \w|\s{2,}|[,;]$", t), (imo, t)
+
+
+def test_fleet_attribution_is_rendered_with_link(html):
+    """The grant's two conditions — attribution and a link to the original source — plus the
+    app's own no-re-extraction undertaking. The source line must route fleet rows to the
+    iguSrc key and the report URL, and the on-card note must state the permission."""
+    assert html.count(FLEET_URL) >= 1
+    assert "const LNG_FLEET_SRC_URL = '" + FLEET_URL + "'" in html
+    assert re.search(r"if \(v && v\.igu\) \{ src\.textContent = tr\('advanced\.lngCargo\.iguSrc'\); src\.href = LNG_FLEET_SRC_URL; \}", html)
+    en = json.loads((REPO_ROOT / "i18n" / "en.json").read_text(encoding="utf-8"))
+    lc = en["advanced"]["lngCargo"]
+    assert "written permission" in lc["fleetContext"] and "804" in lc["fleetContext"]
+    assert "do not re-extract" in lc["fleetContext"]
+    assert "reproduced with permission" in lc["iguSrc"]
+    # Terms of Use carries the licence statement (inline English)
+    terms = html[html.index('<div id="tab-terms"'):html.index('<div id="tab-privacy"')]
+    assert "written permission of 24 August 2026" in terms
+    assert "not to be re-extracted" in terms
+
+
+def test_fleet_options_match_the_dataset(html, fleet):
+    """One static optgroup, one option per fleet row, label = 'Name — cap m³ · Owner' with the
+    dataset's own figures (en-US grouping). Static: built in the HTML, filtered only."""
+    start = html.index('data-i18n-label="advanced.lngCargo.grpFleet"')
+    end = html.index("</optgroup>", start)
+    block = html[start:end]
+    opts = re.findall(r'<option value="(\d{7})">(.*?)</option>', block)
+    assert len(opts) == len(fleet)
+    by_id = {v[0]: v for v in fleet}
+    for imo, label in opts:
+        v = by_id[imo]
+        esc = lambda t: t.replace("&", "&amp;")
+        assert label == "%s — %s m³ · %s" % (esc(v[1]), format(v[4], ","), esc(v[2])), imo
+
+
+def test_fleet_participates_in_lookup_filters_and_catalogue(html):
+    for needle in (
+        "function lcVesselById(id) { return LNG_VESSELS.find(v => v.id === id) || LNG_FLEET_BY_ID.get(id) || null; }",
+        "const LNG_FLEET_BY_ID = new Map(LNG_FLEET.map(v => [v.id, v]));",
+        "const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v));",
+        "String(rows.length + fleetRows.length)",
+        "v.type === 'small' || v.type === 'mid' || v.type === 'bunk'",
+        "bunk: 'advanced.lngCargo.type.bunk'",
+    ):
+        assert needle in html, needle
+
+
+def test_curated_rows_still_never_cite_the_igu(vessels):
+    """The curated 36 keep their own primary sources — the licence covers the LNG_FLEET rows,
+    not a silent swap of a curated row's citation."""
+    for v in vessels:
+        assert "igu.org" not in v["srcUrl"].lower(), v["id"]
