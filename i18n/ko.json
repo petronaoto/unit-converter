@@ -494,11 +494,11 @@
       "warnFillHigh": "적재 한도가 98.5 %를 초과합니다 — 선박의 승인된 충전 한도(IGC Code 15장)를 확인하십시오.",
       "warnNeg": "힐과 증발가스가 적재 체적을 초과합니다 — 인도할 양이 남지 않습니다.",
       "catTitle": "선단 카탈로그",
-      "catSub": "— 대표 선박, 선급별 1척 이상",
+      "catSub": "— 운항 선단 전체 (2025년 말 기준)",
       "catCount": "{n}척",
       "catUse": "이 선박 사용",
       "catNoMatch": "현재 필터에 맞는 선박이 없습니다.",
-      "catSrcNote": "썸네일: CC 라이선스 사진이 있는 경우 Wikimedia Commons 사진(각 사진 아래에 저작자와 라이선스 표기 — 전체 목록은 assets/vessels/CREDITS.json), 없는 경우 화물창 유형별 자체 제작 모식도. MarineTraffic / VesselFinder / ShipSpotting 이미지는 사용하지 않습니다. 모든 선박에 자체 공개 출처가 있으며, 선단 수준의 개요는 IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터)에서 인용했습니다.",
+      "catSrcNote": "썸네일: CC 라이선스 사진이 있는 경우 Wikimedia Commons 사진(각 사진 아래에 저작자와 라이선스 표기 — 전체 목록은 assets/vessels/CREDITS.json), 없는 경우 화물창 유형별 자체 제작 모식도. MarineTraffic / VesselFinder / ShipSpotting 이미지는 사용하지 않습니다. 대표 수록 선박 36척은 각자의 1차 출처를 인용하며, 그 외 모든 항목은 IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터)를 허가를 받아 전재했습니다.",
       "grpFleet": "전체 선단 — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터) — 허가를 받아 전재"
     }
@@ -894,7 +894,7 @@
     },
     "terms": {
       "b001": "이용약관",
-      "b002": "최종 개정일: 2026년 8월 — Version 3.8",
+      "b002": "최종 개정일: 2026년 8월 — Version 3.9",
       "b003": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">1. 약관의 동의</h3> <p>O&G Engineering Converter(이하 \"본 애플리케이션\")에 접속하거나 이를 이용함으로써 귀하는 본 이용약관에 구속되는 것에 동의합니다. 동의하지 않는 경우 본 애플리케이션을 이용해서는 안 됩니다. 본 약관은 엔지니어, 운전원, 연구자, 학생을 포함한 모든 이용자에게 적용됩니다.</p>",
       "b004": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">2. 본 애플리케이션의 성격</h3> <p>본 애플리케이션은 브라우저 기반의 엔지니어링 유틸리티입니다. 대부분의 계산은 이용자의 웹 브라우저 내에서 로컬로 수행됩니다. 다만 세 가지 기능 — 배관 차압 계산기와 유동 양식 가시화 도구(고급 탭), 그리고 PRV 사이징 계산기(안전 탭) — 는 유량, 압력, 유체 물성 등의 엔지니어링 입력 데이터를 서버 측 계산(유동 양식 맵 이미지의 서버 측 렌더링 포함)을 위해 Vercel에 호스팅된 서버리스 API 함수로 전송합니다. 이러한 요청에 개인 식별 정보는 전송되지 않습니다. 본 애플리케이션은 엔지니어링 추정을 위한 편의 도구로 제공되며, <strong>정식 엔지니어링 해석, 전문가의 판단 또는 규제 기관이 승인한 계산 방법을 대체하기 위한 것이 아닙니다</strong>.</p>",
       "b005": "<h3 class=\"text-base font-semibold text-amber-500 mb-2\">3. 보증의 부인</h3> <p>본 애플리케이션은 명시적이든 묵시적이든 어떠한 종류의 보증도 없이 <strong>\"있는 그대로(as is)\"</strong> 및 <strong>\"제공 가능한 상태(as available)\"</strong>로 제공됩니다. 여기에는 다음이 포함되며 이에 한정되지 않습니다:</p> <ul class=\"list-disc list-inside mt-2 space-y-1 text-slate-400 pl-4\"> <li>계산 결과의 정확성, 올바름 또는 완전성</li> <li>특정 엔지니어링, 상업적 또는 규제 목적에의 적합성</li> <li>중단 없는 또는 오류 없는 작동</li> <li>특정 국내 또는 국제 규격에 대한 적합성</li> </ul> <p class=\"mt-2\">계산은 JIS K 2301:2011, ISO 6578:1991 및 기타 참조 규격에 기반하고 있으나, <strong>이용자는 모든 결과를 운전, 안전, 상업 또는 규제와 관련된 상황에 적용하기 전에 반드시 독립적으로 검증해야 합니다</strong>. 일부 도구는 의도적으로 단순화된 스크리닝 수준의 모델을 사용하며 정성적 참고 목적으로만 제공됩니다 — 이러한 도구는 <strong>설계, 운전 또는 안전 관련 의사결정의 근거로 사용해서는 안 됩니다</strong>. 여기에는 다음이 포함됩니다: 유동 양식 가시화(근사적인 양식 맵 경계 + 개념적 3D 애니메이션), 배관 차압 2상 계산(선택 가능한 스크리닝 상관식 — 기본값 HEM, Lockhart-Martinelli, Müller-Steinhagen-Heck, Friedel — 모두 정수두 슬립과 가속 항 없음), 침식 속도 판정(API RP 14E 경험적 스크리닝), Z-팩터 추정기(Papay 상관식, 명시된 P<sub>r</sub>/T<sub>r</sub> 범위 내에서만 유효). 입력값이 해당 방법의 검증된 범위를 벗어나는 경우 본 애플리케이션은 결과를 외삽값으로 표시하며, 이러한 결과는 참고용에 불과합니다.</p>\n            <p class=\"mt-2\"><strong>v2.8~v3.1에 추가된 스크리닝 도구</strong>에도 동일한 제한이 적용됩니다: 가스 물성 추정기(Papay Z계수 기반 Lee-Gonzalez-Eakin 점도·음속·줄-톰슨 계수), 증기 물성 카드(IAPWS-IF97 산업용 정식화, 영역 1/2/4만), NPSHa 카드(유효 흡입 수두만 — 펌프 제조사 NPSHr에 대한 여유 판정은 의도적으로 하지 않음), 압축기 카드(등엔트로피·완전기체 폴리트로픽 관계식에 1회 실제기체 보정; 시험 규격 절차 아님), 그리고 GT 연료 추정기와 카탈로그. GT 카탈로그 수치는 <strong>ISO 조건에서 제조사 공개 자료를 전사한 참고 정격</strong>으로, 이후 제조사 개정으로 대체될 수 있고 순/총 기준은 각 제조사 관례를 따르며 성능 보증이 아닙니다 — 실제 연료 소비는 현장 조건, 성능 저하, 부분 부하, 연료 조성에 따라 달라집니다. 반드시 최신 제조사 데이터시트로 확인하십시오.</p>",
