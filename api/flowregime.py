@@ -91,6 +91,16 @@ HORIZONTAL_MAP = {
     },
 }
 
+# Steep DOWNWARD flow is outside the basis of both bundled maps (see the gate in compute()).
+# Baker is the nearer of the two, but it is a horizontal correlation — say so rather than
+# presenting the classification as if it were in range.
+DOWNFLOW_ADVISORY = (
+    "Downward flow (θ ≤ −30°) is outside the basis of both bundled maps. The vertical map is "
+    "an UPFLOW correlation (Hewitt & Roberts) and carries no stratified region; the horizontal "
+    "Baker map is used here as the nearest available basis. Orientation only — downflow favours "
+    "stratified and falling-film annular patterns that neither map resolves."
+)
+
 ERR_BADGE_CLASS = "px-2 py-1 text-[10px] rounded bg-red-500/20 text-red-400"
 OK_BADGE_CLASS = "px-2 py-1 text-[10px] rounded bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30"
 
@@ -150,12 +160,23 @@ def compute(data):
     GG = Wv / A            # gas mass flux [kg/s.m2]
     GL = Wl / A            # liquid mass flux [kg/s.m2]
 
-    if abs(theta_deg) >= 30.0:
+    # The vertical map is Hewitt & Roberts' UPFLOW map: its regions are Bubbly, Churn/Slug,
+    # Wavy, Annular and Disperse — there is no stratified region anywhere on it. Downward
+    # inclination is precisely what promotes stratified flow, so classifying a downhill line
+    # on the upflow map cannot reach the most likely answer, however good the boundaries are.
+    # The gate is therefore DIRECTIONAL: only genuinely upward-inclined pipe gets the upflow
+    # map. Before v3.8.4 this tested abs(theta_deg), so -45 deg and +45 deg returned the same
+    # regime (SPECIFICATION.md §11 #14).
+    if theta_deg >= 30.0:
         map_def, map_type = VERTICAL_MAP, 'vertical'
         x, y = math.log10(jL), math.log10(jG)
     else:
         map_def, map_type = HORIZONTAL_MAP, 'horizontal'
         x, y = math.log10(GL), math.log10(GG)
+
+    # Baker is a horizontal correlation, so steep downflow is still out of basis — flag it
+    # rather than letting the result read as if it were in range.
+    downflow_advisory = theta_deg <= -30.0
 
     (x0, x1), (y0, y1) = map_def['xlim'], map_def['ylim']
     xc, yc = min(max(x, x0), x1), min(max(y, y0), y1)
@@ -175,6 +196,8 @@ def compute(data):
         "lambda_l": jL / (jG + jL),
         "x": xc, "y": yc,
         "clamped": clamped,
+        "downflow_advisory": downflow_advisory,
+        "advisory": DOWNFLOW_ADVISORY if downflow_advisory else None,
     }
 
 
@@ -201,10 +224,22 @@ def render(res):
         'font.family': 'DejaVu Sans',
     })
     map_def = res['map_def']
+
+    # Advisory lines are laid out FIRST: each one steals height from the plot area, otherwise
+    # it prints straight through the x-axis label.
+    notes = []
+    if res.get('downflow_advisory'):
+        notes.append('⚠ DOWNWARD FLOW (θ = %+.1f°) — shown on the horizontal (Baker) map; the vertical '
+                     'map is an upflow correlation with no stratified region. Orientation only.'
+                     % res['theta_deg'])
+    if res['clamped']:
+        notes.append('⚠ Operating point lies outside the map range — shown clamped at the boundary.')
+
     fig = plt.figure(figsize=(8.6, 4.6))
     gs = fig.add_gridspec(2, 2, width_ratios=[2.5, 1.0], height_ratios=[1.0, 1.15],
                           wspace=0.28, hspace=0.35,
-                          left=0.075, right=0.97, top=0.82, bottom=0.14)
+                          left=0.075, right=0.97, top=0.82,
+                          bottom=0.14 + 0.055 * len(notes))
     ax = fig.add_subplot(gs[:, 0])
     ax_info = fig.add_subplot(gs[0, 1])
     ax2 = fig.add_subplot(gs[1, 1])
@@ -280,9 +315,9 @@ def render(res):
     fig.suptitle('FLOW REGIME:  %s' % res['regime'].upper(), x=0.075, y=0.955,
                  ha='left', fontsize=13, fontweight='bold', color=ACCENT)
     footer = 'Simplified boundaries adapted from Hewitt & Roberts (1969) and Baker (1954) — indicative only.'
-    if res['clamped']:
-        footer = '⚠ Operating point lies outside the map range — shown clamped at the boundary.  ' + footer
-    fig.text(0.075, 0.02, footer, fontsize=7, color=MUTED if not res['clamped'] else ACCENT)
+    for i, note in enumerate(notes):
+        fig.text(0.075, 0.048 + 0.030 * (len(notes) - 1 - i), note, fontsize=7, color=ACCENT)
+    fig.text(0.075, 0.02, footer, fontsize=7, color=MUTED)
 
     buf = io.BytesIO()
     fig.savefig(buf, format='png', dpi=115, facecolor=BG)
@@ -296,6 +331,8 @@ def process(data):
         return res
     image = render(res)
     badge = '%s | θ = %+.1f°' % (res['regime'], res['theta_deg'])
+    if res['downflow_advisory']:
+        badge += ' | ⚠ downflow'
     return {
         "error": False,
         "image": image,
@@ -308,6 +345,8 @@ def process(data):
         "v_mix": res['v_mix'],
         "lambda_l": res['lambda_l'],
         "clamped": res['clamped'],
+        "downflow_advisory": res['downflow_advisory'],
+        "advisory": res['advisory'],
         "badge": badge,
         "badgeClass": OK_BADGE_CLASS,
     }

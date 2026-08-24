@@ -429,8 +429,9 @@ liquid 7,300 kg/h @ 500 kg/m³ / 0.12 cP · C = 100
 **Churn / Slug Flow**, θ = **+45.0°**, vertical (Hewitt & Roberts type) map,
 j_G = 0.514 m/s, j_L = 0.500 m/s, v_mix = 1.0142 m/s, λ_l = 0.4932.
 
-**Inclination gate (Day 9, verified 2026-08-21).** `flowregime.py` selects the map on
-`abs(theta_deg) >= 30.0`, and the two maps do not share axes — vertical plots log₁₀(j_L) vs
+**Inclination gate (Day 9, verified 2026-08-21; gate CHANGED in v3.8.4 — see below).**
+`flowregime.py` selected the map on `abs(theta_deg) >= 30.0`, and the two maps do not share
+axes — vertical plots log₁₀(j_L) vs
 log₁₀(j_G) in m/s, horizontal plots log₁₀(G_L) vs log₁₀(G_G) in kg/s·m². Holding every other
 input at the reference case and varying only Δz over L = 100 m:
 
@@ -443,6 +444,17 @@ j_G = 0.5139392760964006 m/s and j_L = 0.5002342287338299 m/s are **bit-identica
 flip and equal to the reference case — j depends only on W, ρ and D, never on Δz. The Day 9
 generator asserts this (`fluxes_identical`, `gate_flipped` in its `data-ready` string); if it ever
 fails, the post's central claim is false and the build stops.
+
+> ⚠️ **The gate became DIRECTIONAL in v3.8.4, after Day 9 was written and scheduled.**
+> `abs(theta_deg) >= 30.0` → `theta_deg >= 30.0`: only *upward* inclination now uses the
+> Hewitt & Roberts map, because that map is an upflow correlation and carries no stratified
+> region — the regime downward inclination most favours. Downhill goes to Baker and is flagged
+> `downflow_advisory`. **The table above is unaffected** (both rows are uphill, and uphill is
+> bit-identical), so Day 9's published numbers all still reproduce. What no longer matches the
+> app is Day 9's *statement of the rule* — the post says "|θ| ≥ 30°", which was true when it was
+> written and published on Mon 24 Aug and is the pre-v3.8.4 behaviour. Maintainer's decision
+> (2026-08-21): let it publish as written and cover the change in a later post rather than
+> rebuild the graphic. See §8 and SPECIFICATION.md §11 #14.
 
 ### API 520 PRV sizing (USC)
 
@@ -471,7 +483,7 @@ fails, the post's central claim is false and the build stops.
 - Steam IF97 @ 4 MPa abs / 300 °C: Region 2, superheat 49.64248 K · h 2,961.65148 kJ/kg · s 6.36383 kJ/(kg·K) · ρ 16.98717 kg/m³ · T_sat 250.35752 °C
 - Gas properties (SG 0.65, 2,000 psi, 150 °F, k 1.3): Z 0.8646 · μ 0.016663 cP · c 410.0269 m/s · μ_JT 0.3279 K/bar
 - NPSHa (water 80 °C, open tank, z +3 m, h_f 1.2 m): **7.45697 m**; P_v 47.41472 kPa; ρ 971.77879 kg/m³; g = 9.80665 m/s²
-- Test suite: **358 tests** *(re-counted 2026-08-21 against v3.7; was 242 at v3.0 and 310 at v3.4 — re-run `pytest` before quoting it, never copy the figure from the last post).*
+- Test suite: **382 tests** *(re-counted 2026-08-24 against v3.8.4; was 242 at v3.0, 310 at v3.4, 358 at v3.7 — it moved 24 in three days. Re-run `pytest` before quoting it, never copy the figure from the last post.)*
 
 ---
 
@@ -1498,13 +1510,19 @@ approximations of Hewitt & Roberts (1969) and Baker (1954) — qualitative orien
 transition criterion. The post says so in both languages and adds "do not size a slug catcher off
 them". The inclination gate is the transferable part and holds regardless of boundary fidelity.
 
-> **Observation, NOT published — for the maintainer to rule on.** The gate tests `abs(theta_deg)`,
-> so a **downhill** line at θ = −45° is classified on the Hewitt & Roberts *upflow* map and returns
-> Churn / Slug Flow, identical to +45°. Downflow behaves quite differently from upflow, so this is
-> arguably a real simplification rather than a deliberate one. It is **not** in the §11 known-issues
-> register and was deliberately kept out of the post — the campaign does not publish limitation
-> claims that the documentation does not already record. Worth a decision: document it, or refine
-> the gate.
+> ✅ **RESOLVED — the maintainer chose to refine the gate (2026-08-21), shipped as v3.8.4.**
+> The observation was: the gate tested `abs(theta_deg)`, so a **downhill** line at θ = −45° was
+> classified on the Hewitt & Roberts *upflow* map and returned Churn / Slug Flow, identical to
+> +45°. The decisive argument turned out to be structural rather than a matter of boundary
+> accuracy — the vertical map has **no stratified region at all**, and downward inclination is
+> what most favours stratified flow, so for a downhill pipe the likeliest regime was unreachable.
+> The gate is now directional; a low-gas downhill case reads **Stratified** where it read
+> **Bubbly**. Uphill, and therefore every number in this post, is bit-identical.
+> SPECIFICATION.md §11 #14.
+>
+> **This post still describes the old rule**, deliberately: it was already scheduled, and
+> rebuilding a baked graphic to chase a change made three days later was judged worse than
+> letting it stand and writing the follow-up. See §8.
 
 **Mockup files.** `day09-mockup.html` → `day09-standalone.html` → `day09.png` (1200×675, 182 KB),
 captured with headless Chrome. `day09-map-probe.png` is the raw endpoint render, kept as the
@@ -1908,6 +1926,13 @@ Ready to write when the blocker clears:
 - **Temperature / heating-value beginner post** — for a slower week.
 - **Mobile in the control room** — the no-install angle, with a phone screenshot.
 - **A Japanese-first post pinned to the `ja` build** — for the Qiita/Zenn crossover audience.
+- **"I published a post about this gate on Monday. By Wednesday I had changed it."** — the
+  direct follow-up to Day 9, and the strongest kind of post this campaign has (Day 7 was the same
+  shape). Day 9 taught the inclination gate as `|θ| ≥ 30°`; writing it up is what exposed that the
+  absolute value was wrong, because the vertical map has no stratified region and downhill flow is
+  exactly what stratifies. v3.8.4 made the gate directional. Ready to write — the numbers are in
+  §4 and SPECIFICATION.md §11 #14, and the before/after is a single case: low-gas downhill,
+  **Bubbly → Stratified**. Do not schedule it before Day 9 has actually published.
 
 ## 9. Cadence notes
 
