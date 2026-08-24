@@ -498,7 +498,7 @@
       "catCount": "{n}척",
       "catUse": "이 선박 사용",
       "catNoMatch": "현재 필터에 맞는 선박이 없습니다.",
-      "catSrcNote": "썸네일: CC 라이선스 사진이 있는 경우 Wikimedia Commons 사진(각 사진 아래에 저작자와 라이선스 표기 — 전체 목록은 assets/vessels/CREDITS.json), 없는 경우 화물창 유형별 자체 제작 모식도. MarineTraffic / VesselFinder / ShipSpotting 이미지는 사용하지 않습니다. 모든 선박에 자체 공개 출처가 있으며, 선단 수준의 개요는 IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터)에서 인용했습니다.",
+      "catSrcNote": "썸네일: CC 라이선스 사진이 있는 경우 Wikimedia Commons 사진(각 사진 아래에 저작자와 라이선스 표기 — 전체 목록은 assets/vessels/CREDITS.json), 없는 경우 화물창 유형별 자체 제작 모식도. MarineTraffic / VesselFinder / ShipSpotting 이미지는 사용하지 않습니다. 대표 수록 선박 36척은 각자의 1차 출처를 인용하며, 그 외 모든 항목은 IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터)를 허가를 받아 전재했습니다.",
       "grpFleet": "전체 선단 — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3 (Rystad Energy 데이터) — 허가를 받아 전재"
     }

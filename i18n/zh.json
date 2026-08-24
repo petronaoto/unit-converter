@@ -498,7 +498,7 @@
       "catCount": "{n} 艘",
       "catUse": "使用该船",
       "catNoMatch": "没有符合当前筛选条件的船舶。",
-      "catSrcNote": "缩略图：凡有 CC 许可照片者取自 Wikimedia Commons（作者与许可证注于各图下方 — 完整清单见 assets/vessels/CREDITS.json），否则按围护类型使用原创示意图。不使用任何 MarineTraffic / VesselFinder / ShipSpotting 图片。每艘船均附有自身的公开来源；船队层面的背景数据来自 IGU World LNG Report 2026 附录 3（Rystad Energy 数据）。",
+      "catSrcNote": "缩略图：凡有 CC 许可照片者取自 Wikimedia Commons（作者与许可证注于各图下方 — 完整清单见 assets/vessels/CREDITS.json），否则按围护类型使用原创示意图。不使用任何 MarineTraffic / VesselFinder / ShipSpotting 图片。36 艘精选船舶附有各自的原始来源；其余条目均来自 IGU World LNG Report 2026 附录 3（Rystad Energy 数据）— 经许可转载。",
       "grpFleet": "完整船队 — IGU World LNG Report 2026 附录 3",
       "iguSrc": "IGU World LNG Report 2026 附录 3（Rystad Energy 数据）— 经许可转载"
     }

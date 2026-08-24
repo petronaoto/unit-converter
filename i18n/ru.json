@@ -498,7 +498,7 @@
       "catCount": "{n} судов",
       "catUse": "Выбрать это судно",
       "catNoMatch": "Нет судов, соответствующих фильтрам.",
-      "catSrcNote": "Миниатюры — фотографии Wikimedia Commons, где есть снимок под лицензией CC (автор и лицензия под каждым — полный список в assets/vessels/CREDITS.json), иначе оригинальная схема по типу грузовой системы. Изображения MarineTraffic / VesselFinder / ShipSpotting не используются. Для каждого судна указан собственный открытый источник; контекст на уровне флота — IGU World LNG Report 2026, приложение 3 (данные Rystad Energy).",
+      "catSrcNote": "Миниатюры — фотографии Wikimedia Commons, где есть снимок под лицензией CC (автор и лицензия под каждым — полный список в assets/vessels/CREDITS.json), иначе оригинальная схема по типу грузовой системы. Изображения MarineTraffic / VesselFinder / ShipSpotting не используются. Для 36 избранных судов указаны их собственные первичные источники; все остальные записи — IGU World LNG Report 2026, приложение 3 (данные Rystad Energy), воспроизведено с разрешения.",
       "grpFleet": "Весь флот — IGU World LNG Report 2026, приложение 3",
       "iguSrc": "IGU World LNG Report 2026, приложение 3 (данные: Rystad Energy) — воспроизведено с разрешения"
     }

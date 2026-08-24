@@ -498,7 +498,7 @@
       "catCount": "{n} 隻",
       "catUse": "この船舶を使う",
       "catNoMatch": "条件に合う船舶がありません。",
-      "catSrcNote": "サムネイル: CCライセンスの写真がある場合は Wikimedia Commons の写真（各画像の下に撮影者とライセンスを表示 — 全リストは assets/vessels/CREDITS.json）、ない場合はタンク方式別の独自の模式図です。MarineTraffic / VesselFinder / ShipSpotting の画像は使用していません。各船舶には固有の公開出典があり、船隊レベルの背景情報は IGU World LNG Report 2026, Appendix 3（Rystad Energy データ）によります。",
+      "catSrcNote": "サムネイル: CCライセンスの写真がある場合は Wikimedia Commons の写真（各画像の下に撮影者とライセンスを表示 — 全リストは assets/vessels/CREDITS.json）、ない場合はタンク方式別の独自の模式図です。MarineTraffic / VesselFinder / ShipSpotting の画像は使用していません。特集掲載の36隻には固有の一次出典があり、その他の全項目は IGU World LNG Report 2026, Appendix 3（Rystad Energy データ）を許諾を得て転載しています。",
       "grpFleet": "全船隊 — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3（Rystad Energy データ）— 許諾を得て転載"
     }

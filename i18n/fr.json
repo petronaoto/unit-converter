@@ -498,7 +498,7 @@
       "catCount": "{n} navires",
       "catUse": "Utiliser ce navire",
       "catNoMatch": "Aucun navire ne correspond aux filtres actuels.",
-      "catSrcNote": "Vignettes : photographies Wikimedia Commons lorsqu'il en existe une sous licence CC (auteur et licence sous chacune — liste complète dans assets/vessels/CREDITS.json), sinon un schéma original par type de confinement. Aucune image MarineTraffic / VesselFinder / ShipSpotting n'est utilisée. Chaque navire porte sa propre source publique ; le contexte de flotte provient de l'IGU World LNG Report 2026, annexe 3 (données Rystad Energy).",
+      "catSrcNote": "Vignettes : photographies Wikimedia Commons lorsqu'il en existe une sous licence CC (auteur et licence sous chacune — liste complète dans assets/vessels/CREDITS.json), sinon un schéma original par type de confinement. Aucune image MarineTraffic / VesselFinder / ShipSpotting n'est utilisée. Les 36 navires mis en avant portent leurs propres sources primaires ; toutes les autres entrées : IGU World LNG Report 2026, annexe 3 (données Rystad Energy) — reproduite avec autorisation.",
       "grpFleet": "Flotte complète — IGU World LNG Report 2026, annexe 3",
       "iguSrc": "IGU World LNG Report 2026, annexe 3 (données Rystad Energy) — reproduite avec autorisation"
     }

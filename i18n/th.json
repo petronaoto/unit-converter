@@ -498,7 +498,7 @@
       "catCount": "{n} ลำ",
       "catUse": "ใช้เรือลำนี้",
       "catNoMatch": "ไม่มีเรือที่ตรงกับตัวกรองปัจจุบัน",
-      "catSrcNote": "ภาพย่อ: ภาพถ่ายจาก Wikimedia Commons เมื่อมีภาพที่ใช้สัญญาอนุญาต CC (ผู้ถ่ายและสัญญาอนุญาตระบุใต้แต่ละภาพ — รายการทั้งหมดอยู่ใน assets/vessels/CREDITS.json) หากไม่มีจะใช้ภาพแผนผังต้นฉบับตามระบบกักเก็บ ไม่มีการใช้ภาพจาก MarineTraffic / VesselFinder / ShipSpotting เรือทุกลำมีแหล่งที่มาสาธารณะของตนเอง; บริบทระดับกองเรือจาก IGU World LNG Report 2026, Appendix 3 (ข้อมูล Rystad Energy)",
+      "catSrcNote": "ภาพย่อ: ภาพถ่ายจาก Wikimedia Commons เมื่อมีภาพที่ใช้สัญญาอนุญาต CC (ผู้ถ่ายและสัญญาอนุญาตระบุใต้แต่ละภาพ — รายการทั้งหมดอยู่ใน assets/vessels/CREDITS.json) หากไม่มีจะใช้ภาพแผนผังต้นฉบับตามระบบกักเก็บ ไม่มีการใช้ภาพจาก MarineTraffic / VesselFinder / ShipSpotting เรือเด่น 36 ลำมีแหล่งที่มาปฐมภูมิของตนเอง; รายการอื่นทั้งหมดมาจาก IGU World LNG Report 2026, Appendix 3 (ข้อมูล Rystad Energy) — ทำซ้ำโดยได้รับอนุญาต",
       "grpFleet": "กองเรือทั้งหมด — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3 (ข้อมูล Rystad Energy) — ทำซ้ำโดยได้รับอนุญาต"
     }

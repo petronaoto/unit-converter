@@ -498,7 +498,7 @@
       "catCount": "{n} buques",
       "catUse": "Usar este buque",
       "catNoMatch": "Ningún buque coincide con los filtros actuales.",
-      "catSrcNote": "Miniaturas: fotografías de Wikimedia Commons cuando existe una con licencia CC (autor y licencia bajo cada una — lista completa en assets/vessels/CREDITS.json); en caso contrario, un esquema original según el tipo de contención. No se usa ninguna imagen de MarineTraffic / VesselFinder / ShipSpotting. Cada buque lleva su propia fuente pública; el contexto de flota procede del IGU World LNG Report 2026, Apéndice 3 (datos de Rystad Energy).",
+      "catSrcNote": "Miniaturas: fotografías de Wikimedia Commons cuando existe una con licencia CC (autor y licencia bajo cada una — lista completa en assets/vessels/CREDITS.json); en caso contrario, un esquema original según el tipo de contención. No se usa ninguna imagen de MarineTraffic / VesselFinder / ShipSpotting. Los 36 buques destacados llevan sus propias fuentes primarias; el resto de las entradas: IGU World LNG Report 2026, Apéndice 3 (datos de Rystad Energy) — reproducido con permiso.",
       "grpFleet": "Flota completa — IGU World LNG Report 2026, Apéndice 3",
       "iguSrc": "IGU World LNG Report 2026, Apéndice 3 (datos de Rystad Energy) — reproducido con permiso"
     }

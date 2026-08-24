@@ -498,7 +498,7 @@
       "catCount": "{n} kapal",
       "catUse": "Pakai kapal ini",
       "catNoMatch": "Tidak ada kapal yang cocok dengan filter saat ini.",
-      "catSrcNote": "Thumbnail: foto Wikimedia Commons bila tersedia yang berlisensi CC (penulis dan lisensi di bawah masing-masing — daftar lengkap di assets/vessels/CREDITS.json), selain itu skematik orisinal menurut tipe penampungan. Tidak ada citra MarineTraffic / VesselFinder / ShipSpotting yang digunakan. Setiap kapal mencantumkan sumber publiknya sendiri; konteks tingkat armada dari IGU World LNG Report 2026, Appendix 3 (data Rystad Energy).",
+      "catSrcNote": "Thumbnail: foto Wikimedia Commons bila tersedia yang berlisensi CC (penulis dan lisensi di bawah masing-masing — daftar lengkap di assets/vessels/CREDITS.json), selain itu skematik orisinal menurut tipe penampungan. Tidak ada citra MarineTraffic / VesselFinder / ShipSpotting yang digunakan. Ke-36 kapal unggulan mencantumkan sumber primernya sendiri; semua entri lainnya: IGU World LNG Report 2026, Appendix 3 (data Rystad Energy) — direproduksi dengan izin.",
       "grpFleet": "Armada lengkap — IGU World LNG Report 2026, Appendix 3",
       "iguSrc": "IGU World LNG Report 2026, Appendix 3 (data Rystad Energy) — direproduksi dengan izin"
     }
