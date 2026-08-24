@@ -1,0 +1,51 @@
+Three weeks after handover, someone asks which roughness you used.
+
+That question is the whole problem with engineering numbers, and most tools answer it with a shrug: the result is in the document, the input is in somebody's memory.
+
+So the export puts them on the same page. Section 2 of the report this tool produces carries pipe ID, length, elevation, roughness, erosion C-factor, two-phase method and both phase flows — beside total ΔP, velocity, Reynolds, Darcy f and the erosional check. One run, one page.
+
+Which is only worth anything if the two still match.
+
+That is the part I would actually steal. Touch any input on the ΔP card and the badge becomes:
+
+Two-Phase (HEM) · inputs changed — recalculate
+
+in amber — and the figures stay on screen. It does not blank the card. Blanking would be tidier and worse: you would lose the number you were reading and learn nothing from it. Labelling it means the screen can never quietly show a result beside inputs that no longer produced it.
+
+Now the part a post about traceability has to include, or it is the same failure in a smaller font.
+
+The report covers seven sections, but Basic Eng carries five of its nine cards. Steam, NPSHa, Compressor and the Gas Property Estimator do not export. Neither does the fittings / line-sizing row of the ΔP card — so last Friday's 695.85 Pa of fitting losses is on screen and not in the document.
+
+That is a real gap. It is written on the graphic because you should know it before you rely on it, not after.
+
+How does your team record which inputs produced a number — a controlled sheet, a PDF in the job file, or somebody's memory? And has a stale result ever made it into something you signed?
+
+https://engineering-converter.com
+
+— — —
+
+引き継ぎから3週間後、「あの計算、粗度はいくつで回した？」と聞かれる。
+
+これが技術計算の一番やっかいなところで、たいていのツールの答えは「結果は書類にある、入力は誰かの記憶にある」です。
+
+なのでエクスポートは両方を同じページに載せます。このツールが出力するレポートの第2節には、管内径・長さ・標高差・粗度・浸食C係数・二相計算法・気液それぞれの流量が、全圧損・流速・レイノルズ数・ダルシー摩擦係数・浸食判定と並んで載ります。1回の計算、1ページ。
+
+ただしそれは、両者がまだ整合している場合にかぎり意味を持ちます。
+
+真似する価値があるのはここ。ΔPカードの入力を1つでも触ると、バッジがこう変わります。
+
+Two-Phase (HEM) · inputs changed — recalculate
+
+色は琥珀色。そして数値は画面に残ります。カードを空にはしません。空にするほうが見た目は整いますが、実際は劣化です。読んでいた数字が消えるだけで、何も学べない。ラベルを貼るという方式なら、「その入力からは出てこない結果」が黙って隣に並ぶことが原理的に起きません。
+
+さて、トレーサビリティを語る投稿が必ず書くべき部分。書かなければ、同じ失敗を小さい字でやることになります。
+
+レポートは7節をカバーしますが、Basic Eng は9カード中5カードだけ。Steam、NPSHa、Compressor、Gas Property Estimator は出力されません。ΔPカードの継手・ラインサイジング行も同様です。つまり先週金曜の継手損失 695.85 Pa は、画面にはあって書類にはない。
+
+これは実際の欠落です。頼る前に知っておくべきことなので、図に書いてあります。
+
+みなさんのチームでは「どの入力がその数字を生んだか」をどう残していますか。管理帳票、案件フォルダのPDF、それとも記憶でしょうか。そして、古いままの結果に署名してしまった経験はありますか。
+
+https://engineering-converter.com
+
+#EngineeringManagement #DesignReview #Traceability #プロセスエンジニアリング

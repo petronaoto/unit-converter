@@ -64,12 +64,12 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 6 | Tue 18 Aug 2026 | You cannot rearrange Colebrook-White | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494192232460382209/ | |
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494879955487531008/ | |
 | 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7496333602511585280/ | |
-| 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | ☐ | | |
-| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ☐ | | |
-| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | ☐ | | |
-| 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | ☐ | | |
-| 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | ☐ | | |
+| 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7496338911418408960/ | |
+| 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
 | 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
 | 17 | Thu 3 Sep 2026 | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | pain | ☐ | | |
@@ -98,9 +98,16 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > date §1 originally stated. No content, lens or ordering changed; the variety rule is unaffected
 > because the sequence itself is untouched.
 >
-> **Next to build (Day 10, Tue 25 Aug): "Which roughness did you use?" — draft is in `### Day 10`.**
+> **Next to build (Day 15, Tue 1 Sep): "The calculator that refuses to tell you whether it passes."**
 >
-> *Day 9 is queued for Mon 24 Aug 08:00 JST; its URL exists only once it publishes.*
+> *Days 10–14 were all built and queued in one sitting on 2026-08-25 (08:00 JST on Tue 25,
+> Wed 26, Thu 27, Fri 28 Aug and Mon 31 Aug); their URLs exist only once they publish. All five
+> were verified against v3.8.4 in the scheduled-posts list before this was written.*
+>
+> ℹ️ **The `urn:li:share:` id is allocated when a post is SCHEDULED, not when it publishes.**
+> Day 8 and Day 9 were queued twenty minutes apart on Fri 21 Aug and their ids differ by only
+> ~5×10⁹, despite publishing three days apart. This is why a snowflake decode of the id never
+> matches the posting date — do not try to derive dates from it.
 
 **Weekly themes**
 
@@ -456,6 +463,40 @@ fails, the post's central claim is false and the build stops.
 > (2026-08-21): let it publish as written and cover the change in a later post rather than
 > rebuild the graphic. See §8 and SPECIFICATION.md §11 #14.
 
+### API 520 PRV sizing — the SHIPPED EXAMPLE (v3.8, ↺ Load example)
+
+**v3.8 changed the case behind the ↺ button**, and it is no longer the §9 vector. Verified live
+2026-08-25:
+
+| Mode | Result | Intermediates |
+|---|---|---|
+| §5.6 gas | **0.7144 in² → orifice H** (0.79) | C 346.9764 · P_cf 98.067 psia · P_cf/P₁ 0.5457 · Critical |
+| §5.7 steam | **1.7030 in² → orifice K** (1.84) | K_N 1.0115 · K_SH 1 |
+| §5.8 liquid certified | **4.1690 in² → orifice N** (4.34) | ΔP = P₁ = 275 psi · K_d 0.65 |
+| §5.9 liquid non-certified | **4.1001 in² → orifice N** (4.34) | ΔP = 1.25·P_s = 312.5 psi · K_d 0.62 |
+| §5.10 two-phase | **19.0114 in² → orifice T** (26.00) | ω 1.4817 · η_c 0.6564 · P_c 52.971 psia · G 590.891 |
+
+Gas inputs: W 8,000 lb/h · M 19 · k 1.3 · T 560 °R · Z 1.0 · P₁ 179.7 psia · P₂ 0 · K_d 0.975.
+
+**The §9 vector (W 53,500, M 51, T 627 °R, P₁ 97.2 psia) still reproduces 5.7047 in² → orifice P**
+with the same C 346.9764 and the same 0.5457 ratio — both are functions of k alone.
+
+### Gas Property Estimator — pressure sweep (Day 14, verified 2026-08-25)
+
+SG 0.65 · 150 °F · k 1.3. c and Z read from the card at each pressure; c_ideal = c/√Z is derived.
+
+| p [psi] | Z | c [m/s] | gap vs ideal |
+|---|---|---|---|
+| 200 | 0.9769 | 435.85 | 1.18 % |
+| 1,000 | 0.9058 | 419.68 | 5.07 % |
+| 2,000 | 0.8646 | 410.03 | 7.55 % |
+| **2,250** | **0.8626** | 409.55 | **7.67 % ← worst** |
+| 3,000 | 0.8764 | 412.82 | 6.82 % |
+| 4,000 | 0.9412 | 427.81 | 3.08 % |
+
+The gap is **not monotonic**: it peaks exactly at the Z minimum, because gap = 1/√Z − 1 identically.
+c_ideal is flat to **0.016 m/s** across the whole sweep — at fixed T it has no pressure dependence.
+
 ### API 520 PRV sizing (USC)
 
 | Mode | Inputs | Result |
@@ -508,6 +549,9 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C11 | 2 | CH₄'s unrounded mole fraction given as "0.888712…" | Fabricated digits. The app computes **0.888658452** → 0.8887. Caught 2026-08-12 while grounding the post; the published copy and the graphic both carry the correct value. |
 | C12 | — | **Day sheets were never renumbered after the 2026-08-11 reflow.** §2's tracker carries the reflowed schedule; the `### Day N` sheets below still carry the pre-reflow order. Days 1, 2, 4 and 6–15 happen to agree; **Days 3, 5, 16, 17, 18 and 20 do not.** Tracker Day 18 appeared to have no sheet at all. | ✅ **Resolved 2026-08-12** (Naoto). No topic was lost — tracker Day 18 is the material in `### Day 20`, which editorial decision 2 had already moved out of the closing slot. The mapping table under §2 is now complete, and the `### Day 20` sheet has been reframed as a Day 18 capability tour (the "twenty posts in" retrospective framing was cut, since the campaign is not over on Day 18). The sheets keep their pre-reflow numbers deliberately: renumbering twenty headings would break every cross-reference in this file for no gain. **Read sheets by title, via the §2 mapping.** |
 | C13 | 8 | The fittings ΔP was recorded as **695.853 Pa** in §4 and `api/CLAUDE.md`, and as **695.8532 Pa** in `SPECIFICATION.md` and the test nominal | ✅ **Fixed 2026-08-21.** The endpoint returns **695.8543508168549** → **695.854**. The same drift ran through the self-consistency pair: ΔP_fric 2338.3238 → **2338.3273** and 3034.1770 → **3034.1817**, whose difference is exactly the fittings term (verified to 1e-6 Pa against the endpoint). Corrected in `api/CLAUDE.md`, §4 above, `SPECIFICATION.md` (both places) and `tests/test_dp_calculator.py`'s nominal — the test's `abs=5e-3` tolerance had been wide enough to hide it. Day 8's copy quotes **695.85** (2 d.p.), right either way, so nothing published was wrong. |
+| C14 | 10 | The sheet's hook was **factually wrong about this tool**: *"The result is in the report. The input isn't."* Section 2 of the real export carries pipe ID, length, elevation, **roughness**, erosion C-factor, two-phase method and both phase flows, right beside the results | ✅ **Rebuilt on the true version.** The universal problem is real — most tools do leave provenance in someone's memory — but this app's answer is that inputs and results share a page, and the stale-input guard is what stops that pair becoming a lie. Caught by capturing the actual exported document rather than describing it. The graphic now crops the real report, and the coverage ledger is **derived from the captured HTML** (7 sections, 5 of 9 Basic Eng cards) rather than hand-typed |
+| C15 | 13 | Draft said the §5.8 / §5.9 liquid pair were *"identical but for K_d"* and that the 1.65 % gap came *"purely from K_d 0.65 vs 0.62"* | ✅ **Wrong, and backwards.** §5.9 also swaps the pressure basis: ΔP = P₁ = 275 psi becomes 1.25·P_s = 312.5 psi. The two effects oppose — the lower K_d alone would **enlarge** the area 4.84 %, the higher ΔP **shrinks** it 6.19 %, netting 1.65 % smaller. Spotted because certified came out *larger* than non-certified, which is impossible if K_d were the only difference. The generator now decomposes it and asserts the decomposition reproduces the app's own ratio |
+| C16 | 14 | Sheet's Angle said *"High pressure makes it worse, not better"*, and the first draft graphic said the gap *"widens with pressure"* | ✅ **Only half true.** Sweeping the card 200 → 4,000 psi shows the error peaks at **7.67 % at 2,250 psi** and falls to 3.08 % by 4,000 — because gap = 1/√Z − 1 identically, so it peaks exactly at the Z minimum. The draft caption contradicted the very numbers plotted beside it. Rewritten around the **Z-minimum band** (~1,500–3,000 psi for this gas), which is a sharper and more useful rule anyway; the generator now asserts the peak coincides with the Z minimum |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1457,7 +1501,7 @@ behind — use this, not the old PrintWindow recipe.
 
 ---
 
-### Day 9 — Mon 24 Aug 2026 · 🕗 SCHEDULED
+### Day 9 — Mon 24 Aug 2026 · ✅ POSTED
 
 **Title:** The pressure drop was fine. The flow regime wasn't.
 **Lens:** pain-workflow · **Format:** mini-tutorial · **Feature:** Advanced → Hydraulics → Flow Regime *(v3.6 moved it under the Hydraulics sub-tab)*
@@ -1535,7 +1579,15 @@ provenance of the hero image.
 
 ---
 
-### Day 10 — Tue 25 Aug 2026 · *engagement post 2*
+### Day 10 — Tue 25 Aug 2026 · *engagement post 2* · 🕗 SCHEDULED
+
+> **Built and scheduled 2026-08-25 for Tue 25 Aug 08:00 JST.** 2,668 characters.
+> `docs/linkedin/day10.png` · `day10-body.txt` · generator `day10-mockup.html`.
+> **See C14 — the sheet's hook was wrong about this tool and the post was rebuilt on the true
+> version.** The graphic's two white bands are crops of `day10-report.png`, a headless capture of
+> the document `exportReport()` actually produced; the coverage ledger is derived from that same
+> captured HTML, and the omission list is asserted absent from it. Both badges are cloned from the
+> live ΔP card before and after touching an input.
 
 **Title:** Which roughness did you use?
 **Lens:** story-community · **Format:** poll/question · **Feature:** Export PDF + Share links
@@ -1566,7 +1618,14 @@ result ever made it into a document you signed?"
 
 ---
 
-### Day 11 — Wed 26 Aug 2026
+### Day 11 — Wed 26 Aug 2026 · 🕗 SCHEDULED
+
+> **Built and scheduled 2026-08-25 for Wed 26 Aug 08:00 JST.** 2,866 characters.
+> `docs/linkedin/day11.png` · `day11-body.txt` · generator `day11-mockup.html`.
+> **v3.8 moved the ↺ Load example case** — it is now 8,000 lb/h → 0.7144 in² → orifice **H**, not
+> the §9 vector. Rather than pick one, the post runs both and uses the pairing: C = 346.9764 and
+> P_cf/P₁ = 0.5457 are identical in both because each is a function of k alone, while P_cf moves
+> with P₁. Asserted in the generator, not eyeballed.
 
 **Title:** Required area 5.7047 in². The letter is the easy part.
 **Lens:** standards-credibility · **Format:** worked example · **Feature:** Safety → API 520 §5.6 gas
@@ -1594,7 +1653,16 @@ subcritical — the fastest way to see where the equation actually switches."
 
 ---
 
-### Day 12 — Thu 27 Aug 2026
+### Day 12 — Thu 27 Aug 2026 · 🕗 SCHEDULED
+
+> **Built and scheduled 2026-08-25 for Thu 27 Aug 08:00 JST.** 2,894 characters.
+> `docs/linkedin/day12.png` · `day12-body.txt` · generator `day12-mockup.html`.
+> The G-vs-η plot is computed, and the **old** bracket had to be re-implemented because it no
+> longer exists in the codebase — but the **corrected** curve is checked against the running
+> endpoint: my critical-branch G must equal the app's, and it does (590.8912 vs 590.891).
+> **Continuity is to 1.46e-4 relative, not exact** — the residual is `omega_eta_c` approximating a
+> transcendental equation, exactly as `test_subcritical_flux_is_continuous_with_the_critical_branch`
+> says with its `rel=2e-3`. An earlier draft asserted 1e-6 and called correct code broken.
 
 **Title:** The bug that was unreachable until I fixed a default
 **Lens:** story-community · **Format:** teardown · **Feature:** Safety → §5.10 two-phase (Omega)
@@ -1625,7 +1693,13 @@ the plateau exactly at η_c = 0.6564.
 
 ---
 
-### Day 13 — Fri 28 Aug 2026
+### Day 13 — Fri 28 Aug 2026 · 🕗 SCHEDULED
+
+> **Built and scheduled 2026-08-25 for Fri 28 Aug 08:00 JST.** 2,798 characters.
+> `docs/linkedin/day13.png` · `day13-body.txt` · generator `day13-mockup.html`.
+> **See C15** — the liquid pair differs in two ways that nearly cancel, not one. All three result
+> cards are cloned from the live Safety card; the K_v loop is the four-step diagram the sheet asked
+> for, rendered as a strip.
 
 **Title:** Napier, and the viscosity correction you cannot do in one pass
 **Lens:** standards-credibility · **Format:** mini-tutorial · **Feature:** Safety → §5.7 steam, §5.8/§5.9 liquid
@@ -1651,7 +1725,14 @@ re-check.
 
 ---
 
-### Day 14 — Mon 31 Aug 2026
+### Day 14 — Mon 31 Aug 2026 · 🕗 SCHEDULED
+
+> **Built and scheduled 2026-08-25 for Mon 31 Aug 08:00 JST.** 2,866 characters.
+> `docs/linkedin/day14.png` · `day14-body.txt` · generator `day14-mockup.html`.
+> **See C16** — the error peaks at the Z minimum rather than growing with pressure. The curve is
+> swept **through the live card** (14 pressures, Z and c read from the DOM each time); the only
+> derived quantity is c_ideal = c/√Z, labelled as derived in the post per the campaign's rule for a
+> value the app does not compute. C7 respected: no API 520 attribution, SCREENING boundary stated.
 
 **Title:** Ideal gas costs you 7.5 % on the speed of sound
 **Lens:** teach-theory · **Format:** myth-buster · **Feature:** Basic Eng → Gas Property Estimator

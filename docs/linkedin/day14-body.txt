@@ -1,0 +1,59 @@
+Speed of sound in a 0.65-gravity gas at 2,000 psi and 150 °F:
+
+441.0 m/s if you assume ideal gas
+410.0 m/s if you carry Z
+
+7.5 %, and it goes straight into your Mach number.
+
+The reason is one line. c = √(kZRT/M), so c scales as √Z. Setting Z = 1 when it is really 0.8646 inflates the answer by 1/√0.8646 = 1.0755. The error IS the square root of the compressibility you left out.
+
+But I swept the pressure range through the card before writing this, and the interesting part is not the 7.5 %. It is the shape.
+
+200 psi — 1.2 %
+1,000 psi — 5.1 %
+2,250 psi — 7.7 % ← worst
+4,000 psi — 3.1 %
+
+The error does not grow with pressure. It peaks and comes back down, because it peaks exactly where Z bottoms out — here at 2,250 psi, Z = 0.8626. Not a coincidence: the gap simply IS 1/√Z − 1.
+
+So "ideal gas gets worse the higher you go" is half right, and the useful half is narrower: it is worst in the Z-minimum band. For a 0.65 gas at 150 °F that band is roughly 1,500–3,000 psi — ordinary transmission and gas-processing pressures, not exotic ones.
+
+One thing the plot shows better than a number: the ideal-gas line is flat. At fixed temperature c = √(kRT/M) has no pressure dependence — it moved 0.016 m/s across the sweep. All the curvature is Z.
+
+The honest boundary, because this is the kind of number people lift into a report: c = √(kZRT/M) is a first-order real-gas correction. It carries Z but not Z's pressure and temperature derivatives, which a rigorous sonic velocity needs. Enough to prove that ignoring Z here costs several per cent; not a substitute for an equation of state. The card says SCREENING for that reason.
+
+Where does this bite you? Flare headers, blowdown lines, relief tailpipes — the places you are already sitting close to Mach 0.7 and the margin you think you have is the margin you do not.
+
+https://engineering-converter.com
+
+— — —
+
+比重0.65のガス、2,000 psi、150 °F での音速:
+
+理想気体とすると 441.0 m/s
+Z を持つと 410.0 m/s
+
+差は 7.5 %。そしてこれはそのままマッハ数に入ります。
+
+理由は一行です。c = √(kZRT/M) なので c は √Z に比例する。実際は 0.8646 の Z を 1 と置けば、答えは 1/√0.8646 = 1.0755 倍に膨らむ。誤差そのものが「無視した圧縮係数の平方根」です。
+
+ただ、書く前に圧力を掃引してみると、面白いのは 7.5 % ではなく「形」でした。
+
+200 psi — 1.2 %
+1,000 psi — 5.1 %
+2,250 psi — 7.7 % ← 最大
+4,000 psi — 3.1 %
+
+誤差は圧力とともに増え続けません。ピークを打って戻ります。Z が最小になる点でちょうど最大になるからです。このガスでは 2,250 psi、Z = 0.8626。偶然ではなく、誤差 = 1/√Z − 1 という恒等式だからです。
+
+つまり「高圧ほど理想気体は危ない」は半分だけ正しい。正確には「Z 最小の帯で最も危ない」。比重0.65・150 °F ならおおよそ 1,500〜3,000 psi。特殊な条件ではなく、輸送・ガス処理の常用圧力帯です。
+
+グラフが数値より雄弁な点をもう一つ。理想気体の線は水平です。温度一定なら c = √(kRT/M) に圧力依存性はなく、掃引全体で 0.016 m/s しか動きません。曲がりは全部 Z です。
+
+そして正直な適用限界。この種の数値は報告書に転記されるので書いておきます。c = √(kZRT/M) は一次の実在気体補正です。Z は持ちますが、厳密な音速に必要な Z の圧力・温度微分は持ちません。「ここで Z を無視すれば数%ずれる」を示すには十分で、状態方程式の代わりにはなりません。カードが SCREENING と表示しているのはそのためです。
+
+どこで効くか。フレアヘッダー、ブローダウン配管、リリーフ弁の下流。すでにマッハ0.7近くで運用していて、あると思っているマージンが実は無い場所です。
+
+https://engineering-converter.com
+
+#FlareSystems #Blowdown #GasProperties #プロセスエンジニアリング
