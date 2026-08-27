@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 19 — the share link never reaches my server</title>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .lbl{color:#64748b;font-size:11px;letter-spacing:.12em;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .box{box-sizing:border-box;border-radius:10px;}
+</style>
+</head>
+<body>
+<!--
+  Day 19 — "No login, no cookies, and the share link never reaches my server"
+
+  C8 respected: the URL rendered here is a SHORT HAND-AUTHORED link, not the stock one. The
+  stock full-state link was measured on the running v3.9 app on 2026-08-28 with a cleared
+  localStorage - collectState() -> 248 input fields -> 4,706 chars of JSON -> 6,276 chars of
+  base64 -> 6,313-character URL, of which the origin and path are 34. Those measured numbers
+  are shown as numbers; the long string itself is not reproduced.
+
+  The analytics half must stay accurate: since v3.2 a cookieless Vercel Web Analytics script
+  DOES load. "No analytics script" must never appear in this post or graphic. The boundary it
+  holds is recorded in SPECIFICATION.md section 14.5 and enforced by
+  tests/test_analytics_privacy.py.
+-->
+<div id="shot">
+
+  <div style="position:absolute;left:40px;top:24px;display:flex;align-items:center;gap:12px;white-space:nowrap;">
+    <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block;"></span>
+    <span style="color:#94a3b8;font-size:13px;letter-spacing:.02em;">O&amp;G Engineering Converter
+      <span style="color:#475569;">v3.9</span>
+      <span style="color:#475569;">·</span> share links <span style="color:#475569;">▸</span>
+      where the calculation state actually goes</span>
+  </div>
+  <div style="position:absolute;left:52px;top:50px;color:#64748b;font-size:12.5px;white-space:nowrap;">
+    A short hand-authored link is shown — the stock full-state link is 6,313 characters and the app tells you so above 2,000
+  </div>
+
+  <!-- the URL, split at the # -->
+  <div style="position:absolute;left:28px;top:92px;width:1144px;">
+    <div class="lbl">ONE SHARE LINK, SPLIT AT THE “#”</div>
+    <div class="box" style="margin-top:8px;border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.60);padding:16px 18px;">
+      <div class="mono" style="font-size:17px;letter-spacing:.01em;white-space:nowrap;">
+        <span style="color:#94a3b8;">https://engineering-converter.com/</span><span style="color:#fbbf24;font-weight:700;">#s=eyJ2IjozLCJpbnB1dHMiOnsicDEiOiIxNjUifX0</span>
+      </div>
+      <div style="display:flex;margin-top:14px;gap:0;align-items:stretch;height:56px;">
+        <div style="width:34%;border-radius:8px 0 0 8px;border:1px solid rgba(148,163,184,.35);
+                    background:rgba(51,65,85,.35);padding:8px 12px;">
+          <div style="color:#cbd5e1;font-size:12px;font-weight:700;">ORIGIN + PATH — 34 characters</div>
+          <div style="color:#94a3b8;font-size:11.5px;margin-top:3px;">this is what the network sees: request line, my logs, the CDN, any proxy</div>
+        </div>
+        <div style="width:2px;background:repeating-linear-gradient(180deg,#f43f5e,#f43f5e 5px,transparent 5px,transparent 10px);"></div>
+        <div style="flex:1;border-radius:0 8px 8px 0;border:1px solid rgba(251,191,36,.45);
+                    background:rgba(120,53,15,.22);padding:8px 12px;">
+          <div style="color:#fcd34d;font-size:12px;font-weight:700;">FRAGMENT — 6,279 characters, carrying 248 input fields</div>
+          <div style="color:#94a3b8;font-size:11.5px;margin-top:3px;">browsers do not transmit fragments. The recipient's browser strips it off, decodes it locally, and rebuilds the calculation there</div>
+        </div>
+      </div>
+      <div style="position:relative;height:20px;margin-top:2px;">
+        <div style="position:absolute;left:34%;transform:translateX(-50%);color:#fda4af;font-size:11px;font-weight:700;letter-spacing:.08em;">▲ NETWORK BOUNDARY</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- three supporting facts -->
+  <div style="position:absolute;left:28px;top:280px;width:1144px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+    <div class="box" style="border:1px solid rgba(110,231,183,.30);background:rgba(6,78,59,.18);padding:11px 14px;">
+      <div style="color:#6ee7b7;font-size:11.5px;font-weight:800;letter-spacing:.06em;">CUSTOM MODULES</div>
+      <div style="color:#94a3b8;font-size:12px;line-height:1.55;margin-top:5px;">Live in localStorage only. Never uploaded, never backed up, never seen.</div>
+    </div>
+    <div class="box" style="border:1px solid rgba(110,231,183,.30);background:rgba(6,78,59,.18);padding:11px 14px;">
+      <div style="color:#6ee7b7;font-size:11.5px;font-weight:800;letter-spacing:.06em;">THE THREE PYTHON ENDPOINTS</div>
+      <div style="color:#94a3b8;font-size:12px;line-height:1.55;margin-top:5px;">Stateless. Take a payload, return a number, store nothing.</div>
+    </div>
+    <div class="box" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.55);padding:11px 14px;">
+      <div style="color:#cbd5e1;font-size:11.5px;font-weight:800;letter-spacing:.06em;">WHY IT IS PRIVATE</div>
+      <div style="color:#94a3b8;font-size:12px;line-height:1.55;margin-top:5px;">Not privacy engineering — the cheapest way to send someone your inputs without a database.</div>
+    </div>
+  </div>
+
+  <!-- the honest half -->
+  <div class="box" style="position:absolute;left:28px;top:378px;width:1144px;
+       border:1px solid rgba(251,191,36,.32);background:rgba(120,53,15,.16);padding:12px 16px;">
+    <div style="color:#fcd34d;font-size:12.5px;font-weight:800;letter-spacing:.05em;">THE PART I HAVE TO BE ACCURATE ABOUT</div>
+    <div style="color:#94a3b8;font-size:12.5px;line-height:1.6;margin-top:6px;">
+      “No tracking” is the easy sentence and it would be false. Since v3.2 the app runs
+      <b style="color:#e2e8f0;">Vercel Web Analytics</b>, and a measurement script does load. Cookieless and aggregate-only,
+      so there is no banner and nothing follows you to other sites — but I will not pretend it is absent.
+    </div>
+    <div style="display:flex;gap:12px;margin-top:10px;">
+      <div class="box" style="flex:1;border:1px solid rgba(110,231,183,.35);background:rgba(6,78,59,.22);padding:8px 12px;">
+        <div style="color:#6ee7b7;font-size:12px;font-weight:700;">RECORDED — <span style="color:#e2e8f0;">THAT</span> a tool was used</div>
+        <div style="color:#94a3b8;font-size:11.5px;margin-top:2px;">six events, all listed in Privacy Policy §7</div>
+      </div>
+      <div class="box" style="flex:1;border:1px solid rgba(244,63,94,.35);background:rgba(76,5,25,.24);padding:8px 12px;">
+        <div style="color:#fda4af;font-size:12px;font-weight:700;">NEVER — <span style="color:#e2e8f0;">WHAT</span> was entered into it</div>
+        <div style="color:#94a3b8;font-size:11.5px;margin-top:2px;">no input value, no unit, no result; the Report tab excluded outright</div>
+      </div>
+      <div class="box" style="flex:1.15;border:1px solid rgba(56,189,248,.35);background:rgba(12,74,110,.22);padding:8px 12px;">
+        <div style="color:#7dd3fc;font-size:12px;font-weight:700;">NOT A PROMISE — A TEST</div>
+        <div class="mono" style="color:#e2e8f0;font-size:11.5px;margin-top:2px;">tests/test_analytics_privacy.py</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" style="position:absolute;left:28px;top:552px;width:1144px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);padding:11px 16px;">
+    <div style="color:#94a3b8;font-size:12.5px;line-height:1.6;">
+      The share link is the part I would actually defend — <b style="color:#e2e8f0;">not because I chose not to look, but
+      because there is nowhere to look</b>. The app warns past 2,000 characters because pasting six thousand into Teams is
+      unkind, not because anything leaks; for chat, trim it to the fields that matter.
+    </div>
+  </div>
+
+  <div style="position:absolute;left:52px;right:56px;top:646px;display:flex;align-items:baseline;justify-content:space-between;">
+    <div style="color:#94a3b8;font-size:15px;font-weight:500;letter-spacing:.02em;">engineering-converter.com</div>
+    <div style="color:#475569;font-size:13px;">free &middot; no sign-up &middot; 10 languages</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+The most valuable thing an engineering tool can do is stop.
+
+Post twenty of twenty. Five places mine stops, and why.
+
+1. NPSHa gives no pass/fail.
+It returns available head and the three terms behind it. NPSHr lives on the vendor's tested curve; the margin on top is HI 9.6.1 and API 610, both licensed. A tick is authority I do not have.
+
+2. The steam card refuses IF97 Region 3.
+Dense near-critical water — 350–590 °C above 16.5 MPa — needs a different formulation with density iteration. It says "not covered" rather than extrapolating Region 2.
+
+3. Over-range orifices are marked, not clamped.
+Exceed API 526 T and you get T+ with the actual required area. The worst behaviour available is rounding an impossible requirement down to the table's largest entry.
+
+4. Correlations warn at their edges.
+Papay is valid for 0 < Pr ≤ 15 and 1.05 ≤ Tr ≤ 3.0. Outside it the result is flagged extrapolated, not quietly returned.
+
+5. Missing coefficients stay missing.
+The Crane TP-410 set omits gradual reducers — their coefficients could not be verified against a primary source. And a liquid service on a two-phase result returns PHASE MISMATCH: judging mixture velocity by a single-phase criterion gives a confident, wrong answer.
+
+The sixth is the one I most want to say. Twenty posts never answered the obvious objection.
+
+6. Stop using this; open the simulator.
+
+Everything here is screening. When a number checks a design, that is right: fast, assumptions on screen, a reviewer can follow it. When a number sets the design — especially when two-phase behaviour is the answer, not a correction to it — you want an equation of state, a flowsheet, and someone's PTC 10 data. A tool for the first hour, not the last.
+
+A tool that names its own ceiling beats one pretending it has none. That is the whole argument, and why I published fifteen reference vectors, not a feature list.
+
+Thanks for reading all twenty.
+
+https://engineering-converter.com
+
+— — —
+
+エンジニアリングツールが持ちうる最も価値ある機能は、止まることです。
+
+20 本目。私のツールが止まる 5 か所と、その理由です。
+
+1. NPSHa は合否を出さない。
+利用可能ヘッドと 3 項だけを返します。NPSHr はベンダーの試験曲線上、マージンは HI 9.6.1 と API 610、共にライセンス文書。緑のチェックは持っていない権威の捏造です。
+
+2. 蒸気カードは IF97 Region 3 を拒否する。
+臨界近傍の高密度水(16.5 MPa 超の 350〜590 °C)は密度反復を伴う別の定式化が要ります。Region 2 を外挿せず「非対応」と出します。
+
+3. レンジ超過オリフィスは、丸めずに明示する。
+API 526 の T を超えたら T ではなく T+ と実際の必要面積が出ます。最悪なのは、不可能な要求を表の最大値まで黙って丸めることです。
+
+4. 相関式は自分の限界で警告する。
+Papay の有効域は 0 < Pr ≤ 15、1.05 ≤ Tr ≤ 3.0。外れた結果は黙って返さず外挿と明示します。
+
+5. 無い係数は無いままにする。
+Crane TP-410 の継手セットから漸縮管を外しました。一次資料で係数を検証できなかったからです。二相の結果に液単相サービスを選ぶと判定ではなく PHASE MISMATCH。混相速度を単相基準で裁けば自信に満ちた誤答です。
+
+そして 6 番目。20 本を通して答えなかった疑問です。
+
+6. これをやめてシミュレータを開くべきとき。
+
+ここにあるものは全てスクリーニングです。設計を「検算する」数値ならそれが正解。速く、仮定が画面に出て、レビュアーが追える。しかし設計を「決める」数値、とりわけ二相挙動が補正でなく答えそのものであるときは、状態方程式とフローシート、PTC 10 の試験データが要る。最初の 1 時間の道具であって、最後の 1 時間ではありません。
+
+自分の天井を名指しするツールの方が、無いふりより役に立つ。それが連載の主張の全部で、機能一覧でなく基準ベクトル 15 件を公開した理由です。
+
+20 本、お読みいただきありがとうございました。
+
+https://engineering-converter.com
+
+#EngineeringJudgement #ProcessEngineering #Standards #EngineeringTools

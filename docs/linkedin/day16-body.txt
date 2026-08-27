@@ -1,0 +1,67 @@
+My CI badge was green for an entire release cycle while 45 of my tests never ran.
+
+128 of 173 — including every guard on the share-link import sanitiser.
+
+Nothing was red. Nothing was broken. Nothing warned me.
+
+The workflow passed pytest an explicit list of test files. It was written when there were four; two more arrived in later PRs and nobody extended the list. Locally I was green because pytest discovers the whole directory. In CI I was green because it ran what it was told, and reported success for what it ran.
+
+The badge was never lying. It answered a narrower question than the one I read it as — and "the tests I listed passed" renders identically to "the tests passed".
+
+For an engineering tool this is not a hygiene problem. The whole argument for trusting a solo-built sizing tool is that its reference values are re-checked on every change — the JIS chain to 44.59 MJ/Nm³, the API 520 orifice letters, the IF97 coefficients to nine significant figures. A regression suite that silently shrinks is worse than none: it is the thing you stopped checking by hand.
+
+The obvious fix is one line — run the directory, not a list.
+
+pytest -v --ignore=tests/test_flowregime.py
+
+One file is excluded — the only one needing numpy and matplotlib. It gets its own job.
+
+But that fix decays. Someone re-adds an allowlist for a good reason in two years and the same silence returns.
+
+So the real fix is a test.
+
+test_ci_runs_every_test_file()
+
+It reads .github/workflows/ci.yml, globs tests/test_*.py, and fails with the filenames if any file is unreachable from the workflow. The suite now tests its own execution, not just its arithmetic.
+
+Today: 388 tests, 18 modules, 15 published reference vectors. The number I care about is not 388. It is being able to prove 388 is what ran.
+
+If you maintain a calculation tool: does anything fail when your coverage silently shrinks?
+
+https://engineering-converter.com
+
+— — —
+
+CI バッジは 1 リリースの間ずっと緑で、その間 45 個のテストは実行されていませんでした。
+
+173 個中 128 個。共有リンクのサニタイザーの防御は全滅でした。
+
+赤は出ない。壊れてもいない。警告もない。
+
+ワークフローが pytest にテストファイルの明示リストを渡していました。書いた時点では 4 ファイル。後の PR で 2 つ増え、誰もリストを更新しなかった。ローカルが緑なのは pytest がディレクトリを自動探索するから。CI が緑なのは、言われた分だけ実行し、その分について成功を報告したからです。
+
+バッジは嘘をついていません。読み手が思うより狭い問いに答えていただけです。「列挙したテストは通った」は「テストは通った」と全く同じ見た目になります。
+
+エンジニアリングツールでは衛生の問題では済みません。個人開発のサイジングツールを信用してよい根拠は、変更のたびに基準値が再検証されることです。JIS 連鎖の 44.59 MJ/Nm³、API 520 のオリフィス記号、IF97 係数の 9 桁一致。黙って縮む回帰スイートは無いより悪い。手動確認をやめた対象そのものだからです。
+
+素直な修正は一行。リストではなくディレクトリを走らせる。
+
+pytest -v --ignore=tests/test_flowregime.py
+
+除外は numpy と matplotlib を要する 1 ファイルのみ。別ジョブが持ちます。
+
+ただしこの修正は劣化します。2 年後に誰かが許可リストを復活させれば同じ沈黙が戻る。
+
+本当の修正はテストです。
+
+test_ci_runs_every_test_file()
+
+.github/workflows/ci.yml を読み、tests/test_*.py を列挙し、ワークフローから到達できないファイルがあればその名前を出して落ちます。スイートが計算だけでなく、自分が実行されること自体を検証します。
+
+現在 388 テスト、18 モジュール、公開基準ベクトル 15 件。大事なのは 388 という数ではなく、388 が実行されたと証明できることです。
+
+計算ツールを保守する方へ。カバレッジが黙って縮んだとき、落ちるものはありますか。
+
+https://engineering-converter.com
+
+#SoftwareQuality #CI #EngineeringComputing #Traceability

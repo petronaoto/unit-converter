@@ -1,0 +1,71 @@
+Seventeen posts in, and I still have not shown you the pipe-volume card, the compressor card or the gas-turbine catalogue.
+
+Two posts left. Here is the whole toolbox on one page.
+
+GENERAL — 4 cards
+Gas volume, pressure, temperature, heating value.
+
+BASIC ENG — 9 cards
+Pipe volume for line packing and hydrotest. Z-factor (Papay). °API ↔ SG ↔ density. Dynamic ↔ kinematic viscosity. Mass ↔ volumetric flow. Gas properties — viscosity, sonic velocity, Joule-Thomson. Steam on IF97. Pump suction NPSHa. Compressor head and power.
+
+ADVANCED — 6 cards
+Compositional heating value on JIS K 2301. LNG cargo estimator: 804 vessels, ISO 6578 density — 467.32 kg/m³ for North West Shelf at −160 °C. Pipe ΔP with three two-phase correlations. Flow regime map. Gas-turbine fuel rate, 31-model catalogue.
+
+SAFETY — 1 card, 5 modes
+API 520 Part I: gas, steam, certified and non-certified liquid, two-phase Omega. API 526 letters D–T.
+
+That is 20 cards, and eleven have never had a post of their own.
+
+The spine underneath, which is the actual argument:
+
+15 published reference vectors — reproduced exactly, or CI fails
+388 automated tests across 18 modules
+10 UI languages, and it opens on a locked-down plant network
+No sign-up, no ads, nothing to install
+The share link carries the whole state and never reaches my server
+
+The vectors matter more than the card count. Anyone can add a card. What makes a free tool usable in real work is numbers pinned to something you can check without trusting me — JIS K 2301, API 520, IAPWS-IF97, ISO 6578, Crane TP-410, NORSOK P-001. Every figure here came out of the running app before the post was written, and three of these twenty posts exist because that caught me being wrong.
+
+So, the only question I want answered: what card is missing?
+
+On my list: a calculation notebook with run history, a Cv and orifice pack, more languages. I would rather build yours.
+
+https://engineering-converter.com
+
+— — —
+
+17 本書いて、配管容積カード、圧縮機カード、ガスタービンカタログにまだ触れていません。
+
+残り 2 本。ツール全体を 1 ページに並べます。
+
+GENERAL — 4 カード
+ガス体積、圧力、温度、発熱量。
+
+BASIC ENG — 9 カード
+配管容積(ラインパック・水圧試験)。Z 係数(Papay)。°API ↔ SG ↔ 密度。粘度 ↔ 動粘度。質量 ↔ 体積流量。ガス物性(粘度・音速・JT)。IAPWS-IF97 蒸気物性。ポンプ吸込 NPSHa。圧縮機ヘッドと動力。
+
+ADVANCED — 6 カード
+JIS K 2301 の組成発熱量。LNG カーゴ推定:船舶 804 隻、ISO 6578 液密度(NWS、−160 °C で 467.32 kg/m³)。二相相関 3 種の配管 ΔP。流動様式マップ。GT 燃料レートと 31 機種カタログ。
+
+SAFETY — 1 カード 5 モード
+API 520 Part I:ガス、蒸気、認証・非認証液、二相 Omega 法。API 526 記号 D〜T。
+
+計 20 カード。うち 11 枚は単独の投稿を一度も受けていません。
+
+その下の背骨、つまり本当の論拠です。
+
+公開基準ベクトル 15 件 — 厳密再現できなければ CI が落ちる
+18 モジュール 388 テスト
+UI 10 言語。ロックダウンされた工場ネットワークでも開く
+登録なし、広告なし、インストールなし
+共有リンクは全状態を運び、サーバーには届かない
+
+カード枚数よりベクトルです。カードは誰でも足せる。無料ツールが実務で使えるかは、私を信用せず検算できる何かに数値が固定されているかで決まります。JIS K 2301、API 520、IAPWS-IF97、ISO 6578、Crane TP-410、NORSOK P-001。連載の数値はすべて書く前に動作中のアプリから取り、20 本中 3 本はそれで誤りが見つかったから存在します。
+
+なので聞きたいのは一つだけ。足りないカードは何ですか。
+
+私のリストは実行履歴付き計算ノート、Cv とオリフィス一式、言語追加。できればあなたのを先に作りたい。
+
+https://engineering-converter.com
+
+#ProcessEngineering #OilAndGas #EngineeringTools #BuildInPublic

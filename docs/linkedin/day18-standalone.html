@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 18 — the whole toolbox on one page</title>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .lbl{color:#64748b;font-size:11px;letter-spacing:.12em;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .col{box-sizing:border-box;border-radius:10px;padding:10px 12px;}
+  .chip{box-sizing:border-box;display:block;border-radius:6px;padding:4px 8px;margin-top:5px;
+        font-size:11.5px;line-height:1.3;border:1px solid rgba(148,163,184,.20);
+        background:rgba(15,23,42,.60);color:#cbd5e1;}
+  .chip.new{border-color:rgba(251,191,36,.55);background:rgba(120,53,15,.28);color:#fcd34d;font-weight:600;}
+  .hdr{font-size:12px;font-weight:800;letter-spacing:.06em;}
+  .cnt{color:#64748b;font-size:11px;font-weight:500;}
+</style>
+</head>
+<body>
+<!--
+  Day 18 — "The whole toolbox on one page"
+
+  A capability tour, NOT a retrospective: two posts still run after this one, so no
+  "twenty days later" framing appears anywhere.
+
+  Card inventory read off the running v3.9 app on 2026-08-28 by walking each tab pane's
+  headings: General 4, Basic Eng 9, Advanced 6, Safety 1 = 20. Amber chips are the ELEVEN
+  that have never had a post of their own across Days 1-17 - General leaves only Pressure
+  (Day 1) unhighlighted; Basic Eng leaves Gas Property (Day 14), Steam (Day 3) and NPSHa
+  (Day 15); Advanced leaves compositional HHV (Day 2), LNG Cargo (Day 17), Pipe dP
+  (Days 4-8) and Flow Regime (Day 9); Safety was Days 11-13. 3 + 6 + 2 = 11, which is the
+  number the post quotes.
+
+  Spine figures: 388 tests / 18 modules from pytest, 15 vectors from SPECIFICATION.md section 9,
+  10 dictionaries in i18n/, 804 vessels and 31 gas-turbine models from the running app.
+-->
+<div id="shot">
+
+  <div style="position:absolute;left:40px;top:24px;display:flex;align-items:center;gap:12px;white-space:nowrap;">
+    <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block;"></span>
+    <span style="color:#94a3b8;font-size:13px;letter-spacing:.02em;">O&amp;G Engineering Converter
+      <span style="color:#475569;">v3.9</span>
+      <span style="color:#475569;">·</span> every card in the tool <span style="color:#475569;">▸</span>
+      <span style="color:#fcd34d;">amber = never had a post of its own</span></span>
+  </div>
+  <div style="position:absolute;left:52px;top:50px;color:#64748b;font-size:12.5px;white-space:nowrap;">
+    20 calculation cards across four working tabs — plus How To Use, Theory, Terms, Privacy and Report
+  </div>
+
+  <div style="position:absolute;left:28px;top:84px;width:1144px;display:grid;grid-template-columns:1fr 1.35fr 1.35fr 1fr;gap:12px;">
+
+    <div class="col" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.45);">
+      <div class="hdr" style="color:#cbd5e1;">GENERAL <span class="cnt">· 4 cards</span></div>
+      <span class="chip new">Gas Volume<br><span style="color:#a16207;font-size:10.5px;">Nm³ ↔ scf · 37.3258</span></span>
+      <span class="chip">Pressure</span>
+      <span class="chip new">Temperature</span>
+      <span class="chip new">Heating Value</span>
+    </div>
+
+    <div class="col" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.45);">
+      <div class="hdr" style="color:#cbd5e1;">BASIC ENG <span class="cnt">· 9 cards</span></div>
+      <span class="chip new">Pipe Volume <span style="color:#a16207;">— line packing, hydrotest</span></span>
+      <span class="chip new">Z-Factor Estimator <span style="color:#a16207;">— Papay</span></span>
+      <span class="chip new">Petroleum Gravity <span style="color:#a16207;">— °API ↔ SG ↔ ρ</span></span>
+      <span class="chip new">Viscosity <span style="color:#a16207;">— dynamic ↔ kinematic</span></span>
+      <span class="chip new">Mass ↔ Volumetric Flow</span>
+      <span class="chip">Gas Property Estimator</span>
+      <span class="chip">Steam Properties — IAPWS-IF97</span>
+      <span class="chip">Pump Suction — NPSHa</span>
+      <span class="chip new">Compressor — Head &amp; Power</span>
+    </div>
+
+    <div class="col" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.45);">
+      <div class="hdr" style="color:#cbd5e1;">ADVANCED <span class="cnt">· 6 cards</span></div>
+      <span class="chip">Gas Heating Value (Compositional) &amp; Flow <span style="color:#64748b;">— JIS K 2301</span></span>
+      <span class="chip">LNG Cargo Estimator <span style="color:#64748b;">— 804 vessels · ISO 6578</span></span>
+      <span class="chip">Pipe Delta Pressure <span style="color:#64748b;">— 3 two-phase methods</span></span>
+      <span class="chip">Flow Regime <span style="color:#64748b;">— map + 3D</span></span>
+      <span class="chip new">Fuel Gas Rate Estimator</span>
+      <span class="chip new">Gas Turbine Catalogue <span style="color:#a16207;">— 31 models</span></span>
+    </div>
+
+    <div class="col" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.45);">
+      <div class="hdr" style="color:#cbd5e1;">SAFETY <span class="cnt">· 1 card, 5 modes</span></div>
+      <span class="chip">PRV Sizing — API 520 Part I</span>
+      <span class="chip" style="margin-left:10px;">§5.6 gas / vapor</span>
+      <span class="chip" style="margin-left:10px;">§5.7 steam</span>
+      <span class="chip" style="margin-left:10px;">§5.8 liquid, certified</span>
+      <span class="chip" style="margin-left:10px;">§5.9 liquid, non-certified</span>
+      <span class="chip" style="margin-left:10px;">§5.10 two-phase, Omega</span>
+      <div style="margin-top:7px;color:#64748b;font-size:11px;">API 526 orifice letters D–T</div>
+    </div>
+  </div>
+
+  <!-- the spine -->
+  <div style="position:absolute;left:28px;top:436px;width:1144px;">
+    <div class="lbl">THE SPINE — WHY THE VECTORS MATTER MORE THAN THE CARD COUNT</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:8px;">
+      <div class="col" style="border:1px solid rgba(110,231,183,.32);background:rgba(6,78,59,.18);text-align:center;">
+        <div class="mono" style="color:#6ee7b7;font-size:25px;font-weight:800;">15</div>
+        <div style="color:#94a3b8;font-size:11px;line-height:1.35;margin-top:2px;">published reference<br>vectors</div>
+      </div>
+      <div class="col" style="border:1px solid rgba(110,231,183,.32);background:rgba(6,78,59,.18);text-align:center;">
+        <div class="mono" style="color:#6ee7b7;font-size:25px;font-weight:800;">388</div>
+        <div style="color:#94a3b8;font-size:11px;line-height:1.35;margin-top:2px;">tests across<br>18 modules</div>
+      </div>
+      <div class="col" style="border:1px solid rgba(56,189,248,.30);background:rgba(12,74,110,.18);text-align:center;">
+        <div class="mono" style="color:#7dd3fc;font-size:25px;font-weight:800;">10</div>
+        <div style="color:#94a3b8;font-size:11px;line-height:1.35;margin-top:2px;">UI languages, and it opens<br>on a locked-down network</div>
+      </div>
+      <div class="col" style="border:1px solid rgba(56,189,248,.30);background:rgba(12,74,110,.18);text-align:center;">
+        <div class="mono" style="color:#7dd3fc;font-size:25px;font-weight:800;">0</div>
+        <div style="color:#94a3b8;font-size:11px;line-height:1.35;margin-top:2px;">sign-ups, ads,<br>installs</div>
+      </div>
+      <div class="col" style="border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.55);text-align:center;">
+        <div class="mono" style="color:#e2e8f0;font-size:25px;font-weight:800;">#s=</div>
+        <div style="color:#94a3b8;font-size:11px;line-height:1.35;margin-top:2px;">the share link never<br>reaches my server</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col" style="position:absolute;left:28px;top:552px;width:1144px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);padding:11px 16px;">
+    <div style="color:#94a3b8;font-size:12.5px;line-height:1.65;">
+      Anyone can add a card. What makes a free tool usable in real work is numbers pinned to something you can check
+      <b style="color:#e2e8f0;">without trusting me</b> — JIS K 2301, API 520, IAPWS-IF97, ISO 6578, Crane TP-410,
+      NORSOK P-001. Every figure in this campaign came out of the running app before the post was written, and three
+      of these twenty posts exist because doing that caught me being wrong.
+      <b style="color:#fcd34d;">So the only question I want answered: what card is missing?</b>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:52px;right:56px;top:646px;display:flex;align-items:baseline;justify-content:space-between;">
+    <div style="color:#94a3b8;font-size:15px;font-weight:500;letter-spacing:.02em;">engineering-converter.com</div>
+    <div style="color:#475569;font-size:13px;">free &middot; no sign-up &middot; 10 languages</div>
+  </div>
+</div>
+</body>
+</html>
