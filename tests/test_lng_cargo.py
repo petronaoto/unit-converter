@@ -489,3 +489,36 @@ def test_search_strings_are_translated_everywhere():
         for key in ("searchLabel", "searchPlaceholder", "searchCount", "searchClear"):
             assert lc.get(key), (code, key)
         assert "{n}" in lc["searchCount"] and "{total}" in lc["searchCount"], code
+
+
+def test_catalogue_count_uses_the_language_plural_rule(html):
+    """v3.9.3 — a search that narrows the catalogue to one ship made "1 vessels" a routine
+    sight rather than an edge case. The CLDR plural category comes from Intl.PluralRules for
+    the active language, and the four keys are listed literally in LC_COUNT_KEYS so the
+    dead-key sweep in test_i18n_parity still reaches every one of them."""
+    for needle in (
+        "new Intl.PluralRules(currentLang).select(n)",
+        "return LC_COUNT_KEYS[cat] || LC_COUNT_KEYS.other;",
+        "tr(lcCountKey(rows.length + fleetRows.length), { n: String(rows.length + fleetRows.length) })",
+    ):
+        assert needle in html, needle
+    for key in ("catCountOne", "catCountFew", "catCountMany", "catCount"):
+        assert ("'advanced.lngCargo.%s'" % key) in html, key
+
+
+def test_plural_forms_are_present_and_russian_keeps_three(): 
+    """One/other would still be wrong: Russian needs three forms (1 судно · 2 судна · 5 судов), which is
+    why the map carries `few` and `many` and not just a singular. Languages with no plural
+    marking legitimately repeat one string across all four."""
+    KEYS = ("catCount", "catCountOne", "catCountFew", "catCountMany")
+    distinct = {}
+    for code in ["en", "ja", "zh", "ko", "th", "id", "ru", "es", "fr", "de"]:
+        with open(REPO_ROOT / "i18n" / ("%s.json" % code), encoding="utf-8") as handle:
+            lc = json.load(handle)["advanced"]["lngCargo"]
+        for key in KEYS:
+            assert "{n}" in lc[key], (code, key)     # the count itself must survive
+        distinct[code] = {lc[key] for key in KEYS}
+    assert len(distinct["ru"]) == 3, distinct["ru"]
+    assert len(distinct["en"]) == 2, distinct["en"]   # vessel / vessels
+    for code in ("ja", "zh", "ko", "th", "id"):
+        assert len(distinct[code]) == 1, (code, distinct[code])

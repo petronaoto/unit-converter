@@ -7275,6 +7275,19 @@
                            bunk: 'advanced.lngCargo.type.bunk' };
     const LC_CONT_KEYS = { membrane: 'advanced.lngCargo.cont.membrane', moss: 'advanced.lngCargo.cont.moss',
                            ssp: 'advanced.lngCargo.cont.ssp', typec: 'advanced.lngCargo.cont.typec' };
+    // v3.9.3 — the catalogue count is a counted noun, so it needs the language's own plural
+    // rule: "1 vessel", not "1 vessels". A one/other split is not enough either — Russian has
+    // three forms (1 судно · 2 судна · 5 судов). Intl.PluralRules picks the CLDR category for the
+    // active language; the four keys are listed literally, like LC_TYPE_KEYS above, so the
+    // dead-key sweep in tests/test_i18n_parity.py still sees each one. CJK/Thai/Indonesian
+    // have no plural at all and simply resolve every category to the same string.
+    const LC_COUNT_KEYS = { one: 'advanced.lngCargo.catCountOne', few: 'advanced.lngCargo.catCountFew',
+                            many: 'advanced.lngCargo.catCountMany', other: 'advanced.lngCargo.catCount' };
+    function lcCountKey(n) {
+      let cat = 'other';
+      try { cat = new Intl.PluralRules(currentLang).select(n); } catch (e) {}
+      return LC_COUNT_KEYS[cat] || LC_COUNT_KEYS.other;   // zero/two are unused by these ten
+    }
     function lcVesselTypeLabel(v) { return tr(LC_TYPE_KEYS[v.type] || 'advanced.lngCargo.type.conv'); }
     function lcContLabel(v) { return tr(LC_CONT_KEYS[v.cont] || 'advanced.lngCargo.cont.membrane'); }
 
@@ -7441,7 +7454,7 @@
         ).join('')
       || '<p class="text-xs text-slate-500 col-span-full">' + escH(tr('advanced.lngCargo.catNoMatch')) + '</p>';
       grid.dataset.sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c + '|' + lcSearchQ.join(' ');
-      document.getElementById('lc-cat-count').textContent = tr('advanced.lngCargo.catCount', { n: String(rows.length + fleetRows.length) });
+      document.getElementById('lc-cat-count').textContent = tr(lcCountKey(rows.length + fleetRows.length), { n: String(rows.length + fleetRows.length) });
     }
 
 
