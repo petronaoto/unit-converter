@@ -70,12 +70,12 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7497683762781016064/ | |
 | 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | 📷 **built, not yet queued** | | |
-| 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | 📷 **built, not yet queued** | | |
-| 17 | Thu 3 Sep 2026 | I planned a post saying there is no tonnes-to-MMBtu factor. Then I ran the numbers. *(engagement)* | pain | 📷 **built, not yet queued** | | |
-| 18 | Fri 4 Sep 2026 | The whole toolbox on one page, and fifteen published vectors | story | 📷 **built, not yet queued** | | |
-| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | 📷 **built, not yet queued** | | |
-| 20 | Tue 8 Sep 2026 | Five things this calculator refuses to do | standards | 📷 **built, not yet queued** | | |
+| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 17 | Thu 3 Sep 2026 | I planned a post saying there is no tonnes-to-MMBtu factor. Then I ran the numbers. *(engagement)* | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 18 | Fri 4 Sep 2026 | The whole toolbox on one page, and fifteen published vectors | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 20 | Tue 8 Sep 2026 | Five things this calculator refuses to do | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 
 > ⚠️ **The `### Day N` sheets in §7 were never renumbered after the reflow (C12).** The table
 > above is authoritative for *what runs when*; the sheets below are authoritative for *content*.
@@ -98,9 +98,10 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > date §1 originally stated. No content, lens or ordering changed; the variety rule is unaffected
 > because the sequence itself is untouched.
 >
-> **All twenty are now written.** Days 15–20 were built on 2026-08-28 and are **not yet queued** —
-> attaching the image needs the real clipboard and the browser in the foreground, and Naoto was at
-> the keyboard. Bodies and graphics are committed; the composer step is the only thing outstanding.
+> **All twenty are now written and queued.** Days 15–20 were built and scheduled on 2026-08-28;
+> every one was confirmed in LinkedIn's own *Scheduled posts* list before this was written —
+> Sep 1, 2, 3, 4, 7 and 8, each at 08:00, alongside the still-pending Days 13 and 14.
+> Recording each URL once it publishes is all that remains.
 >
 > *Days 10–14 were all built and queued in one sitting on 2026-08-25 (08:00 JST on Tue 25,
 > Wed 26, Thu 27, Fri 28 Aug and Mon 31 Aug). Days 10, 11 and 12 have published and their URLs are
