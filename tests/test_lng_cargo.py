@@ -419,7 +419,7 @@ def test_fleet_participates_in_lookup_filters_and_catalogue(html):
     for needle in (
         "function lcVesselById(id) { return LNG_VESSELS.find(v => v.id === id) || LNG_FLEET_BY_ID.get(id) || null; }",
         "const LNG_FLEET_BY_ID = new Map(LNG_FLEET.map(v => [v.id, v]));",
-        "const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v));",
+        "const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));",
         "String(rows.length + fleetRows.length)",
         "v.type === 'small' || v.type === 'mid' || v.type === 'bunk'",
         "bunk: 'advanced.lngCargo.type.bunk'",
@@ -432,3 +432,60 @@ def test_curated_rows_still_never_cite_the_igu(vessels):
     not a silent swap of a curated row's citation."""
     for v in vessels:
         assert "igu.org" not in v["srcUrl"].lower(), v["id"]
+
+
+def test_search_is_a_third_predicate_everywhere(html):
+    """v3.9.3 — 804 options cannot be scrolled to a known ship, so a free-text query joins
+    the two pill filters. It must narrow the picker and the catalogue through the SAME
+    predicate, or the dropdown and the grid would disagree about what matches."""
+    for needle in (
+        "const rows = LNG_VESSELS.filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));",
+        "const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));",
+        "const show = (!!v && lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v)) || o.value === keep;",
+    ):
+        assert needle in html, needle
+
+
+def test_search_never_hides_the_selected_vessel(html):
+    """A hidden selected <option> renders the select blank in several browsers, which reads
+    as the vessel having been lost. The current value is always kept visible."""
+    body = html[html.index("function lcFilterVesselOptions"):html.index("function lcSetFilter")]
+    assert "const keep = sel.value;" in body
+    assert "|| o.value === keep" in body
+    assert "innerHTML" not in body          # still filters by hiding, never by rebuilding
+
+
+def test_search_query_joins_the_catalogue_sentinel(html):
+    """Both sentinel expressions — the staleness check and the value written back after a
+    render — must carry the query, or typing would leave the grid on the previous result."""
+    assert html.count("+ '|' + lcFilt.t + '|' + lcFilt.c + '|' + lcSearchQ.join(' ')") == 2
+
+
+def test_search_is_never_persisted(html):
+    """The query is a view control, not engineering state. collectInputs() sweeps every
+    `main input[id]`, so lc-search would otherwise ride along into share links and
+    localStorage — and applyInputs() assigns .value without firing a handler, leaving the
+    box full of text and lcSearchQ empty. Worse, a restored query could hide the very
+    vessel the link restored."""
+    body = html[html.index("function collectInputs()"):html.index("function applyInputs")]
+    assert "if (el.id === 'lc-search') return;" in body
+
+
+def test_search_fields_and_folding(html):
+    """The searchable fields are the ones an engineer actually knows: name, IMO, owner,
+    builder, propulsion and year. Diacritics are folded so a plain keyboard still finds
+    the ship."""
+    body = html[html.index("function lcNorm"):html.index("function lcMatchingVessels")]
+    assert "[v.name, v.id, v.owner, v.builder, v.prop, v.year].join(' ')" in body
+    assert ".toLowerCase().normalize('NFD')" in body
+    assert "lcSearchQ.every(t => hay.indexOf(t) !== -1)" in body   # all tokens, any field
+
+
+def test_search_strings_are_translated_everywhere():
+    """Four new keys; a dictionary that missed them would fall back to English silently."""
+    for code in ["en", "ja", "zh", "ko", "th", "id", "ru", "es", "fr", "de"]:
+        with open(REPO_ROOT / "i18n" / ("%s.json" % code), encoding="utf-8") as handle:
+            lc = json.load(handle)["advanced"]["lngCargo"]
+        for key in ("searchLabel", "searchPlaceholder", "searchCount", "searchClear"):
+            assert lc.get(key), (code, key)
+        assert "{n}" in lc["searchCount"] and "{total}" in lc["searchCount"], code

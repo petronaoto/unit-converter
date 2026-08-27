@@ -1136,6 +1136,19 @@
             </div>
           </div>
           <div class="p-6 space-y-5">
+            <!-- v3.9.3 — free-text search across the 804-row picker. It composes with the
+                 Class / Containment pills below and, like them, only hides options: the
+                 <option> list itself is still never rebuilt. The query is deliberately NOT
+                 part of STATE_KEY or a share link — see lcSearchChanged(). -->
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-1" data-i18n="advanced.lngCargo.searchLabel">Find</span>
+              <div class="relative flex-1 min-w-[16rem] max-w-lg">
+                <input type="text" id="lc-search" autocomplete="off" spellcheck="false" oninput="lcSearchChanged()" onkeydown="lcSearchKey(event)" data-i18n-placeholder="advanced.lngCargo.searchPlaceholder" placeholder="Vessel name, IMO, owner, builder, propulsion or year" data-i18n-aria="advanced.lngCargo.searchPlaceholder" aria-label="Vessel name, IMO, owner, builder, propulsion or year" class="w-full pl-3 pr-7 py-1.5 bg-slate-950/70 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-600 outline-none focus:ring-2 focus:ring-amber-500" />
+                <button type="button" id="lc-search-clear" onclick="lcClearSearch()" data-i18n-title="advanced.lngCargo.searchClear" title="Clear the search" data-i18n-aria="advanced.lngCargo.searchClear" aria-label="Clear the search" class="hidden absolute right-1 top-1/2 -translate-y-1/2 px-1.5 text-slate-500 hover:text-amber-400 transition-colors">×</button>
+              </div>
+              <span id="lc-search-count" class="text-slate-500 font-mono"></span>
+            </div>
+
             <div class="flex flex-wrap items-center gap-2 text-[11px]">
               <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-1" data-i18n="advanced.lngCargo.filtType">Class</span>
               <button id="lc-filt-t-all" onclick="lcSetFilter('t','all',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-amber-400 border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtAll">filtAll</button> <button id="lc-filt-t-conv" onclick="lcSetFilter('t','conv',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtConv">filtConv</button> <button id="lc-filt-t-qflex" onclick="lcSetFilter('t','qflex',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtQflex">filtQflex</button> <button id="lc-filt-t-qmax" onclick="lcSetFilter('t','qmax',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtQmax">filtQmax</button> <button id="lc-filt-t-ice" onclick="lcSetFilter('t','ice',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtIce">filtIce</button> <button id="lc-filt-t-fsru" onclick="lcSetFilter('t','fsru',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtFsru">filtFsru</button> <button id="lc-filt-t-small" onclick="lcSetFilter('t','small',this)" class="lc-tpill px-2 py-1 rounded bg-slate-800 border text-slate-400 border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="advanced.lngCargo.filtSmall">filtSmall</button>
@@ -3442,7 +3455,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs" data-i18n-html="docs.howto.b105">
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">① THE VESSEL CATALOGUE — THE FULL ACTIVE FLEET, WITH PERMISSION</div>
-              <p class="text-slate-400 leading-relaxed">The list now holds the <strong class="text-slate-200">full active fleet — all 804 LNG carriers at end-2025</strong> — reproduced from Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy) with the International Gas Union’s written permission, with attribution and a link to the report on every fleet entry. 36 featured vessels — every class, all four containment systems, all nine propulsion families, from LNG Aquarius (1977) to 2025 deliveries — additionally carry their own public primary source (an owner’s fleet page, a shipbuilder release, a class-society register or Wikipedia) and a photograph or schematic; where a featured row’s primary source and the report disagree on capacity, the primary source’s figure is shown. Every vessel links out to MarineTraffic and VesselFinder by IMO. Filter with the pills, or expand the catalogue for the grid.</p>
+              <p class="text-slate-400 leading-relaxed">The list now holds the <strong class="text-slate-200">full active fleet — all 804 LNG carriers at end-2025</strong> — reproduced from Appendix 3 of the IGU World LNG Report 2026 (data: Rystad Energy) with the International Gas Union’s written permission, with attribution and a link to the report on every fleet entry. 36 featured vessels — every class, all four containment systems, all nine propulsion families, from LNG Aquarius (1977) to 2025 deliveries — additionally carry their own public primary source (an owner’s fleet page, a shipbuilder release, a class-society register or Wikipedia) and a photograph or schematic; where a featured row’s primary source and the report disagree on capacity, the primary source’s figure is shown. Every vessel links out to MarineTraffic and VesselFinder by IMO. Filter with the pills, or expand the catalogue for the grid. And you no longer have to scroll 804 rows: type a name, IMO number, owner, builder, propulsion or year into the <strong class="text-slate-200">Find</strong> box and both the pull-down and the catalogue narrow as you type; Enter picks the ship as soon as only one is left.</p>
             </div>
             <div class="bg-slate-950 rounded-lg border border-slate-700 p-3">
               <div class="text-orange-400 font-bold text-[10px] tracking-widest mb-1">② LOADING LIMIT, HEEL AND BOIL-OFF</div>
@@ -6362,6 +6375,7 @@
     const LC_TYPES = ['qmax', 'qflex', 'conv', 'ice', 'fsru', 'fsu', 'mid', 'small'];
     let lastLNGProps = null, lastLNGCargoResult = null;
     let lcFilt = { t: 'all', c: 'all' };
+    let lcSearchQ = [];   // v3.9.3 — normalised search tokens; empty array = no search
 
 
     // v3.9 — the remaining active fleet: Appendix 3 of the IGU World LNG Report 2026, pp. 129–153
@@ -7154,20 +7168,85 @@
       if (lcFilt.c === 'other') return v.cont === 'ssp' || v.cont === 'typec';
       return v.cont === lcFilt.c;
     }
+    // v3.9.3 — VESSEL SEARCH. 804 rows in one <select> cannot be scrolled to a known ship,
+    // and the option labels do not even carry the IMO. lcSearchMatch() joins lcTypeMatch /
+    // lcContMatch as a third predicate, so the picker and the catalogue narrow identically.
+    // Lower-cased and diacritic-folded, so a name typed on a plain keyboard still finds the
+    // ship: NFD strips the combining accents, and the explicit pairs cover the Scandinavian
+    // and Slavic letters that have no decomposition (o-slash, ae, sharp-s, d-stroke).
+    function lcNorm(s) {
+      return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/\u00f8/g, 'o').replace(/\u00e6/g, 'ae').replace(/\u00df/g, 'ss').replace(/\u0111/g, 'd');
+    }
+    // Built once per vessel — both consumers re-filter all 804 rows on every keystroke.
+    const LC_HAYSTACK = new Map();
+    function lcHaystack(v) {
+      let s = LC_HAYSTACK.get(v.id);
+      if (s === undefined) { s = lcNorm([v.name, v.id, v.owner, v.builder, v.prop, v.year].join(' ')); LC_HAYSTACK.set(v.id, s); }
+      return s;
+    }
+    function lcSearchMatch(v) {
+      if (!lcSearchQ.length) return true;
+      const hay = lcHaystack(v);
+      return lcSearchQ.every(t => hay.indexOf(t) !== -1);   // every token, in any field
+    }
+    // The two datasets share no IMO (804 unique), so a plain concat needs no de-duplication.
+    function lcMatchingVessels() {
+      return LNG_VESSELS.concat(LNG_FLEET).filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));
+    }
+    const LC_VESSEL_TOTAL = LNG_VESSELS.length + LNG_FLEET.length;
+    function lcUpdateSearchCount() {
+      const el = document.getElementById('lc-search-count');
+      if (!el) return;
+      const n = lcMatchingVessels().length;
+      el.textContent = tr('advanced.lngCargo.searchCount', { n: String(n), total: String(LC_VESSEL_TOTAL) });
+      el.classList.toggle('text-amber-400', n === 0);
+      el.classList.toggle('text-slate-500', n !== 0);
+    }
+    // Deliberately NOT persisted: the query is a view control, so it stays out of
+    // collectInputs()/applyState() and out of share links. A restored state can therefore
+    // never come back with a filter that hides the very vessel it just restored.
+    function lcSearchChanged() {
+      const el = document.getElementById('lc-search');
+      if (!el) return;
+      lcSearchQ = lcNorm(el.value).split(/\s+/).filter(Boolean);
+      document.getElementById('lc-search-clear').classList.toggle('hidden', el.value === '');
+      lcFilterVesselOptions();
+      lcRenderCatalogueIfStale();
+    }
+    function lcClearSearch() {
+      const el = document.getElementById('lc-search');
+      if (!el) return;
+      el.value = '';
+      lcSearchChanged();
+      el.focus();
+    }
+    // Enter commits the search once it has narrowed the fleet to a single ship; Escape clears.
+    function lcSearchKey(e) {
+      if (e.key === 'Escape') { e.preventDefault(); lcClearSearch(); return; }
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      const hits = lcMatchingVessels();
+      if (hits.length === 1) selectLNGVessel(hits[0].id);
+    }
     // Options are never rebuilt (share-link restore sets lc-vessel before any event fires) —
     // the filters only hide/disable, exactly like gtFilterModelOptions().
     function lcFilterVesselOptions() {
       const sel = document.getElementById('lc-vessel');
       if (!sel) return;
+      // The current selection is never hidden: a hidden selected <option> renders the
+      // select blank in several browsers, which reads as the vessel having been lost.
+      const keep = sel.value;
       sel.querySelectorAll('optgroup').forEach(g => {
         let any = false;
         g.querySelectorAll('option').forEach(o => {
           const v = lcVesselById(o.value);
-          const show = !!v && lcTypeMatch(v) && lcContMatch(v);
+          const show = (!!v && lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v)) || o.value === keep;
           o.hidden = !show; o.disabled = !show; if (show) any = true;
         });
         g.hidden = !any;
       });
+      lcUpdateSearchCount();
     }
     function lcSetFilter(kind, val, btn) {
       lcFilt[kind] = val;
@@ -7328,14 +7407,14 @@
     function lcRenderCatalogueIfStale() {
       const grid = document.getElementById('lc-cat-grid');
       if (!grid) return;
-      const sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c;
+      const sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c + '|' + lcSearchQ.join(' ');
       if (grid.dataset.sentinel !== sentinel) renderLNGCatalogue();
     }
     function renderLNGCatalogue() {
       const grid = document.getElementById('lc-cat-grid');
       if (!grid) return;
-      const rows = LNG_VESSELS.filter(v => lcTypeMatch(v) && lcContMatch(v));
-      const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v));
+      const rows = LNG_VESSELS.filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));
+      const fleetRows = LNG_FLEET.filter(v => lcTypeMatch(v) && lcContMatch(v) && lcSearchMatch(v));
       const escH = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       grid.innerHTML = rows.map(v => {
         const thumb = v.photo
@@ -7361,7 +7440,7 @@
           '<button onclick="selectLNGVessel(\'' + escH(v.id) + '\');document.getElementById(\'adv-lng-cargo\').scrollIntoView({behavior:\'smooth\'})" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 whitespace-nowrap">' + escH(tr('advanced.lngCargo.catUse')) + ' ›</button></div>'
         ).join('')
       || '<p class="text-xs text-slate-500 col-span-full">' + escH(tr('advanced.lngCargo.catNoMatch')) + '</p>';
-      grid.dataset.sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c;
+      grid.dataset.sentinel = tr('advanced.lngCargo.catUse') + '|' + lcFilt.t + '|' + lcFilt.c + '|' + lcSearchQ.join(' ');
       document.getElementById('lc-cat-count').textContent = tr('advanced.lngCargo.catCount', { n: String(rows.length + fleetRows.length) });
     }
 
@@ -8961,6 +9040,12 @@
         // localStorage. Nothing here is engineering state; excluding it keeps personal
         // text out of URLs that get pasted into chats and tickets.
         if (el.id.indexOf('report-') === 0) return;
+        // v3.9.3 — the vessel search box is a view control, not engineering state. Sharing
+        // it would restore a filter that can hide the very vessel the link restored, and
+        // applyInputs() only assigns .value — it fires no handler, so lcSearchQ would
+        // desync from the box. The pill filters are excluded for the same reason: neither
+        // is an input element at all.
+        if (el.id === 'lc-search') return;
         data[el.id] = el.value;
       });
       return data;
