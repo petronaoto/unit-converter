@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 15 mockup — the calculator that refuses to tell you whether it passes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #app{position:absolute;width:1280px;height:2400px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 15 — "The calculator that refuses to tell you whether it passes"
+
+  Both result blocks are CLONED FROM THE LIVE NPSHa CARD, driven through the app's own
+  fillNPSHWater() helper so the vapour pressure and density come from IF97 exactly as a user
+  would get them. Reference vector 9 (SPECIFICATION.md §9): 80 °C / z=+3 / h_f=1.2 must give
+  7.45697 m with the breakdown "5.65697 + 3 - 1.2" and NO warning; 95 °C / z=-2 / h_f=0.8 must
+  give -1.0279 m WITH the flashing warning.
+
+  The post's load-bearing claim is the PAIR, not either half: the card refuses the margin
+  verdict (which needs HI 9.6.1 / API 610, licensed) and renders the physics verdict (which
+  needs no document). data-ready asserts both halves, so a change that makes the card start
+  judging - or stop warning - fails the build rather than shipping a wrong caption.
+
+  Serve the repo root over HTTP, open /docs/linkedin/day15-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.9</span>
+      <span class="text-slate-600">·</span> Basic Eng <span class="text-slate-600">▸</span>
+      Pump Suction — NPSHa</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <!-- CASE A — the ordinary case: a number, and deliberately no verdict -->
+  <div class="absolute" style="left:44px;top:78px;width:520px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">CASE A — WATER 80 °C, OPEN TANK, z = +3 m, h_f = 1.2 m</div>
+    <div id="cardA" style="margin-top:7px;"></div>
+  </div>
+  <div id="verdictA" class="absolute rounded-lg" style="left:44px;width:520px;height:48px;
+       border:1.5px dashed rgba(148,163,184,.42);background:rgba(15,23,42,.35);
+       display:flex;align-items:center;justify-content:center;text-align:center;">
+    <div>
+      <div class="text-slate-500 text-[12.5px] font-semibold">where a PASS / FAIL badge would go</div>
+      <div class="text-slate-600 text-[11.5px]" style="margin-top:2px;">NPSHr is on the vendor's curve · the margin is HI 9.6.1 / API 610</div>
+    </div>
+  </div>
+
+  <!-- CASE B — the case it DOES judge, because physics settles it without a document -->
+  <div class="absolute" style="left:636px;top:78px;width:520px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">CASE B — WATER 95 °C, z = −2 m, h_f = 0.8 m</div>
+    <div id="cardB" style="margin-top:7px;"></div>
+  </div>
+  <div id="verdictB" class="absolute rounded-lg" style="left:636px;width:520px;height:48px;
+       border:1.5px solid rgba(251,113,133,.45);background:rgba(76,5,25,.30);
+       display:flex;align-items:center;justify-content:center;text-align:center;">
+    <div>
+      <div class="text-rose-300 text-[12.5px] font-semibold">here it DOES judge — see the warning above</div>
+      <div class="text-slate-500 text-[11.5px]" style="margin-top:2px;">negative available head needs no licensed document</div>
+    </div>
+  </div>
+
+  <!-- the three-way split that the post is actually about -->
+  <div id="split" class="absolute" style="left:28px;top:398px;width:1144px;">
+    <div class="grid grid-cols-3 gap-3">
+      <div class="rounded-lg px-4 py-2.5" style="border:1px solid rgba(110,231,183,.30);background:rgba(6,78,59,.20);">
+        <div class="text-emerald-300 text-[12px] font-bold tracking-wide">NPSHa — ARITHMETIC</div>
+        <div class="text-slate-400 text-[12px] leading-snug" style="margin-top:4px;">
+          (P − P_v)/ρg + z − h_f, g = 9.80665 m/s² exactly. Every term on screen. This card.</div>
+      </div>
+      <div class="rounded-lg px-4 py-2.5" style="border:1px solid rgba(56,189,248,.30);background:rgba(12,74,110,.20);">
+        <div class="text-sky-300 text-[12px] font-bold tracking-wide">NPSHr — DATA</div>
+        <div class="text-slate-400 text-[12px] leading-snug" style="margin-top:4px;">
+          A tested property of that pump at that flow. It exists on the vendor's curve and nowhere else.</div>
+      </div>
+      <div class="rounded-lg px-4 py-2.5" style="border:1px solid rgba(251,191,36,.30);background:rgba(120,53,15,.20);">
+        <div class="text-amber-300 text-[12px] font-bold tracking-wide">THE MARGIN — JUDGEMENT</div>
+        <div class="text-slate-400 text-[12px] leading-snug" style="margin-top:4px;">
+          Typically 0.6–1.5 m or a 1.1–1.35 ratio. Codified in HI 9.6.1 and API 610 — licensed documents.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="explain" class="absolute rounded-lg px-4 py-2" style="left:44px;top:512px;width:1112px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:5px;" id="head">…</div>
+    <div id="body" class="text-slate-400 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; 10 languages</div>
+  </div>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+// cloneNode copies the value ATTRIBUTE, not the live .value PROPERTY. Driving the card from
+// JS sets the property only, so a naive clone renders the ORIGINAL placeholders — which is how
+// the first Day 15 build showed Case A's 80 °C / z=+3 / h_f=1.2 inputs beside Case B's
+// -1.0279 result. Materialise every live value onto the clone before freezing.
+function materializeValues(srcAll, dstAll) {
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i], tag = s.tagName;
+    if (tag === 'INPUT') {
+      if (s.type === 'checkbox' || s.type === 'radio') {
+        if (s.checked) { d.setAttribute('checked', 'checked'); } else { d.removeAttribute('checked'); }
+      } else {
+        d.setAttribute('value', s.value);
+      }
+    } else if (tag === 'TEXTAREA') {
+      d.textContent = s.value;
+    } else if (tag === 'SELECT') {
+      var opts = d.querySelectorAll('option');
+      for (var j = 0; j < opts.length; j++) {
+        if (j === s.selectedIndex) { opts[j].setAttribute('selected', 'selected'); }
+        else { opts[j].removeAttribute('selected'); }
+      }
+    }
+  }
+}
+
+function cloneInto(node, win, slotId, width) {
+  var clone = node.cloneNode(true);
+  var srcAll = [node].concat([].slice.call(node.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  materializeValues(srcAll, dstAll);
+  // freeze BEFORE cropping: removing a node from the clone desynchronises the two flat
+  // lists, and every style after the removal point would then be copied off the wrong element
+  for (var m = 0; m < srcAll.length; m++) { freezeStyle(srcAll[m], dstAll[m], win); }
+  // the card's documentation footnote is prose, not a result - it renders as an unreadable
+  // grey smear at this scale, so it is cropped out of the graphic
+  var foot = clone.querySelectorAll('p');
+  var cropped = 0;
+  for (var f = 0; f < foot.length; f++) {
+    if ((foot[f].textContent || '').length > 200) { foot[f].parentNode.removeChild(foot[f]); cropped++; }
+  }
+  // freezeStyle copied an explicit height off the UNCROPPED source card, which would keep the
+  // clone at its old size and leave a dead band under the panel. Let it shrink to its content.
+  if (cropped) { clone.style.height = 'auto'; }
+  var rect = node.getBoundingClientRect();
+  var k = width / rect.width;
+  clone.style.width = rect.width + 'px';
+  clone.style.transformOrigin = '0 0';
+  clone.style.transform = 'scale(' + k + ')';
+  var slot = document.getElementById(slotId);
+  slot.innerHTML = '';
+  slot.style.overflow = 'hidden';
+  slot.appendChild(clone);
+  // measure the clone AFTER the footnote crop - the source card is taller than what is shown
+  var h = clone.getBoundingClientRect().height / k;
+  slot.style.height = Math.ceil(h * k) + 'px';
+  return { w: rect.width, h: h, k: k };
+}
+
+var A = null, B = null, HA = null, HB = null;
+
+function setV(doc, win, id, v) {
+  var e = doc.getElementById(id); e.value = v;
+  e.dispatchEvent(new win.Event('input', { bubbles: true }));
+  e.dispatchEvent(new win.Event('change', { bubbles: true }));
+}
+
+function readNPSH(doc) {
+  var t = function (id) { var e = doc.getElementById(id); return e ? e.textContent.trim() : ''; };
+  var v = function (id) { var e = doc.getElementById(id); return e ? e.value : ''; };
+  var warnEl = doc.getElementById('npsh-warn');
+  return {
+    out: t('npsh-out'), breakdown: t('npsh-breakdown'),
+    pv: v('npsh-pv'), rho: v('npsh-rho'), p: v('npsh-p'),
+    warnHidden: warnEl.classList.contains('hidden'),
+    warnText: warnEl.textContent.trim()
+  };
+}
+
+// A verdict, for this post's purposes, is any PASS/FAIL/OK/SAFE-style badge in the results
+// block. Case A must contain none; the point of the post collapses if one ever appears.
+function verdictWordsIn(node) {
+  var txt = (node.innerText || node.textContent || '').toUpperCase();
+  return ['PASS', 'FAIL', 'WITHIN LIMIT', 'EXCEEDS', 'ACCEPTABLE', 'OK']
+    .filter(function (w) { return txt.indexOf(w) >= 0; });
+}
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+
+  setTimeout(function () {
+    win.switchTab('basic');
+    setTimeout(function () { runCaseA(doc, win); }, 500);
+  }, 900);
+}
+
+function cardBody(doc) {
+  // the whole card body: the five inputs, the water helper, the warning strip and the
+  // results pair. Cloning this rather than the results row alone is what puts Case B's
+  // flashing warning inside the screenshot.
+  return doc.getElementById('npsh-out')
+            .parentElement.parentElement.parentElement.parentElement;
+}
+
+function runCaseA(doc, win) {
+  setV(doc, win, 'npsh-tw', '80');
+  win.fillNPSHWater();
+  setV(doc, win, 'npsh-p', '101.325');
+  setV(doc, win, 'npsh-z', '3');
+  setV(doc, win, 'npsh-hf', '1.2');
+  win.calcNPSH();
+  setTimeout(function () {
+    A = readNPSH(doc);
+    var row = cardBody(doc);
+    A.verdictWords = verdictWordsIn(row);
+    HA = cloneInto(row, win, 'cardA', 520);
+    runCaseB(doc, win);
+  }, 320);
+}
+
+function runCaseB(doc, win) {
+  setV(doc, win, 'npsh-tw', '95');
+  win.fillNPSHWater();
+  setV(doc, win, 'npsh-p', '101.325');
+  setV(doc, win, 'npsh-z', '-2');
+  setV(doc, win, 'npsh-hf', '0.8');
+  win.calcNPSH();
+  setTimeout(function () {
+    B = readNPSH(doc);
+    HB = cloneInto(cardBody(doc), win, 'cardB', 520);
+    layout();
+    finish();
+  }, 320);
+}
+
+// The clone height is whatever the real card renders at; hard-coding tops here is how the
+// earlier build left a dead band under the panels. Measure, then place.
+function layout() {
+  var top = 78 + 16 + 7 + Math.max(HA.h * HA.k, HB.h * HB.k);
+  document.getElementById('verdictA').style.top = (top + 8) + 'px';
+  document.getElementById('verdictB').style.top = (top + 8) + 'px';
+  var splitTop = top + 8 + 48 + 10;
+  document.getElementById('split').style.top = splitTop + 'px';
+  document.getElementById('explain').style.top = (splitTop + 84) + 'px';
+}
+
+function finish() {
+  document.getElementById('conditions').textContent =
+    'P_v and ρ filled from IAPWS-IF97 by the card’s own water button — Region 4 saturation pressure and Region 1 saturated-liquid density';
+
+  document.getElementById('head').innerHTML =
+    'The card renders the verdict <b>physics</b> can settle and refuses the one needing somebody else’s licensed '
+    + 'table. Case A returns <b style="color:#e2e8f0;">' + A.out + ' m</b> = ' + A.breakdown + ', and stops. '
+    + 'Case B returns <b style="color:#fda4af;">' + B.out + ' m</b> and does judge it — negative available head '
+    + 'is arithmetic reaching a physical impossibility.';
+
+  document.getElementById('body').innerHTML =
+    'A margin verdict would need NPSHr — a tested property of one pump at one flow — plus a rule from HI 9.6.1 '
+    + 'or API 610. A half-remembered version of either, compressed into a green tick, would manufacture authority '
+    + 'this application does not have. <b style="color:#e2e8f0;">The blank space is the feature.</b> '
+    + 'Reference vector 9, reproduced from the running app: P_v = ' + A.pv + ' kPa, ρ = ' + A.rho + ' kg/m³ (IF97 at 80 °C).';
+
+  document.body.setAttribute('data-ready', [
+    'A_npsha=' + A.out,
+    'A_breakdown=' + A.breakdown,
+    'A_matches_vector9=' + (A.out === '7.45697' && A.breakdown === '5.65697 + 3 − 1.2'),
+    'A_pv=' + A.pv, 'A_rho=' + A.rho,
+    'A_no_warning=' + A.warnHidden,
+    'A_no_verdict_words=' + (A.verdictWords.length === 0) + '(' + (A.verdictWords.join(',') || 'none') + ')',
+    'B_npsha=' + B.out,
+    'B_matches_vector9=' + (B.out === '-1.0279'),
+    'B_DOES_warn=' + (!B.warnHidden),
+    'B_warn=' + B.warnText,
+    // the pair is the claim: refuses the judgement verdict, renders the physics verdict
+    'refuses_margin_but_renders_physics=' + (A.warnHidden && A.verdictWords.length === 0 && !B.warnHidden)
+  ].join('|'));
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 15 — the calculator that refuses to tell you whether it passes</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day15-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 17 mockup — the tonnes-to-MMBtu factor is the one that barely moves</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  #app{position:absolute;width:1280px;height:2600px;left:-20000px;top:0;border:0;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!--
+  Day 17 — "I planned a post saying there is no tonnes-to-MMBtu factor. Then I ran the numbers."
+
+  EVERY number here is swept THROUGH THE LIVE APP: each of the five GIIGNL published reference
+  compositions is applied with applyLNGPreset(), the LNG Cargo Estimator is recalculated on one
+  fixed vessel (174,000 m3 at 98.5 %), and the energy, mass and loaded volume are read back out
+  of the DOM. The three "factors" are then E/m, E/V_liq and the card's own HHV.
+
+  This graphic exists because the draft post was WRONG. The campaign sheet asserted there is no
+  such thing as a tonnes-to-MMBtu factor; the app says the per-tonne figure is the most stable of
+  the three (1.6 %) while the two volume bases move 6.7 % and 10.4 %. data-ready asserts that
+  ordering AND the rank inversion (leanest LNG = most energy per tonne, least per m3), so if the
+  physics ever stops holding, the build fails instead of the caption lying.
+
+  Serve the repo root over HTTP, open /docs/linkedin/day17-mockup.html, then screenshot
+  #shot (1200x675) or call buildStandalone().
+-->
+<iframe id="app" src="../../index.html?fresh=1"></iframe>
+
+<div id="shot">
+
+  <div class="absolute top-6 left-10 flex items-center gap-3 z-30 whitespace-nowrap">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+    <span class="text-slate-400 text-[13px] tracking-wide whitespace-nowrap">O&amp;G Engineering Converter
+      <span class="text-slate-600">v3.9</span>
+      <span class="text-slate-600">·</span> Advanced <span class="text-slate-600">▸</span>
+      LNG Cargo Estimator <span class="text-slate-600">▸</span> GIIGNL reference compositions</span>
+  </div>
+  <div class="absolute text-slate-500 text-[12.5px] whitespace-nowrap" style="left:52px;top:50px;" id="conditions">…</div>
+
+  <div class="absolute" style="left:28px;top:84px;width:600px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">HOW FAR EACH “FACTOR” MOVES ACROSS THE SAME FIVE CARGOES</div>
+    <svg id="bars" width="600" height="250" viewBox="0 0 600 250" style="margin-top:6px;"></svg>
+  </div>
+
+  <div class="absolute" style="left:652px;top:84px;width:520px;">
+    <div class="text-slate-500 text-[11px] tracking-[0.12em]">ONE VESSEL — 174,000 m³ AT 98.5 % — ONLY THE ORIGIN CHANGES</div>
+    <table id="tbl" class="w-full text-[12.5px]" style="margin-top:8px;border-collapse:collapse;"></table>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-3" style="left:28px;top:360px;width:600px;
+       border:1px solid rgba(251,191,36,.30);background:rgba(120,53,15,.18);">
+    <div class="text-amber-300 text-[12.5px] font-bold tracking-wide">WHY THE MASS BASIS BARELY MOVES</div>
+    <div id="why" class="text-slate-400 text-[12.5px] leading-snug" style="margin-top:5px;">…</div>
+  </div>
+
+  <div class="absolute rounded-lg px-4 py-2" style="left:28px;top:492px;width:1144px;
+       border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.55);" id="explain">
+    <div class="text-slate-200 text-[13px] font-semibold" style="margin-bottom:5px;" id="head">…</div>
+    <div id="body" class="text-slate-400 text-[12.5px] leading-relaxed">…</div>
+  </div>
+
+  <div class="absolute flex items-baseline justify-between" style="left:52px;right:56px;top:646px;">
+    <div class="text-slate-400 text-[15px] font-medium tracking-wide">engineering-converter.com</div>
+    <div class="text-slate-600 text-[13px]">free &middot; no sign-up &middot; 10 languages</div>
+  </div>
+</div>
+
+<script>
+var STYLE_PROPS = ['display','position','top','left','right','bottom','width','height','min-width',
+  'max-width','min-height','margin-top','margin-right','margin-bottom','margin-left','padding-top',
+  'padding-right','padding-bottom','padding-left','border-top-width','border-right-width',
+  'border-bottom-width','border-left-width','border-style','border-top-color','border-right-color',
+  'border-bottom-color','border-left-color','border-radius','background-color','background-image',
+  'color','font-family','font-size','font-weight','font-style','line-height','letter-spacing',
+  'text-transform','text-align','opacity','box-shadow','flex-grow','flex-shrink','flex-basis',
+  'flex-direction','align-items','justify-content','gap','overflow','z-index','white-space',
+  'vertical-align','appearance','text-decoration','backdrop-filter',
+  'grid-template-columns','grid-template-rows','grid-auto-flow','grid-auto-columns',
+  'grid-auto-rows','grid-column','grid-row','row-gap','column-gap','align-self','justify-self',
+  'transform','transform-origin'];
+
+function freezeStyle(src, dst, win) {
+  var cs = win.getComputedStyle(src), css = 'box-sizing:border-box;';
+  for (var n = 0; n < STYLE_PROPS.length; n++) {
+    var prop = STYLE_PROPS[n], val = cs.getPropertyValue(prop);
+    if (!val) { continue; }
+    if (prop !== 'display' && (val === 'none' || val === 'normal' || val === 'auto' || val === '0s')) { continue; }
+    if (prop === 'display' && (val === 'normal' || val === 'auto')) { continue; }
+    if (val === '0px' && !/^border-(top|right|bottom|left)-width$/.test(prop)) { continue; }
+    css += prop + ':' + val + ';';
+  }
+  dst.setAttribute('style', css);
+  dst.removeAttribute('class');
+}
+
+var PRESETS = ['au-nws', 'my-bintulu', 'ng-bonny', 'qa-raslaffan', 'tt-atlantic'];
+var SHORT = { 'au-nws': 'Australia NWS', 'my-bintulu': 'Malaysia Bintulu', 'ng-bonny': 'Nigeria Bonny',
+              'qa-raslaffan': 'Qatar Ras Laffan', 'tt-atlantic': 'Trinidad Pt Fortin' };
+var ROWS = [];
+
+function num(doc, id) {
+  var e = doc.getElementById(id);
+  return e ? parseFloat((e.textContent || '').replace(/,/g, '')) : NaN;
+}
+
+function buildCard() {
+  var fr = document.getElementById('app');
+  var doc = fr.contentDocument, win = fr.contentWindow;
+  var kill = doc.createElement('style');
+  kill.textContent = '*,*::before,*::after{transition:none !important;animation:none !important;}';
+  doc.head.appendChild(kill);
+  if (typeof win.setLanguage === 'function') { win.setLanguage('en'); }
+  setTimeout(function () {
+    win.switchTab('advanced');
+    setTimeout(function () { sweep(doc, win, 0); }, 600);
+  }, 900);
+}
+
+function sweep(doc, win, i) {
+  if (i >= PRESETS.length) { setTimeout(function () { draw(); }, 100); return; }
+  var id = PRESETS[i];
+  win.applyLNGPreset(id);
+  doc.getElementById('comp-preset').value = id;
+  if (typeof win.recomputeAll === 'function') { win.recomputeAll(); }
+  doc.getElementById('lc-out-e-u').value = 'mmbtu';
+  win.calcLNGCargo();
+  setTimeout(function () {
+    var E = num(doc, 'lc-out-e'), m = num(doc, 'lc-out-mass'), V = num(doc, 'lc-out-vliq');
+    ROWS.push({
+      id: id, name: SHORT[id],
+      hhv: num(doc, 'lc-comp-hhv'), rhoL: num(doc, 'lc-comp-rhol'), rhoS: num(doc, 'lc-comp-rhos'),
+      E: E, m: m, V: V,
+      perT: E / m, perM3: E / V,
+      dens: (doc.getElementById('lc-out-dens') || {}).textContent
+    });
+    sweep(doc, win, i + 1);
+  }, 260);
+}
+
+function spread(key) {
+  var v = ROWS.map(function (r) { return r[key]; });
+  var lo = Math.min.apply(null, v), hi = Math.max.apply(null, v);
+  return { lo: lo, hi: hi, pct: (hi / lo - 1) * 100 };
+}
+
+function draw() {
+  var sT = spread('perT'), sM = spread('perM3'), sH = spread('hhv');
+  var BARS = [
+    { label: 'per tonne of LNG', unit: 'MMBtu/t', s: sT, col: '#6ee7b7', note: 'the one everybody calls sloppy' },
+    { label: 'per m³ of LNG', unit: 'MMBtu/m³', s: sM, col: '#fbbf24', note: '' },
+    { label: 'per Nm³ of gas (HHV)', unit: 'MJ/Nm³', s: sH, col: '#f43f5e', note: '' }
+  ];
+  var L = 8, R = 566, maxPct = 12, y = 22, s = '';
+  // one shared percentage axis, so the three bars are directly comparable by length
+  var X = function (p) { return L + p / maxPct * (R - L); };
+  for (var g = 0; g <= maxPct; g += 2) {
+    s += '<line x1="' + X(g) + '" y1="14" x2="' + X(g) + '" y2="216" stroke="#1e293b"/>'
+       + '<text x="' + X(g) + '" y="231" fill="#64748b" font-size="10" text-anchor="middle">' + g + ' %</text>';
+  }
+  BARS.forEach(function (b) {
+    s += '<text x="' + L + '" y="' + (y + 2) + '" fill="#cbd5e1" font-size="12.5" font-weight="600">' + b.label + '</text>'
+       + '<text x="' + R + '" y="' + (y + 2) + '" fill="#64748b" font-size="11" text-anchor="end">' + b.unit + '</text>';
+    var w = Math.max(2, X(b.s.pct) - L);
+    s += '<rect x="' + L + '" y="' + (y + 12) + '" width="' + w + '" height="22" rx="4" fill="' + b.col + '" opacity="0.85"/>'
+       + '<text x="' + (L + w + 9) + '" y="' + (y + 28) + '" fill="' + b.col + '" font-size="14" font-weight="bold">'
+       + b.s.pct.toFixed(1) + ' %</text>'
+       + '<text x="' + L + '" y="' + (y + 52) + '" fill="#64748b" font-size="11">'
+       + b.s.lo.toFixed(2) + ' → ' + b.s.hi.toFixed(2) + (b.note ? '  ·  ' + b.note : '') + '</text>';
+    y += 70;
+  });
+  s += '<text x="' + ((L + R) / 2) + '" y="247" fill="#94a3b8" font-size="11" text-anchor="middle">spread across the five published origins</text>';
+  document.getElementById('bars').innerHTML = s;
+
+  // table, sorted by MMBtu/t so the rank inversion against the m³ column is visible
+  var sorted = ROWS.slice().sort(function (a, b) { return a.perT - b.perT; });
+  var h = '<tr style="color:#64748b;font-size:11px;text-align:right;">'
+        + '<th style="text-align:left;padding:3px 0;font-weight:500;">origin</th>'
+        + '<th style="font-weight:500;">HHV<br>MJ/Nm³</th><th style="font-weight:500;">ρ_liq<br>kg/m³</th>'
+        + '<th style="font-weight:500;color:#6ee7b7;">MMBtu<br>per t</th><th style="font-weight:500;color:#fbbf24;">MMBtu<br>per m³</th></tr>';
+  sorted.forEach(function (r, i) {
+    var edge = (i === 0 || i === sorted.length - 1);
+    h += '<tr style="border-top:1px solid #1e293b;color:' + (edge ? '#e2e8f0' : '#94a3b8') + ';text-align:right;">'
+       + '<td style="text-align:left;padding:5px 0;">' + r.name + '</td>'
+       + '<td>' + r.hhv.toFixed(2) + '</td><td>' + r.rhoL.toFixed(2) + '</td>'
+       + '<td style="color:#6ee7b7;font-weight:' + (edge ? '700' : '400') + ';">' + r.perT.toFixed(2) + '</td>'
+       + '<td style="color:#fbbf24;font-weight:' + (edge ? '700' : '400') + ';">' + r.perM3.toFixed(2) + '</td></tr>';
+  });
+  document.getElementById('tbl').innerHTML = h;
+
+  var leanest = ROWS.reduce(function (a, b) { return a.hhv < b.hhv ? a : b; });
+  var richest = ROWS.reduce(function (a, b) { return a.hhv > b.hhv ? a : b; });
+  var topPerT = ROWS.reduce(function (a, b) { return a.perT > b.perT ? a : b; });
+  var botPerM3 = ROWS.reduce(function (a, b) { return a.perM3 < b.perM3 ? a : b; });
+  var inverts = (topPerT.id === botPerM3.id) && (topPerT.id === leanest.id);
+  // A nominal round tonnage, NOT any one origin's loaded mass: each composition puts a different
+  // mass into the same hull, so "the gap on one cargo" is only well posed against a stated basis.
+  // The post body quotes this same number.
+  var REF_T = 80000;
+  var REF_GAP = Math.round((sT.hi - sT.lo) * REF_T / 1000) * 1000;
+
+  document.getElementById('conditions').textContent =
+    'Five GIIGNL published reference compositions on a mole basis, run through the JIS K 2301 chain and ISO 6578 liquid density — one vessel, one fill limit';
+
+  document.getElementById('why').innerHTML =
+    'Methane has the highest heating value per kilogram of any alkane, so the <b style="color:#e2e8f0;">leanest</b> '
+    + 'LNG (' + leanest.name + ', HHV ' + leanest.hhv.toFixed(2) + ') carries the <b>most</b> energy per tonne — and is '
+    + 'also the <b>least dense</b> (' + leanest.rhoL.toFixed(2) + ' kg/m³). Richer LNG is denser and hotter per unit '
+    + 'volume at once, so on a mass basis the two effects very nearly cancel. '
+    + (inverts ? 'It is top of the per-tonne column and bottom of the per-m³ column.' : '');
+
+  document.getElementById('head').innerHTML =
+    'The factor treated as the sloppiest is the stable one. Mass basis moves <b style="color:#6ee7b7;">'
+    + sT.pct.toFixed(1) + ' %</b> across these five cargoes; the two volume bases move <b style="color:#fbbf24;">'
+    + sM.pct.toFixed(1) + ' %</b> and <b style="color:#fda4af;">' + sH.pct.toFixed(1) + ' %</b>.';
+
+  document.getElementById('body').innerHTML =
+    'So the trap was never the factor — it is the <b style="color:#e2e8f0;">basis change nobody announces</b>: tonnes in the '
+    + 'shipping email, m³ on the terminal sheet, MMBtu on the invoice, one number carried between them. '
+    + '1 Nm³ = 37.3258 scf stays definitional and never drifts; everything from mass or volume to energy is not a '
+    + 'conversion at all but a composition, frozen at one moment. And ' + sT.pct.toFixed(1) + ' % is small only until you '
+    + 'scale it: applied to a nominal <b>80,000-tonne</b> cargo, the gap between the lowest and highest of these five '
+    + 'factors is <b style="color:#e2e8f0;">' + REF_GAP.toLocaleString('en-US') + ' MMBtu</b>. '
+    + '<span style="color:#64748b;">(80,000 t is a stated round basis — each origin loads a different mass into the same hull.)</span>';
+
+  document.body.setAttribute('data-ready', [
+    'rows=' + ROWS.length,
+    'per_t_range=' + sT.lo.toFixed(3) + '..' + sT.hi.toFixed(3),
+    'per_t_spread_pct=' + sT.pct.toFixed(2),
+    'per_m3_range=' + sM.lo.toFixed(3) + '..' + sM.hi.toFixed(3),
+    'per_m3_spread_pct=' + sM.pct.toFixed(2),
+    'hhv_spread_pct=' + sH.pct.toFixed(2),
+    // the post's central claim: mass is the most stable basis, by a wide margin
+    'mass_is_most_stable=' + (sT.pct < sM.pct && sM.pct < sH.pct),
+    // and the counter-intuitive half: leanest carries most per tonne AND least per m3
+    'leanest=' + leanest.name, 'top_per_t=' + topPerT.name, 'bottom_per_m3=' + botPerM3.name,
+    'rank_inverts=' + inverts,
+    // cross-check against SPECIFICATION.md Vector 13: NWS energy density chip = 51.69 MMBtu/t
+    'nws_dens_chip=' + (ROWS.filter(function (r) { return r.id === 'au-nws'; })[0] || {}).dens,
+    'vessel_mass_t=' + Math.round(ROWS[0].m), 'vessel_vol_m3=' + Math.round(ROWS[0].V),
+    'gap_MMBtu_on_80000t=' + REF_GAP
+  ].join('|'));
+}
+
+function buildStandalone() {
+  var shot = document.getElementById('shot');
+  var clone = shot.cloneNode(true);
+  var srcAll = [shot].concat([].slice.call(shot.querySelectorAll('*')));
+  var dstAll = [clone].concat([].slice.call(clone.querySelectorAll('*')));
+  for (var i = 0; i < srcAll.length; i++) {
+    var s = srcAll[i], d = dstAll[i];
+    if (s.closest('svg') && s.tagName.toLowerCase() !== 'svg') { continue; }
+    if (d.getAttribute('style') && !d.getAttribute('class')) { continue; }
+    freezeStyle(s, d, window);
+  }
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    + '<title>Day 17 — the tonnes-to-MMBtu factor is the one that barely moves</title>\n'
+    + '<style>html,body{margin:0;padding:0;background:#020617;}</style>\n</head>\n<body>\n'
+    + clone.outerHTML + '\n</body>\n</html>\n';
+  return fetch('/__save?to=docs/linkedin/day17-standalone.html',
+               { method: 'POST', body: html }).then(function (r) { return r.text(); });
+}
+
+document.getElementById('app').addEventListener('load', function () { setTimeout(buildCard, 400); });
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+NPSHa = 7.45697 m.
+
+That is the entire output. The card will not tell you whether it passes.
+
+Not a missing feature. Look at the three numbers underneath it:
+
+5.65697 + 3 − 1.2
+
+Pressure head, static head, friction head. Water at 80 °C in an open tank, level 3 m above the impeller centerline, 1.2 m of suction loss. g = 9.80665 m/s² exactly. Vapour pressure and density arrive from IAPWS-IF97 on one button, so the two numbers most likely to be argued about are traceable rather than remembered.
+
+Every term is on screen because that is what a reviewer can check. NPSHa is arithmetic.
+
+What it is not is a verdict. Three different kinds of thing get mashed together in every NPSH argument:
+
+NPSHa is arithmetic — this card.
+NPSHr is data. It exists on the vendor's tested curve for that pump at that flow, and nowhere else. No calculator can invent it.
+The margin between them is judgement. Commonly 0.6–1.5 m, or a ratio of 1.1–1.35, rising steeply for hot water and for hydrocarbons near their bubble point — codified in Hydraulic Institute 9.6.1 and API 610, both licensed documents.
+
+I could compress a half-remembered margin rule into a green tick. It would look more finished, and it would be manufacturing authority I do not have.
+
+But "it never judges" would be too neat. Here is the line I actually drew:
+
+Change it to 95 °C, drop the level to 2 m below the centerline, and you get
+
+NPSHa = −1.0279 m
+⚠ the liquid flashes before reaching the impeller; a pump cannot operate here
+
+That is a verdict, and the card renders it without hesitating, because it needs no document: negative available head is arithmetic reaching a physical impossibility.
+
+So the rule is not "never judge". It is: render the verdict physics can settle, refuse the one needing somebody else's licensed table.
+
+The blank space where the pass/fail badge would go is the feature.
+
+https://engineering-converter.com
+
+Where else should a calculator stop and hand the question back to you?
+
+— — —
+
+NPSHa = 7.45697 m。
+
+出力はこれだけです。合否は表示しません。
+
+機能不足ではありません。下に並ぶ三つの数字を見てください。
+
+5.65697 + 3 − 1.2
+
+圧力ヘッド、静水頭、摩擦損失。80 °C の水、大気開放タンク、液面はインペラ中心の 3 m 上、吸込損失 1.2 m。g = 9.80665 m/s²(定義値)。蒸気圧と密度は IAPWS-IF97 からボタン一つで入ります。最も揉める二つの数値が、記憶ではなく追跡可能な形で入る。
+
+三項を全部出しているのは、そこがレビュアーが実際に検算できる部分だからです。NPSHa は算術です。
+
+一方これは判定ではありません。NPSH の議論では性質の違う三つが混ざりがちです。
+
+NPSHa は算術 — このカードの担当。
+NPSHr はデータ。その流量におけるそのポンプの試験曲線上にしか存在しません。計算機が創り出せるものではない。
+その差のマージンは判断。一般に 0.6〜1.5 m、比で 1.1〜1.35、高温水や沸点近くの炭化水素では急に厳しくなる。Hydraulic Institute 9.6.1 と API 610 という、いずれもライセンス文書の領分です。
+
+うろ覚えのマージンを緑のチェックに変換はできます。見た目の完成度は上がり、持っていない権威を捏造することになります。
+
+ただ「絶対に判定しない」では綺麗すぎます。実際に引いた線はこうです。
+
+95 °C、液面をインペラ中心の 2 m 下にすると
+
+NPSHa = −1.0279 m
+⚠ インペラ到達前に液がフラッシュします。ポンプは運転できません
+
+これは判定です。カードは躊躇なく出します。文書を必要としないからです。利用可能ヘッドが負とは、算術が物理的不可能に到達したということ。
+
+原則は「判定しない」ではありません。物理で決着する判定は出し、他人のライセンス表を要する判定は断る。
+
+合否バッジが入るはずの空白が、機能です。
+
+https://engineering-converter.com
+
+計算機が立ち止まって、問いをあなたに返すべき場所は、他にどこでしょう。
+
+#RotatingEquipment #PumpDesign #Cavitation #ProcessEngineering

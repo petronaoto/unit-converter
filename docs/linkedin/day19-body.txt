@@ -1,0 +1,59 @@
+No sign-up on the tool I built, no cookie banner, no password.
+
+And when you send someone a pre-filled calculation, its numbers never reach my server.
+
+Not a policy — a property of where the data sits in the URL.
+
+A share link is
+
+origin + path + "#s=" + base64(state)
+
+Everything after the "#" is a fragment, and browsers do not transmit fragments. Not in the request line, not in my logs, not in the CDN cache, not in a proxy's access log. The recipient's browser strips it off, decodes it locally, and rebuilds the calculation there.
+
+I measured the stock link this morning: 6,313 characters, carrying 248 input fields. Exactly 34 of them — the origin and path — are what the network sees. The other 6,279 ride in the fragment and stop at the browser.
+
+That is not privacy engineering. It is the cheapest way to implement "send someone my inputs" without a database, and it happens to be private. The app warns past 2,000 characters because pasting six thousand into Teams is unkind — not because anything leaks.
+
+Same shape elsewhere: custom modules live in localStorage only, and the three Python endpoints are stateless.
+
+Now the part I have to be accurate about, because "no tracking" is the easy sentence and it would be false. Since v3.2 the app runs Vercel Web Analytics, and a measurement script does load. Cookieless and aggregate-only, so there is no banner and nothing follows you to other sites — but I will not pretend it is absent.
+
+The line it holds: record THAT a tool was used, never WHAT was entered. No input value, no unit selection, no result — and the Report tab, the one place you type prose, is excluded outright.
+
+That boundary is one careless line from moving, so it is not a promise: tests/test_analytics_privacy.py fails if it moves. Privacy Policy §7 lists every event.
+
+The share link is the part I would actually defend — not because I chose not to look, but because there is nowhere to look.
+
+https://engineering-converter.com
+
+— — —
+
+作ったツールに登録もクッキーバナーもパスワードもありません。
+
+計算内容を入れたリンクを誰かに送っても、その数値は私のサーバーに届きません。
+
+方針ではなく、データが URL のどこに座るかという性質です。
+
+共有リンクの構造
+
+origin + path + "#s=" + base64(state)
+
+"#" 以降はフラグメントで、ブラウザはこれを送信しません。リクエストラインにも、私のログにも、CDN キャッシュにも、プロキシのログにも載らない。受信者のブラウザが切り離し、手元でデコードして計算を再構成します。
+
+今朝、標準状態のリンクを実測しました。6,313 文字、入力欄 248 個ぶん。ネットワークが見るのは 34 文字、origin と path のみ。残り 6,279 文字はフラグメントに乗り、ブラウザで止まります。
+
+これはプライバシー設計というより、DB なしで「入力ごと送る」を実装する最も安い方法で、結果的に私的になっただけです。2,000 文字超で警告が出るのは 6 千文字を Teams に貼るのが酷だからで、漏れるからではありません。
+
+同じ形は他にも。カスタムモジュールは localStorage のみ、Python エンドポイント 3 つはステートレス。
+
+ここから正確に書きます。「トラッキングなし」は簡単ですが嘘です。v3.2 以降 Vercel Web Analytics が動き、計測スクリプトは読み込まれます。クッキーレスかつ集計のみでバナー不要、他サイトへの追跡もない。それでも「無い」ふりはしません。
+
+守る線は、ツールが使われた「こと」は記録し、入力された「内容」は記録しない。入力値も単位選択も結果も送りません。散文を書く唯一の場所であるレポートタブは丸ごと除外です。
+
+この境界は不注意な一行で動くので、約束ではなく tests/test_analytics_privacy.py が落ちる形にしました。全イベントはプライバシーポリシー §7 に記載。
+
+本当に擁護できるのは共有リンクです。見ないと決めたからではなく、見に行く先が無いからです。
+
+https://engineering-converter.com
+
+#EngineeringTools #Privacy #PlantIT #ProcessEngineering

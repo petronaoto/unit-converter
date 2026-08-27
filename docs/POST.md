@@ -65,17 +65,17 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 | 7 | Wed 19 Aug 2026 | The constant that looked precise and was wrong | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7494879955487531008/ | |
 | 8 | Fri 21 Aug 2026 | Your fittings are worth 30 m of pipe, not 23 m | teach | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7496333602511585280/ | |
 | 9 | Mon 24 Aug 2026 | The pressure drop was fine. The flow regime wasn't. | pain | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7496338911418408960/ | |
-| 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
+| 10 | Tue 25 Aug 2026 | Which roughness did you use? *(engagement)* | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7497675991591473152/ | |
+| 11 | Wed 26 Aug 2026 | Required area 5.7047 in². The letter is the easy part. | standards | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7497680092987568129/ | |
+| 12 | Thu 27 Aug 2026 | The bug that was unreachable until I fixed a default | story | ✅ **posted** | https://www.linkedin.com/feed/update/urn:li:share:7497683762781016064/ | |
 | 13 | Fri 28 Aug 2026 | Napier, and the viscosity correction you cannot do in one pass | standards | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
 | 14 | Mon 31 Aug 2026 | Ideal gas costs you 7.5 % on the speed of sound | teach | 🕗 **scheduled 08:00 JST** | *(URL exists only once it publishes)* | |
-| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | ☐ | | |
-| 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | ☐ | | |
-| 17 | Thu 3 Sep 2026 | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | pain | ☐ | | |
-| 18 | Fri 4 Sep 2026 | The whole toolbox on one page, and ten published vectors | story | ☐ | | |
-| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | ☐ | | |
-| 20 | Tue 8 Sep 2026 | Five things this calculator refuses to do | standards | ☐ | | |
+| 15 | Tue 1 Sep 2026 | The calculator that refuses to tell you whether it passes | pain | 📷 **built, not yet queued** | | |
+| 16 | Wed 2 Sep 2026 | A green CI badge is not evidence | story | 📷 **built, not yet queued** | | |
+| 17 | Thu 3 Sep 2026 | I planned a post saying there is no tonnes-to-MMBtu factor. Then I ran the numbers. *(engagement)* | pain | 📷 **built, not yet queued** | | |
+| 18 | Fri 4 Sep 2026 | The whole toolbox on one page, and fifteen published vectors | story | 📷 **built, not yet queued** | | |
+| 19 | Mon 7 Sep 2026 | No login, no cookies, and the share link never reaches my server | pain | 📷 **built, not yet queued** | | |
+| 20 | Tue 8 Sep 2026 | Five things this calculator refuses to do | standards | 📷 **built, not yet queued** | | |
 
 > ⚠️ **The `### Day N` sheets in §7 were never renumbered after the reflow (C12).** The table
 > above is authoritative for *what runs when*; the sheets below are authoritative for *content*.
@@ -87,8 +87,8 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > | **3** | The steam spreadsheet nobody owns | `### Day 5` |
 > | **5** | There are three versions of these coefficients on the internet | `### Day 16` |
 > | **16** | A green CI badge is not evidence | `### Day 17` |
-> | **17** | There is no such thing as a tonnes-to-MMBtu factor *(engagement)* | `### Day 3` |
-> | **18** | The whole toolbox on one page, and ten published vectors | `### Day 20` |
+> | **17** | I planned a post saying there is no tonnes-to-MMBtu factor. Then I ran the numbers. *(engagement)* | `### Day 3` |
+> | **18** | The whole toolbox on one page, and fifteen published vectors | `### Day 20` |
 > | **20** | Five things this calculator refuses to do | `### Day 18` |
 >
 > **Schedule shifted one weekday from Day 8 (2026-08-21).** Day 8 was built on Thu 20 Aug but the
@@ -98,11 +98,15 @@ Status: ☐ planned · ✎ drafted · 📷 visual ready · 🕗 scheduled · ✅
 > date §1 originally stated. No content, lens or ordering changed; the variety rule is unaffected
 > because the sequence itself is untouched.
 >
-> **Next to build (Day 15, Tue 1 Sep): "The calculator that refuses to tell you whether it passes."**
+> **All twenty are now written.** Days 15–20 were built on 2026-08-28 and are **not yet queued** —
+> attaching the image needs the real clipboard and the browser in the foreground, and Naoto was at
+> the keyboard. Bodies and graphics are committed; the composer step is the only thing outstanding.
 >
 > *Days 10–14 were all built and queued in one sitting on 2026-08-25 (08:00 JST on Tue 25,
-> Wed 26, Thu 27, Fri 28 Aug and Mon 31 Aug); their URLs exist only once they publish. All five
-> were verified against v3.8.4 in the scheduled-posts list before this was written.*
+> Wed 26, Thu 27, Fri 28 Aug and Mon 31 Aug). Days 10, 11 and 12 have published and their URLs are
+> recorded above, each read from the post's own **Embed this post** dialog rather than scraped —
+> the three share ids are 4×10⁹ apart, the spacing expected of posts queued minutes apart, which is
+> what cross-checks them.*
 >
 > ℹ️ **The `urn:li:share:` id is allocated when a post is SCHEDULED, not when it publishes.**
 > Day 8 and Day 9 were queued twenty minutes apart on Fri 21 Aug and their ids differ by only
@@ -477,6 +481,68 @@ fails, the post's central claim is false and the build stops.
 > (2026-08-21): let it publish as written and cover the change in a later post rather than
 > rebuild the graphic. See §8 and SPECIFICATION.md §11 #14.
 
+### NPSHa — the two cases Day 15 uses (verified 2026-08-28)
+
+Reference **Vector 9**, reproduced from the running app through the card's own IF97 water button:
+
+| Case | Inputs | P_v / ρ | NPSHa | Warning |
+|---|---|---|---|---|
+| A — ordinary | 80 °C, open tank 101.325 kPa, z = +3 m, h_f = 1.2 m | 47.41472 kPa / 971.77879 kg/m³ | **7.45697 m** = 5.65697 + 3 − 1.2 | none |
+| B — flashing | 95 °C, z = −2 m, h_f = 0.8 m | 84.608938 kPa / 961.88733 kg/m³ | **−1.0279 m** = 1.7721 + −2 − 0.8 | ⚠ *the liquid flashes before reaching the impeller* |
+
+**The pair is the point.** `calcNPSH()` raises exactly two notes — `pv >= p` and `npsha <= 0` — and
+both are physics, not margin judgement. There is no PASS/FAIL badge in either case. g = 9.80665 m/s²
+exactly.
+
+### LNG energy factors across the five published origins (Day 17, verified 2026-08-28)
+
+One vessel — 174,000 m³ at 98.5 % = 171,390 m³ loaded — with only the composition changed:
+
+| Origin (mol %) | HHV MJ/Nm³ | ρ_liq kg/m³ | **MMBtu / t** | **MMBtu / m³** |
+|---|---|---|---|---|
+| Australia NWS | 45.32 | 467.32 | 51.686 | 24.154 |
+| Qatar Ras Laffan | 43.43 | 453.29 | 51.811 | 23.486 |
+| Malaysia Bintulu | 43.69 | 454.17 | 51.874 | 23.560 |
+| Nigeria Bonny | 43.41 | 451.64 | 52.024 | 23.496 |
+| Trinidad Point Fortin | 41.05 | 431.02 | **52.515** | **22.635** |
+| **spread** | **10.40 %** | 8.42 % | **1.60 %** | **6.71 %** |
+
+**The mass basis is the most stable of the three, by a factor of four to six** — see C17. The rank
+**inverts** between the two right-hand columns: Trinidad is the leanest, so it carries the most
+energy per tonne (methane has the highest heating value per kilogram of any alkane) *and* the least
+per m³ (it is also the least dense). NWS's 51.69 MMBtu/t matches the Vector 13 energy-density chip.
+On a nominal 80,000 t cargo the lowest-to-highest factor gap is ≈ **66,000 MMBtu**.
+
+### Share link — measured on v3.9 (Day 19, 2026-08-28, supersedes C8)
+
+`collectState()` on a freshly loaded page with `localStorage` cleared:
+
+| Quantity | Value |
+|---|---|
+| Input fields carried | **248** |
+| State JSON | 4,706 chars |
+| base64 payload | 6,276 chars |
+| **Full URL** | **6,313 chars** |
+| Origin + path (what the network sees) | **34 chars** |
+| Fragment (never transmitted) | **6,279 chars** |
+| `SHARE_URL_WARN_LEN` | 2,000 |
+
+C8's rule still stands: **never render the stock link in a graphic** — quote the count and show a
+short hand-authored one.
+
+### Test-suite and coverage counts (2026-08-28) — supersedes C9 and C18
+
+**388 tests · 18 modules · 15 published reference vectors** (`docs/SPECIFICATION.md` §9, Vectors 1–15).
+Card inventory from the running app: General 4 · Basic Eng 9 · Advanced 6 · Safety 1 = **20 cards**;
+**11** have never had a dedicated post. Also live: 804 LNG vessels, 31 gas-turbine models,
+9 LNG composition presets (5 published), 10 UI languages.
+
+**The historical CI defect** (Day 16), from `test_ci_runs_every_test_file()`'s own docstring:
+CI ran **128 of 173** tests for a whole release, orphaning `test_js_constants.py` and
+`test_share_state.py` — **45 tests**, including every share-link sanitiser guard. The original
+allowlist is in **ebf2240**: `test_dp_calculator.py`, `test_psv_calculator.py`,
+`test_i18n_parity.py`, `test_architecture.py`.
+
 ### API 520 PRV sizing — the SHIPPED EXAMPLE (v3.8, ↺ Load example)
 
 **v3.8 changed the case behind the ↺ button**, and it is no longer the §9 vector. Verified live
@@ -545,7 +611,9 @@ c_ideal is flat to **0.016 m/s** across the whole sweep — at fixed T it has no
 ## 5. Corrections applied during planning
 
 An adversarial fact-check of the draft plan against the codebase found ten defects (C1–C10).
-Two more (C11–C12) were caught later, at publish time, by re-verifying against the running app.
+Everything from C11 on was caught later, at build time, by re-verifying against the running app —
+which is the single most productive rule in this file. C14, C15, C16 and C17 each overturned a
+sheet's central claim, and in every case the corrected version made a better post than the draft.
 All are corrected in the day sheets below; recorded here so they are not silently reintroduced.
 
 | # | Day | Defect | Correction |
@@ -566,6 +634,9 @@ All are corrected in the day sheets below; recorded here so they are not silentl
 | C14 | 10 | The sheet's hook was **factually wrong about this tool**: *"The result is in the report. The input isn't."* Section 2 of the real export carries pipe ID, length, elevation, **roughness**, erosion C-factor, two-phase method and both phase flows, right beside the results | ✅ **Rebuilt on the true version.** The universal problem is real — most tools do leave provenance in someone's memory — but this app's answer is that inputs and results share a page, and the stale-input guard is what stops that pair becoming a lie. Caught by capturing the actual exported document rather than describing it. The graphic now crops the real report, and the coverage ledger is **derived from the captured HTML** (7 sections, 5 of 9 Basic Eng cards) rather than hand-typed |
 | C15 | 13 | Draft said the §5.8 / §5.9 liquid pair were *"identical but for K_d"* and that the 1.65 % gap came *"purely from K_d 0.65 vs 0.62"* | ✅ **Wrong, and backwards.** §5.9 also swaps the pressure basis: ΔP = P₁ = 275 psi becomes 1.25·P_s = 312.5 psi. The two effects oppose — the lower K_d alone would **enlarge** the area 4.84 %, the higher ΔP **shrinks** it 6.19 %, netting 1.65 % smaller. Spotted because certified came out *larger* than non-certified, which is impossible if K_d were the only difference. The generator now decomposes it and asserts the decomposition reproduces the app's own ratio |
 | C16 | 14 | Sheet's Angle said *"High pressure makes it worse, not better"*, and the first draft graphic said the gap *"widens with pressure"* | ✅ **Only half true.** Sweeping the card 200 → 4,000 psi shows the error peaks at **7.67 % at 2,250 psi** and falls to 3.08 % by 4,000 — because gap = 1/√Z − 1 identically, so it peaks exactly at the Z minimum. The draft caption contradicted the very numbers plotted beside it. Rewritten around the **Z-minimum band** (~1,500–3,000 psi for this gas), which is a sharper and more useful rule anyway; the generator now asserts the peak coincides with the Z minimum |
+| C17 | 17 | The sheet's central claim — *"there is no such thing as a tonnes-to-MMBtu factor"* — is **contradicted by this application's own numbers** | ✅ **Rebuilt around the true result.** Running the five GIIGNL published compositions through the LNG Cargo Estimator on one fixed vessel: **MMBtu/t spans only 1.60 %** (51.686 → 52.515), while **MMBtu/m³ spans 6.71 %** and **HHV per Nm³ spans 10.40 %**. A single tonnes-to-MMBtu factor is roughly defensible — which is exactly why nobody gets caught using one. The cause is a cancellation: methane has the highest heating value per kilogram of any alkane, so the leanest LNG (Trinidad) carries the **most** energy per tonne and is also the **least dense**, putting it top of the per-tonne column and bottom of the per-m³ column. The real trap is the **basis change nobody announces**, not the factor. Title changed to match. The generator asserts the 1.6 / 6.7 / 10.4 ordering *and* the rank inversion |
+| C18 | 16, 18, 20 | Three sheets carried counts that are now years stale: **"242 tests"** (Day 17 sheet), **"285 tests"** and **"ten published vectors"** (Day 20 sheet) | ✅ **Current as of 2026-08-28: 388 tests across 18 modules, and 15 published reference vectors** (`docs/SPECIFICATION.md` §9, Vectors 1–15). C9 corrected 183 → 242 once already; the lesson is that any count in a sheet must be re-read from the repo at build time, never copied forward. Also corrected: Day 18's hook named the LNG density card as never covered, but Vector 13 documents ρ_liq = 467.32 kg/m³ and Day 17 now uses the cargo card — the hook names the pipe-volume, compressor and gas-turbine-catalogue cards instead |
+| C19 | 19 | C8's measured share-link length (**4,627** chars, 2026-08-11) is stale — the app has grown by six releases since | ✅ **Re-measured 2026-08-28 on v3.9 with localStorage cleared: 6,313 characters**, carrying **248 input fields** (4,706 chars of state JSON → 6,276 of base64). Of that, exactly **34** characters — origin and path — are what the network sees; the other **6,279** ride in the fragment. C8's instruction stands: the graphic shows a short hand-authored link, never the stock one. The Day 19 sheet's v3.2 accuracy note also stands and is honoured — the post says plainly that a cookieless measurement script does load |
 
 ### Editorial decisions — ✅ both approved by Naoto 2026-08-11
 
@@ -1062,7 +1133,17 @@ because it is factual, not a swipe at a named competitor.*
 
 ---
 
-### Day 3 — Fri 14 Aug 2026 · *engagement post 1*
+### Day 3 — Fri 14 Aug 2026 · *runs as tracker **Day 17**, Thu 3 Sep* · *engagement* · 📷 BUILT
+
+> **Built 2026-08-28 for Thu 3 Sep 08:00 JST — not yet queued.** 2,981 characters.
+> `docs/linkedin/day17.png` · `day17-body.txt` · generator `day17-mockup.html`.
+> ⚠️ **See C17 — this sheet's central claim is false, and the app is what disproved it.**
+> There *is* a usable tonnes-to-MMBtu factor: across the five GIIGNL published compositions it
+> moves only **1.60 %**, while the two volume bases move **6.71 %** and **10.40 %**. The post is
+> rebuilt as "I planned a post saying there is no such factor. Then I ran the numbers." — the
+> campaign's strongest shape, and the third time it has paid off (Days 7 and 12 were the others).
+> The 37.3258 constant and the composition-not-conversion point both survive; the mass→energy
+> framing is inverted. Numbers in §4 below.
 
 **Title:** There is no such thing as a tonnes-to-MMBtu factor
 **Lens:** pain-workflow · **Format:** poll/question · **Feature:** General → Gas Volume + Custom Modules
@@ -1772,7 +1853,16 @@ is "fine". Practical takeaway for flare headers, blowdown lines and Mach checks.
 
 ---
 
-### Day 15 — Tue 1 Sep 2026
+### Day 15 — Tue 1 Sep 2026 · 📷 BUILT
+
+> **Built 2026-08-28 for Tue 1 Sep 08:00 JST — not yet queued.** 2,958 characters.
+> `docs/linkedin/day15.png` · `day15-body.txt` · generator `day15-mockup.html`.
+> **The sheet's framing needed one addition, and it made the post sharper.** "It never judges" is
+> not true: the card *does* render a verdict when the liquid flashes. So the post draws the real
+> line — it renders the verdict **physics** can settle (NPSHa ≤ 0 is arithmetic reaching a physical
+> impossibility, needing no document) and refuses the one needing HI 9.6.1 / API 610. Both panels
+> are cloned from the live card and `data-ready` asserts the pair:
+> `A_matches_vector9=true · A_no_verdict_words=true · B_DOES_warn=true`.
 
 **Title:** The calculator that refuses to tell you whether it passes
 **Lens:** pain-workflow · **Format:** worked example · **Feature:** Basic Eng → Pump Suction NPSHa
@@ -1882,7 +1972,18 @@ detail in the post; do not paraphrase it away if this copy is reused.
 
 ---
 
-### Day 17 — Thu 3 Sep 2026
+### Day 17 — Thu 3 Sep 2026 · *runs as tracker **Day 16**, Wed 2 Sep* · 📷 BUILT
+
+> **Built 2026-08-28 for Wed 2 Sep 08:00 JST — not yet queued.** 2,970 characters.
+> `docs/linkedin/day16.png` · `day16-body.txt` · standalone `day16-standalone.html`.
+> **See C18** — the sheet's "242 tests" is stale; today is 388 across 18 modules, 15 vectors.
+> The exact historical figures come from the docstring of the test that fixed it:
+> **CI ran 128 of 173**, orphaning `test_js_constants.py` and `test_share_state.py`. The BEFORE
+> allowlist in the graphic is the verbatim four-file list from **ebf2240** (v2.8 PR-A), checked out
+> of git rather than reconstructed — the first draft guessed `test_i18n.py` and the real name is
+> `test_i18n_parity.py`. The strongest beat is not "run the directory": it is
+> `test_ci_runs_every_test_file()`, a test that reads `ci.yml` and fails if any test file is
+> unreachable — the suite testing its own execution.
 
 **Title:** A green CI badge is not evidence
 **Lens:** story-community · **Format:** behind-the-scenes
@@ -1908,7 +2009,16 @@ vectors. **C9: not 183.**
 
 ---
 
-### Day 18 — *this sheet runs as tracker **Day 20**, Mon 7 Sep 2026* · **campaign closer**
+### Day 18 — *this sheet runs as tracker **Day 20**, Tue 8 Sep 2026* · **campaign closer** · 📷 BUILT
+
+> **Built 2026-08-28 for Tue 8 Sep 08:00 JST — not yet queued.** 2,984 characters.
+> `docs/linkedin/day20.png` · `day20-body.txt` · standalone `day20-standalone.html`.
+> All five refusals re-verified against the v3.9 source before writing, and the sheet's
+> **"add the sixth"** instruction carried out: *stop using this and open the simulator* — the
+> objection nothing else in the campaign answered. Refusal 5 gained a second half found while
+> checking: a liquid service on a two-phase result returns **PHASE MISMATCH** rather than a verdict.
+> **See C18** — "285 tests" is now **388**, and the closer quotes **15** published vectors.
+> The heading date was stale by one weekday; the tracker slot is Tue 8 Sep.
 
 **Title:** Five things this calculator refuses to do
 **Lens:** standards-credibility · **Format:** myth-buster
@@ -1938,7 +2048,17 @@ names its own ceiling outperforms every feature post.
 
 ---
 
-### Day 19 — Mon 7 Sep 2026
+### Day 19 — Mon 7 Sep 2026 · 📷 BUILT
+
+> **Built 2026-08-28 for Mon 7 Sep 08:00 JST — not yet queued.** 2,968 characters.
+> `docs/linkedin/day19.png` · `day19-body.txt` · standalone `day19-standalone.html`.
+> **See C19** — C8's 4,627 characters is stale; re-measured on v3.9 it is **6,313**, carrying
+> **248 input fields**, of which **34** (origin + path) reach the network and **6,279** stop at the
+> browser. C8's rule is honoured: the graphic renders a short hand-authored link, and the long
+> string is quoted only as a count. The sheet's **v3.2 accuracy note is honoured in full** — the
+> post states plainly that a cookieless measurement script does load, and makes the distinction
+> (record *that* a tool was used, never *what* was entered) the honest centre rather than hiding it.
+> The illustrative fragment in the graphic decodes to real state: `{"v":3,"inputs":{"p1":"165"}}`.
 
 **Title:** No login, no cookies, and the share link never reaches my server
 **Lens:** pain-workflow · **Format:** behind-the-scenes
@@ -1974,7 +2094,18 @@ browser"*, with a dotted line showing the amber part stopping at a boundary mark
 
 ---
 
-### Day 20 — *this sheet runs as tracker **Day 18**, Thu 3 Sep 2026* · *engagement post 3*
+### Day 20 — *this sheet runs as tracker **Day 18**, Fri 4 Sep 2026* · 📷 BUILT
+
+> **Built 2026-08-28 for Fri 4 Sep 08:00 JST — not yet queued.** 2,953 characters.
+> `docs/linkedin/day18.png` · `day18-body.txt` · standalone `day18-standalone.html`.
+> Written as a **capability tour**, not a retrospective — two posts still run after it, and no
+> "twenty days later" framing appears. Card inventory read off the running v3.9 app by walking each
+> tab pane's headings: **General 4 · Basic Eng 9 · Advanced 6 · Safety 1 = 20 cards**, of which
+> **eleven** have never had a post of their own (General 3, Basic Eng 6, Advanced 2 — the amber
+> chips in the graphic). **See C18**: "ten published vectors" is now **fifteen**, and the sheet's
+> instruction to name the LNG density method without a number is **obsolete** — Vector 13 documents
+> ρ_liq = 467.32 kg/m³ (ISO 6578), so the post quotes it. The date in the heading was also stale by
+> one weekday (the Day 8 shift); the tracker slot is Fri 4 Sep.
 
 **Title:** The whole toolbox on one page, and ten published vectors
 **Lens:** story-community · **Format:** capability tour + question
@@ -2015,13 +2146,13 @@ sizing pack, and more languages."
 
 Ready to write when the blocker clears:
 
-- **LNG liquid density (ISO 6578 Klosek-McKinley)** — write it the day a reference vector is added to `SPECIFICATION.md` §9. A post whose central number needs verification should not be scheduled.
+- **LNG liquid density (ISO 6578 Klosek-McKinley)** — ✅ **blocker cleared.** Vector 13 (added v3.5) documents ρ_liq = **467.32** kg/m³ for the NWS preset at −160 °C, so the central number is now verifiable and the post is writable. Day 18 already quotes it in passing; the standalone piece — colder LNG is denser, so the same tank holds more, and what that does to a cargo's energy — is still unwritten.
 - **IF97 Region 3 verification** — a standalone piece on why the region is hard and what refusing it costs.
 - **"What a share link cannot do"** — the cards that still require a Calculate click, and why the server-backed ones are drawn that way.
 - **Temperature / heating-value beginner post** — for a slower week.
 - **Mobile in the control room** — the no-install angle, with a phone screenshot.
 - **A Japanese-first post pinned to the `ja` build** — for the Qiita/Zenn crossover audience.
-- **"I published a post about this gate on Monday. By Wednesday I had changed it."** — the
+- **"I published a post about this gate on Monday. By Wednesday I had changed it."** — ✅ Day 9 published Mon 24 Aug, so this is now unblocked and ready to schedule. The
   direct follow-up to Day 9, and the strongest kind of post this campaign has (Day 7 was the same
   shape). Day 9 taught the inclination gate as `|θ| ≥ 30°`; writing it up is what exposed that the
   absolute value was wrong, because the vertical map has no stratified region and downhill flow is

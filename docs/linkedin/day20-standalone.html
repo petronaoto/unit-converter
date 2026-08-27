@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day 20 — five things this calculator refuses to do</title>
+<style>
+  html,body{margin:0;padding:0;background:#020617;}
+  #shot{box-sizing:border-box;width:1200px;height:675px;position:relative;overflow:hidden;
+        background:radial-gradient(1200px 700px at 20% 0%, #0f172a 0%, #020617 70%);
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .tile{box-sizing:border-box;border-radius:10px;padding:12px 15px;display:flex;flex-direction:column;
+        border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.55);}
+  .n{color:#475569;font-size:20px;font-weight:800;line-height:1;}
+  .t{color:#e2e8f0;font-size:13px;font-weight:700;margin-top:1px;}
+  .d{color:#94a3b8;font-size:12px;line-height:1.55;margin-top:7px;}
+  .k{border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700;align-self:flex-start;
+     font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin-top:auto;}
+</style>
+</head>
+<body>
+<!--
+  Day 20 — "Five things this calculator refuses to do" — the campaign closer.
+
+  Each refusal was re-verified against the v3.9 source on 2026-08-28:
+   1. calcNPSH() renders no verdict; index.html's own footnote says so, and the HI 9.6.1 /
+      API 610 margin range quoted is the one in Theory Part V.
+   2. Steam card footnote + Theory: Regions 1, 2, 4 and the B23 boundary only; Region 3
+      "declared out of scope rather than approximated".
+   3. api/psv_calculator.py select_orifice() returns ('T+', area_in2, ...) - the ACTUAL
+      required area - when the requirement exceeds T (26.00 in2).
+   4. Papay validity 0 < Pr <= 15, 1.05 <= Tr <= 3.0, flagged as extrapolated outside it.
+   5. Crane TP-410 gradual reducers deliberately absent (coefficients unverifiable against a
+      primary source); PHASE MISMATCH shown instead of a verdict on a phase mismatch.
+   6. The sixth is editorial, and is the strongest: name the ceiling.
+
+  Counts: 15 published reference vectors (SPECIFICATION.md section 9), 388 tests.
+-->
+<div id="shot">
+
+  <div style="position:absolute;left:40px;top:24px;display:flex;align-items:center;gap:12px;white-space:nowrap;">
+    <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block;"></span>
+    <span style="color:#94a3b8;font-size:13px;letter-spacing:.02em;">O&amp;G Engineering Converter
+      <span style="color:#475569;">v3.9</span>
+      <span style="color:#475569;">·</span> post 20 of 20 <span style="color:#475569;">▸</span>
+      where the tool stops, and why</span>
+  </div>
+  <div style="position:absolute;left:52px;top:50px;color:#cbd5e1;font-size:15px;font-weight:600;white-space:nowrap;">
+    The most valuable thing an engineering tool can do is stop.
+  </div>
+
+  <div style="position:absolute;left:28px;top:88px;width:1144px;display:grid;
+              grid-template-columns:1fr 1fr 1fr;grid-template-rows:198px 198px;gap:14px;">
+
+    <div class="tile">
+      <div class="n">1</div>
+      <div class="t">NPSHa gives no pass/fail</div>
+      <div class="d">Available head and the three terms behind it — and nothing else. NPSHr lives on the
+        vendor's tested curve; the margin on top is HI 9.6.1 and API 610, both licensed.</div>
+      <div class="k" style="background:rgba(51,65,85,.5);color:#94a3b8;border:1px dashed rgba(148,163,184,.45);">
+        7.45697 m &nbsp;·&nbsp; no badge</div>
+    </div>
+
+    <div class="tile">
+      <div class="n">2</div>
+      <div class="t">The steam card refuses IF97 Region 3</div>
+      <div class="d">Dense near-critical water — 350–590 °C above 16.5 MPa — needs a different formulation
+        with density iteration. Regions 1, 2 and 4 only.</div>
+      <div class="k" style="background:rgba(76,5,25,.35);color:#fda4af;border:1px solid rgba(244,63,94,.4);">
+        not covered — not extrapolated</div>
+    </div>
+
+    <div class="tile">
+      <div class="n">3</div>
+      <div class="t">Over-range orifices are marked, not clamped</div>
+      <div class="d">Exceed API 526 T (26.00 in²) and the card returns the actual required area beside a
+        flagged letter. The worst behaviour available is rounding an impossible requirement down.</div>
+      <div class="k" style="background:rgba(120,53,15,.4);color:#fcd34d;border:1px solid rgba(251,191,36,.45);">
+        T+ &nbsp;·&nbsp; area as calculated</div>
+    </div>
+
+    <div class="tile">
+      <div class="n">4</div>
+      <div class="t">Correlations warn at their edges</div>
+      <div class="d">Papay is valid for 0 &lt; Pr ≤ 15 and 1.05 ≤ Tr ≤ 3.0. Outside it the result is flagged
+        extrapolated, not quietly returned. Same for Lee-Gonzalez-Eakin viscosity.</div>
+      <div class="k" style="background:rgba(120,53,15,.4);color:#fcd34d;border:1px solid rgba(251,191,36,.45);">
+        ⚠ outside validity — extrapolated</div>
+    </div>
+
+    <div class="tile">
+      <div class="n">5</div>
+      <div class="t">Missing coefficients stay missing</div>
+      <div class="d">The Crane TP-410 set omits gradual reducers — their coefficients could not be verified
+        against a primary source. And a liquid service on a two-phase result gets no verdict at all.</div>
+      <div class="k" style="background:rgba(76,5,25,.35);color:#fda4af;border:1px solid rgba(244,63,94,.4);">
+        PHASE MISMATCH</div>
+    </div>
+
+    <div class="tile" style="border:1.5px solid rgba(56,189,248,.45);background:rgba(12,74,110,.24);">
+      <div class="n" style="color:#38bdf8;">6</div>
+      <div class="t" style="color:#7dd3fc;">Stop using this; open the simulator</div>
+      <div class="d">Everything here is screening. When a number <b style="color:#e2e8f0;">checks</b> a design that is
+        right. When it <b style="color:#e2e8f0;">sets</b> the design — especially when two-phase behaviour is the
+        answer, not a correction to it — you want an equation of state, a flowsheet and someone's PTC 10 data.</div>
+      <div class="k" style="background:rgba(8,47,73,.6);color:#7dd3fc;border:1px solid rgba(56,189,248,.5);">
+        a tool for the first hour, not the last</div>
+    </div>
+  </div>
+
+  <div class="tile" style="position:absolute;left:28px;top:516px;width:1144px;padding:14px 18px;">
+    <div style="color:#e2e8f0;font-size:14px;font-weight:700;">
+      A tool that names its own ceiling beats one pretending it has none.
+    </div>
+    <div style="color:#94a3b8;font-size:12.5px;line-height:1.6;margin-top:6px;">
+      That is the whole argument of these twenty posts, and it is why the tool ships
+      <b style="color:#e2e8f0;">15 published reference vectors and 388 tests</b> rather than a feature list —
+      every one of them reproducible without trusting me. Thanks for reading all twenty.
+    </div>
+  </div>
+
+  <div style="position:absolute;left:52px;right:56px;top:646px;display:flex;align-items:baseline;justify-content:space-between;">
+    <div style="color:#94a3b8;font-size:15px;font-weight:500;letter-spacing:.02em;">engineering-converter.com</div>
+    <div style="color:#475569;font-size:13px;">free &middot; no sign-up &middot; 10 languages</div>
+  </div>
+</div>
+</body>
+</html>

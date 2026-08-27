@@ -1,0 +1,77 @@
+I had a post drafted saying there is no such thing as a tonnes-to-MMBtu factor.
+
+Then I ran five real LNG compositions through my own tool. The draft was wrong.
+
+Same vessel, 174,000 m³ at 98.5 % fill. Only the origin changes — the five GIIGNL published reference compositions:
+
+Australia NWS — 51.69 MMBtu/t
+Qatar Ras Laffan — 51.81
+Malaysia Bintulu — 51.87
+Nigeria Bonny — 52.02
+Trinidad Point Fortin — 52.52
+
+A 1.6 % spread. A single tonnes-to-MMBtu factor is roughly defensible — which is why nobody gets caught using one.
+
+The same five cargoes on a volume basis:
+
+Per m³ of LNG: 22.64 → 24.15 MMBtu — 6.7 %
+Per Nm³ of gas (HHV): 41.05 → 45.32 MJ/Nm³ — 10.4 %
+
+Same five fluids. The factor everyone calls sloppy is the stable one, and the two that feel solid because they are volumes move four to six times as much.
+
+The reason is a cancellation, and it runs backwards from most guesses. Methane has the highest heating value per kilogram of any alkane, so the leanest LNG carries the most energy per tonne — and is also the least dense. Trinidad is top of the per-tonne list and bottom of the per-m³ list. Richer LNG is denser and hotter per unit volume at once, and on a mass basis those two nearly cancel.
+
+So the real trap was never the factor. It is the basis change nobody announces: tonnes in the shipping email, m³ on the terminal sheet, MMBtu on the invoice — one number carried between them.
+
+Two things follow.
+
+1 Nm³ = 37.3258 scf is definitional. One constant, used everywhere in this app including the JIS engine. It never drifts and never needs discussion.
+
+Everything from mass or volume to energy is not a conversion. It is a composition frozen at one moment, and it belongs to the cargo, not the trade.
+
+And 1.6 % is small only until you scale it. Applied to a nominal 80,000-tonne cargo, the gap between the lowest and highest of those five factors is about 66,000 MMBtu.
+
+https://engineering-converter.com
+
+What is the unit argument your team keeps re-having?
+
+— — —
+
+「トン→MMBtu の換算係数など存在しない」という原稿を用意していました。
+
+実在の LNG 組成 5 種を自分のツールに通したら、その原稿が間違っていました。
+
+同一船、174,000 m³、充填率 98.5 %。変えたのは産地だけ、GIIGNL 公表の基準組成 5 種です。
+
+豪州 NWS — 51.69 MMBtu/t
+カタール ラスラファン — 51.81
+マレーシア ビンツル — 51.87
+ナイジェリア ボニー — 52.02
+トリニダード ポイントフォルタン — 52.52
+
+幅は 1.6 %。単一係数は概ね擁護できてしまう。だから誰も咎められない。
+
+同じ 5 カーゴを体積基準で見ます。
+
+LNG 1 m³ あたり: 22.64 → 24.15 MMBtu — 6.7 %
+ガス 1 Nm³ あたり(HHV): 41.05 → 45.32 MJ/Nm³ — 10.4 %
+
+同じ 5 流体です。雑だとされる係数が最も安定で、体積ゆえ堅そうに見える二つが 4〜6 倍動きます。
+
+理由は相殺で、直感とは逆向きです。メタンはアルカン中で質量あたり発熱量が最大。最もリーンな LNG がトンあたり最大のエネルギーを持ち、同時に最も軽い。トリニダードはトン基準で首位、m³ 基準で最下位。リッチな LNG は密度も体積発熱量も高く、質量基準ではこの二つがほぼ相殺します。
+
+本当の罠は係数ではなく、誰も宣言しない基準の乗り換えです。船積メールはトン、帳票は m³、請求書は MMBtu。そこを一つの数字が渡る。
+
+帰結が二つ。
+
+1 Nm³ = 37.3258 scf は定義です。JIS エンジンを含め全所で同じ定数。ぶれず、議論も要りません。
+
+質量・体積からエネルギーへは換算ではありません。ある瞬間に凍結された組成であり、取引ではなくカーゴに属します。
+
+1.6 % が小さいのはスケールする前までです。80,000 トンのカーゴに当てはめると、5 係数の最小と最大の差は約 66,000 MMBtu。
+
+https://engineering-converter.com
+
+あなたのチームが何度も蒸し返している単位の議論は何ですか。
+
+#LNG #GasTrading #TerminalOperations #ProcessEngineering
