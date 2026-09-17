@@ -148,6 +148,10 @@
   <main class="relative z-10 flex-grow max-w-5xl mx-auto px-6 py-10 w-full">
     
     <div id="tab-general" class="block">
+      <!-- v3.9.4 — link to the 2-minute demo video on every functional tab. Plain anchor: no inputs, nothing for collectInputs(). -->
+      <div class="flex justify-end mb-3">
+        <a href="https://youtu.be/TX4Xp0RhQ6s" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-[11px] font-mono text-amber-500 hover:border-amber-500/60 transition-colors" data-i18n="common.demoLink">▶ Watch the 2-minute demo</a>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="card-grid">
         
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden group hover:border-slate-600 transition-colors duration-300">
@@ -294,6 +298,10 @@
            pill in its card's accent color) for feature awareness and navigation.
            Card divs carry scroll-mt-64 md:scroll-mt-40 to clear the sticky header,
            measured live: 226 px tall at 375 px width, 134 px at 1280 px. -->
+      <!-- v3.9.4 — link to the 2-minute demo video on every functional tab. Plain anchor: no inputs, nothing for collectInputs(). -->
+      <div class="flex justify-end mb-3">
+        <a href="https://youtu.be/TX4Xp0RhQ6s" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-[11px] font-mono text-amber-500 hover:border-amber-500/60 transition-colors" data-i18n="common.demoLink">▶ Watch the 2-minute demo</a>
+      </div>
       <nav data-i18n-aria="basic.nav.aria" aria-label="Basic Eng contents" class="flex flex-wrap gap-2 mb-4 text-[10px] font-mono">
         <a href="#basic-pipe" class="px-2 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.pipe">Pipe Vol</a>
         <a href="#basic-z" class="px-2 py-1 rounded bg-slate-800 text-purple-400 border border-slate-700 hover:border-amber-500/50 transition-colors" data-i18n="basic.nav.z">Z-Factor</a>
@@ -849,6 +857,10 @@
       <!-- v3.6 — second-layer navigation. The three sub-panes below (adv-sub-gasq / adv-sub-hyd /
            adv-sub-gtfuel) are toggled by switchAdvSub(); the strip is a different shape from the
            top bar (pills, not underlines) on purpose. Card markup inside each pane is unchanged. -->
+      <!-- v3.9.4 — link to the 2-minute demo video on every functional tab. Plain anchor: no inputs, nothing for collectInputs(). -->
+      <div class="flex justify-end mb-3">
+        <a href="https://youtu.be/TX4Xp0RhQ6s" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-[11px] font-mono text-amber-500 hover:border-amber-500/60 transition-colors" data-i18n="common.demoLink">▶ Watch the 2-minute demo</a>
+      </div>
       <div id="adv-subnav" class="flex flex-wrap gap-1.5 p-1.5 mb-6 rounded-xl bg-slate-900/80 border border-slate-800">
         <button type="button" id="advbtn-gasq" onclick="switchAdvSub('gasq')" class="flex-1 min-w-[9rem] text-left rounded-lg px-4 py-2 border transition-colors bg-amber-500/10 border-amber-500/40 text-amber-400">
           <span class="block text-[11px] font-bold tracking-widest uppercase" data-i18n="nav.adv.gasq">Gas Quality &amp; LNG Cargo</span>
@@ -2750,6 +2762,10 @@
 
 
     <div id="tab-safety" class="hidden">
+      <!-- v3.9.4 — link to the 2-minute demo video on every functional tab. Plain anchor: no inputs, nothing for collectInputs(). -->
+      <div class="flex justify-end mb-3">
+        <a href="https://youtu.be/TX4Xp0RhQ6s" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-[11px] font-mono text-amber-500 hover:border-amber-500/60 transition-colors" data-i18n="common.demoLink">▶ Watch the 2-minute demo</a>
+      </div>
       <div class="grid grid-cols-1 gap-6">
         <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
           <div class="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4">
@@ -2908,6 +2924,23 @@
 
     <div id="tab-howto" class="hidden">
       <div class="bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-6 md:p-10 space-y-10 text-slate-300 max-w-5xl mx-auto">
+        <!-- v3.9.4 — demo video, click-to-play facade. The thumbnail is served from this site; the
+             YouTube iframe (privacy-enhanced youtube-nocookie.com) is created by loadDemoVideo() only
+             after the user presses play, so no third-party request happens on page load. This is a
+             promise made in Privacy Policy §5 — do not replace it with a bare <iframe>. -->
+        <div id="howto-demo" class="rounded-xl border border-slate-700/60 bg-slate-950/60 overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-sm font-semibold text-amber-500" data-i18n="common.demoTitle">Watch the 2-minute demo</h3>
+            <a href="https://youtu.be/TX4Xp0RhQ6s" target="_blank" rel="noopener" class="text-[11px] font-mono text-slate-400 hover:text-amber-400">youtu.be/TX4Xp0RhQ6s ↗</a>
+          </div>
+          <div id="howto-demo-frame" class="relative aspect-video bg-black">
+            <button type="button" id="howto-demo-play" onclick="loadDemoVideo()" class="absolute inset-0 w-full h-full group cursor-pointer" data-i18n-aria="common.demoPlay" aria-label="Play the demo video">
+              <img src="assets/demo-thumb.jpg" alt="" width="960" height="540" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+              <span class="absolute inset-0 flex items-center justify-center"><span class="w-20 h-20 rounded-full bg-slate-950/80 border-2 border-amber-500 flex items-center justify-center group-hover:bg-slate-900"><svg class="w-9 h-9 text-white ml-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></span>
+            </button>
+          </div>
+          <p class="px-4 py-2 text-[11px] text-slate-500" data-i18n="common.demoNote">The video loads from YouTube only when you press play.</p>
+        </div>
         <div data-i18n-html="docs.howto.b001">
           <h2 class="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-4 mb-4">How To Use — Operations Manual v3.9</h2>
           <p class="text-sm text-slate-400 leading-relaxed">A step-by-step visual guide covering every panel of the O&G Engineering Converter. Use the wireframe diagrams and annotations to master each feature.</p>
@@ -4680,6 +4713,7 @@
             <h3 class="text-base font-semibold text-amber-500 mb-2">5. Hosting &amp; Third-Party Services</h3>
             <p>The Application is hosted on <strong>Vercel</strong>. As with any web hosting service, Vercel may collect standard server access logs (such as request timestamps and IP addresses) as part of their infrastructure operations. This is outside the control of the Application developer. Please refer to <a href="https://vercel.com/legal/privacy-policy" class="text-amber-400 hover:underline" target="_blank">Vercel's Privacy Policy</a> for details on their data handling practices.</p>
             <p class="mt-2">The Application also loads open-source libraries from public content delivery networks (CDNs): the Tailwind CSS framework (cdn.tailwindcss.com) and, only when the Flow Regime 3D animation is first used, the Three.js 3D library (cdnjs.cloudflare.com). Like any web resource request, these providers may log standard request metadata (e.g. IP address, user agent). No engineering input data or calculation results are sent to any of them.</p>
+            <p class="mt-2"><strong>Demo video (v3.9.4).</strong> The How To Use tab embeds the project's demo video as a click-to-play placeholder: nothing is requested from YouTube until you press play. After that, the video is served from YouTube's privacy-enhanced domain (youtube-nocookie.com) and <a href="https://policies.google.com/privacy" class="text-amber-400 hover:underline" target="_blank">Google's Privacy Policy</a> applies to that session.</p>
             <p class="mt-2"><strong>Vercel Web Analytics (v3.2).</strong> The Application additionally loads Vercel's cookieless analytics script, served from the Application's own domain. Vercel is the sole processor of this data and it is not shared with anyone else. Section 7 describes in full what is and is not recorded.</p>
           </div>
 
@@ -7776,6 +7810,22 @@
     // --- FLOW REGIME VISUALIZER (Python seaborn API + Three.js 3D animation) ---
     let lastFlowRegime = null;   // cached regime result for the ΔP panel cross-link (B4)
     let threeLoadPromise = null;
+    // v3.9.4 — click-to-play demo embed. The iframe is created on demand so the page makes no
+    // request to YouTube until the user asks for the video (Privacy Policy §5).
+    const DEMO_VIDEO_ID = 'TX4Xp0RhQ6s';
+    function loadDemoVideo() {
+      const box = document.getElementById('howto-demo-frame');
+      if (!box || box.querySelector('iframe')) return;
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + DEMO_VIDEO_ID + '?autoplay=1&rel=0';
+      f.title = tr('common.demoTitle');
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      f.className = 'absolute inset-0 w-full h-full';
+      box.replaceChildren(f);
+    }
+
     function loadThree() {
       if (window.THREE) return Promise.resolve();
       if (!threeLoadPromise) {

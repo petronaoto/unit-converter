@@ -392,3 +392,22 @@ animation), and all three serverless API integrations must all still exist.
 - New i18n keys ×10: `advanced.lngCargo.{fleetContext (rewritten), grpFleet, iguSrc, type.bunk}`,
   `docs.howto.{b117, b118}`; rewritten doc blocks: `docs.howto.b104/b105`, `docs.theory.b051`,
   `docs.terms.b008` (all ten languages).
+
+## v3.9.4
+
+**Demo video links + click-to-play embed.** Must survive:
+
+- The four `▶ Watch the 2-minute demo` pills (`data-i18n="common.demoLink"`, `href="https://youtu.be/TX4Xp0RhQ6s"`,
+  `target="_blank" rel="noopener"`) at the top of `tab-general`, `tab-basic`, `tab-advanced` and
+  `tab-safety`. Plain anchors — they carry no `id` and no input, so `collectInputs()` ignores them.
+- The How To Use embed block `howto-demo` → `howto-demo-frame` → `howto-demo-play` (button,
+  `onclick="loadDemoVideo()"`, `data-i18n-aria="common.demoPlay"`), the same-origin thumbnail
+  `assets/demo-thumb.jpg` (960×540), and the caption `common.demoNote`. It sits **above**
+  `docs.howto.b001` and outside every translated block on purpose.
+- `DEMO_VIDEO_ID = 'TX4Xp0RhQ6s'` and `loadDemoVideo()`: the iframe is built on demand from
+  `https://www.youtube-nocookie.com/embed/` + id. **Never replace the facade with a bare `<iframe>`
+  on page load** — Privacy Policy §5 (inline EN + `docs.privacy.b007` ×9) now promises that nothing
+  is requested from YouTube until the user presses play, and that promise is what makes the embed
+  compatible with the "no third-party tracker" clause.
+- New i18n keys ×10: `common.{demoLink, demoTitle, demoNote, demoPlay}`; the added sentence in
+  `docs.privacy.b007` (9 dictionaries) and its inline English twin.
