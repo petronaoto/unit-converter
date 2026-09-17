@@ -1,6 +1,6 @@
 # Detailed Specification — O&G Engineering Converter
 
-**Document version:** 2.8 (describes app v3.9.3)
+**Document version:** 2.9 (describes app v3.9.4)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [MARKETING.md](MARKETING.md)
 
@@ -197,7 +197,7 @@ Before v3.4 both tabs were ordered by release: How To Use opened with four stack
 
 Renumbering touches five places and only one of them is test-covered: the inline English heading, the same heading in all 9 `docs.*` dictionaries, the jump-link strip (which the translated `docs.*.b001` blocks each carry their own copy of), the `id=` anchors, and prose cross-references. `tests/test_i18n_parity.py` catches a missing *key*, never a stale *number*.
 - **Terms of Use** — 8 clauses (reference-only nature, warranty disclaimer, liability, user responsibility, IP, updates, governing law).
-- **Privacy Policy** — 10 clauses (zero collection, localStorage-only state, stateless APIs, hosting, report feature, no cookies/tracking, children, rights, contact).
+- **Privacy Policy** — 10 clauses (zero collection, localStorage-only state, stateless APIs, hosting, report feature, no cookies/tracking, children, rights, contact). **v3.9.4:** §5 additionally discloses the How To Use demo-video embed — a click-to-play placeholder whose `youtube-nocookie.com` iframe is created by `loadDemoVideo()` only after the user presses play; no request reaches YouTube on page load (EN inline + `docs.privacy.b007` in the 9 dictionaries). The same video (<https://youtu.be/TX4Xp0RhQ6s>) is linked from a `common.demoLink` pill at the top of the General, Basic Eng, Advanced and Safety tabs.
 - **Report** — `mailto:` composer for bug reports / feature requests (no server round-trip); includes app-version environment string.
 
 ### 4.6 GT Fuel (v3.1; a sub-tab of Advanced since v3.6)

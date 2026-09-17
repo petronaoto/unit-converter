@@ -3,6 +3,10 @@
     "pageTitle": "O&G Unit Converter V3.9"
   },
   "common": {
+    "demoLink": "▶ Watch the 2-minute demo",
+    "demoTitle": "Watch the 2-minute demo",
+    "demoNote": "The video loads from YouTube only when you press play.",
+    "demoPlay": "Play the demo video",
     "moreLanguages": "More languages",
     "comingSoon": "Soon",
     "abs": "Abs",
