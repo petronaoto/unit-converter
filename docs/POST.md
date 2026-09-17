@@ -31,6 +31,8 @@ reach, credibility, and genuine affection for the work.
 |---|---|
 | **App** | <https://engineering-converter.com> |
 | **Repo** | <https://github.com/petronaoto/unit-converter> |
+| **Demo video (2 min)** | <https://youtu.be/TX4Xp0RhQ6s> |
+| **YouTube channel** | <https://www.youtube.com/@engineeringconverter> |
 
 ### Pre-launch checklist
 
@@ -150,6 +152,8 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 | Tue 25 Aug 2026 | **v3.9 launch — the full active LNG fleet (IGU permission)** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7497781912745308160/> |
 | Sat 22 Aug 2026 | **v3.4 documentation restructure** | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:share:7496852514277974016/> |
 | Sat 22 Aug 2026 | **v3.4 documentation restructure** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2091090283178156312> |
+| Fri 18 Sep 2026 | **2-minute demo video + YouTube channel launch (v3.9.4)** — <https://youtu.be/TX4Xp0RhQ6s> | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:activity:7506433876731260928/> *(activity URN — the `urn:li:share:` id was not captured; the link resolves)* |
+| Fri 18 Sep 2026 | **2-minute demo video + YouTube channel launch (v3.9.4)** — <https://youtu.be/TX4Xp0RhQ6s> | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2100668273985720452> (EN + image; JA reply <https://x.com/NaotoYamabe/status/2100669113102434326>) |
 
 **v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
 a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
