@@ -3,6 +3,9 @@
     "pageTitle": "O&G Unit Converter V3.9"
   },
   "common": {
+    "tutorialLink": "▶ Full tutorial (25 min)",
+    "tutorialTitle": "Complete walkthrough (25 min)",
+    "tutorialPlay": "Play the tutorial video",
     "demoLink": "▶ Watch the 2-minute demo",
     "demoTitle": "Watch the 2-minute demo",
     "demoNote": "The video loads from YouTube only when you press play.",

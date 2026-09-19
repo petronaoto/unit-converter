@@ -411,3 +411,19 @@ animation), and all three serverless API integrations must all still exist.
   compatible with the "no third-party tracker" clause.
 - New i18n keys ×10: `common.{demoLink, demoTitle, demoNote, demoPlay}`; the added sentence in
   `docs.privacy.b007` (9 dictionaries) and its inline English twin.
+
+## v3.9.5
+
+**Complete-walkthrough tutorial links.** Must survive:
+
+- The second pill on each functional tab: `data-i18n="common.tutorialLink"`, `href="https://youtu.be/yCEfv4oiMwc"`,
+  sitting after the demo pill inside the same `flex flex-wrap justify-end gap-2 mb-3` row on
+  `tab-general`, `tab-basic`, `tab-advanced` and `tab-safety`.
+- The How To Use video grid `howto-videos` (`grid-cols-1 md:grid-cols-2`) holding `howto-demo`
+  (v3.9.4, unchanged) and `howto-tutorial` → `howto-tutorial-frame` → `howto-tutorial-play`
+  (`onclick="loadTutorialVideo()"`, `data-i18n-aria="common.tutorialPlay"`), thumbnail
+  `assets/tutorial-thumb.jpg`. Both cards reuse the `common.demoNote` caption.
+- `TUTORIAL_VIDEO_ID = 'yCEfv4oiMwc'` and `loadTutorialVideo()`. Same rule as v3.9.4: the iframe is
+  created only after the user presses play; never a bare `<iframe>` on load.
+- New i18n keys ×10: `common.{tutorialLink, tutorialTitle, tutorialPlay}`; Privacy §5 wording
+  *demo and tutorial videos* (inline EN + `docs.privacy.b007` ×9).

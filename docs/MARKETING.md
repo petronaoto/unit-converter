@@ -1,6 +1,6 @@
 # Advertisement & Promotion Strategy — O&G Engineering Converter
 
-**Document version:** 1.8 (accompanies app v3.9.4)
+**Document version:** 1.9 (accompanies app v3.9.5)
 **Maintainer:** Naoto Yamabe (petro.naoto@gmail.com)
 **Companion documents:** [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · [SPECIFICATION.md](SPECIFICATION.md)
 
@@ -54,7 +54,7 @@ A pragmatic promotion plan for a solo-maintained, free, zero-tracking engineerin
 | Channel | Action | Cadence |
 |---|---|---|
 | **Qiita / Zenn (Japanese)** | JIS K 2301 / LNG density articles — the most differentiated content; Japanese engineering community is underserved for this niche. Since v2.6 the linked calculator itself renders in Japanese, so articles can now show a genuinely native-language tool, not just a native-language write-up of an English UI. | 1 article / month |
-| **YouTube** ([@engineeringconverter](https://www.youtube.com/@engineeringconverter)) | Channel launched 2026-09-18 with the two-minute narrated demo (<https://youtu.be/TX4Xp0RhQ6s>), which the app itself now links from every functional tab and embeds (click-to-play) at the top of How To Use. Next: one 60–90 s clip per module — JIS K 2301 walk-through, ΔP + flow regime, PRV sizing — each ending on a pre-filled share link | 1 clip / month |
+| **YouTube** ([@engineeringconverter](https://www.youtube.com/@engineeringconverter)) | Channel launched 2026-09-18 with the two-minute narrated demo (<https://youtu.be/TX4Xp0RhQ6s>), which the app itself now links from every functional tab and embeds (click-to-play) at the top of How To Use. A **24.5-minute complete walkthrough** followed on 2026-09-19 (<https://youtu.be/yCEfv4oiMwc>: every tab and card with a reproducible worked example, 47 chapters, English subtitles), linked beside the demo in the app since v3.9.5. Next: one 60–90 s clip per module — JIS K 2301 walk-through, ΔP + flow regime, PRV sizing — each ending on a pre-filled share link | 1 clip / month |
 | **LinkedIn** | Short worked-example posts (screenshot + Share link + one insight); tag oil & gas / LNG hashtags | 2 posts / month |
 | **Reddit** (r/ChemicalEngineering, r/oilandgasworkers, r/engineering) | Share as a free tool in tool-recommendation threads; always follow each sub's self-promotion rules; answer questions using the tool | Opportunistic |
 | **Hacker News (Show HN)** | One well-timed "Show HN: A standards-traceable O&G engineering calculator (no signup, no tracking)" — the single-file no-build architecture is itself HN-interesting | Once, when v2.5+ is polished |

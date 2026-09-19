@@ -32,6 +32,7 @@ reach, credibility, and genuine affection for the work.
 | **App** | <https://engineering-converter.com> |
 | **Repo** | <https://github.com/petronaoto/unit-converter> |
 | **Demo video (2 min)** | <https://youtu.be/TX4Xp0RhQ6s> |
+| **Complete walkthrough (25 min)** | <https://youtu.be/yCEfv4oiMwc> |
 | **YouTube channel** | <https://www.youtube.com/@engineeringconverter> |
 
 ### Pre-launch checklist
