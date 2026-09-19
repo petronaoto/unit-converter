@@ -7,6 +7,7 @@ Built to replace fragmented, legacy Excel spreadsheets, this application gives p
 🔗 **Live:** deployed on Vercel (auto-deploys from `main`)
 📦 **Repository:** <https://github.com/petronaoto/unit-converter>
 🎬 **Demo video (2 min):** <https://youtu.be/TX4Xp0RhQ6s> — YouTube channel [@engineeringconverter](https://www.youtube.com/@engineeringconverter)
+🎓 **Complete walkthrough (25 min, every tab and card, with chapters and subtitles):** <https://youtu.be/yCEfv4oiMwc>
 
 [![Two-minute demo of the O&G Engineering Converter](assets/demo-thumb.jpg)](https://youtu.be/TX4Xp0RhQ6s)
 
