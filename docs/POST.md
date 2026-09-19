@@ -155,6 +155,8 @@ had to reconcile once — stays intact. **Do not renumber the campaign to fit on
 | Sat 22 Aug 2026 | **v3.4 documentation restructure** | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2091090283178156312> |
 | Fri 18 Sep 2026 | **2-minute demo video + YouTube channel launch (v3.9.4)** — <https://youtu.be/TX4Xp0RhQ6s> | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:activity:7506433876731260928/> *(activity URN — the `urn:li:share:` id was not captured; the link resolves)* |
 | Fri 18 Sep 2026 | **2-minute demo video + YouTube channel launch (v3.9.4)** — <https://youtu.be/TX4Xp0RhQ6s> | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2100668273985720452> (EN + image; JA reply <https://x.com/NaotoYamabe/status/2100669113102434326>) |
+| Sat 19 Sep 2026 | **Complete walkthrough tutorial (24.5 min) + v3.9.5** — <https://youtu.be/yCEfv4oiMwc> | LinkedIn | <https://www.linkedin.com/feed/update/urn:li:activity:7506937668321046528/> *(activity URN; EN + JA in one post)* |
+| Sat 19 Sep 2026 | **Complete walkthrough tutorial (24.5 min) + v3.9.5** — <https://youtu.be/yCEfv4oiMwc> | X (@NaotoYamabe) | <https://x.com/NaotoYamabe/status/2101173309350265134> (EN + image; JA reply <https://x.com/NaotoYamabe/status/2101173957177245931>) |
 
 **v3.1 launch — what went out.** One bilingual LinkedIn post (EN then JA, 2,476 chars) and, on X,
 a three-tweet thread — EN + image, JA, then the heat-rate detail closing with the open-source ask —
